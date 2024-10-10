@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($usuario) {
             session_start();
             $_SESSION['user'] = $usuario;
+            $_SESSION['login'] = true;
             header('Location: ../Vista/Principal.php');
         } else {
             echo "Email o contraseña incorrectos.";
