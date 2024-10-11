@@ -1,5 +1,6 @@
 
 <?php
+session_start();
 $tituloPagina = "Página de Perfil";
 
 $contenidoPrincipal = <<<EOS
