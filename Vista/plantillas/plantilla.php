@@ -7,11 +7,11 @@
 <body>
 <div id="contenedor">
 
-<?php require('/TFG/Vista/plantillas/comun/cabecera.php');?>
+<?php require('comun/cabecera.php');?>
 
 <?= $contenidoPrincipal ?>
 
-<?php require('/TFG/Vista/plantillas/comun/footer.php');?>
+<?php require('comun/footer.php');?>
 
 </div>
 </body>

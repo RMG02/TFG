@@ -1,16 +1,13 @@
 <?php
-require_once '../../TFG/Config/config.php';
-require_once '../../TFG/Modelo/Usuario.php';
+    session_start();
 ?>
-
 <header>
     <h1>X</h1>
 
     <?php
     if(isset($_SESSION["login"]) && $_SESSION["login"]) {
-        // Verifica que $_SESSION["login"] esté establecido y sea true
         echo "<p> Bienvenido {$_SESSION['email']}</p>";
-        echo "<p>logout</p>";
+        echo "<p><a href='../Controlador/logout.php'>Logout</a></p>";
     }
     else {
         echo "<p> Usuario Desconocido.  <a href='Login.php'>Login</a> </p>";

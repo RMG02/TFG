@@ -1,5 +1,4 @@
 <?php
-require_once "../Config/config.php";
 
 $tituloPagina = "Página Principal";
 
@@ -10,4 +9,3 @@ EOS;
 require_once __DIR__."/plantillas/plantilla.php";
 
 
-?>

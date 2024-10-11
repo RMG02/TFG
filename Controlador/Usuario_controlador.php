@@ -3,6 +3,7 @@
 require_once '../Config/config.php';
 require_once '../Modelo/Usuario.php';
 
+session_start();
 $usuarioModelo = new Usuario($db);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -18,8 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['login'])) {
         $usuario = $usuarioModelo->login( $_POST['email'], password: $_POST['password']);
         if ($usuario) {
-            session_start();
-            $_SESSION['user'] = $usuario;
+            $_SESSION['email'] = $usuario['email'];
             $_SESSION['login'] = true;
             header('Location: ../Vista/Principal.php');
         } else {
