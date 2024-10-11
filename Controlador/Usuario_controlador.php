@@ -3,7 +3,10 @@
 require_once '../Config/config.php';
 require_once '../Modelo/Usuario.php';
 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 $usuarioModelo = new Usuario($db);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -12,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'nombre' => $_POST['nombre'],
             'nick' => $_POST['nick'],
             'email' => $_POST['email'],
-            'password' => $_POST['password']
+            'password' => $_POST['password'],
+            'admin' => false
 
         ];
         $usuarioModelo->registro($DatosUsuario);
@@ -27,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['password'] = $usuario['password'];
             $_SESSION['login'] = true;
+            $_SESSION['admin'] = $usuario['admin'];
             header('Location: ../Vista/Principal.php');
         } else {
             echo "Email o contraseña incorrectos.";

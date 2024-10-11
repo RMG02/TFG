@@ -7,7 +7,10 @@ class Usuario {
     }
 
     public function registro($DatosUsuario) {
-        // Hash de la contraseña
+        $UsuarioExiste = $this->collection->findOne(['email' => $DatosUsuario['email']]);
+        if ($UsuarioExiste) {
+            return "Email ya registrado.";
+        }
         $DatosUsuario['password'] = password_hash($DatosUsuario['password'], PASSWORD_DEFAULT);
         return $this->collection->insertOne($DatosUsuario);
     }
@@ -19,5 +22,17 @@ class Usuario {
         }
         return null;
     }
+
+    public function darBajaUsuario($email) {
+        return $this->collection->deleteOne(['email' => $email]);
+    }
+
+    public function modificarUsuario($email, $nuevosDatos) {
+        if (isset($nuevosDatos['password'])) {
+            $nuevosDatos['password'] = password_hash($nuevosDatos['password'], PASSWORD_DEFAULT);
+        }
+        return $this->collection->updateOne(['email' => $email],['$set' => $nuevosDatos]);
+    }
+
 }
 
