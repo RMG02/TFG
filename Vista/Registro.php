@@ -7,6 +7,7 @@ $tituloPagina = "Página de Registro";
 
 $contenidoPrincipal = <<<EOS
 	<form method="POST" id="contenidoRegistro" action="../Controlador/Usuario_controlador.php">
+    
     <label for="nombre">Nombre de usuario:</label>
     <input type="nombre" name="nombre" required>
 

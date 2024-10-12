@@ -37,4 +37,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "Email o contraseña incorrectos.";
         }
     }
+
+    if (isset($_POST['editar'])) {
+        $DatosUsuario = [
+            'nombre' => $_POST['nombre'],
+            'nick' => $_POST['nick'],
+            'email' => $_POST['email'],
+            'admin' => false
+
+        ];
+        $usuarioModelo->modificarUsuario('email',$DatosUsuario);
+        header('Location: ../Vista/Login.php');
+    }
+
+    
 }

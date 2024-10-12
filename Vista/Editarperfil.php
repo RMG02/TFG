@@ -9,7 +9,7 @@ $tituloPagina = "Página de Edicion";
 
 $contenidoPrincipal = <<<EOS
     <div class="contenedor">
-        <fieldset>
+        <form method="POST" action="../Controlador/Usuario_controlador.php">
                 <div>
                 <p> <label for="nombre"> Nombre </label>
                     <input id='nombre' type='text' name='nombre'  placeholder='{$_SESSION['nombre']}'> </p>
@@ -28,7 +28,7 @@ $contenidoPrincipal = <<<EOS
                 <div>
                     <button type="submit" name="editar">Editar</button>
                 </div>
-        </fieldset>
+        </form>
     </div>
 EOS;
 
