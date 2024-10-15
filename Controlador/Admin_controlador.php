@@ -12,16 +12,26 @@ $admin = $_SESSION['admin'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if(isset($_POST['añadirUsuario']) && $admin){
+
+        if($_POST['rol'] == "admin"){
+            $rol = True;
+        }
+        else{
+            $rol = False;
+        }
+
         $DatosUsuario = [
             'nombre' => $_POST['nombre'],
             'nick' => $_POST['nick'],
             'email' => $_POST['email'],
             'password' => $_POST['password'],
-            'admin' => $_POST['admin']
+            'admin' => $rol
 
         ];
+
         $usuarioModelo->registro($DatosUsuario);
         echo "Usuario añadido.";
+        header('Location: ../Vista/panel_admin.php');
     }
 
     if(isset($_POST['darBajaUsuario']) && $admin){

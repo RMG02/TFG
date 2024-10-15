@@ -605,3 +605,12 @@ más pequeña a la del ordenador*/
     padding: 20px;
     text-align: center; 
 }
+
+form#añadir_usuario {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 10px; 
+}
+
+
