@@ -6,9 +6,15 @@ if (session_status() == PHP_SESSION_NONE) {
 
 ?>
 <header>
-    <h1>X</h1>
 
     <?php
+
+    if (isset($_SESSION['login'])) {
+        echo "<h1><a href='/Vista/Principal.php'>X</a></h1>";
+    }else{
+        echo "<h1>X</h1>";
+    }
+    
     if(isset($_SESSION["login"]) && $_SESSION["login"]) {
         echo "<p><a href='/Vista/perfil.php'>Bienvenido {$_SESSION['nick']}</a> </p>";
         echo "<p><a href='../Controlador/logout.php'>  Logout</a></p>";

@@ -34,5 +34,26 @@ class Usuario {
         return $this->collection->updateOne(['email' => $email],['$set' => $nuevosDatos]);
     }
 
+    public function editarUsuario($email,$admin, $datos) {
+        $filter = ['email' => $email];
+        if (isset($datos['password'])) {
+            $datos['password'] = password_hash($datos['password'], PASSWORD_DEFAULT);
+        }
+        $update = [
+            '$set' => [
+                'nombre' => $datos['nombre'],
+                'nick' => $datos['nick'],
+                'email' => $datos['email'],
+                'password' => $datos['password'],
+                'admin' => $admin
+            ]
+        ];
+
+        $result = $this->collection->updateOne($filter, $update);
+
+        return $result->getModifiedCount() > 0;
+    }
+    
+
 }
 

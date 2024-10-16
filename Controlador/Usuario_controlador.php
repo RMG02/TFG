@@ -39,16 +39,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (isset($_POST['editar'])) {
+        $admin = $_SESSION['admin'];
         $DatosUsuario = [
             'nombre' => $_POST['nombre'],
+            'password' => $_POST['password'],
             'nick' => $_POST['nick'],
-            'email' => $_POST['email'],
-            'admin' => false
-
+            'email' => $_POST['email']
         ];
-        $usuarioModelo->modificarUsuario('email',$DatosUsuario);
+        $usuarioModelo->editarUsuario($_SESSION['email'],$admin,$DatosUsuario);
+        session_unset();
+
+        session_destroy(); 
         header('Location: ../Vista/Login.php');
     }
+
 
     
 }
