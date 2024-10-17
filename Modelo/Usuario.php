@@ -34,24 +34,29 @@ class Usuario {
         return $this->collection->updateOne(['email' => $email],['$set' => $nuevosDatos]);
     }
 
-    public function editarUsuario($email,$admin, $datos) {
+    public function editarUsuario($email, $datos) {
         $filter = ['email' => $email];
+        $nuevoEmail = $datos['email'];
+        $usuarioExistente = $this->collection->findOne(['email' => $nuevoEmail]);
+        if ($usuarioExistente && $nuevoEmail != $email) {
+            return "Email ya registrado.";
+        }
+    
         if (isset($datos['password'])) {
             $datos['password'] = password_hash($datos['password'], PASSWORD_DEFAULT);
         }
+    
         $update = [
             '$set' => [
                 'nombre' => $datos['nombre'],
                 'nick' => $datos['nick'],
                 'email' => $datos['email'],
                 'password' => $datos['password'],
-                'admin' => $admin
+                'admin' => $datos['admin']
             ]
         ];
-
-        $result = $this->collection->updateOne($filter, $update);
-
-        return $result->getModifiedCount() > 0;
+    
+        return $this->collection->updateOne($filter, $update);
     }
     
 

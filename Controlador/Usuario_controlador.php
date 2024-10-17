@@ -39,18 +39,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (isset($_POST['editar'])) {
-        $admin = $_SESSION['admin'];
         $DatosUsuario = [
-            'nombre' => $_POST['nombre'],
-            'password' => $_POST['password'],
-            'nick' => $_POST['nick'],
-            'email' => $_POST['email']
+            'nombre' => $_POST['nombre'] ?: $_SESSION['nombre'],
+            'password' => $_POST['password'] ?: $_SESSION['password'],
+            'nick' => $_POST['nick'] ?: $_SESSION['nick'],
+            'email' => $_POST['email'] ?: $_SESSION['email'],
+            'admin' => $_SESSION['admin']
         ];
-        $usuarioModelo->editarUsuario($_SESSION['email'],$admin,$DatosUsuario);
-        session_unset();
+        $resultado = $usuarioModelo->editarUsuario($_SESSION['email'],$DatosUsuario);
+        if ($resultado == "Email ya registrado.") {
+            echo "El email ya está en uso por otro usuario.";
+        }
+        else{
+            $_SESSION['email'] = $DatosUsuario['email'];
+            $_SESSION['nick'] = $DatosUsuario['nick'];
+            $_SESSION['nombre'] = $DatosUsuario['nombre'];
+            $_SESSION['password'] = $DatosUsuario['password'];
+            $_SESSION['login'] = true;
+            $_SESSION['admin'] = $DatosUsuario['admin'];
+            header('Location: ../Vista/perfil.php');
+        }
+        
+    }
 
+    if(isset($_POST['cerrarCuenta'])){
+        $usuarioModelo->darBajaUsuario($_SESSION['email']);
+        session_unset();
         session_destroy(); 
-        header('Location: ../Vista/Login.php');
+        header('Location: ../Vista/enter.php');
     }
 
 

@@ -13,7 +13,12 @@ $contenidoPrincipal = <<<EOS
     <p>Nombre: {$_SESSION['nombre']} </p> 
     <p>Email: {$_SESSION['email']} </p> 
     <p><a href='/Vista/Editarperfil.php'>  Editar perfil</a></p>
-    
+    <form method="POST" id="cerrar" action="../Controlador/Usuario_controlador.php">
+        <div>
+            <button type="submit" name="cerrarCuenta">Cerrar Cuenta</button>
+        </div>
+    </form>
+
 
 EOS;
 

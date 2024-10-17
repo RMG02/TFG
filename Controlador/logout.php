@@ -8,5 +8,5 @@ session_unset();
 
 session_destroy(); 
 
-header('Location: ../Vista/Enter.php'); 
+header('Location: ../Vista/enter.php'); 
 
