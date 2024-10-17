@@ -38,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $email = $_POST['email'];
         $usuarioModelo->darBajaUsuario($email);
         echo "Usuario dado de baja.";
+        header('Location: ../Vista/dar_baja_usuario.php');
     }
 
     if(isset($_POST['modificarUsuario']) && $admin){
@@ -53,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $usuarioModelo->modificarUsuario($email, $nuevosDatos);
         echo "Datos de usuario modificados.";
     }
+    
 }
 
 
