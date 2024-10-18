@@ -13,7 +13,7 @@ $collection = $database->usuarios;
 // Obtener todos los documentos (usuarios)
 $usuarios = $collection->find();
 
-$tituloPagina = "Añadir usuario";
+$tituloPagina = "Lista de Usuarios";
 
 // Construcción del contenido principal de forma dinámica
 $contenidoPrincipal = '<body>';
@@ -23,21 +23,22 @@ $contenidoPrincipal .= '
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Email</th> <!-- Puedes agregar más campos si es necesario -->
+            <th>Email</th>
+            <th>Nick</th>
+            <th>Admin</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>';
 
 foreach ($usuarios as $usuario) {
     $contenidoPrincipal .= '<tr>';
-    $contenidoPrincipal .= '<td>' . (isset($usuario['nombre']) ? $usuario['nombre'] : 'No definido') . '</td>';
-    $contenidoPrincipal .= '<td>' . (isset($usuario['email']) ? $usuario['email'] : 'No definido') . '</td>';
-    $contenidoPrincipal .= '<td>
-        <form method="POST" id="darBajaUsuario" action="../Controlador/Admin_controlador.php">
-            <input type="hidden" name="email" value="' . $usuario['email'] . '">
-            <button type="submit" name="darBajaUsuario">Dar de baja usuario</button>
-        </form>
-    </td>';
+    $contenidoPrincipal .= '<td style="padding: 10px;">' . (isset($usuario['nombre']) ? $usuario['nombre'] : 'No definido') . '</td>';
+    $contenidoPrincipal .= '<td style="padding: 10px;">' . (isset($usuario['email']) ? $usuario['email'] : 'No definido') . '</td>';
+    $contenidoPrincipal .= '<td style="padding: 10px;">' . (isset($usuario['nick']) ? $usuario['nick'] : 'No definido') . '</td>';
+    $contenidoPrincipal .= '<td style="padding: 10px;">' . (isset($usuario['admin']) ? ($usuario['admin'] ? 'true' : 'false') : 'No definido') . '</td>';
+    
+    $contenidoPrincipal .= '<td><a href="editar_usuario.php?id=' . $usuario['email'] . '">Editar</a></td>';
     $contenidoPrincipal .= '</tr>';
 }
 
