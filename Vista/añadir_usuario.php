@@ -3,7 +3,7 @@
 $tituloPagina = "Añadir usuario";
 
 $contenidoPrincipal = <<<EOS
-	<form method="POST" id="añadir_usuario" action="../Controlador/Admin_controlador.php">
+	<form method="POST" class="formulario" action="../Controlador/Admin_controlador.php">
     
     <label for="nombre">Nombre de usuario:</label>
     <input type="text" name="nombre" required>

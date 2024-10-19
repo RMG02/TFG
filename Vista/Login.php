@@ -4,9 +4,9 @@
 $tituloPagina = "Página de Login";
 
 $contenidoPrincipal = <<<EOS
-	<form method="POST" id="contenidoLogin" action="../Controlador/Usuario_controlador.php">
-    <input type="email" name="email" required>
-    <input type="password" name="password" required>
+	<form method="POST" class="formulario" action="../Controlador/Usuario_controlador.php">
+    <input type="email" name="email" placeholder="email" required>
+    <input type="password" name="password" placeholder="contraseña" required>
     <button type="submit" name="login">Iniciar Sesión</button>
     </form>
 

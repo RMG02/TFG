@@ -27,13 +27,6 @@ class Usuario {
         return $this->collection->deleteOne(['email' => $email]);
     }
 
-    public function modificarUsuario($email, $nuevosDatos) {
-        if (isset($nuevosDatos['password'])) {
-            $nuevosDatos['password'] = password_hash($nuevosDatos['password'], PASSWORD_DEFAULT);
-        }
-        return $this->collection->updateOne(['email' => $email],['$set' => $nuevosDatos]);
-    }
-
     public function editarUsuario($email, $datos) {
         $filter = ['email' => $email];
         $nuevoEmail = $datos['email'];
@@ -59,6 +52,9 @@ class Usuario {
         return $this->collection->updateOne($filter, $update);
     }
     
-
+    public function ListaUsuarios() {
+        return $this->collection->find();
+    }
+    
 }
 

@@ -1,0 +1,125 @@
+
+/*Fuente de letra que se va a utilizar en toda la página */
+@font-face {
+    font-family: themillion;
+    src: url(HelveticaNowText-Light.ttf);
+}
+
+
+body {
+    font-family: themillion;    
+    background-color: #CDCDCD;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*Contenido de la cabecera*/
+header h1{
+    margin: auto;
+}
+
+
+/*Contenido principal */
+#contenedor{
+    width: 100%;
+	background-color: white;
+	margin: 0 auto;
+	padding: 10px;
+	border:5px solid #CDCDCD;
+    text-align: center;
+}
+
+
+
+
+
+/*Contenido que se nos muestra a la hora de registrarlos o de iniciar sesión
+en la página */
+.contenidoLogin, .contenidoRegistro{
+    background-color: white;
+    margin: 50px 0 50px 0;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/*Cabecera*/
+header {
+	padding: 30px;
+	background-color: #303030;
+	color: white;
+    display: flex;
+    margin: auto;
+    
+}
+
+
+input, textarea, select{
+    width : 150px;
+}
+
+/*Css para definir las caracteristicas con las que queremos que se nos
+muestren todos los botones que tenemos en nuestra página web */
+button{
+    color: white;
+    background-color: #303030;
+    font-weight: bold;
+    padding: 10px;
+    margin: 10px;
+    width : 150px;
+}
+
+button:hover{
+    background-color: #CDCDCD;
+    color: black;
+}
+
+/*Css para definir las caracteristicas con las que queremos que se nos
+muestren todos los enlaces a otras pantallas que tenemos en nuestra página web */
+a{
+    color: rgb(21, 139, 235);
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+a:hover{
+    color: #2f9969; 
+}
+
+
+/*Pie de la página */
+footer	 {
+	clear: both;
+	padding: 20px;
+	background-color: #303030;
+	color: white;
+	text-align: center;
+    margin-top: 20px;
+}
+
+
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+#userList {
+    border-spacing: 15px;  
+    width: 100%;
+    margin: 0 auto;
+}
+
+.boton_lista{
+        display: inline; 
+}
+
+
+
+
