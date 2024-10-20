@@ -2,11 +2,7 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-require_once '../Config/config.php';
-require_once '../Modelo/Usuario.php';
-
-// Inicializar el modelo de usuario
-$usuarioModelo = new Usuario($db);
+require_once '../Controlador/Admin_controlador.php';
 
 // Obtener todos los documentos (usuarios)
 $usuarios = $usuarioModelo->ListaUsuarios();
