@@ -27,7 +27,7 @@ class Usuario {
         return $this->collection->deleteOne(['email' => $email]);
     }
 
-    public function editarUsuario($email, $datos) {
+    public function editarUsuario($email, $datos,$cambio) {
         $filter = ['email' => $email];
         $nuevoEmail = $datos['email'];
         $usuarioExistente = $this->collection->findOne(['email' => $nuevoEmail]);
@@ -35,7 +35,7 @@ class Usuario {
             return "Email ya registrado.";
         }
     
-        if (isset($datos['password'])) {
+        if ($cambio == True) {
             $datos['password'] = password_hash($datos['password'], PASSWORD_DEFAULT);
         }
     

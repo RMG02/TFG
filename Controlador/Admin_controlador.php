@@ -55,7 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             'email' => $_POST['email_nuevo'] ?: $_POST['email'],
             'admin' => $admin
         ];
-        $resultado = $usuarioModelo->editarUsuario($_POST['email'],$DatosUsuario);
+        if($DatosUsuario['password'] == $_POST['nombre_nuevo']){
+            $cambio = true;
+        }else{
+            $cambio = false;
+        }
+        $resultado = $usuarioModelo->editarUsuario($_POST['email'],$DatosUsuario,$cambio);
         if ($resultado == "Email ya registrado.") {
             echo "El email ya está en uso por otro usuario.";
         }else{
