@@ -15,7 +15,7 @@ $contenidoPrincipal = <<<EOS
     <p><a href='/Vista/Editarperfil.php'>  Editar perfil</a></p>
     <form method="POST" id="cerrar" action="../Controlador/Usuario_controlador.php">
         <div>
-            <button type="submit" name="cerrarCuenta">Cerrar Cuenta</button>
+            <button type="submit" name="cerrarCuenta">Cerrar cuenta</button>
         </div>
     </form>
 

@@ -15,7 +15,7 @@ if(isset($_POST['modificar'])){
 
 $contenidoPrincipal = <<<EOS
     <div class="contenedor">
-        <form method="POST" class="formulario" action="../Controlador/Admin_controlador.php">
+        <form method="POST" id="modificarUsuario" class="formulario" action="../Controlador/Admin_controlador.php">
                 <div>
                 <p> <label for="nombre"> Nombre </label>
                     <input id='nombre' type='text' name='nombre_nuevo'  placeholder=$nombre> </p>
