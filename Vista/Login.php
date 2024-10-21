@@ -9,7 +9,6 @@ $contenidoPrincipal = <<<EOS
     <input type="password" name="password" placeholder="contraseña" required>
     <button type="submit" name="login">Iniciar Sesión</button>
     </form>
-
 EOS;
 
 require_once __DIR__."/plantillas/plantilla.php";

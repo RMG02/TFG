@@ -20,7 +20,7 @@ $contenidoPrincipal = <<<EOS
     <label for="password">Password:</label>
     <input type="password" name="password" required>
     
-    <button type="submit" name="registro">Registrarse</button>
+    <button type="submit" name="registro">Crear cuenta</button>
     </form>
 
 EOS;

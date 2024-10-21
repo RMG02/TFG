@@ -23,8 +23,8 @@ if (session_status() == PHP_SESSION_NONE) {
          }
     }
     else {
-        echo "<p> Usuario Desconocido.  <a href='Login.php'>Login</a> </p>";
-        echo "<p> <a href='Registro.php'>Registrate</a> </p>";
+        echo "<p> Usuario Desconocido.  <a href='Login.php'>Iniciar sesión</a> </p>";
+        echo "<p> <a href='Registro.php'>Registrarse</a> </p>";
     }
     ?>
 </header>
