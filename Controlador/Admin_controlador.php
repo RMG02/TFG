@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if(isset($_POST['modificarUsuario']) && $admin){
 
-        if($_POST['admin'] == "admin"){
+        if($_POST['admin_nuevo'] == "admin"){
             $admin = True;
         }
         else{

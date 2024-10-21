@@ -18,28 +18,28 @@ $contenidoPrincipal = <<<EOS
         <form method="POST" id="modificarUsuario" class="formulario" action="../Controlador/Admin_controlador.php">
                 <div>
                 <p> <label for="nombre"> Nombre </label>
-                    <input id='nombre' type='text' name='nombre_nuevo'  placeholder=$nombre> </p>
+                    <input id='nombre_nuevo' type='text' name='nombre_nuevo'  placeholder=$nombre> </p>
                 </div>
                 <div>
                 <p>
                     <label for="nick"> Nick </label>
-                    <input id="nick" type="text" name="nick_nuevo" placeholder=$nick /> </p>
+                    <input id="nick_nuevo" type="text" name="nick_nuevo" placeholder=$nick /> </p>
                 </div> 
 
                 <div>
                 <p>
                     <label for="email"> Email </label>
-                    <input id="email" type="text" name="email_nuevo" placeholder=$email /> </p>
+                    <input id="email_nuevo" type="text" name="email_nuevo" placeholder=$email /> </p>
                 </div> 
                 <div>
                 <p>
                     <label for="password"> Contraseña </label>
-                    <input id="password" type="password" name="pass_nuevo" placeholder="" /> </p>
+                    <input id="pass_nuevo" type="password" name="pass_nuevo" placeholder="" /> </p>
                 </div>
                 <div>
                 <p>
                     <label for="rol">Rol:</label>
-                    <select name="admin" required>
+                    <select name="admin_nuevo" required>
                         <option value="usuario">Usuario</option>
                         <option value="admin">Admin</option>
                     </select>
