@@ -34,7 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['admin'] = $usuario['admin'];
             header('Location: ../Vista/Principal.php');
         } else {
-            echo "Email o contraseña incorrectos.";
+            $_SESSION['error'] = "Email o contraseña incorrectos.";
+            header('Location: ../Vista/Login.php');
         }
     }
 

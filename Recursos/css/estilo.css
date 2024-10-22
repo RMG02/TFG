@@ -120,6 +120,19 @@ footer	 {
         display: inline; 
 }
 
-
-
+  .error {
+    display: flex;  
+    margin-top: 10px;  
+    min-width: 300px;
+    min-height: 30px;
+    border-radius: 10px;
+    padding: 10px;  
+    background: #ff6860;
+    border: 2px solid #dc1818;
+    color: #ffffff;  /* Cambia el color a blanco para mejor contraste */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Añade sombra para dar un efecto de profundidad */
+    font-weight: bold;  /* Texto en negrita para mayor visibilidad */
+    justify-content: center;
+    align-items: center;
+}
 
