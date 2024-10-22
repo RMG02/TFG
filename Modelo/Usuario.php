@@ -34,9 +34,11 @@ class Usuario {
         if ($usuarioExistente && $nuevoEmail != $email) {
             return "Email ya registrado.";
         }
-    
-        if (isset($datos['password'])) {
+        $passs = $this->collection->findOne(['email' => $email]);
+        if ($datos['password'] != $passs['password']) {
             $datos['password'] = password_hash($datos['password'], PASSWORD_DEFAULT);
+        }else{
+            $datos['password'] = $passs['password'];
         }
     
         $update = [
