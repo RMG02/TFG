@@ -27,6 +27,14 @@ class Usuario {
         return $this->collection->deleteOne(['email' => $email]);
     }
 
+    public function confirmar($password,$email) {
+        $usuario = $this->collection->findOne(['email' => $email]);
+        if (!password_verify($password, $usuario['password'])) {
+            return false;
+        }
+        return true;
+    }
+
     public function editarUsuario($email, $datos) {
         $filter = ['email' => $email];
         $nuevoEmail = $datos['email'];

@@ -35,8 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     }
 
     if(isset($_POST['eliminarUsuario']) && $admin){
-        $email = $_POST['email'];
-        $usuarioModelo->darBajaUsuario($email);
+        if($usuarioModelo->confirmar($_POST['password'],$_SESSION['email']) == true){
+            $email = $_POST['email'];
+            $usuarioModelo->darBajaUsuario($email);
+        }else{
+            $_SESSION['error'] = "Contraseña incorrecta.";
+        }
+        
         header('Location: ../Vista/modificar_usuario.php');
     }
 

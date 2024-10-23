@@ -2,6 +2,12 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+$error = "";
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+    unset($_SESSION['error']);
+}
 require_once '../Controlador/Admin_controlador.php';
 
 // Obtener todos los documentos (usuarios)
@@ -51,11 +57,19 @@ foreach ($usuarios as $usuario) {
             </form>
             <form method="POST" class="boton_lista" action="../Controlador/Admin_controlador.php">
                 <input type="hidden" name="email" value=$email>
+                <label for="password">Password:</label>
+                <input type="password" name="password" required>
                 <button type="submit" name="eliminarUsuario">Eliminar cuenta</button>
             </form>
         </td>
     </tr>
     EOS;
+
+    if ($error != "") {
+        $contenidoPrincipal .= <<<EOS
+            <p class="error">$error</p>
+        EOS;
+    }
 }
 
 $contenidoPrincipal .= <<<EOS
