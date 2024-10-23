@@ -64,10 +64,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if(isset($_POST['cerrarCuenta'])){
-        $usuarioModelo->darBajaUsuario($_SESSION['email']);
-        session_unset();
-        session_destroy(); 
-        header('Location: ../Vista/enter.php');
+        if($usuarioModelo->confirmar($_POST['password'],$_SESSION['email']) == true){
+            $usuarioModelo->darBajaUsuario($_SESSION['email']);
+            session_unset();
+            session_destroy(); 
+            header('Location: ../Vista/enter.php');
+        }else{
+            $_SESSION['error'] = "Contraseña incorrecta.";
+            header('Location: ../Vista/perfil.php');
+        }
+        
+        
     }
 
 
