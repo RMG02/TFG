@@ -57,9 +57,46 @@ foreach ($usuarios as $usuario) {
             </form>
             <form method="POST" class="boton_lista" action="../Controlador/Admin_controlador.php">
                 <input type="hidden" name="email" value=$email>
-                <label for="password">Password:</label>
-                <input type="password" name="password" required>
-                <button type="submit" name="eliminarUsuario">Eliminar cuenta</button>
+                <button type="submit" name="eliminarUsuario" id="eliminarUsuario">Eliminar cuenta</button>
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Introduce tu contraseña</h2>
+                        <form method="POST" action="../Controlador/Admin_controlador.php">
+                            <input type="password" name="password" required placeholder="Contraseña"><br><br>
+                            <button type="submit" class="boton_lista" name="eliminarUsuario" id="eliminarUsuario">Confirmar</button>
+                        </form>
+                    </div>
+                </div>
+
+                <script>
+                    // Obtener el modal
+                    var modal = document.getElementById("myModal");
+
+                    // Obtener el botón que abre el modal
+                    var btn = document.getElementById("eliminarUsuario");
+
+                    // Obtener el elemento <span> que cierra el modal
+                    var span = document.getElementsByClassName("close")[0];
+
+                    // Cuando el usuario haga clic en el botón, abre el modal
+                    btn.onclick = function() {
+                        modal.style.display = "block";
+                    }
+
+                    // Cuando el usuario haga clic en <span> (x), cierra el modal
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                    }
+
+                    // Cuando el usuario haga clic fuera del modal, cierra el modal
+                    window.onclick = function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+
+                </script>
             </form>
         </td>
     </tr>
