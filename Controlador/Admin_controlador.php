@@ -29,9 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         ];
 
-        $usuarioModelo->registro($DatosUsuario);
-        echo "Usuario añadido.";
-        header('Location: ../Vista/añadir_usuario.php');
+        $resultado = $usuarioModelo->registro($DatosUsuario);
+
+        if ($resultado == "Email ya registrado.") {
+            $_SESSION['error'] = "El email ya está en uso por otro usuario.";
+            header('Location: ../Vista/añadir_usuario.php');
+        }
+        else{
+            header('Location: ../Vista/añadir_usuario.php');
+        }
     }
 
     if(isset($_POST['eliminarUsuario']) && $admin){
@@ -62,7 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         ];
         $resultado = $usuarioModelo->editarUsuario($_POST['email'],$DatosUsuario);
         if ($resultado == "Email ya registrado.") {
-            echo "El email ya está en uso por otro usuario.";
+            $_SESSION['error'] = "El email ya está en uso por otro usuario.";
+            header('Location: ../Vista/editar_perfil_admin.php');
         }else{
             header('Location: ../Vista/modificar_usuario.php');
         }

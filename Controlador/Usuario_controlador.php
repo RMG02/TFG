@@ -49,7 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
         $resultado = $usuarioModelo->editarUsuario($_SESSION['email'],$DatosUsuario);
         if ($resultado == "Email ya registrado.") {
-            echo "El email ya está en uso por otro usuario.";
+            $_SESSION['error'] = "El email ya está en uso por otro usuario.";
+            header('Location: ../Vista/Editarperfil.php');
         }
         else{
             $_SESSION['email'] = $DatosUsuario['email'];
