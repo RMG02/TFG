@@ -6,9 +6,15 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $error = "";
+$mensaje = "";
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
     unset($_SESSION['error']);
+}
+
+if (isset($_SESSION['mensaje'])) {
+    $mensaje = $_SESSION['mensaje'];
+    unset($_SESSION['mensaje']);
 }
 
 $tituloPagina = "Página de Perfil";
@@ -36,6 +42,12 @@ EOS;
 if ($error != "") {
     $contenidoPrincipal .= <<<EOS
         <p class="error">$error</p>
+    EOS;
+}
+
+if ($mensaje != "") {
+    $contenidoPrincipal .= <<<EOS
+        <p class="mensaje">$mensaje</p>
     EOS;
 }
 

@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             header('Location: ../Vista/añadir_usuario.php');
         }
         else{
+            $_SESSION['mensaje'] = "Usuario añadido";
             header('Location: ../Vista/añadir_usuario.php');
         }
     }
@@ -44,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         if($usuarioModelo->confirmar($_POST['password'],$_SESSION['email']) == true){
             $email = $_POST['email'];
             $usuarioModelo->darBajaUsuario($email);
+            $_SESSION['mensaje'] = "Usuario eliminado";
         }else{
             $_SESSION['error'] = "Contraseña incorrecta.";
         }
@@ -71,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $_SESSION['error'] = "El email ya está en uso por otro usuario.";
             header('Location: ../Vista/editar_perfil_admin.php');
         }else{
+            $_SESSION['mensaje'] = "Usuario modificado";
             header('Location: ../Vista/modificar_usuario.php');
         }
     }

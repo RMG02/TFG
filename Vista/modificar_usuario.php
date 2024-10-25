@@ -4,9 +4,15 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $error = "";
+$mensaje = "";
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
     unset($_SESSION['error']);
+}
+
+if (isset($_SESSION['mensaje'])) {
+    $mensaje = $_SESSION['mensaje'];
+    unset($_SESSION['mensaje']);
 }
 require_once '../Controlador/Admin_controlador.php';
 
@@ -86,6 +92,11 @@ if ($error != "") {
     EOS;
 }
 
+if ($mensaje != "") {
+    $contenidoPrincipal .= <<<EOS
+        <p class="mensaje">$mensaje</p>
+    EOS;
+}
 
 require_once __DIR__ . "/plantillas/plantilla.php";
 ?>
