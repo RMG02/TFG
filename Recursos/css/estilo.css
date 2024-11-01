@@ -14,11 +14,29 @@ body {
     align-items: center;
 }
 
-
-/*Contenido de la cabecera*/
-header h1{
-    margin: auto;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #303030;
+	color: white;
 }
+
+header .logo {
+    max-height: 20vh;  
+    width: auto;  
+}
+
+header .menu {
+    display: flex;
+    gap: 15px; 
+}
+
+header .menu p {
+    margin: 0;
+}
+
 
 
 /*Contenido principal */
@@ -45,16 +63,6 @@ en la página */
     justify-content: center;
 }
 
-
-/*Cabecera*/
-header {
-	padding: 30px;
-	background-color: #303030;
-	color: white;
-    display: flex;
-    margin: auto;
-    
-}
 
 
 input, textarea, select{
@@ -190,3 +198,6 @@ footer	 {
     margin-top: 10px;
 }
 
+#buscador{
+    margin-top: 10px;
+}

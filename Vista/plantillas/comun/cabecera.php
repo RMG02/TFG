@@ -9,22 +9,26 @@ if (session_status() == PHP_SESSION_NONE) {
 
     <?php
 
+    $logo = '../../../Recursos/imagenes/Logo.png';
+
     if (isset($_SESSION['login'])) {
-        echo "<h1><a href='/Vista/Principal.php'>X</a></h1>";
-    }else{
-        echo "<h1>X</h1>";
-    }
-    
-    if(isset($_SESSION["login"]) && $_SESSION["login"]) {
-        echo "<p><a href='/Vista/perfil.php'>Bienvenido {$_SESSION['nick']}</a> </p>";
-        echo "<p><a href='../Controlador/logout.php'>  Logout</a></p>";
-        if (isset($_SESSION['admin']) && $_SESSION['admin']) {
-            echo "<p><a href='/Vista/panel_admin.php'>Panel Admin</a></p>";
-         }
-    }
-    else {
-        echo "<p> Usuario Desconocido.  <a href='Login.php'>Iniciar sesión</a> </p>";
-        echo "<p> <a href='Registro.php'>Registrarse</a> </p>";
+        echo "<a href='../../Vista/Principal.php'><img src='$logo' class='logo'></a>";
+    } else {
+        echo "<img src='$logo' class='logo'>";
     }
     ?>
+    <div class="menu">
+        <?php
+        if (isset($_SESSION['login']) && $_SESSION['login']) {
+            echo "<p><a href='/Vista/perfil.php'>Bienvenido {$_SESSION['nick']}</a></p>";
+            echo "<p><a href='../Controlador/logout.php'>Logout</a></p>";
+            if (isset($_SESSION['admin']) && $_SESSION['admin']) {
+                echo "<p><a href='/Vista/panel_admin.php'>Panel Admin</a></p>";
+            }
+        } else {
+            echo "<p><a href='Login.php'>Iniciar sesión</a></p>";
+            echo "<p><a href='Registro.php'>Registrarse</a></p>";
+        }
+        ?>
+    </div>
 </header>

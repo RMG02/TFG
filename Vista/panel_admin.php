@@ -11,9 +11,8 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
 $tituloPagina = "Panel Admin";
 
 $contenidoPrincipal = <<<EOS
-    <header>
-        <h1>Panel de Administración</h1>
-    </header>
+    
+    <h1>Panel de Administración</h1>
     <p><a href="añadir_usuario.php">Añadir Usuario</a></p>
     <p><a href="modificar_usuario.php">Modificar Usuario</a></p>
 EOS;
