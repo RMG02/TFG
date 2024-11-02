@@ -31,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         $resultado = $usuarioModelo->registro($DatosUsuario);
 
-        if ($resultado == "Email ya registrado.") {
-            $_SESSION['error'] = "El email ya está en uso por otro usuario.";
+        if ($resultado == "Email ya registrado" || $resultado == "Nick ya registrado") {
+            $_SESSION['error'] = $resultado;
             header('Location: ../Vista/añadir_usuario.php');
         }
         else{
@@ -68,9 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             'email' => $_POST['email_nuevo'] ?: $_POST['email'],
             'admin' => $admin
         ];
-        $resultado = $usuarioModelo->editarUsuario($_POST['email'],$DatosUsuario);
-        if ($resultado == "Email ya registrado.") {
-            $_SESSION['error'] = "El email ya está en uso por otro usuario.";
+        $resultado = $usuarioModelo->editarUsuario($_POST['email'],$DatosUsuario, $_POST['nick']);
+        if ($resultado == "Email ya registrado" || $resultado == "Nick ya registrado") {
+            $_SESSION['error'] = $resultado;
             header('Location: ../Vista/editar_perfil_admin.php');
         }else{
             $_SESSION['mensaje'] = "Usuario modificado";

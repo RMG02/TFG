@@ -3,6 +3,17 @@
 
 <?php
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+$error = "";
+
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+    unset($_SESSION['error']);
+}
+
 $tituloPagina = "Página de Registro";
 
 $contenidoPrincipal = <<<EOS
@@ -24,6 +35,13 @@ $contenidoPrincipal = <<<EOS
     </form>
 
 EOS;
+
+if ($error != "") {
+    $contenidoPrincipal .= <<<EOS
+        <p class="error">$error</p>
+    EOS;
+}
+
 
 require_once __DIR__."/plantillas/plantilla.php";
 

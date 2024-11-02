@@ -19,8 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'admin' => false
 
         ];
-        $usuarioModelo->registro($DatosUsuario);
-        header('Location: ../Vista/Login.php');
+        $resultado = $usuarioModelo->registro($DatosUsuario);
+        if($resultado == "Email ya registrado" || $resultado == "Nick ya registrado"){
+            $_SESSION['error'] = $resultado;
+            header('Location: ../Vista/Registro.php');
+        } else{
+            header('Location: ../Vista/Login.php');
+        }
     }
 
     if (isset($_POST['login'])) {
@@ -47,9 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'email' => $_POST['email'] ?: $_SESSION['email'],
             'admin' => $_SESSION['admin']
         ];
-        $resultado = $usuarioModelo->editarUsuario($_SESSION['email'],$DatosUsuario);
-        if ($resultado == "Email ya registrado.") {
-            $_SESSION['error'] = "El email ya está en uso por otro usuario.";
+        $resultado = $usuarioModelo->editarUsuario($_SESSION['email'],$DatosUsuario, $_SESSION['nick']);
+        if ($resultado == "Email ya registrado" || $resultado == "Nick ya registrado") {
+            $_SESSION['error'] = $resultado;
             header('Location: ../Vista/Editarperfil.php');
         }
         else{
