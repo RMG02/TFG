@@ -1,114 +1,117 @@
-
-/*Fuente de letra que se va a utilizar en toda la página */
+/* Fuente de letra que se va a utilizar en toda la página */
 @font-face {
     font-family: themillion;
     src: url(HelveticaNowText-Light.ttf);
 }
 
-
 body {
-    font-family: themillion;    
-    background-color: #CDCDCD;
+    font-family: themillion;
+    background-color: #f0f0f0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow-x: hidden;
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    background-color: #303030;
-	color: white;
+    background-color: #333;
+    color: white;
+    width: 100%;
+    position: relative;
+    top: 0;
 }
 
 header .logo {
-    max-height: 20vh;  
-    width: auto;  
+    max-height: 20vh; 
+    width: auto;
 }
 
 header .menu {
     display: flex;
-    gap: 15px; 
+    gap: 20px;
+    padding-right: 20px;
 }
 
 header .menu p {
     margin: 0;
+    font-size: 1.2em;
 }
 
 
-
-/*Contenido principal */
-#contenedor{
+#contenedor {
     width: 100%;
-	background-color: white;
-	margin: 0 auto;
-	padding: 10px;
-	border:5px solid #CDCDCD;
+    background-color: white;
     text-align: center;
+    box-sizing: border-box; 
 }
 
-
-
-
-
-/*Contenido que se nos muestra a la hora de registrarlos o de iniciar sesión
-en la página */
-.contenidoLogin, .contenidoRegistro{
+.contenidoLogin, .contenidoRegistro {
     background-color: white;
-    margin: 50px 0 50px 0;
+    margin: 50px 0;
     display: grid;
     align-items: center;
     justify-content: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-
-
-input, textarea, select{
-    width : 150px;
-}
-
-/*Css para definir las caracteristicas con las que queremos que se nos
-muestren todos los botones que tenemos en nuestra página web */
-button{
-    color: white;
-    background-color: #303030;
-    font-weight: bold;
+input, textarea, select {
+    width: 100%;
+    max-width: 300px;
     padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;  
+}
+
+button {
+    color: white;
+    background-color: #333;
+    font-weight: bold;
+    padding: 10px 20px;
     margin: 10px;
-    width : 150px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-button:hover{
-    background-color: #CDCDCD;
-    color: black;
+button:hover {
+    background-color: #555;
 }
 
-/*Css para definir las caracteristicas con las que queremos que se nos
-muestren todos los enlaces a otras pantallas que tenemos en nuestra página web */
-a{
-    color: rgb(21, 139, 235);
+a {
+    color: #1e90ff;
     text-decoration: none;
     margin-right: 10px;
 }
 
-a:hover{
-    color: #2f9969; 
+a:hover {
+    color: #104e8b;
 }
 
-
-/*Pie de la página */
-footer	 {
-	clear: both;
-	padding: 20px;
-	background-color: #303030;
-	color: white;
-	text-align: center;
-    margin-top: 20px;
+footer {
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    width: 100%;    
+    position: relative;
+    bottom: 0;
 }
 
-
+footer p {
+    margin: 0;
+    font-size: 1.2em;
+}
 
 .formulario {
     display: flex;
@@ -118,57 +121,63 @@ footer	 {
     margin-top: 10px;
 }
 
+
 #userList {
-    border-spacing: 15px;  
+    border-spacing: 15px;
     width: 100%;
     margin: 0 auto;
 }
 
-.boton_lista{
-        display: inline; 
+.boton_lista {
+    display: inline;
 }
 
 .error {
-    display: flex;  
-    margin-top: 10px;  
-    min-width: 300px;
+    display: flex;
+    margin-top: 10px;
+    width: 100vw;
     min-height: 30px;
     border-radius: 10px;
-    padding: 10px;  
+    padding: 10px;
     background: #ff6860;
     border: 2px solid #dc1818;
-    color: #ffffff;  /* Cambia el color a blanco para mejor contraste */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Añade sombra para dar un efecto de profundidad */
-    font-weight: bold;  /* Texto en negrita para mayor visibilidad */
+    color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
     justify-content: center;
     align-items: center;
 }
 
 .mensaje {
-    display: flex;  
-    margin-top: 10px;  
+    display: flex;
+    margin-top: 10px;
     min-width: 300px;
     min-height: 30px;
     border-radius: 10px;
-    padding: 10px;  
+    padding: 10px;
     background: #1ef993;
     border: 2px solid #10f014;
-    color: #ffffff;  /* Cambia el color a blanco para mejor contraste */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Añade sombra para dar un efecto de profundidad */
-    font-weight: bold;  /* Texto en negrita para mayor visibilidad */
+    color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
     justify-content: center;
     align-items: center;
 }
 
+.panel{
+    padding: 8px;
+    font-size: 1.2em;
+}
+
 .modal {
-    display: none; /* Oculto por defecto */
-    position: fixed; /* Fijo en la pantalla */
-    z-index: 1; /* Por encima de todo el contenido */
+    display: none;
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
@@ -178,6 +187,7 @@ footer	 {
     border: 1px solid #888;
     width: 30%;
     text-align: center;
+    border-radius: 10px;
 }
 
 .close {
@@ -198,6 +208,6 @@ footer	 {
     margin-top: 10px;
 }
 
-#buscador{
+#buscador {
     margin-top: 10px;
 }

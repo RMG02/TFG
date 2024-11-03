@@ -26,7 +26,7 @@ $contenidoPrincipal = <<<EOS
     <p>Email: {$_SESSION['email']} </p> 
     <p><a href='/Vista/Editarperfil.php'>  Editar perfil</a></p>
     <button type="button" class="botonInit">Eliminar cuenta</button>
-    <div id="myModal" class="modal">
+    <div id=1 class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Introduce tu contraseña</h2>

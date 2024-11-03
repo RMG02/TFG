@@ -20,7 +20,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <div class="menu">
         <?php
         if (isset($_SESSION['login']) && $_SESSION['login']) {
-            echo "<p><a href='/Vista/perfil.php'>Bienvenido {$_SESSION['nick']}</a></p>";
+            echo "<p><a href='/Vista/perfil.php'>Perfil</a></p>";
             echo "<p><a href='../Controlador/logout.php'>Logout</a></p>";
             if (isset($_SESSION['admin']) && $_SESSION['admin']) {
                 echo "<p><a href='/Vista/panel_admin.php'>Panel Admin</a></p>";

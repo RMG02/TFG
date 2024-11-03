@@ -37,7 +37,7 @@ $contenidoPrincipal = <<<EOS
     <tbody>
 EOS;
 
-foreach ($usuarios as $usuario) {
+foreach ($usuarios as $index => $usuario) {
     $email = $usuario['email'];
     if($email == $_SESSION['email']){
         continue;
@@ -46,6 +46,7 @@ foreach ($usuarios as $usuario) {
     $nick = $usuario['nick'];
     $rol = $usuario['admin'] ? "Admin" : "Usuario";
     $pass = $usuario['password'];
+    $modalId = $index;
     $contenidoPrincipal .= <<<EOS
     <tr>
         <td>$nombre</td>
@@ -62,7 +63,7 @@ foreach ($usuarios as $usuario) {
                 <button type="submit" name="modificar">Editar cuenta</button>
             </form>
             <button type="button" class="botonInit">Eliminar cuenta</button>
-            <div id="myModal" class="modal">
+            <div id="$modalId" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <h2>Introduce tu contraseña</h2>
