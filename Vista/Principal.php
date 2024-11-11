@@ -47,13 +47,13 @@ $contenidoPrincipal = <<<EOS
 EOS;
 
 foreach ($publicaciones as $index => $publicacion) {
-   $email = $publicacion['user_email'];
+   $nick = $publicacion['nick'];
    $texto = $publicacion['contenido'];
    $Hora = $publicacion['created_at'];
    $contenidoPrincipal .= <<<EOS
    <div class="tweet" id="publistas">
        <div class="tweet-header">
-           <strong>$email</strong> <span class="tweet-time">$Hora</span>
+           <strong>$nick</strong> <span class="tweet-time">$Hora</span>
        </div>
        <div class="tweet-content">
            <p>$texto</p>

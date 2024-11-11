@@ -13,7 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['crearPublicacion'])) {
         $DatosPublicacion = [
             'user_email' => $_SESSION['email'],
-            'contenido' => $_POST['contenido'],
+            'nick' => $_SESSION['nick'],
+            'contenido' => $_POST['contenido']
+            
         ];
         
 
