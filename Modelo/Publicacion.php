@@ -12,5 +12,9 @@ class Publicacion {
         return $this->collection->insertOne($DatosPublicacion);
     }
 
+    public function ListaPublicacion() {
+        return $this->collection->find();
+    }
+
 }
 ?>

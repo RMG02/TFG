@@ -3,6 +3,7 @@
 if (session_status() == PHP_SESSION_NONE) {
    session_start();
 }
+require_once '../Controlador/Publicacion_controlador.php';
 
 $error = "";
 $mensaje = "";
@@ -16,6 +17,7 @@ if (isset($_SESSION['mensaje'])) {
     unset($_SESSION['mensaje']);
 }
 
+$publicaciones = $publicacionModelo->ListaPublicacion();
 $tituloPagina = "Página Principal";
 
 $contenidoPrincipal = <<<EOS
@@ -28,6 +30,7 @@ $contenidoPrincipal = <<<EOS
          <button id="publicacionBtn">Publicación</button> 
       </div>
    </div> 
+
    <div id="formPublicacion" class="modal"> 
       <div class="modal-content">
          <span class="close">&times;</span>
@@ -38,7 +41,27 @@ $contenidoPrincipal = <<<EOS
          </form> 
       </div>
    </div>
+
+<input type="text" id="buscador" onkeyup="filtrarUsuarios()" placeholder="Buscar por email...">
+<div id="publicaciones">
 EOS;
+
+foreach ($publicaciones as $index => $publicacion) {
+   $email = $publicacion['user_email'];
+   $texto = $publicacion['contenido'];
+   $Hora = $publicacion['created_at'];
+   $contenidoPrincipal .= <<<EOS
+   <div class="tweet" id="publistas">
+       <div class="tweet-header">
+           <strong>$email</strong> <span class="tweet-time">$Hora</span>
+       </div>
+       <div class="tweet-content">
+           <p>$texto</p>
+       </div>
+   </div>
+   EOS;
+}
+
 
 if ($error != "") {
    $contenidoPrincipal .= <<<EOS
@@ -55,3 +78,4 @@ require_once __DIR__."/plantillas/plantilla.php";
 ?>
 
 <script src="../Recursos/js/formularios_publicacion.js"></script>
+<script src="../Recursos/js/filtro_publicacion.js"></script>
