@@ -3,6 +3,12 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+
+if (!isset($_SESSION['listaUsuarios'])) {
+    header('Location: ../Controlador/Admin_controlador.php?listarUsuarios=true');
+    exit;
+ }
+
 $error = "";
 $mensaje = "";
 if (isset($_SESSION['error'])) {
@@ -14,10 +20,9 @@ if (isset($_SESSION['mensaje'])) {
     $mensaje = $_SESSION['mensaje'];
     unset($_SESSION['mensaje']);
 }
-require_once '../Controlador/Admin_controlador.php';
 
 // Obtener todos los documentos (usuarios)
-$usuarios = $usuarioModelo->ListaUsuarios();
+$usuarios = json_decode($_SESSION['listaUsuarios'], true);
 
 $tituloPagina = "Lista de Usuarios";
 
@@ -103,4 +108,4 @@ require_once __DIR__ . "/plantillas/plantilla.php";
 ?>
 
 <script src="../Recursos/js/filtro_usuario.js"></script>
-<script src="../Recursos/js/cerrar_cuenta.js"></script>
+<script src="../Recursos/js/cerrar_cuentas.js"></script>

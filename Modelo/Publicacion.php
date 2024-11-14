@@ -1,4 +1,6 @@
 <?php
+
+use MongoDB\BSON\ObjectId;
 class Publicacion {
     private $collection;
 
@@ -12,8 +14,30 @@ class Publicacion {
         return $this->collection->insertOne($DatosPublicacion);
     }
 
+    public function eliminarPublicacion($id) {
+        $Id = new ObjectId($id);
+        return $this->collection->deleteOne(['_id' => $Id]);
+    }
+
     public function ListaPublicacion() {
-        return $this->collection->find();
+        return $this->collection->find([], ['sort' => ['created_at' => -1]]);
+    }
+
+    public function ListaPublicacionUsuario($nick) {
+        return $this->collection->find(['nick' => $nick], ['sort' => ['created_at' => -1]]);
+    }
+
+    public function EditarPublicacion($texto, $id) {
+        
+        $Id = new ObjectId($id);
+        $filter = ['_id' => $Id];
+        $update = [
+            '$set' => [
+                'contenido' => $texto,
+                'created_at' => date(DATE_ISO8601)
+            ]
+        ];
+        return $this->collection->updateOne($filter, $update);
     }
 
 }

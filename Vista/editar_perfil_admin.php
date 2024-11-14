@@ -30,6 +30,8 @@ if(isset($_POST['modificar'])){
     
 }
 
+$rolUsuario = ($_SESSION['usuario_admin'] == false) ? 'selected' : ''; 
+$rolAdmin = ($_SESSION['usuario_admin'] == true) ? 'selected' : '';
 
 $contenidoPrincipal = <<<EOS
     <div class="contenedor">
@@ -48,8 +50,8 @@ $contenidoPrincipal = <<<EOS
                 
                 <label for="rol">Rol:</label>
                 <select name="admin_nuevo" required>
-                    <option value="usuario">Usuario</option>
-                    <option value="admin">Admin</option>
+                    <option value="usuario" $rolUsuario>Usuario</option>
+                    <option value="admin" $rolAdmin>Admin</option>
                 </select>
  
                 <input type="hidden" name="email" value={$_SESSION['usuario_email']}>

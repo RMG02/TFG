@@ -5,28 +5,35 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-$error = "";
-$mensaje = "";
-if (isset($_SESSION['error'])) {
-    $error = $_SESSION['error'];
-    unset($_SESSION['error']);
-}
+if (!isset($_SESSION['publicacionesUsuario'])) {
+    header('Location: ../Controlador/Publicacion_controlador.php?PubliUsuario=true');
+    exit;
+ }
+ 
+ $error = "";
+ $mensaje = "";
+ if (isset($_SESSION['error'])) {
+     $error = $_SESSION['error'];
+     unset($_SESSION['error']);
+ }
+ 
+ if (isset($_SESSION['mensaje'])) {
+     $mensaje = $_SESSION['mensaje'];
+     unset($_SESSION['mensaje']);
+ }
 
-if (isset($_SESSION['mensaje'])) {
-    $mensaje = $_SESSION['mensaje'];
-    unset($_SESSION['mensaje']);
-}
-
+$publicaciones = json_decode($_SESSION['publicacionesUsuario'], true);
 $tituloPagina = "Página de Perfil";
+$modalId = 1;
 
 $contenidoPrincipal = <<<EOS
     <h3>Datos usuario:</h3>
     <p>Nick: {$_SESSION['nick']}</p>
     <p>Nombre: {$_SESSION['nombre']} </p> 
     <p>Email: {$_SESSION['email']} </p> 
-    <p><a href='/Vista/Editarperfil.php'>  Editar perfil</a></p>
+    <p><a href='/Vista/Editarperfil.php'>Editar perfil</a></p>
     <button type="button" class="botonInit">Eliminar cuenta</button>
-    <div id=1 class="modal">
+    <div id=$modalId class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Introduce tu contraseña</h2>
@@ -37,7 +44,55 @@ $contenidoPrincipal = <<<EOS
             </form>
          </div>
     </div>
+    <hr>
+    <h3>Mis publicaciones</h3>
+    <input type="text" id="buscador" onkeyup="filtrarPerfil()" placeholder="Buscar por texto...">
 EOS;
+
+foreach ($publicaciones as $publicacion) {
+    $nick = $publicacion['nick'];
+    $texto = $publicacion['contenido'];
+    $id = $publicacion['_id']['$oid'];
+    $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
+    $modalId++;
+    $contenidoPrincipal .= <<<EOS
+    <div class="tweet" id="publistas">
+        <div class="tweet-header">
+            <strong>$nick</strong> <span class="tweet-time">$Hora</span>
+        </div>
+        <div class="tweet-content">
+            <p>$texto</p>
+        </div>
+    </div>
+    <div id=$modalId class="modal_publi"> 
+        <div class="modal_publi-content"> 
+            <span class="close_publi">&times;</span> 
+            <div class="tweet-header"> 
+                <strong>$nick</strong> 
+                <span class="tweet-time">$Hora</span> 
+            </div> 
+            <div class="tweet-content"> 
+                <p>$texto</p> 
+                <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
+                    <input type="hidden" name="id_publi" value="$id"> 
+                    <button type="submit" class="botonPubli" name="eliminarPublicacion">Eliminar publicación</button> 
+                </form>
+                <button type="button" class="botonPubli" name="editar">Editar publicación</button>
+                <div id="edit-$modalId" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
+                            <textarea name="contenido">$texto</textarea> 
+                            <input type="hidden" name="id_publi" value="$id"> 
+                            <button type="submit" class="botonPubli" name="editarPublicacion">Guardar cambios</button> 
+                        </form>
+                    </div>
+                </div>
+            </div> 
+        </div> 
+    </div>
+    EOS;
+ }
 
 if ($error != "") {
     $contenidoPrincipal .= <<<EOS
@@ -54,4 +109,5 @@ if ($mensaje != "") {
 require_once __DIR__."/plantillas/plantilla.php";
 ?>
 
-<script src="../Recursos/js/cerrar_cuenta.js"></script>
+<script src="../Recursos/js/perfil.js"></script>
+<script src="../Recursos/js/filtro_perfil.js"></script>

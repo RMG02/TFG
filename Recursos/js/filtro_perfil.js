@@ -1,14 +1,12 @@
-function filtrarUsuarios() {
-    var busqueda, tweets, i, email;
+function filtrarPerfil() {
+    var busqueda, tweets, i;
     busqueda = document.getElementById('buscador').value.toLowerCase();
     tweets = document.getElementsByClassName("tweet");
 
     for (i = 0; i < tweets.length; i++) {
-        // Encuentra el elemento que contiene el nick dentro del tweet
-        nick = tweets[i].getElementsByTagName("strong")[0].textContent.toLowerCase();
+        texto = tweets[i].getElementsByTagName("p")[0].textContent.toLowerCase();
         
-        // Compara el nick con la búsqueda
-        if (nick.startsWith(busqueda)) {
+        if (texto.includes(busqueda)) {
             tweets[i].style.display = ""; // Muestra el tweet si coincide
         } else {
             tweets[i].style.display = "none"; // Oculta el tweet si no coincide

@@ -3,7 +3,12 @@
 if (session_status() == PHP_SESSION_NONE) {
    session_start();
 }
-require_once '../Controlador/Publicacion_controlador.php';
+
+
+if (!isset($_SESSION['publicaciones'])) {
+   header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true');
+   exit;
+}
 
 $error = "";
 $mensaje = "";
@@ -17,20 +22,12 @@ if (isset($_SESSION['mensaje'])) {
     unset($_SESSION['mensaje']);
 }
 
-$publicaciones = $publicacionModelo->ListaPublicacion();
+$publicaciones = json_decode($_SESSION['publicaciones'], true);
 $tituloPagina = "Página Principal";
 
 $contenidoPrincipal = <<<EOS
    <h1>Bienvenido {$_SESSION['nick']}</h1>
    <button id="publicaBtn">Publica</button> 
-   <div id="opcionesPublicacion" class="modal"> 
-      <div class="modal-content">
-         <span class="close">&times;</span>
-         <button id="recetaBtn">Receta</button> 
-         <button id="publicacionBtn">Publicación</button> 
-      </div>
-   </div> 
-
    <div id="formPublicacion" class="modal"> 
       <div class="modal-content">
          <span class="close">&times;</span>
@@ -42,14 +39,14 @@ $contenidoPrincipal = <<<EOS
       </div>
    </div>
 
-<input type="text" id="buscador" onkeyup="filtrarUsuarios()" placeholder="Buscar por email...">
+<input type="text" id="buscador" onkeyup="filtrarUsuarios()" placeholder="Buscar por nick...">
 <div id="publicaciones">
 EOS;
 
 foreach ($publicaciones as $index => $publicacion) {
    $nick = $publicacion['nick'];
    $texto = $publicacion['contenido'];
-   $Hora = $publicacion['created_at'];
+   $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
    $contenidoPrincipal .= <<<EOS
    <div class="tweet" id="publistas">
        <div class="tweet-header">
@@ -61,7 +58,6 @@ foreach ($publicaciones as $index => $publicacion) {
    </div>
    EOS;
 }
-
 
 if ($error != "") {
    $contenidoPrincipal .= <<<EOS

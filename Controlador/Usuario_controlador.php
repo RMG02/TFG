@@ -9,6 +9,18 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $usuarioModelo = new Usuario($db);
 
+if (isset($_SESSION['publicaciones'])) {
+    unset($_SESSION['publicaciones']);
+}
+
+if (isset($_SESSION['listaUsuarios'])) {
+    unset($_SESSION['listaUsuarios']);
+}
+
+if (isset($_SESSION['publicacionesUsuario'])) {
+    unset($_SESSION['publicacionesUsuario']);
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['registro'])) {
         $DatosUsuario = [

@@ -9,6 +9,18 @@ if (session_status() == PHP_SESSION_NONE) {
 $usuarioModelo = new Usuario($db);
 $admin = $_SESSION['admin'];
 
+if (isset($_SESSION['publicaciones'])) {
+    unset($_SESSION['publicaciones']);
+}
+
+if (isset($_SESSION['listaUsuarios'])) {
+    unset($_SESSION['listaUsuarios']);
+}
+
+if (isset($_SESSION['publicacionesUsuario'])) {
+    unset($_SESSION['publicacionesUsuario']);
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if(isset($_POST['añadirUsuario']) && $admin){
@@ -34,14 +46,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         if ($resultado == "Email ya registrado" || $resultado == "Nick ya registrado") {
             $_SESSION['error'] = $resultado;
             header('Location: ../Vista/añadir_usuario.php');
+            exit;
         }
         else{
             $_SESSION['mensaje'] = "Usuario añadido";
             header('Location: ../Vista/panel_admin.php');
+            exit;
         }
     }
 
     if(isset($_POST['eliminarUsuario']) && $admin){
+        
         if($usuarioModelo->confirmar($_POST['password'],$_SESSION['email']) == true){
             $email = $_POST['email'];
             $usuarioModelo->darBajaUsuario($email);
@@ -51,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         }
         
         header('Location: ../Vista/modificar_usuario.php');
+        exit;
     }
 
     if(isset($_POST['modificarUsuario']) && $admin){
@@ -72,14 +88,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         if ($resultado == "Email ya registrado" || $resultado == "Nick ya registrado") {
             $_SESSION['error'] = $resultado;
             header('Location: ../Vista/editar_perfil_admin.php');
+            exit;
         }else{
             $_SESSION['mensaje'] = "Usuario modificado";
             header('Location: ../Vista/modificar_usuario.php');
+            exit;
         }
     }
     
 }
 
-
+if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
+    if (isset($_GET['listarUsuarios'])) { 
+        $usuarios = $usuarioModelo->ListaUsuarios();
+        $_SESSION['listaUsuarios'] = json_encode(iterator_to_array($usuarios)); 
+        header('Location: ../Vista/modificar_usuario.php'); 
+        exit; 
+    } 
+}
 
 

@@ -1,4 +1,4 @@
-function initModal() {
+function cerrar() {
     var botones = document.getElementsByClassName("botonInit");
     var spans = document.getElementsByClassName("close");
 
@@ -16,4 +16,4 @@ function initModal() {
 
 }
 
-window.onload = initModal;
+window.onload = cerrar;
