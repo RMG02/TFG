@@ -9,7 +9,7 @@ if (!isset($_SESSION['publicaciones'])) {
    header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true');
    exit;
 }
-
+$modalId = 1;
 $error = "";
 $mensaje = "";
 if (isset($_SESSION['error'])) {
@@ -44,11 +44,47 @@ $contenidoPrincipal = <<<EOS
 EOS;
 
 foreach ($publicaciones as $index => $publicacion) {
-   $nick = $publicacion['nick'];
-   $texto = $publicacion['contenido'];
-   $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
+    $nick = $publicacion['nick'];
+    $texto = $publicacion['contenido'];
+    $id = $publicacion['_id']['$oid'];
+    $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
+    $modalId++;
+   $hola = "";
+   if($nick == $_SESSION['nick']){
+      $hola .= <<<EOS
+      <div id=$modalId class="modal_publi"> 
+         <div class="modal_publi-content"> 
+               <span class="close_publi">&times;</span> 
+               <div class="tweet-header"> 
+                  <strong>$nick</strong> 
+                  <span class="tweet-time">$Hora</span> 
+               </div> 
+               <div class="tweet-content"> 
+                  <p>$texto</p> 
+                  <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
+                     <input type="hidden" name="id_publi" value="$id"> 
+                     <button type="submit" class="botonPubli" name="eliminarPublicacion">Eliminar publicación</button> 
+                  </form>
+                  <button type="button" class="botonPubli" name="editar">Editar publicación</button>
+                  <div id="edit-$modalId" class="modal">
+                     <div class="modal-content">
+                           <span class="close">&times;</span>
+                           <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
+                              <textarea name="contenido">$texto</textarea> 
+                              <input type="hidden" name="id_publi" value="$id"> 
+                              <button type="submit" class="botonPubli" name="editarPublicacion">Guardar cambios</button> 
+                           </form>
+                     </div>
+                  </div>
+               </div> 
+         </div> 
+         </div>
+   
+      EOS;
+   
+   }
    $contenidoPrincipal .= <<<EOS
-   <div class="tweet" id="publistas">
+      <div class="tweet" id="publistas">
        <div class="tweet-header">
            <strong>$nick</strong> <span class="tweet-time">$Hora</span>
        </div>
@@ -56,8 +92,13 @@ foreach ($publicaciones as $index => $publicacion) {
            <p>$texto</p>
        </div>
    </div>
+   $hola
+   
    EOS;
 }
+   
+   
+   
 
 if ($error != "") {
    $contenidoPrincipal .= <<<EOS
@@ -75,3 +116,4 @@ require_once __DIR__."/plantillas/plantilla.php";
 
 <script src="../Recursos/js/formularios_publicacion.js"></script>
 <script src="../Recursos/js/filtro_publicacion.js"></script>
+<script src="../Recursos/js/Principal.js"></script>
