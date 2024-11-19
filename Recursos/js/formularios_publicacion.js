@@ -14,13 +14,13 @@ function form_publi(){
             modal.style.display = "none";
         };
     }
-    
+
     document.querySelector('input[name="image"]').addEventListener('change', function (e) {
         const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'video/webm', 'video/ogg'];
         const file = e.target.files[0];
     
         if (file && !allowedTypes.includes(file.type)) {
-            alert("Solo puedes subir imágenes o videos.");
+            alert("Solo puedes subir imágenes o videos(png,gif,jpeg,mp4,webm,ogg).");
             e.target.value = ""; // Reinicia el input
         }
     });
