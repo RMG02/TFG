@@ -16,14 +16,41 @@ function form_publi(){
     }
 
     document.querySelector('input[name="image"]').addEventListener('change', function (e) {
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'video/webm', 'video/ogg'];
         const file = e.target.files[0];
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'video/webm', 'video/ogg'];
+        const previewContainer = document.querySelector('.formulario');
     
-        if (file && !allowedTypes.includes(file.type)) {
-            alert("Solo puedes subir imágenes o videos(png,gif,jpeg,mp4,webm,ogg).");
+        
+        const oldPreview = document.querySelector('#preview');
+        if (oldPreview) oldPreview.remove();
+    
+        if (file && allowedTypes.includes(file.type)) {
+            const preview = document.createElement('div');
+            preview.id = 'preview';
+    
+            
+            if (file.type.startsWith('image')) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                preview.appendChild(img);
+            }
+    
+           
+            if (file.type.startsWith('video')) {
+                const video = document.createElement('video');
+                video.src = URL.createObjectURL(file);
+                video.controls = true;
+                preview.appendChild(video);
+            }
+    
+            previewContainer.appendChild(preview);
+        } else {
+            alert("El archivo no es válido.");
             e.target.value = ""; // Reinicia el input
         }
     });
+    
+    
 
 
 }
