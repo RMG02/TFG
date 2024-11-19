@@ -40,4 +40,4 @@ function Perfil() {
 
 }
 
-window.onload = Perfil;
+document.addEventListener("DOMContentLoaded", Perfil);

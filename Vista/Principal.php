@@ -63,7 +63,7 @@ foreach ($publicaciones as $index => $publicacion) {
                   <p>$texto</p> 
                   <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
                      <input type="hidden" name="id_publi" value="$id"> 
-                     <button type="submit" class="botonPubli" name="eliminarPublicacion">Eliminar publicación</button> 
+                     <button type="submit" class="botonPubli" name="eliminarPublicacionp">Eliminar publicación</button> 
                   </form>
                   <button type="button" class="botonPubli" name="editar">Editar publicación</button>
                   <div id="edit-$modalId" class="modal">
@@ -72,7 +72,7 @@ foreach ($publicaciones as $index => $publicacion) {
                            <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
                               <textarea name="contenido">$texto</textarea> 
                               <input type="hidden" name="id_publi" value="$id"> 
-                              <button type="submit" class="botonPubli" name="editarPublicacion">Guardar cambios</button> 
+                              <button type="submit" class="botonPubli" name="editarPublicacionp">Guardar cambios</button> 
                            </form>
                      </div>
                   </div>

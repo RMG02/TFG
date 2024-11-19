@@ -54,6 +54,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: ../Vista/perfil.php');
         exit;
     }
+    if(isset($_POST['editarPublicacionp'])){
+        
+        $resultado = $publicacionModelo->EditarPublicacion($_POST['contenido'], $_POST['id_publi']);
+        if ($resultado) {
+            $_SESSION['mensaje'] = "Publicación editada";
+            
+        }
+        else{
+            $_SESSION['error'] = "Error al editar la publicación.";
+        }
+        header('Location: ../Vista/Principal.php');
+        exit;
+    }
 
     if(isset($_POST['eliminarPublicacion'])){
         
@@ -66,6 +79,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = "Error al eliminar la publicación.";
         }
         header('Location: ../Vista/perfil.php');
+        exit;
+    }
+    if(isset($_POST['eliminarPublicacionp'])){
+        
+        $resultado = $publicacionModelo->eliminarPublicacion($_POST['id_publi']);
+        if ($resultado) {
+            $_SESSION['mensaje'] = "Publicación eliminada";
+            
+        }
+        else{
+            $_SESSION['error'] = "Error al eliminar la publicación.";
+        }
+        header('Location: ../Vista/Principal.php');
         exit;
     }
     

@@ -18,4 +18,4 @@ function form_publi(){
 
 }
 
-window.onload = form_publi;
+document.addEventListener("DOMContentLoaded", form_publi);
