@@ -15,7 +15,7 @@ function form_publi(){
         };
     }
 
-    document.querySelector('input[name="image"]').addEventListener('change', function (e) {
+    document.querySelector('input[name="archivo"]').addEventListener('change', function (e) {
         const file = e.target.files[0];
         const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'video/webm', 'video/ogg'];
         const previewContainer = document.querySelector('.formulario');

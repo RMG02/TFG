@@ -24,11 +24,23 @@ if (isset($_SESSION['publicacionesUsuario'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['crearPublicacion'])) {
+        $dir_archivos = '../Recursos/multimedia';
+        $archivo = $_FILES['archivo'];
+        $archivo_subido = '';
+    
+        if ($file['error'] == 0) {
+            $tmp_name = $archivo['tmp_name'];
+            $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
+            $nombre = uniqid() . '.' . $extension;
+            move_uploaded_file($tmp_name, "$dir_archivos/$nombre");
+            $archivo_subido = $nombre;
+        }
+    
         $DatosPublicacion = [
             'user_email' => $_SESSION['email'],
             'nick' => $_SESSION['nick'],
-            'contenido' => $_POST['contenido']
-            
+            'contenido' => $_POST['contenido'],
+            'multimedia' => $archivo_subido 
         ];
     
         $resultado = $publicacionModelo->crearPublicacion($DatosPublicacion);
@@ -41,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
     
+    
     if(isset($_POST['editarPublicacion'])){
         
         $resultado = $publicacionModelo->EditarPublicacion($_POST['contenido'], $_POST['id_publi']);
@@ -51,21 +64,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         else{
             $_SESSION['error'] = "Error al editar la publicación.";
         }
-        header('Location: ../Vista/perfil.php');
-        exit;
-    }
-    if(isset($_POST['editarPublicacionp'])){
-        
-        $resultado = $publicacionModelo->EditarPublicacion($_POST['contenido'], $_POST['id_publi']);
-        if ($resultado) {
-            $_SESSION['mensaje'] = "Publicación editada";
-            
+
+        if(isset($_POST['principal'])){
+            header('Location: ../Vista/Principal.php');
+            exit;
         }
         else{
-            $_SESSION['error'] = "Error al editar la publicación.";
+            header('Location: ../Vista/perfil.php');
+            exit;
         }
-        header('Location: ../Vista/Principal.php');
-        exit;
     }
 
     if(isset($_POST['eliminarPublicacion'])){
@@ -78,21 +85,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         else{
             $_SESSION['error'] = "Error al eliminar la publicación.";
         }
-        header('Location: ../Vista/perfil.php');
-        exit;
-    }
-    if(isset($_POST['eliminarPublicacionp'])){
-        
-        $resultado = $publicacionModelo->eliminarPublicacion($_POST['id_publi']);
-        if ($resultado) {
-            $_SESSION['mensaje'] = "Publicación eliminada";
-            
+
+        if(isset($_POST['principal'])){
+            header('Location: ../Vista/Principal.php');
+            exit;
         }
         else{
-            $_SESSION['error'] = "Error al eliminar la publicación.";
+            header('Location: ../Vista/perfil.php');
+            exit;
         }
-        header('Location: ../Vista/Principal.php');
-        exit;
+        
     }
     
 }

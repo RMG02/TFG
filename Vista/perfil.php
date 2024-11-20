@@ -47,6 +47,7 @@ $contenidoPrincipal = <<<EOS
     <hr>
     <h3>Mis publicaciones</h3>
     <input type="text" id="buscador" onkeyup="filtrarPerfil()" placeholder="Buscar por texto...">
+    <div id="publicaciones">
 EOS;
 
 foreach ($publicaciones as $publicacion) {
@@ -55,42 +56,56 @@ foreach ($publicaciones as $publicacion) {
     $id = $publicacion['_id']['$oid'];
     $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
     $modalId++;
+    $multimedia = $publicacion['multimedia'] ?? '';
     $contenidoPrincipal .= <<<EOS
     <div class="tweet" id="publistas">
         <div class="tweet-header">
             <strong>$nick</strong> <span class="tweet-time">$Hora</span>
         </div>
         <div class="tweet-content">
-            <p>$texto</p>
+            
+    EOS;
+
+    if ($multimedia) {
+        $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
+        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+            $contenidoPrincipal .= "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación'>";
+        } elseif (in_array($ext, ['mp4', 'webm'])) {
+            $contenidoPrincipal .= "<video controls><source src='../Recursos/multimedia/$multimedia' type='video/$extension'></video>";
+        }
+    }
+
+    $contenidoPrincipal .= <<<EOS
+                <p>$texto</p>
+            </div>
         </div>
-    </div>
-    <div id=$modalId class="modal_publi"> 
-        <div class="modal_publi-content"> 
-            <span class="close_publi">&times;</span> 
-            <div class="tweet-header"> 
-                <strong>$nick</strong> 
-                <span class="tweet-time">$Hora</span> 
-            </div> 
-            <div class="tweet-content"> 
-                <p>$texto</p> 
-                <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
-                    <input type="hidden" name="id_publi" value="$id"> 
-                    <button type="submit" class="botonPubli" name="eliminarPublicacion">Eliminar publicación</button> 
-                </form>
-                <button type="button" class="botonPubli" name="editar">Editar publicación</button>
-                <div id="edit-$modalId" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
-                            <textarea name="contenido">$texto</textarea> 
-                            <input type="hidden" name="id_publi" value="$id"> 
-                            <button type="submit" class="botonPubli" name="editarPublicacion">Guardar cambios</button> 
-                        </form>
+        <div id=$modalId class="modal_publi"> 
+            <div class="modal_publi-content"> 
+                <span class="close_publi">&times;</span> 
+                <div class="tweet-header"> 
+                    <strong>$nick</strong> 
+                    <span class="tweet-time">$Hora</span> 
+                </div> 
+                <div class="tweet-content"> 
+                    <p>$texto</p> 
+                    <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
+                        <input type="hidden" name="id_publi" value="$id"> 
+                        <button type="submit" class="botonPubli" name="eliminarPublicacion">Eliminar publicación</button> 
+                    </form>
+                    <button type="button" class="botonPubli" name="editar">Editar publicación</button>
+                    <div id="edit-$modalId" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
+                                <textarea name="contenido">$texto</textarea> 
+                                <input type="hidden" name="id_publi" value="$id"> 
+                                <button type="submit" class="botonPubli" name="editarPublicacion">Guardar cambios</button> 
+                            </form>
+                        </div>
                     </div>
-                </div>
+                </div> 
             </div> 
-        </div> 
-    </div>
+        </div>
     EOS;
  }
 
