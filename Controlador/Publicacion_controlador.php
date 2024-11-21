@@ -109,6 +109,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
     }
+
+    if (isset($_POST['agregarComentario'])) {
+        $comentario = [
+            'usuario' => $_SESSION['nick'],
+            'texto' => $_POST['texto'],
+            'fecha' => date(DATE_ISO8601)
+        ];
+    
+        $resultado = $publicacionModelo->agregarComentario($_POST['id_publi'], $comentario);
+        if ($resultado) {
+            $_SESSION['mensaje'] = "Comentario añadido";
+        } else {
+            $_SESSION['error'] = "Error al añadir el comentario.";
+        }
+        
+        if(isset($_POST['principal'])){
+            header('Location: ../Vista/Principal.php');
+            exit;
+        }
+        else{
+            header('Location: ../Vista/perfil.php');
+            exit;
+        }
+    }
+    
     
 }
 

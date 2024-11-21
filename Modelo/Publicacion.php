@@ -11,7 +11,18 @@ class Publicacion {
     // Crear una nueva publicación
     public function crearPublicacion($DatosPublicacion) {
         $DatosPublicacion['created_at'] = date(DATE_ISO8601);
+        $DatosPublicacion['comentarios'] = [];
         return $this->collection->insertOne($DatosPublicacion);
+    }
+
+    public function agregarComentario($id, $comentario) {
+        $Id = new ObjectId($id);
+        $update = [
+            '$push' => [
+                'comentarios' => $comentario
+            ]
+        ];
+        return $this->collection->updateOne(['_id' => $Id], $update);
     }
 
     public function eliminarPublicacion($id) {

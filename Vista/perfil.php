@@ -55,6 +55,8 @@ foreach ($publicaciones as $publicacion) {
     $texto = $publicacion['contenido'];
     $id = $publicacion['_id']['$oid'];
     $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
+    $comentarios = $publicacion['comentarios'];
+    $num_comentarios = count($comentarios);
     $modalId++;
     $multimedia = $publicacion['multimedia'] ?? '';
 
@@ -78,6 +80,9 @@ foreach ($publicaciones as $publicacion) {
         <div class="tweet-content">
                 $multi
                 <p>$texto</p>
+                <div class="comentarios-icon">
+                    <i class="fa fa-comments"></i> $num_comentarios
+                </div>
             </div>
         </div>
         <div id=$modalId class="modal_publi"> 
@@ -90,6 +95,36 @@ foreach ($publicaciones as $publicacion) {
                 <div class="tweet-content">
                     $multi 
                     <p>$texto</p> 
+                    <hr>
+    EOS;
+
+    if (!empty($comentarios)) {
+        foreach ($comentarios as $comentario) {
+            $usuario = $comentario['usuario'];
+            $tex = $comentario['texto'];
+            $fecha = date('d/m/Y H:i:s', strtotime($comentario['fecha']));
+            $contenidoPrincipal .= <<<EOS
+                        <div class="comentario">
+                            <strong>$usuario:</strong>
+                            <span>$tex</span>
+                            <span class="comentario-time">$fecha</span>
+                        </div>
+            EOS;
+        }
+    }
+
+    $contenidoPrincipal .= <<<EOS
+                    <button type="button" class="botonPubli" name="comen">Añadir Comentario</button>
+                    <div id="comen-$modalId" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                                <input type="hidden" name="id_publi" value="$id">
+                                <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
+                                <button type="submit" class="botonPubli" name="agregarComentario">Añadir Comentario</button>
+                            </form>
+                        </div>
+                    </div>
                     <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
                         <input type="hidden" name="id_publi" value="$id"> 
                         <input type="hidden" name="multi" value="../Recursos/multimedia/$multimedia"> 
@@ -130,5 +165,5 @@ if ($mensaje != "") {
 require_once __DIR__."/plantillas/plantilla.php";
 ?>
 
-<script src="../Recursos/js/perfil.js"></script>
+<script src="../Recursos/js/Principal.js"></script>
 <script src="../Recursos/js/filtro_perfil.js"></script>
