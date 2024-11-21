@@ -22,6 +22,8 @@ if (!isset($_SESSION['publicacionesUsuario'])) {
      unset($_SESSION['mensaje']);
  }
 
+date_default_timezone_set('Europe/Madrid');
+
 $publicaciones = json_decode($_SESSION['publicacionesUsuario'], true);
 $tituloPagina = "Página de Perfil";
 $modalId = 1;

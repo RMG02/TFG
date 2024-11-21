@@ -21,6 +21,9 @@ if (isset($_SESSION['mensaje'])) {
     unset($_SESSION['mensaje']);
 }
 
+date_default_timezone_set('Europe/Madrid');
+
+
 $publicaciones = json_decode($_SESSION['publicaciones'], true);
 $tituloPagina = "Página Principal";
 
