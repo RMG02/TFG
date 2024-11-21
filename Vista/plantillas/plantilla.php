@@ -6,14 +6,14 @@
 	<title><?= $tituloPagina ?></title>
 </head>
 <body>
-<div id="contenedor">
 
 <?php require('comun/cabecera.php');?>
 
-<?= $contenidoPrincipal ?>
+<div id="contenedor">
+	<?= $contenidoPrincipal ?>
+</div>
 
 <?php require('comun/footer.php');?>
 
-</div>
 </body>
 </html>

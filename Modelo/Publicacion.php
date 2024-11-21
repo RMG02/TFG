@@ -27,12 +27,13 @@ class Publicacion {
         return $this->collection->find(['nick' => $nick], ['sort' => ['created_at' => -1]]);
     }
 
-    public function EditarPublicacion($texto, $id) {
+    public function EditarPublicacion($texto, $id, $media) {
         
         $Id = new ObjectId($id);
         $filter = ['_id' => $Id];
         $update = [
             '$set' => [
+                'multimedia' => $media,
                 'contenido' => $texto,
                 'created_at' => date(DATE_ISO8601)
             ]

@@ -57,25 +57,26 @@ foreach ($publicaciones as $publicacion) {
     $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
     $modalId++;
     $multimedia = $publicacion['multimedia'] ?? '';
+
+    if ($multimedia) {
+        $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
+        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+            $multi = "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación'>";
+        } elseif (in_array($ext, ['mp4', 'webm'])) {
+            $multi = "<video controls><source src='../Recursos/multimedia/$multimedia' type='video/$extension'></video>";
+        }
+    }
+    else{
+        $multi = '';
+    }
+
     $contenidoPrincipal .= <<<EOS
     <div class="tweet" id="publistas">
         <div class="tweet-header">
             <strong>$nick</strong> <span class="tweet-time">$Hora</span>
         </div>
         <div class="tweet-content">
-            
-    EOS;
-
-    if ($multimedia) {
-        $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
-        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-            $contenidoPrincipal .= "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación'>";
-        } elseif (in_array($ext, ['mp4', 'webm'])) {
-            $contenidoPrincipal .= "<video controls><source src='../Recursos/multimedia/$multimedia' type='video/$extension'></video>";
-        }
-    }
-
-    $contenidoPrincipal .= <<<EOS
+                $multi
                 <p>$texto</p>
             </div>
         </div>
@@ -86,18 +87,23 @@ foreach ($publicaciones as $publicacion) {
                     <strong>$nick</strong> 
                     <span class="tweet-time">$Hora</span> 
                 </div> 
-                <div class="tweet-content"> 
+                <div class="tweet-content">
+                    $multi 
                     <p>$texto</p> 
                     <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
                         <input type="hidden" name="id_publi" value="$id"> 
+                        <input type="hidden" name="multi" value="../Recursos/multimedia/$multimedia"> 
                         <button type="submit" class="botonPubli" name="eliminarPublicacion">Eliminar publicación</button> 
                     </form>
                     <button type="button" class="botonPubli" name="editar">Editar publicación</button>
                     <div id="edit-$modalId" class="modal">
                         <div class="modal-content">
                             <span class="close">&times;</span>
-                            <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
-                                <textarea name="contenido">$texto</textarea> 
+                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                                $multi 
+                                <textarea name="contenido">$texto</textarea>
+                                <input type="hidden" name="archivo_origen" value="$multimedia"> 
+                                <input type="file" name="nuevo_archivo"> 
                                 <input type="hidden" name="id_publi" value="$id"> 
                                 <button type="submit" class="botonPubli" name="editarPublicacion">Guardar cambios</button> 
                             </form>

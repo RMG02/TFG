@@ -8,6 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $publicacionModelo = new Publicacion($db);
+$dir_archivos = '../Recursos/multimedia';
 
 if (isset($_SESSION['publicaciones'])) {
     unset($_SESSION['publicaciones']);
@@ -24,11 +25,10 @@ if (isset($_SESSION['publicacionesUsuario'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['crearPublicacion'])) {
-        $dir_archivos = '../Recursos/multimedia';
         $archivo = $_FILES['archivo'];
         $archivo_subido = '';
     
-        if ($file['error'] == 0) {
+        if ($archivo['error'] == 0) {
             $tmp_name = $archivo['tmp_name'];
             $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
             $nombre = uniqid() . '.' . $extension;
@@ -55,8 +55,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     
     if(isset($_POST['editarPublicacion'])){
-        
-        $resultado = $publicacionModelo->EditarPublicacion($_POST['contenido'], $_POST['id_publi']);
+        $archivo = $_FILES['nuevo_archivo'];
+        $archivo_subido = $_POST['archivo_origen'];
+
+        if ($archivo['error'] == 0) {
+            $anterior = "../Recursos/multimedia/$archivo_subido";
+            unlink($anterior);
+            $tmp_name = $archivo['tmp_name'];
+            $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
+            $nombre = uniqid() . '.' . $extension;
+            move_uploaded_file($tmp_name, "$dir_archivos/$nombre");
+            $archivo_subido = $nombre;
+        }
+
+        $resultado = $publicacionModelo->EditarPublicacion($_POST['contenido'], $_POST['id_publi'], $archivo_subido);
         if ($resultado) {
             $_SESSION['mensaje'] = "Publicación editada";
             
@@ -77,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if(isset($_POST['eliminarPublicacion'])){
         
+        unlink($_POST['multi']);
         $resultado = $publicacionModelo->eliminarPublicacion($_POST['id_publi']);
         if ($resultado) {
             $_SESSION['mensaje'] = "Publicación eliminada";
