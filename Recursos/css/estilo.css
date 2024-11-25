@@ -366,6 +366,7 @@ footer p {
     margin: 10px 0;
     background-color: #f5f8fa;
     transition: background-color 0.3s ease;
+    cursor: pointer;
 }
 
 .comentario:hover {

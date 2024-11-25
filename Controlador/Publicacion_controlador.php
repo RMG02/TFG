@@ -89,8 +89,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if(isset($_POST['eliminarPublicacion'])){
         
+        $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
+        $publicacion = json_decode(json_encode($resultado), true);
+
+        if($publicacion && !empty($publicacion['comentarios'])){
+            $comentarios = $publicacion['comentarios'];
+
+            foreach($comentarios as $comentario){
+                if(!empty($comentario['multimedia'])){
+                    $archivo = "../Recursos/multimedia/{$comentario['multimedia']}";
+                    unlink($archivo);
+                }
+            }
+        }
+
         unlink($_POST['multi']);
-        $resultado = $publicacionModelo->eliminarPublicacion($_POST['id_publi']);
+        $resultado = $publicacionModelo->eliminarPublicacion($_POST['id_publi'],);
         if ($resultado) {
             $_SESSION['mensaje'] = "Publicación eliminada";
             
@@ -111,10 +125,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (isset($_POST['agregarComentario'])) {
+        $archivo = $_FILES['archivo'];
+        $archivo_subido = '';
+    
+        if ($archivo['error'] == 0) {
+            $tmp_name = $archivo['tmp_name'];
+            $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
+            $nombre = uniqid() . '.' . $extension;
+            move_uploaded_file($tmp_name, "$dir_archivos/$nombre");
+            $archivo_subido = $nombre;
+        }
+    
         $comentario = [
             'usuario' => $_SESSION['nick'],
             'texto' => $_POST['texto'],
-            'fecha' => date(DATE_ISO8601)
+            'fecha' => date(DATE_ISO8601),
+            'multimedia' => $archivo_subido
         ];
     
         $resultado = $publicacionModelo->agregarComentario($_POST['id_publi'], $comentario);
@@ -134,7 +160,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     
-    
+    if (isset($_POST['eliminarComentario'])) {
+
+        unlink($_POST['multi']);
+        $resultado = $publicacionModelo->eliminarComentario($_POST['id_publi'], $_POST['id_comen']);
+        if ($resultado) {
+            $_SESSION['mensaje'] = "Comentario eliminado";
+        } else {
+            $_SESSION['error'] = "Error al eliminar el comentario.";
+        }
+        
+        if(isset($_POST['principal'])){
+            header('Location: ../Vista/Principal.php');
+            exit;
+        }
+        else{
+            header('Location: ../Vista/perfil.php');
+            exit;
+        }
+    }
+
+    if (isset($_POST['editarComentario'])) {
+
+        $archivo = $_FILES['nuevo_archivo'];
+        $archivo_subido = $_POST['archivo_origen'];
+
+        if ($archivo['error'] == 0) {
+            $anterior = "../Recursos/multimedia/$archivo_subido";
+            unlink($anterior);
+            $tmp_name = $archivo['tmp_name'];
+            $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
+            $nombre = uniqid() . '.' . $extension;
+            move_uploaded_file($tmp_name, "$dir_archivos/$nombre");
+            $archivo_subido = $nombre;
+        }
+       
+        $resultado = $publicacionModelo->editarComentario($_POST['id_publi'], $_POST['id_comen'], $_POST['contenido'], $archivo_subido);
+        if ($resultado) {
+            $_SESSION['mensaje'] = "Comentario editado";
+        } else {
+            $_SESSION['error'] = "Error al editar el comentario.";
+        }
+        
+        if(isset($_POST['principal'])){
+            header('Location: ../Vista/Principal.php');
+            exit;
+        }
+        else{
+            header('Location: ../Vista/perfil.php');
+            exit;
+        }
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
@@ -151,5 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Location: ../Vista/perfil.php'); 
         exit; 
     }
+
+    
 }
 

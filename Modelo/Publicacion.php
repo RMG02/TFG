@@ -15,18 +15,73 @@ class Publicacion {
         return $this->collection->insertOne($DatosPublicacion);
     }
 
+    public function obtenerPublicacion($id) {
+        $Id = new ObjectId($id);
+        return $this->collection->findOne(['_id' => $Id]);
+    }
+
     public function agregarComentario($id, $comentario) {
         $Id = new ObjectId($id);
-        $update = [
-            '$push' => [
-                'comentarios' => $comentario
-            ]
-        ];
+        $comentario['id_comentario'] = new ObjectId();
+        $update = [ 
+            '$push' => [ 
+                'comentarios' => [ 
+                    '$each' => [$comentario], 
+                    '$sort' => ['fecha' => -1] // Ordenamos el array por fecha descendente 
+                    ] 
+                ] 
+            ];
         return $this->collection->updateOne(['_id' => $Id], $update);
     }
 
+    public function eliminarComentario($id_publi, $id_com) {
+        $id = new ObjectId($id_publi);
+        $comentarioId = new ObjectId($id_com);
+        $update = [
+            '$pull' => [
+                'comentarios' => ['id_comentario' => $comentarioId]
+            ]
+        ];
+        return $this->collection->updateOne( ['_id' => $id], $update);
+    }
+
+    public function editarComentario($id_publi, $id_com, $texto, $media) {
+        $id = new ObjectId($id_publi);
+        $comentarioId = new ObjectId($id_com);
+    
+        $update = [
+            '$set' => [
+                'comentarios.$.multimedia' => $media,
+                'comentarios.$.texto' => $texto,
+                'comentarios.$.fecha' => date(DATE_ISO8601) 
+            ]
+        ];
+    
+        $resultado = $this->collection->updateOne(
+            ['_id' => $id, 'comentarios.id_comentario' => $comentarioId],
+            $update
+        );
+    
+        if ($resultado->getModifiedCount() > 0) {
+            $UpdateOrdenado = [
+                '$push' => [
+                    'comentarios' => [
+                        '$each' => [],
+                        '$sort' => ['fecha' => -1] 
+                    ]
+                ]
+            ];
+            $this->collection->updateOne(['_id' => $id], $UpdateOrdenado);
+        }
+    
+        return $resultado;
+    }
+    
+    
+
     public function eliminarPublicacion($id) {
         $Id = new ObjectId($id);
+
         return $this->collection->deleteOne(['_id' => $Id]);
     }
 
@@ -37,6 +92,7 @@ class Publicacion {
     public function ListaPublicacionUsuario($nick) {
         return $this->collection->find(['nick' => $nick], ['sort' => ['created_at' => -1]]);
     }
+
 
     public function EditarPublicacion($texto, $id, $media) {
         
