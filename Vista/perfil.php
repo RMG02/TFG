@@ -26,8 +26,8 @@ date_default_timezone_set('Europe/Madrid');
 
 $publicaciones = json_decode($_SESSION['publicacionesUsuario'], true);
 $tituloPagina = "Página de Perfil";
-$modalId = 1;
-$modalComId = 1;
+$modalId = 0;
+$modalComId = 0;
 
 $contenidoPrincipal = <<<EOS
     <h3>Datos usuario:</h3>
@@ -35,8 +35,8 @@ $contenidoPrincipal = <<<EOS
     <p>Nombre: {$_SESSION['nombre']} </p> 
     <p>Email: {$_SESSION['email']} </p> 
     <p><a href='/Vista/Editarperfil.php'>Editar perfil</a></p>
-    <button type="button" class="botonInit">Eliminar cuenta</button>
-    <div id=$modalId class="modal">
+    <button type="button" class="botonInit" id="botonInit">Eliminar cuenta</button>
+    <div id="eliminar"class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Introduce tu contraseña</h2>
@@ -60,7 +60,6 @@ foreach ($publicaciones as $publicacion) {
     $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
     $comentarios = $publicacion['comentarios'];
     $num_comentarios = count($comentarios);
-    $modalId++;
     $multimedia = $publicacion['multimedia'] ?? '';
 
     if ($multimedia) {
@@ -105,7 +104,6 @@ foreach ($publicaciones as $publicacion) {
         foreach ($comentarios as $comentario) {
             $usuario = $comentario['usuario'];
             $id_com = $comentario['id_comentario']['$oid'];
-            $modalComId++;
             $tex = $comentario['texto'];
             $mult = $comentario['multimedia'] ?? '';
             $fecha = date('d/m/Y H:i:s', strtotime($comentario['fecha']));
@@ -143,7 +141,7 @@ foreach ($publicaciones as $publicacion) {
             if($usuario == $_SESSION['nick']){
                 $contenidoPrincipal .= <<<EOS
                         <button type="button" class="botonPubli" name="editar_com">Editar comentario</button>                    <div id="editCom-$modalId" class="modal">
-                        <div id="editCom-$modalId" class="modal-content">
+                        <div id="editCom-$modalComId" class="modal-content">
                             <span class="close">&times;</span>
                             <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
                                 <textarea name="contenido">$tex</textarea>
@@ -163,6 +161,7 @@ foreach ($publicaciones as $publicacion) {
                     </form>
                     
                 EOS;
+                
             }
 
             $contenidoPrincipal .= <<<EOS
@@ -171,6 +170,7 @@ foreach ($publicaciones as $publicacion) {
                     </div>
                 </div>
             EOS;
+            $modalComId++;
         }
     }
 
@@ -210,6 +210,7 @@ foreach ($publicaciones as $publicacion) {
             </div> 
         </div>
     EOS;
+    $modalId++;
  }
 
 if ($error != "") {

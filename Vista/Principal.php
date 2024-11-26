@@ -8,8 +8,8 @@ if (!isset($_SESSION['publicaciones'])) {
    header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true');
    exit;
 }
-$modalId = 1;
-$modalComId = 1;
+$modalId = 0;
+$modalComId = 0;
 $error = "";
 $mensaje = "";
 if (isset($_SESSION['error'])) {
@@ -54,7 +54,6 @@ foreach ($publicaciones as $publicacion) {
     $multimedia = $publicacion['multimedia'] ?? '';
     $comentarios = $publicacion['comentarios'];
     $num_comentarios = count($comentarios);
-    $modalId++;
 
     if ($multimedia) {
         $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
@@ -99,7 +98,6 @@ EOS;
             $id_com = $comentario['id_comentario']['$oid'];
             $tex = $comentario['texto'];
             $mult = $comentario['multimedia'] ?? '';
-            $modalComId++;
             $fecha = date('d/m/Y H:i:s', strtotime($comentario['fecha']));
 
             if ($mult) {
@@ -167,6 +165,7 @@ EOS;
                     </div>
                 </div>
             EOS;
+            $modalComId++;
         }
     }
 
@@ -217,6 +216,7 @@ EOS;
                 </div>
             </div>
 EOS;
+$modalId++;
 }
 
 if ($error != "") {
