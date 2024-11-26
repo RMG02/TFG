@@ -7,7 +7,8 @@ function Perfil() {
     var comentar = document.getElementsByName("comen");
     var comentarios =  document.getElementsByClassName("comentario");
     var editar_com = document.getElementsByName("editar_com");
-
+    
+    
     if(boton){
         boton.onclick = function() {
             var modal = document.getElementById("eliminar");
@@ -22,6 +23,8 @@ function Perfil() {
         };
     }
     
+
+    var j = 0;
     // Abrir y manejar modales de publicaciones
     for (let i = 0; i < publicaciones.length; i++) {
         publicaciones[i].onclick = function() {
@@ -29,22 +32,20 @@ function Perfil() {
             modal.style.display = "block";
         };
 
-
-
-        // Asegurar que solo haya un botón "editar" y "comen" por publicación
-        if (editar[i]) {
-            editar[i].onclick = function() {
+        var modal = document.getElementById("edit-" + i);      
+        if (modal) {
+            editar[j].onclick = function() {
                 var modal = document.getElementById("edit-" + i);
                 modal.style.display = "block";
             }; 
+            j++;
         }
         
-        if (comentar[i]) {
-            comentar[i].onclick = function() {
-                var modal = document.getElementById("comen-" + i);
-                modal.style.display = "block";
-            }; 
-        }
+        comentar[i].onclick = function() {
+            var modal = document.getElementById("comen-" + i);
+            modal.style.display = "block";
+        }; 
+        
     }
 
     // Cerrar modales de publicaciones
@@ -55,19 +56,24 @@ function Perfil() {
         };
     }
 
+    j = 0;
     for (let i = 0; i < comentarios.length; i++) {
         comentarios[i].onclick = function() {
             var modal = document.getElementById("comentario-" + i);
             modal.style.display = "block";
         };
 
-        if (editar_com[i]) {
-            editar_com[i].onclick = function() {
+        var modal = document.getElementById("editCom-" + i); 
+        
+        if (modal) {
+            editar_com[j].onclick = function() {
                 var modal = document.getElementById("editCom-" + i);
                 modal.style.display = "block";
             }; 
+            j++;
         }
-        }
+    
     }
+}
 
 document.addEventListener("DOMContentLoaded", Perfil);
