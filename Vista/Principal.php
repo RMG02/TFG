@@ -120,7 +120,7 @@ EOS;
                             <span>$tex</span>
                             <span class="comentario-time">$fecha</span>
                         </div>
-                        <div id="comantario-$modalComId" class="modal_publi">
+                        <div id="comentario-$modalComId" class="modal_publi">
                             <div class="modal_publi-content">
                                 <span class="close_publi">&times;</span>
                                 <div class="comentario_mod">

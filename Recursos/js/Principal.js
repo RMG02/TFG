@@ -57,18 +57,17 @@ function Perfil() {
 
     for (let i = 0; i < comentarios.length; i++) {
         comentarios[i].onclick = function() {
-            var modal = document.getElementById("comantario-" + (i + 2));
+            var modal = document.getElementById("comentario-" + (i + 2));
             modal.style.display = "block";
         };
 
-        
+        if (editar_com[i]) {
             editar_com[i].onclick = function() {
                 var modal = document.getElementById("editCom-" + (i + 2));
                 modal.style.display = "block";
             }; 
-        
+        }
+        }
     }
-
-}
 
 document.addEventListener("DOMContentLoaded", Perfil);

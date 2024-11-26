@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $archivo = $_FILES['archivo'];
         $archivo_subido = '';
     
-        if ($archivo['error'] == 0) {
+        if ($archivo && $archivo['error'] == 0) {
             $tmp_name = $archivo['tmp_name'];
             $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
             $nombre = uniqid() . '.' . $extension;
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $archivo = $_FILES['nuevo_archivo'];
         $archivo_subido = $_POST['archivo_origen'];
 
-        if ($archivo['error'] == 0) {
+        if ($archivo && $archivo['error'] == 0) {
             $anterior = "../Recursos/multimedia/$archivo_subido";
             unlink($anterior);
             $tmp_name = $archivo['tmp_name'];
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $archivo = $_FILES['archivo'];
         $archivo_subido = '';
     
-        if ($archivo['error'] == 0) {
+        if ($archivo && $archivo['error'] == 0) {
             $tmp_name = $archivo['tmp_name'];
             $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
             $nombre = uniqid() . '.' . $extension;
@@ -185,7 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $archivo = $_FILES['nuevo_archivo'];
         $archivo_subido = $_POST['archivo_origen'];
 
-        if ($archivo['error'] == 0) {
+        if ($archivo && $archivo['error'] == 0) {
             $anterior = "../Recursos/multimedia/$archivo_subido";
             unlink($anterior);
             $tmp_name = $archivo['tmp_name'];
