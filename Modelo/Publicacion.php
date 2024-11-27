@@ -93,6 +93,49 @@ class Publicacion {
         return $this->collection->find(['nick' => $nick], ['sort' => ['created_at' => -1]]);
     }
 
+    public function Likes($id,$publi){
+        $Id = new ObjectId($publi);
+        $filter = ['_id' => $publi];
+        $this->collection->updateOne(
+                ['_id' => $publi],
+                [
+                    '$push' => ['likes' => $id], // Agregar el usuario al array
+                    '$pull' => ['dislikes' => $id] // Asegurarse de quitar el dislike si existía
+                ]
+            );
+    }
+    public function DisLikes($id,$publi){
+        $Id = new ObjectId($publi);
+        $filter = ['_id' => $publi];
+        $this->collection->updateOne(
+                ['_id' => $publi],
+                [
+                    '$push' => ['dislikes' => $id], // Agregar el usuario al array
+                    '$pull' => ['likes' => $id] // Asegurarse de quitar el dislike si existía
+                ]
+            );
+    }
+    public function Likesq($id,$publi){
+        $Id = new ObjectId($publi);
+        $filter = ['_id' => $publi];
+        $this->collection->updateOne(
+                ['_id' => $publi],
+                [
+                    ['$pull' => ['likes' => $id]]
+                ]
+            );
+    }
+    public function DisLikesq($id,$publi){
+        $Id = new ObjectId($publi);
+        $filter = ['_id' => $publi];
+        $this->collection->updateOne(
+                ['_id' => $publi],
+                [
+                    ['$pull' => ['dislikes' => $id]]
+                ]
+            );
+    }
+    
 
     public function EditarPublicacion($texto, $id, $media) {
         

@@ -47,6 +47,7 @@ $contenidoPrincipal = <<<EOS
 EOS;
 
 foreach ($publicaciones as $publicacion) {
+    $iduser = $_SESSION['_id'];
     $nick = $publicacion['nick'];
     $texto = $publicacion['contenido'];
     $id = $publicacion['_id']['$oid'];
@@ -54,6 +55,11 @@ foreach ($publicaciones as $publicacion) {
     $multimedia = $publicacion['multimedia'] ?? '';
     $comentarios = $publicacion['comentarios'];
     $num_comentarios = count($comentarios);
+    $likes = $publicacion['likes'];
+    $dislikes = $publicacion['dislikes'];
+    $numlikes = count($likes);
+    $numdislikes = count($dislikes);
+    
 
     if ($multimedia) {
         $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
@@ -77,6 +83,18 @@ foreach ($publicaciones as $publicacion) {
                 <div class="comentarios-icon">
                     <i class="fa fa-comments"></i> $num_comentarios
                 </div>
+            </div>
+            <div class="reacciones-icon">
+                    <form method="POST" action="../Controlador/Publicacion_controlador.php">
+                        <input type="hidden" name="id_publi" value="$id">
+                        <input type="hidden" name="id_user" value="$iduser">
+                        <button type="submit" name="darlike" class="btn-like">
+                            <i class="fa fa-thumbs-up"></i> $num_likes
+                        </button>
+                        <button type="submit" name="dardislike" class="btn-dislike">
+                            <i class="fa fa-thumbs-down"></i> $num_dislikes
+                        </button>
+                    </form>
             </div>
         </div>
         <div id="$modalId" class="modal_publi">

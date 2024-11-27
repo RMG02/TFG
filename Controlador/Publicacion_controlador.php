@@ -40,7 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'user_email' => $_SESSION['email'],
             'nick' => $_SESSION['nick'],
             'contenido' => $_POST['contenido'],
-            'multimedia' => $archivo_subido 
+            'multimedia' => $archivo_subido,
+            'likes' => [],
+            'dislikes' => []
         ];
     
         $resultado = $publicacionModelo->crearPublicacion($DatosPublicacion);
@@ -121,6 +123,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: ../Vista/perfil.php');
             exit;
         }
+        
+    }
+
+    if (isset($_POST['darlike'])) {
+        $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
+        if (in_array($_POST['id_user'], $resultado['likes'])) {
+            // Si el usuario ya dio like, quitarlo
+            $resultado = $publicacionModelo->Likesquitar($_POST['id_user'],$_POST['id_publi']);
+        } else {
+            // Si no ha dado like, agregarlo
+            $resultado = $publicacionModelo->Likes($_POST['id_user'],$_POST['id_publi']);
+        }
+
+        // Redirigir de nuevo a la vista
+        header('Location: ../Vista/tu_vista.php');
+        exit;
+        $resultado = $publicacionModelo->Likes($_POST['id_publi'], $resultado['likes']);
+        
+        header('Location: ../Vista/Principal.php');
+    }
+    
+    if (isset($_POST['dardislike'])) {
+        $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
+            $resultado['dislikes'] += 1;
+        
+        $resultado = $publicacionModelo->Dislikes($_POST['id_publi'], $resultado['dislikes']);
+        if ($resultado) {
+            $_SESSION['mensaje'] = "Dislike dado";
+            
+        }
+        else{
+            $_SESSION['error'] = "Error al dar dislike.";
+        }
+        header('Location: ../Vista/Principal.php');
         
     }
 
