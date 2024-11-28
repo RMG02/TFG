@@ -20,18 +20,38 @@ class Publicacion {
         return $this->collection->findOne(['_id' => $Id]);
     }
 
-    public function agregarComentario($id, $comentario) {
+    public function agregarComentario($id, $comentario, $id_comentario_origen) {
         $Id = new ObjectId($id);
         $comentario['id_comentario'] = new ObjectId();
-        $update = [ 
-            '$push' => [ 
-                'comentarios' => [ 
-                    '$each' => [$comentario], 
-                    '$sort' => ['fecha' => -1] // Ordenamos el array por fecha descendente 
-                    ] 
-                ] 
+
+        if($id_comentario_origen){
+            $Id_origen = new ObjectId($id_comentario_origen);
+
+            $update = [
+                '$push' => [
+                    'comentarios.$.respuestas' => [
+                        '$each' => [$comentario],
+                        '$sort' => ['fecha' => -1] 
+                    ]
+                ]
             ];
-        return $this->collection->updateOne(['_id' => $Id], $update);
+            return $this->collection->updateOne(
+                ['_id' => $Id, 'comentarios.id_comentario' => $Id_origen], 
+                $update
+            );
+        }
+        else{
+            $update = [ 
+                '$push' => [ 
+                    'comentarios' => [ 
+                        '$each' => [$comentario], 
+                        '$sort' => ['fecha' => -1] 
+                        ] 
+                    ] 
+                ];
+            return $this->collection->updateOne(['_id' => $Id], $update);
+        }
+        
     }
 
     public function eliminarComentario($id_publi, $id_com) {

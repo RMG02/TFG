@@ -8,6 +8,9 @@ if (!isset($_SESSION['publicaciones'])) {
    header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true');
    exit;
 }
+
+require_once __DIR__ . "/plantillas/respuestas.php";
+
 $modalId = 0;
 $modalComId = 0;
 $error = "";
@@ -47,7 +50,7 @@ $contenidoPrincipal = <<<EOS
 EOS;
 
 foreach ($publicaciones as $publicacion) {
-    $iduser = $_SESSION['_id'];
+    //$iduser = $_SESSION['_id'];
     $nick = $publicacion['nick'];
     $texto = $publicacion['contenido'];
     $id = $publicacion['_id']['$oid'];
@@ -55,10 +58,10 @@ foreach ($publicaciones as $publicacion) {
     $multimedia = $publicacion['multimedia'] ?? '';
     $comentarios = $publicacion['comentarios'];
     $num_comentarios = count($comentarios);
-    $likes = $publicacion['likes'];
-    $dislikes = $publicacion['dislikes'];
-    $numlikes = count($likes);
-    $numdislikes = count($dislikes);
+    //$likes = $publicacion['likes'];
+    //$dislikes = $publicacion['dislikes'];
+    //$numlikes = count($likes);
+    //$numdislikes = count($dislikes);
     
 
     if ($multimedia) {
@@ -87,12 +90,12 @@ foreach ($publicaciones as $publicacion) {
             <div class="reacciones-icon">
                     <form method="POST" action="../Controlador/Publicacion_controlador.php">
                         <input type="hidden" name="id_publi" value="$id">
-                        <input type="hidden" name="id_user" value="$iduser">
+                        <input type="hidden" name="id_user" value="">
                         <button type="submit" name="darlike" class="btn-like">
-                            <i class="fa fa-thumbs-up"></i> $num_likes
+                            <i class="fa fa-thumbs-up"></i> 
                         </button>
                         <button type="submit" name="dardislike" class="btn-dislike">
-                            <i class="fa fa-thumbs-down"></i> $num_dislikes
+                            <i class="fa fa-thumbs-down"></i> 
                         </button>
                     </form>
             </div>
@@ -107,8 +110,50 @@ foreach ($publicaciones as $publicacion) {
                 <div class="tweet-content">
                     $multi
                     <p>$texto</p>
-                    <hr>
-EOS;
+                    <button type="button" class="botonPubli" name="comen">Añadir Comentario</button>
+                    <div id="comen-$modalId" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                                <input type="hidden" name="id_publi" value="$id">
+                                <input type="hidden" name="principal" value="true">
+                                <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
+                                <input type="file" name="archivo"> 
+                                <button type="submit" class="botonPubli" name="agregarComentario">Añadir Comentario</button>
+                            </form>
+                        </div>
+                    </div>
+    EOS;
+
+    if ($nick == $_SESSION['nick']) {
+        $contenidoPrincipal .= <<<EOS
+                        <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                            <input type="hidden" name="id_publi" value="$id">
+                            <input type="hidden" name="principal" value="true">
+                            <input type="hidden" name="multi" value="../Recursos/multimedia/$multimedia"> 
+                            <button type="submit" class="botonPubli" name="eliminarPublicacion">Eliminar publicación</button>
+                        </form>
+                        <button type="button" class="botonPubli" name="editar">Editar publicación</button>
+                        <div id="edit-$modalId" class="modal">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                                    $multi
+                                    <textarea name="contenido">$texto</textarea>
+                                    <input type="hidden" name="archivo_origen" value="$multimedia"> 
+                                    <input type="file" name="nuevo_archivo"> 
+                                    <input type="hidden" name="principal" value="true">
+                                    <input type="hidden" name="id_publi" value="$id">
+                                    <button type="submit" class="botonPubli" name="editarPublicacion">Guardar cambios</button>
+                                </form>
+                            </div>
+                        </div>
+        EOS;
+    }
+    $contenidoPrincipal .= <<<EOS
+        <hr>
+        <h3>Comentarios</h3>
+    EOS;
 
     if (!empty($comentarios)) {
         foreach ($comentarios as $comentario) {
@@ -117,6 +162,8 @@ EOS;
             $tex = $comentario['texto'];
             $mult = $comentario['multimedia'] ?? '';
             $fecha = date('d/m/Y H:i:s', strtotime($comentario['fecha']));
+            $num_respuestas = count($comentario['respuestas'] ?? []);
+            $modalResId = 0;
 
             if ($mult) {
                 $extension = pathinfo($mult, PATHINFO_EXTENSION);
@@ -130,11 +177,14 @@ EOS;
             }
 
             $contenidoPrincipal .= <<<EOS
-                        <div class="comentario">
+                        <div class="comentario" name="comentario">
                             $multi_com
                             <strong>$usuario:</strong>
                             <span>$tex</span>
                             <span class="comentario-time">$fecha</span>
+                            <div class="comentarios-icon">
+                                <i class="fa fa-comments"></i> $num_respuestas
+                            </div>
                         </div>
                         <div id="comentario-$modalComId" class="modal_publi">
                             <div class="modal_publi-content">
@@ -145,8 +195,7 @@ EOS;
                                     <br>
                                     <span>$tex</span>
                                     <span class="comentario-time">$fecha</span>
-                                    <hr>
-                                
+                                    
             EOS;
 
             if($usuario == $_SESSION['nick']){
@@ -178,63 +227,45 @@ EOS;
             }
 
             $contenidoPrincipal .= <<<EOS
-                            <button type="button" class="botonPubli" name="comentar_com">Responder</button> 
+                            <button type="button" class="botonPubli" name="responder" id="responder-$modalComId">Responder</button>
+                            <div id="respuesta-$modalComId" class="modal">
+                                <div class="modal-content">
+                                    <span class="close">&times;</span>
+                                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                                        <input type="hidden" name="id_publi" value="$id">
+                                        <input type="hidden" name="id_comen" value="$id_com"> 
+                                        <input type="hidden" name="principal" value="true">
+                                        <input type="hidden" name="esRespuesta" value="true">
+                                        <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
+                                        <input type="file" name="archivo"> 
+                                        <button type="submit" class="botonPubli" name="agregarComentario">Añadir Respuesta</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <hr>
+                            <h3>Respuestas</h3>
+            EOS;
+            if (!empty($comentario['respuestas'])) {
+                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId);
+            }
+            $contenidoPrincipal.= <<<EOS
                         </div>
                     </div>
                 </div>
             EOS;
+            
+            
             $modalComId++;
         }
     }
 
-    $contenidoPrincipal .= <<<EOS
-                    <button type="button" class="botonPubli" name="comen">Añadir Comentario</button>
-                    <div id="comen-$modalId" class="modal">
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
-                                <input type="hidden" name="id_publi" value="$id">
-                                <input type="hidden" name="principal" value="true">
-                                <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
-                                <input type="file" name="archivo"> 
-                                <button type="submit" class="botonPubli" name="agregarComentario">Añadir Comentario</button>
-                            </form>
-                        </div>
-                    </div>
-EOS;
-
-    if ($nick == $_SESSION['nick']) {
-        $contenidoPrincipal .= <<<EOS
-                        <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
-                            <input type="hidden" name="id_publi" value="$id">
-                            <input type="hidden" name="principal" value="true">
-                            <input type="hidden" name="multi" value="../Recursos/multimedia/$multimedia"> 
-                            <button type="submit" class="botonPubli" name="eliminarPublicacion">Eliminar publicación</button>
-                        </form>
-                        <button type="button" class="botonPubli" name="editar">Editar publicación</button>
-                        <div id="edit-$modalId" class="modal">
-                            <div class="modal-content">
-                                <span class="close">&times;</span>
-                                <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
-                                    $multi
-                                    <textarea name="contenido">$texto</textarea>
-                                    <input type="hidden" name="archivo_origen" value="$multimedia"> 
-                                    <input type="file" name="nuevo_archivo"> 
-                                    <input type="hidden" name="principal" value="true">
-                                    <input type="hidden" name="id_publi" value="$id">
-                                    <button type="submit" class="botonPubli" name="editarPublicacion">Guardar cambios</button>
-                                </form>
-                            </div>
-                        </div>
-EOS;
-    }
-
+    
     $contenidoPrincipal .= <<<EOS
                     </div>
                 </div>
             </div>
-EOS;
-$modalId++;
+    EOS;
+    $modalId++;
 }
 
 if ($error != "") {
@@ -255,3 +286,4 @@ require_once __DIR__ . "/plantillas/plantilla.php";
 <script src="../Recursos/js/formularios_publicacion.js"></script>
 <script src="../Recursos/js/filtro_publicacion.js"></script>
 <script src="../Recursos/js/Principal.js"></script>
+

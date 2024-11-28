@@ -5,9 +5,11 @@ function Perfil() {
     var spans_publi = document.getElementsByClassName("close_publi");
     var editar = document.getElementsByName("editar");
     var comentar = document.getElementsByName("comen");
-    var comentarios =  document.getElementsByClassName("comentario");
+    var comentarios = document.getElementsByName("comentario");
     var editar_com = document.getElementsByName("editar_com");
-    
+    var responder = document.getElementsByName("responder");
+    var comentarios_rec = document.getElementsByName("comentario_rec");
+
     
     if(boton){
         boton.onclick = function() {
@@ -22,10 +24,8 @@ function Perfil() {
             modal.style.display = "none";
         };
     }
-    
 
     var j = 0;
-    // Abrir y manejar modales de publicaciones
     for (let i = 0; i < publicaciones.length; i++) {
         publicaciones[i].onclick = function() {
             var modal = document.getElementById(i);
@@ -45,10 +45,8 @@ function Perfil() {
             var modal = document.getElementById("comen-" + i);
             modal.style.display = "block";
         }; 
-        
     }
 
-    // Cerrar modales de publicaciones
     for (let i = 0; i < spans_publi.length; i++) {
         spans_publi[i].onclick = function() {
             var modal = this.closest(".modal_publi");
@@ -63,6 +61,19 @@ function Perfil() {
             modal.style.display = "block";
         };
 
+        var modal = document.getElementById("comentario-" + i + "-" + 0);
+        if(modal){
+            num = 0;
+            while(modal){
+                comentarios_rec[i].onclick = function() {
+                    var modal = document.getElementById("comentario-" + i + "-" + num);
+                    modal.style.display = "block";
+                };
+                num++;
+                var modal = document.getElementById("comentario-" + i + "-" + num);
+            }
+        }
+       
         var modal = document.getElementById("editCom-" + i); 
         
         if (modal) {
@@ -72,7 +83,13 @@ function Perfil() {
             }; 
             j++;
         }
-    
+
+       
+        responder[i].onclick = function() {
+            var modal = document.getElementById("respuesta-" + i);
+            modal.style.display = "block";
+        }; 
+        
     }
 }
 

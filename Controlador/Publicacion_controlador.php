@@ -163,6 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['agregarComentario'])) {
         $archivo = $_FILES['archivo'];
         $archivo_subido = '';
+        $id_com_origen = isset($_POST['esRespuesta']) ? $_POST['id_comen'] : null;
     
         if ($archivo && $archivo['error'] == 0) {
             $tmp_name = $archivo['tmp_name'];
@@ -179,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'multimedia' => $archivo_subido
         ];
     
-        $resultado = $publicacionModelo->agregarComentario($_POST['id_publi'], $comentario);
+        $resultado = $publicacionModelo->agregarComentario($_POST['id_publi'], $comentario, $id_com_origen);
         if ($resultado) {
             $_SESSION['mensaje'] = "Comentario añadido";
         } else {
@@ -247,6 +248,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
     }
+
+    
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
