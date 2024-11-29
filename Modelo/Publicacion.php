@@ -54,9 +54,43 @@ class Publicacion {
         
     }
 
-    public function eliminarComentario($id_publi, $id_com) {
+    private function eliminarRespuesta(&$comentarios, $id_com) {
+        $comentarios_dec = json_decode(json_encode($comentarios), true);
+
+        foreach ($comentarios_dec as $posicion => &$comentario) {
+            if ($comentario['id_comentario']['$oid'] == $id_com) {
+                array_splice($comentarios_dec, $posicion, 1); 
+                $comentarios = json_decode(json_encode($comentarios_dec));
+                return true;
+            } elseif (!empty($comentario['respuestas'])) {
+                if ($this->eliminarRespuesta($comentario['respuestas'], $id_com)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function eliminarComentario($id_publi, $id_com, $esRespuesta) {
         $id = new ObjectId($id_publi);
         $comentarioId = new ObjectId($id_com);
+        if($esRespuesta){
+            // Buscar el comentario de origen
+            $publicacion = $this->collection->findOne(['_id' => $id]);
+
+            if ($publicacion) {
+                foreach ($publicacion['comentarios'] as &$comentario) {
+                   
+                    // Llamada recursiva para verificar subcomentarios
+                    $this->eliminarRespuesta($comentario['respuestas'], $comentarioId);
+                    return $this->collection->updateOne( ['_id' => $id], ['$set' => ['comentarios' => $publicacion['comentarios']]] ); 
+                    
+                }
+            }
+        }
+        else{
+
+        }
         $update = [
             '$pull' => [
                 'comentarios' => ['id_comentario' => $comentarioId]
@@ -80,25 +114,21 @@ class Publicacion {
         }
         return false;
     }
-    public function editarComentario($id_publi, $id_com, $texto, $media, $id_com_origen) {
+    public function editarComentario($id_publi, $id_com, $texto, $media, $esRespuesta) {
         $id = new ObjectId($id_publi);
         $comentarioId = new ObjectId($id_com);
 
-        if ($id_com_origen) {
-            $id_com_origen = new ObjectId($id_com_origen);
+        if ($esRespuesta) {
 
             // Buscar el comentario de origen
             $publicacion = $this->collection->findOne(['_id' => $id]);
 
             if ($publicacion) {
                 foreach ($publicacion['comentarios'] as &$comentario) {
-                    if ($comentario['id_comentario'] == $id_com_origen) {
-                        $this->editarRespuesta($comentario['respuestas'], $comentarioId, $texto, $media);
-
-                    } else {
-                        // Llamada recursiva para verificar subcomentarios
-                        $this->editarRespuesta($comentario['respuestas'], $comentarioId, $texto, $media);
-                    }
+                   
+                    // Llamada recursiva para verificar subcomentarios
+                    $this->editarRespuesta($comentario['respuestas'], $comentarioId, $texto, $media);
+                    
                 }
 
                 // Actualizar la publicación con los comentarios editados

@@ -55,7 +55,6 @@ function mostrarRespuestas($comentarios, $modalComId, $modalResId, $principal, $
                             <input type="file" name="nuevo_archivo"> 
                             <input type="hidden" name="id_comen" value="$id_com"> 
                             <input type="hidden" name="principal" value="$principal">
-                            <input type="hidden" name="comentario_origen" value="$id_origen"> 
                             <input type="hidden" name="esRespuesta" value="$principal">
                             <input type="hidden" name="id_publi" value="$id_publi">
                             <button type="submit" class="botonPubli" name="editarComentario">Guardar cambios</button>
@@ -64,9 +63,10 @@ function mostrarRespuestas($comentarios, $modalComId, $modalResId, $principal, $
                 </div>
                 <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
                     <input type="hidden" name="id_comen" value="$id_com"> 
-                    <input type="hidden" name="principal" value="true">
+                    <input type="hidden" name="principal" value="$principal">
                     <input type="hidden" name="multi" value="../Recursos/multimedia/$mult"> 
-                    <input type="hidden" name="id_publi" value="">
+                    <input type="hidden" name="esRespuesta" value="$principal">
+                    <input type="hidden" name="id_publi" value="$id_publi">
                     <button type="submit" class="botonPubli" name="eliminarComentario">Eliminar comentario</button>
                 </form>
                 

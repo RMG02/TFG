@@ -219,9 +219,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     if (isset($_POST['eliminarComentario'])) {
+        if(isset($_POST['multi'])){
+            unlink($_POST['multi']);
+        }
+        
+        $esRespuesta = isset($_POST['esRespuesta']) ? true : null;
 
-        unlink($_POST['multi']);
-        $resultado = $publicacionModelo->eliminarComentario($_POST['id_publi'], $_POST['id_comen']);
+        $resultado = $publicacionModelo->eliminarComentario($_POST['id_publi'], $_POST['id_comen'], $esRespuesta);
         if ($resultado) {
             $_SESSION['mensaje'] = "Comentario eliminado";
         } else {
@@ -242,7 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $archivo = $_FILES['nuevo_archivo'];
         $archivo_subido = $_POST['archivo_origen'];
-        $id_com_origen = isset($_POST['esRespuesta']) ? $_POST['comentario_origen'] : null;
+        $esRespuesta = isset($_POST['esRespuesta']) ? true : null;
 
         if ($archivo && $archivo['error'] == 0) {
             $anterior = "../Recursos/multimedia/$archivo_subido";
@@ -254,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $archivo_subido = $nombre;
         }
        
-        $resultado = $publicacionModelo->editarComentario($_POST['id_publi'], $_POST['id_comen'], $_POST['contenido'], $archivo_subido, $id_com_origen);
+        $resultado = $publicacionModelo->editarComentario($_POST['id_publi'], $_POST['id_comen'], $_POST['contenido'], $archivo_subido, $esRespuesta);
         if ($resultado) {
             $_SESSION['mensaje'] = "Comentario editado";
         } else {
