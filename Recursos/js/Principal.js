@@ -10,9 +10,7 @@ function Perfil() {
     var editar_com_rec = document.getElementsByName("editar_com_rec");
     var responder = document.getElementsByName("responder");
     var comentarios_rec = document.getElementsByName("comentario_rec");
-    console.log("comentarios normales", comentarios);
-    console.log("comentarios recursivos", comentarios_rec);
-    console.log("editar recursivos", editar_com_rec);
+    console.log("responder ", responder);
 
     if (boton) {
         boton.onclick = function() {
@@ -72,38 +70,37 @@ function Perfil() {
             };
             j++;
         }
-
+        console.log("el i es:", i)
         responder[i].onclick = function() {
             var modal = document.getElementById("respuesta-" + i);
+            console.log(modal);
             modal.style.display = "block";
         };
     }
 
-    var i = 0;
-    var j = 0;
-    var k = 0;
+   
+    var i = 0, j = 0, k = 0, l = 0;
     while (i < comentarios_rec.length) {
-        let currentI = i, currentJ = j, currentK = k;
+        let currentI = i, currentJ = j, currentK = k, currentL = l; 
         var modal = document.getElementById("comentario-" + currentJ + "-" + currentK);
-        console.log("i, j y k", currentI, currentJ, currentK);
-        console.log("editMODAL",modal);
         if (modal) {
             comentarios_rec[currentI].onclick = function() {
                 var modal = document.getElementById("comentario-" + currentJ + "-" + currentK);
-                console.log(modal);
                 modal.style.display = "block";
             };
 
-            /*var editModal = document.getElementById("editCom-" + currentJ + "-" + currentK);
+            var editModal = document.getElementById("editCom-" + currentJ + "-" + currentK);
             if (editModal) {
+        
+                if(editar_com_rec[currentL]){
+                    editar_com_rec[currentL].onclick = function() {
+                        var editModal = document.getElementById("editCom-" + currentJ + "-" + currentK);
+                        editModal.style.display = "block";
+                    };
+                    l++;
+                }
                 
-                editar_com_rec[currentI].onclick = function() {
-                    var editModal = document.getElementById("editCom-" + currentJ + "-" + currentK);
-                    console.log("click i, j y k", currentI, currentJ, currentK);
-                    console.log(editModal);
-                    editModal.style.display = "block";
-                };
-            }*/
+            }
 
             i++;
             k++;

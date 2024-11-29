@@ -1,5 +1,5 @@
 <?php
-function mostrarRespuestas($comentarios, $modalComId, $modalResId) {
+function mostrarRespuestas($comentarios, $modalComId, $modalResId, $principal, $id_origen, $id_publi) {
     $contenido = "";
     foreach ($comentarios as $comentario) {
         $usuario = $comentario['usuario'];
@@ -54,8 +54,10 @@ function mostrarRespuestas($comentarios, $modalComId, $modalResId) {
                             <input type="hidden" name="archivo_origen" value="$mult"> 
                             <input type="file" name="nuevo_archivo"> 
                             <input type="hidden" name="id_comen" value="$id_com"> 
-                            <input type="hidden" name="principal" value="true">
-                            <input type="hidden" name="id_publi" value="">
+                            <input type="hidden" name="principal" value="$principal">
+                            <input type="hidden" name="comentario_origen" value="$id_origen"> 
+                            <input type="hidden" name="esRespuesta" value="$principal">
+                            <input type="hidden" name="id_publi" value="$id_publi">
                             <button type="submit" class="botonPubli" name="editarComentario">Guardar cambios</button>
                         </form>
                     </div>
@@ -72,7 +74,7 @@ function mostrarRespuestas($comentarios, $modalComId, $modalResId) {
         }
 
         $contenido .= <<<EOS
-                        <button type="button" class="botonPubli" name="responder" id="responder-$modalComId">Responder</button>
+                        <button type="button" class="botonPubli" name="responder_rec" id="responder-$modalComId">Responder</button>
                         <div id="respuesta-$modalComId" class="modal">
                             <div class="modal-content">
                                 <span class="close">&times;</span>

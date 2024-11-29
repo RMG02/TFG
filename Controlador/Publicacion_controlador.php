@@ -230,6 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $archivo = $_FILES['nuevo_archivo'];
         $archivo_subido = $_POST['archivo_origen'];
+        $id_com_origen = isset($_POST['esRespuesta']) ? $_POST['comentario_origen'] : null;
 
         if ($archivo && $archivo['error'] == 0) {
             $anterior = "../Recursos/multimedia/$archivo_subido";
@@ -241,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $archivo_subido = $nombre;
         }
        
-        $resultado = $publicacionModelo->editarComentario($_POST['id_publi'], $_POST['id_comen'], $_POST['contenido'], $archivo_subido);
+        $resultado = $publicacionModelo->editarComentario($_POST['id_publi'], $_POST['id_comen'], $_POST['contenido'], $archivo_subido, $id_com_origen);
         if ($resultado) {
             $_SESSION['mensaje'] = "Comentario editado";
         } else {

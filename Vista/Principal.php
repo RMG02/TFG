@@ -13,6 +13,7 @@ require_once __DIR__ . "/plantillas/respuestas.php";
 
 $modalId = 0;
 $modalComId = 0;
+$principal = true;
 $error = "";
 $mensaje = "";
 if (isset($_SESSION['error'])) {
@@ -246,7 +247,7 @@ foreach ($publicaciones as $publicacion) {
                             <h3>Respuestas</h3>
             EOS;
             if (!empty($comentario['respuestas'])) {
-                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId);
+                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $principal, $id_com, $id);
             }
             $contenidoPrincipal.= <<<EOS
                         </div>
