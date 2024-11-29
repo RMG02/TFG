@@ -20,18 +20,38 @@ class Publicacion {
         return $this->collection->findOne(['_id' => $Id]);
     }
 
-    public function agregarComentario($id, $comentario) {
+    public function agregarComentario($id, $comentario, $id_comentario_origen) {
         $Id = new ObjectId($id);
         $comentario['id_comentario'] = new ObjectId();
-        $update = [ 
-            '$push' => [ 
-                'comentarios' => [ 
-                    '$each' => [$comentario], 
-                    '$sort' => ['fecha' => -1] // Ordenamos el array por fecha descendente 
-                    ] 
-                ] 
+
+        if($id_comentario_origen){
+            $Id_origen = new ObjectId($id_comentario_origen);
+
+            $update = [
+                '$push' => [
+                    'comentarios.$.respuestas' => [
+                        '$each' => [$comentario],
+                        '$sort' => ['fecha' => -1] 
+                    ]
+                ]
             ];
-        return $this->collection->updateOne(['_id' => $Id], $update);
+            return $this->collection->updateOne(
+                ['_id' => $Id, 'comentarios.id_comentario' => $Id_origen], 
+                $update
+            );
+        }
+        else{
+            $update = [ 
+                '$push' => [ 
+                    'comentarios' => [ 
+                        '$each' => [$comentario], 
+                        '$sort' => ['fecha' => -1] 
+                        ] 
+                    ] 
+                ];
+            return $this->collection->updateOne(['_id' => $Id], $update);
+        }
+        
     }
 
     public function eliminarComentario($id_publi, $id_com) {
@@ -45,36 +65,77 @@ class Publicacion {
         return $this->collection->updateOne( ['_id' => $id], $update);
     }
 
-    public function editarComentario($id_publi, $id_com, $texto, $media) {
+    private function editarRespuesta(&$comentarios, $id_com, $texto, $media) {
+        foreach ($comentarios as &$comentario) {
+            if ($comentario['id_comentario'] == $id_com) {
+                $comentario['multimedia'] = $media;
+                $comentario['texto'] = $texto;
+                $comentario['fecha'] = date(DATE_ISO8601);
+                return true;
+            } elseif (!empty($comentario['respuestas'])) {
+                if ($this->editarRespuesta($comentario['respuestas'], $id_com, $texto, $media)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public function editarComentario($id_publi, $id_com, $texto, $media, $id_com_origen) {
         $id = new ObjectId($id_publi);
         $comentarioId = new ObjectId($id_com);
-    
-        $update = [
-            '$set' => [
-                'comentarios.$.multimedia' => $media,
-                'comentarios.$.texto' => $texto,
-                'comentarios.$.fecha' => date(DATE_ISO8601) 
-            ]
-        ];
-    
-        $resultado = $this->collection->updateOne(
-            ['_id' => $id, 'comentarios.id_comentario' => $comentarioId],
-            $update
-        );
-    
-        if ($resultado->getModifiedCount() > 0) {
-            $UpdateOrdenado = [
-                '$push' => [
-                    'comentarios' => [
-                        '$each' => [],
-                        '$sort' => ['fecha' => -1] 
-                    ]
+
+        if ($id_com_origen) {
+            $id_com_origen = new ObjectId($id_com_origen);
+
+            // Buscar el comentario de origen
+            $publicacion = $this->collection->findOne(['_id' => $id]);
+
+            if ($publicacion) {
+                foreach ($publicacion['comentarios'] as &$comentario) {
+                    if ($comentario['id_comentario'] == $id_com_origen) {
+                        $this->editarRespuesta($comentario['respuestas'], $comentarioId, $texto, $media);
+
+                    } else {
+                        // Llamada recursiva para verificar subcomentarios
+                        $this->editarRespuesta($comentario['respuestas'], $comentarioId, $texto, $media);
+                    }
+                }
+
+                // Actualizar la publicación con los comentarios editados
+                $resultado = $this->collection->updateOne(['_id' => $id], ['$set' => ['comentarios' => $publicacion['comentarios']]]);
+
+                return $resultado;
+            }
+        }
+        else{
+            $update = [
+                '$set' => [
+                    'comentarios.$.multimedia' => $media,
+                    'comentarios.$.texto' => $texto,
+                    'comentarios.$.fecha' => date(DATE_ISO8601) 
                 ]
             ];
-            $this->collection->updateOne(['_id' => $id], $UpdateOrdenado);
+        
+            $resultado = $this->collection->updateOne(
+                ['_id' => $id, 'comentarios.id_comentario' => $comentarioId],
+                $update
+            );
+        
+            if ($resultado->getModifiedCount() > 0) {
+                $UpdateOrdenado = [
+                    '$push' => [
+                        'comentarios' => [
+                            '$each' => [],
+                            '$sort' => ['fecha' => -1] 
+                        ]
+                    ]
+                ];
+                $this->collection->updateOne(['_id' => $id], $UpdateOrdenado);
+            }
+        
+            return $resultado;
         }
-    
-        return $resultado;
+        
     }
     
     
