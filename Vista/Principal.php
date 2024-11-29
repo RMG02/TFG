@@ -47,7 +47,7 @@ $contenidoPrincipal = <<<EOS
 EOS;
 
 foreach ($publicaciones as $publicacion) {
-    $iduser = $_SESSION['_id'];
+    $nickuser = $_SESSION['nick'];
     $nick = $publicacion['nick'];
     $texto = $publicacion['contenido'];
     $id = $publicacion['_id']['$oid'];
@@ -86,13 +86,16 @@ foreach ($publicaciones as $publicacion) {
             </div>
             <div class="reacciones-icon">
                     <form method="POST" action="../Controlador/Publicacion_controlador.php">
-                        <input type="hidden" name="id_publi" value="$id">
-                        <input type="hidden" name="id_user" value="$iduser">
+                        
                         <button type="submit" name="darlike" class="btn-like">
-                            <i class="fa fa-thumbs-up"></i> $num_likes
+                            <input type="hidden" name="id_publi" value="$id">
+                            <input type="hidden" name="nick_user" value="$nickuser">
+                            <i class="fa fa-thumbs-up"></i> $numlikes
                         </button>
                         <button type="submit" name="dardislike" class="btn-dislike">
-                            <i class="fa fa-thumbs-down"></i> $num_dislikes
+                            <input type="hidden" name="id_publi" value="$id">
+                            <input type="hidden" name="nick_user" value="$nickuser">
+                            <i class="fa fa-thumbs-down"></i> $numdislikes
                         </button>
                     </form>
             </div>

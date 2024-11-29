@@ -127,28 +127,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (isset($_POST['darlike'])) {
+        
         $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
-        if (in_array($_POST['id_user'], $resultado['likes'])) {
+        $likesArray = (array) $resultado['likes']; // Convierte BSONArray a array PHP
+        if (in_array($_POST['nick_user'], $likesArray)) {
             // Si el usuario ya dio like, quitarlo
-            $resultado = $publicacionModelo->Likesquitar($_POST['id_user'],$_POST['id_publi']);
+            $resultado = $publicacionModelo->Likesq($_POST['nick_user'],$_POST['id_publi']);
         } else {
             // Si no ha dado like, agregarlo
-            $resultado = $publicacionModelo->Likes($_POST['id_user'],$_POST['id_publi']);
+            $resultado = $publicacionModelo->Likes($_POST['nick_user'],$_POST['id_publi']);
         }
 
-        // Redirigir de nuevo a la vista
-        header('Location: ../Vista/tu_vista.php');
-        exit;
-        $resultado = $publicacionModelo->Likes($_POST['id_publi'], $resultado['likes']);
-        
+        if ($resultado) {
+            $_SESSION['mensaje'] = "Like dado";
+            
+        }
+        else{
+            $_SESSION['error'] = "Error al dar like.";
+        }
         header('Location: ../Vista/Principal.php');
     }
     
     if (isset($_POST['dardislike'])) {
+
         $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
-            $resultado['dislikes'] += 1;
-        
-        $resultado = $publicacionModelo->Dislikes($_POST['id_publi'], $resultado['dislikes']);
+    
+        $dislikesArray = (array) $resultado['dislikes']; // Convierte BSONArray a array PHP
+    
+        if (in_array($_POST['nick_user'],  $dislikesArray)) {
+            // Si el usuario ya dio like, quitarlo
+            $resultado = $publicacionModelo->DisLikesq($_POST['nick_user'],$_POST['id_publi']);
+        } else {
+            // Si no ha dado like, agregarlo
+            $resultado = $publicacionModelo->DisLikes($_POST['nick_user'],$_POST['id_publi']);
+        }
         if ($resultado) {
             $_SESSION['mensaje'] = "Dislike dado";
             

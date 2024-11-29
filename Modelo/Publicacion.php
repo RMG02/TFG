@@ -93,47 +93,50 @@ class Publicacion {
         return $this->collection->find(['nick' => $nick], ['sort' => ['created_at' => -1]]);
     }
 
-    public function Likes($id,$publi){
+        
+    public function Likes($nick,$publi){
         $Id = new ObjectId($publi);
         $filter = ['_id' => $publi];
-        $this->collection->updateOne(
-                ['_id' => $publi],
+        $update =
                 [
-                    '$push' => ['likes' => $id], // Agregar el usuario al array
-                    '$pull' => ['dislikes' => $id] // Asegurarse de quitar el dislike si existía
-                ]
-            );
+                    '$push' => ['likes' => $nick], // Agregar el usuario al array
+                    '$pull' => ['dislikes' => $nick] // Asegurarse de quitar el dislike si existía
+                ];
+            
+        return $this->collection->updateOne($filter, $update);
     }
-    public function DisLikes($id,$publi){
+    public function DisLikes($nick,$publi){
         $Id = new ObjectId($publi);
         $filter = ['_id' => $publi];
-        $this->collection->updateOne(
-                ['_id' => $publi],
+        $update = 
                 [
-                    '$push' => ['dislikes' => $id], // Agregar el usuario al array
-                    '$pull' => ['likes' => $id] // Asegurarse de quitar el dislike si existía
-                ]
-            );
+                    '$push' => ['dislikes' => $nick], // Agregar el usuario al array
+                    '$pull' => ['likes' => $nick] // Asegurarse de quitar el dislike si existía
+                ];
+        return $this->collection->updateOne($filter, $update);
+                
     }
-    public function Likesq($id,$publi){
+    public function Likesq($nick,$publi){
         $Id = new ObjectId($publi);
         $filter = ['_id' => $publi];
-        $this->collection->updateOne(
-                ['_id' => $publi],
+        $update =
+                
                 [
-                    ['$pull' => ['likes' => $id]]
-                ]
-            );
+                    '$pull' => ['likes' => $nick]
+                ];
+            
+        return $this->collection->updateOne($filter, $update);    
     }
-    public function DisLikesq($id,$publi){
+    
+    public function DisLikesq($nick,$publi){
         $Id = new ObjectId($publi);
         $filter = ['_id' => $publi];
-        $this->collection->updateOne(
-                ['_id' => $publi],
+        $update =
                 [
-                    ['$pull' => ['dislikes' => $id]]
-                ]
-            );
+                    '$pull' => ['dislikes' => $nick]
+                ];
+        return $this->collection->updateOne($filter, $update);
+            
     }
     
 
