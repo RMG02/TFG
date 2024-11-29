@@ -89,42 +89,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if(isset($_POST['eliminarPublicacion'])){
-        
-        $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
-        $publicacion = json_decode(json_encode($resultado), true);
-
-        if($publicacion && !empty($publicacion['comentarios'])){
-            $comentarios = $publicacion['comentarios'];
-
-            foreach($comentarios as $comentario){
-                if(!empty($comentario['multimedia'])){
-                    $archivo = "../Recursos/multimedia/{$comentario['multimedia']}";
-                    unlink($archivo);
-                }
+    function eliminarImagenes($comentarios) {
+        foreach ($comentarios as $comentario) {
+            if (!empty($comentario['multimedia'])) {
+                $archivo = "../Recursos/multimedia/{$comentario['multimedia']}";
+                unlink($archivo);
+            }
+    
+            if (!empty($comentario['respuestas'])) {
+                eliminarImagenes($comentario['respuestas']);
             }
         }
-
-        unlink($_POST['multi']);
-        $resultado = $publicacionModelo->eliminarPublicacion($_POST['id_publi'],);
-        if ($resultado) {
-            $_SESSION['mensaje'] = "Publicación eliminada";
-            
-        }
-        else{
-            $_SESSION['error'] = "Error al eliminar la publicación.";
-        }
-
-        if(isset($_POST['principal'])){
-            header('Location: ../Vista/Principal.php');
-            exit;
-        }
-        else{
-            header('Location: ../Vista/perfil.php');
-            exit;
-        }
-        
     }
+    
+    if (isset($_POST['eliminarPublicacion'])) {
+        $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
+        $publicacion = json_decode(json_encode($resultado), true);
+    
+        if ($publicacion) {
+            eliminarImagenes($publicacion['comentarios']);
+            
+            if (!empty($publicacion['multimedia'])) {
+                $archivo = "../Recursos/multimedia/{$publicacion['multimedia']}";
+                unlink($archivo);
+            }
+            
+            $resultado = $publicacionModelo->eliminarPublicacion($_POST['id_publi']);
+            
+            if ($resultado) {
+                $_SESSION['mensaje'] = "Publicación eliminada";
+            } else {
+                $_SESSION['error'] = "Error al eliminar la publicación.";
+            }
+    
+            if (isset($_POST['principal'])) {
+                header('Location: ../Vista/Principal.php');
+                exit;
+            } else {
+                header('Location: ../Vista/perfil.php');
+                exit;
+            }
+        }
+    }
+    
+   
+    
 
     if (isset($_POST['darlike'])) {
         $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);

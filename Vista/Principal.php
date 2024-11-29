@@ -152,7 +152,7 @@ foreach ($publicaciones as $publicacion) {
     }
     $contenidoPrincipal .= <<<EOS
         <hr>
-        <h3>Comentarios</h3>
+        <h3>Comentarios</h3>       
     EOS;
 
     if (!empty($comentarios)) {
