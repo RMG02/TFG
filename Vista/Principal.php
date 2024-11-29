@@ -59,10 +59,10 @@ foreach ($publicaciones as $publicacion) {
     $multimedia = $publicacion['multimedia'] ?? '';
     $comentarios = $publicacion['comentarios'];
     $num_comentarios = count($comentarios);
-    //$likes = $publicacion['likes'];
-    //$dislikes = $publicacion['dislikes'];
-    //$numlikes = count($likes);
-    //$numdislikes = count($dislikes);
+    $likes = $publicacion['likes'];
+    $dislikes = $publicacion['dislikes'];
+    $numlikes = count($likes);
+    $numdislikes = count($dislikes);
     
 
     if ($multimedia) {
