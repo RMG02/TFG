@@ -51,8 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $_SESSION['error'] = "Error al crear la publicación.";
         }
-        header('Location: ../Vista/Principal.php');
-        exit;
+        if($_POST['principal']){
+            header('Location: ../Vista/Principal.php');
+            exit;
+        }
+        else{
+            header('Location: ../Vista/perfil.php');
+            exit;
+        }
     }
     
     
@@ -79,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = "Error al editar la publicación.";
         }
 
-        if(isset($_POST['principal'])){
+        if($_POST['principal']){
             header('Location: ../Vista/Principal.php');
             exit;
         }
@@ -122,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['error'] = "Error al eliminar la publicación.";
             }
     
-            if (isset($_POST['principal'])) {
+            if ($_POST['principal']) {
                 header('Location: ../Vista/Principal.php');
                 exit;
             } else {
@@ -208,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = "Error al añadir el comentario.";
         }
         
-        if(isset($_POST['principal'])){
+        if($_POST['principal']){
             header('Location: ../Vista/Principal.php');
             exit;
         }
@@ -232,7 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = "Error al eliminar el comentario.";
         }
         
-        if(isset($_POST['principal'])){
+        if($_POST['principal']){
             header('Location: ../Vista/Principal.php');
             exit;
         }
@@ -265,7 +271,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = "Error al editar el comentario.";
         }
         
-        if(isset($_POST['principal'])){
+        if($_POST['principal']){
             header('Location: ../Vista/Principal.php');
             exit;
         }

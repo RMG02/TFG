@@ -40,6 +40,7 @@ $contenidoPrincipal = <<<EOS
          <span class="close">&times;</span>
          <form class="formulario" method="post" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php"> 
             <textarea name="contenido" placeholder="Escribe tu publicación aquí..."></textarea> 
+            <input type="hidden" name="principal" value="$principal">
             <input type="file" name="archivo"> 
             <button type="submit" name="crearPublicacion">Publicar</button> 
          </form> 
@@ -250,7 +251,7 @@ foreach ($publicaciones as $publicacion) {
                             <h3>Respuestas</h3>
             EOS;
             if (!empty($comentario['respuestas'])) {
-                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $principal, $id_com, $id);
+                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $principal, $id);
             }
             $contenidoPrincipal.= <<<EOS
                         </div>

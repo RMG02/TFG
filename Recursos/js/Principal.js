@@ -10,7 +10,9 @@ function Perfil() {
     var editar_com_rec = document.getElementsByName("editar_com_rec");
     var responder = document.getElementsByName("responder");
     var comentarios_rec = document.getElementsByName("comentario_rec");
-    console.log("responder ", responder);
+    var responder_rec = document.getElementsByName("responder_rec");
+
+    console.log("responder rec", responder_rec);
 
     if (boton) {
         boton.onclick = function() {
@@ -70,7 +72,6 @@ function Perfil() {
             };
             j++;
         }
-        console.log("el i es:", i)
         responder[i].onclick = function() {
             var modal = document.getElementById("respuesta-" + i);
             console.log(modal);
@@ -101,6 +102,11 @@ function Perfil() {
                 }
                 
             }
+
+            responder_rec[currentI].onclick = function() {
+                var modal = document.getElementById("respuesta-" + currentJ + "-" + currentK);
+                modal.style.display = "block"; 
+            };
 
             i++;
             k++;

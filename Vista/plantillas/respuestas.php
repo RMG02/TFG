@@ -1,5 +1,5 @@
 <?php
-function mostrarRespuestas($comentarios, $modalComId, $modalResId, $principal, $id_origen, $id_publi) {
+function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $principal, $id_publi) {
     $contenido = "";
     foreach ($comentarios as $comentario) {
         $usuario = $comentario['usuario'];
@@ -55,7 +55,7 @@ function mostrarRespuestas($comentarios, $modalComId, $modalResId, $principal, $
                             <input type="file" name="nuevo_archivo"> 
                             <input type="hidden" name="id_comen" value="$id_com"> 
                             <input type="hidden" name="principal" value="$principal">
-                            <input type="hidden" name="esRespuesta" value="$principal">
+                            <input type="hidden" name="esRespuesta" value="true">
                             <input type="hidden" name="id_publi" value="$id_publi">
                             <button type="submit" class="botonPubli" name="editarComentario">Guardar cambios</button>
                         </form>
@@ -74,14 +74,14 @@ function mostrarRespuestas($comentarios, $modalComId, $modalResId, $principal, $
         }
 
         $contenido .= <<<EOS
-                        <button type="button" class="botonPubli" name="responder_rec" id="responder-$modalComId">Responder</button>
-                        <div id="respuesta-$modalComId" class="modal">
+                        <button type="button" class="botonPubli" name="responder_rec">Responder</button>
+                        <div id="respuesta-$modalComId-$modalResId" class="modal">
                             <div class="modal-content">
                                 <span class="close">&times;</span>
                                 <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
-                                    <input type="hidden" name="id_publi" value="">
+                                    <input type="hidden" name="id_publi" value="$id_publi">
                                     <input type="hidden" name="id_comen" value="$id_com"> 
-                                    <input type="hidden" name="principal" value="true">
+                                    <input type="hidden" name="principal" value="$principal">
                                     <input type="hidden" name="esRespuesta" value="true">
                                     <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
                                     <input type="file" name="archivo"> 
@@ -93,20 +93,22 @@ function mostrarRespuestas($comentarios, $modalComId, $modalResId, $principal, $
                         <h3>Respuestas</h3>
                        
         EOS;
-        $contenido .= <<<EOS
-                    </div>
-                </div>
-            </div>
-        EOS;
-        if (!empty($comentario['respuestas'])) {
-
-            //$contenido .= mostrarRespuestas($comentario['respuestas'], $modalResId, 0);
-        }
-
-        $modalResId++;
         
+        if (!empty($comentario['respuestas'])) {
+            $modalResId++;           
+            $contenido .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $principal, $id_publi);        
+        }
+        else{
+            $modalResId++; 
+           
+        }
+        $contenido.= <<<EOS
+        </div>
+    </div>
+</div>
+EOS;
     }
-
+    
     return $contenido;
 }
 ?>
