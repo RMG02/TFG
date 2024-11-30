@@ -187,7 +187,7 @@ class Publicacion {
         
     public function Likes($nick,$publi){
         $Id = new ObjectId($publi);
-        $filter = ['_id' => $publi];
+        $filter = ['_id' => $Id];
         $update =
                 [
                     '$push' => ['likes' => $nick], // Agregar el usuario al array
@@ -198,7 +198,7 @@ class Publicacion {
     }
     public function DisLikes($nick,$publi){
         $Id = new ObjectId($publi);
-        $filter = ['_id' => $publi];
+        $filter = ['_id' => $Id];
         $update = 
                 [
                     '$push' => ['dislikes' => $nick], // Agregar el usuario al array
@@ -209,7 +209,7 @@ class Publicacion {
     }
     public function Likesq($nick,$publi){
         $Id = new ObjectId($publi);
-        $filter = ['_id' => $publi];
+        $filter = ['_id' => $Id];
         $update =
                 
                 [
@@ -221,7 +221,7 @@ class Publicacion {
     
     public function DisLikesq($nick,$publi){
         $Id = new ObjectId($publi);
-        $filter = ['_id' => $publi];
+        $filter = ['_id' => $Id];
         $update =
                 [
                     '$pull' => ['dislikes' => $nick]

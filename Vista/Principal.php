@@ -61,8 +61,8 @@ foreach ($publicaciones as $publicacion) {
     $num_comentarios = count($comentarios);
     $likes = $publicacion['likes'];
     $dislikes = $publicacion['dislikes'];
-    $numlikes = count($likes);
-    $numdislikes = count($dislikes);
+    $numlikes = count($likes ?? []);
+    $numdislikes = count($dislikes ?? []);
     
 
     if ($multimedia) {
