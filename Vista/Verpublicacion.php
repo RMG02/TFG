@@ -29,43 +29,24 @@ if (isset($_SESSION['mensaje'])) {
 date_default_timezone_set('Europe/Madrid');
 
 
-$publicaciones = json_decode($_SESSION['publicaciones'], true);
 $tituloPagina = "Página Principal";
 
 $contenidoPrincipal = <<<EOS
-   <h1>Bienvenido {$_SESSION['nick']}</h1>
-   <button id="publicaBtn">Publica</button> 
-   <div id="formPublicacion" class="modal"> 
-      <div class="modal-content">
-         <span class="close">&times;</span>
-         <form class="formulario" method="post" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php"> 
-            <textarea name="contenido" placeholder="Escribe tu publicación aquí..."></textarea> 
-            <input type="hidden" name="principal" value="$principal">
-            <input type="file" name="archivo"> 
-            <button type="submit" name="crearPublicacion">Publicar</button> 
-         </form> 
-      </div>
-   </div>
+   <h1>Tweet</h1>
 
-<input type="text" id="buscador" onkeyup="filtrarUsuarios()" placeholder="Buscar por nick...">
-<div id="publicaciones">
 EOS;
-
-foreach ($publicaciones as $publicacion) {
     $nickuser = $_SESSION['nick'];
-    $nick = $publicacion['nick'];
-    $texto = $publicacion['contenido'];
-    $id = $publicacion['_id']['$oid'];
-    $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
-    $multimedia = $publicacion['multimedia'] ?? '';
-    $comentarios = $publicacion['comentarios'];
-    $num_comentarios = count($comentarios);
-    $likes = $publicacion['likes'];
-    $dislikes = $publicacion['dislikes'];
-    $numlikes = count($likes ?? []);
-    $numdislikes = count($dislikes ?? []);
-    
-
+    $nick = $_POST['nick'];
+    $texto = $_POST['texto'];
+    $id = $_POST['id'];
+    $Hora = $_POST['hora'];
+    $multimedia = $_POST['multimedia'];
+    $comentarios = $_POST['comentarios'];
+    $num_comentarios = $_POST['num_comentarios'];
+    $likes = $_POST['likes'];
+    $dislikes = $_POST['dislikes'];
+    $numlikes = $_POST['numlikes'];
+    $numdislikes = $_POST['numdislikes'];
     if ($multimedia) {
         $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
         if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
@@ -128,20 +109,6 @@ foreach ($publicaciones as $publicacion) {
                             </form>
                         </div>
                     </div>
-                    <form method="POST" action="../Vista/Verpublicacion.php" class="formulario">
-                            <input type="hidden" name="nick" value="$nick">
-                            <input type="hidden" name="texto" value="$texto">
-                            <input type="hidden" name="hora" value="$Hora">
-                            <input type="hidden" name="multimedia" value="$multimedia">
-                            <input type="hidden" name="comentarios" value='<?php echo json_encode($comentarios); ?>'>
-                            <input type="hidden" name="likes" value='<?php echo json_encode($likes); ?>'>
-                            <input type="hidden" name="dislikes" value='<?php echo json_encode($dislikes); ?>'>
-                            <input type="hidden" name="num_comentarios" value="$num_comentarios">
-                            <input type="hidden" name="numlikes" value="$numlikes">
-                            <input type="hidden" name="numdislikes" value="$numdislikes">
-                            <input type="hidden" name="id" value="$id">
-                            <button type="submit" class="botonPubli" name="Verpublicacion">Ver Publicación</button>
-                    </form>
     EOS;
 
     if ($nick == $_SESSION['nick']) {
@@ -152,7 +119,6 @@ foreach ($publicaciones as $publicacion) {
                             <input type="hidden" name="multi" value="../Recursos/multimedia/$multimedia"> 
                             <button type="submit" class="botonPubli" name="eliminarPublicacion">Eliminar publicación</button>
                         </form>
-
                         <button type="button" class="botonPubli" name="editar">Editar publicación</button>
                         <div id="edit-$modalId" class="modal">
                             <div class="modal-content">
@@ -266,7 +232,7 @@ foreach ($publicaciones as $publicacion) {
                             <h3>Respuestas</h3>
             EOS;
             if (!empty($comentario['respuestas'])) {
-                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $principal, $id);
+                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $principal, $id_com, $id);
             }
             $contenidoPrincipal.= <<<EOS
                         </div>
@@ -286,7 +252,7 @@ foreach ($publicaciones as $publicacion) {
             </div>
     EOS;
     $modalId++;
-}
+
 
 if ($error != "") {
     $contenidoPrincipal .= <<<EOS
