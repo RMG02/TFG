@@ -22,6 +22,13 @@ if (isset($_SESSION['publicacionesUsuario'])) {
     unset($_SESSION['publicacionesUsuario']);
 }
 
+function obtenerPublicacion($id) {
+    global $publicacionModelo;
+    $Id = new ObjectId($id);
+    $resultado = $publicacionModelo->obtenerPublicacion($Id);
+    return $resultado;
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['crearPublicacion'])) {
@@ -108,10 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    function obtenerPublicacion($id) {
-        $Id = new ObjectId($id);
-        return $this->collection->findOne(['_id' => $Id]);
-    }
     
     if (isset($_POST['eliminarPublicacion'])) {
         $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);

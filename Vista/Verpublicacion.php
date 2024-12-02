@@ -5,11 +5,12 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['publicaciones'])) {
-    header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true');
-    exit;
- }
+   header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true');
+   exit;
+}
 
 require_once __DIR__ . "/plantillas/respuestas.php";
+require_once __DIR__ . "../../Modelo/Publicacion.php";
 
 $modalId = 0;
 $modalComId = 0;
@@ -28,7 +29,7 @@ if (isset($_SESSION['mensaje'])) {
 $publicacion = "";
 
 $idPublicacion = $_GET['id'];
-$publicacion = obtenerPublicacion($idPublicacion);
+    $publicacion = obtenerPublicacion($idPublicacion);
 
 date_default_timezone_set('Europe/Madrid');
 
