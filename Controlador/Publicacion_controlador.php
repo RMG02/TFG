@@ -107,6 +107,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     }
+
+    function obtenerPublicacion($id) {
+        $Id = new ObjectId($id);
+        return $this->collection->findOne(['_id' => $Id]);
+    }
     
     if (isset($_POST['eliminarPublicacion'])) {
         $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);

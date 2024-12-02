@@ -10,6 +10,7 @@ if (!isset($_SESSION['publicaciones'])) {
 }
 
 require_once __DIR__ . "/plantillas/respuestas.php";
+require_once __DIR__ . "../../Controlador/Publicacion_controlador.php";
 
 $modalId = 0;
 $modalComId = 0;
@@ -25,6 +26,10 @@ if (isset($_SESSION['mensaje'])) {
     $mensaje = $_SESSION['mensaje'];
     unset($_SESSION['mensaje']);
 }
+$publicacion = "";
+
+$idPublicacion = $_GET['id'];
+    $publicacion = obtenerPublicacion($idPublicacion);
 
 date_default_timezone_set('Europe/Madrid');
 
@@ -35,31 +40,34 @@ $contenidoPrincipal = <<<EOS
    <h1>Tweet</h1>
 
 EOS;
-    $nickuser = $_SESSION['nick'];
-    $nick = $_POST['nick'];
-    $texto = $_POST['texto'];
-    $id = $_POST['id'];
-    $Hora = $_POST['hora'];
-    $multimedia = $_POST['multimedia'];
-    $comentarios = $_POST['comentarios'];
+$nickuser = $_SESSION['nick'];
+
+    $nick = $publicacion['nick'];
+    $texto = $publicacion['texto'];
+    $id = $publicacion['id'];
+    $Hora = $publicacion['hora'];
+    $multimedia = $publicacion['multimedia'];
+    $comentarios = $publicacion['comentarios'];
     $comentarios = json_decode($comentarios, true);
-    $num_comentarios = $_POST['num_comentarios'];
-    $likes = $_POST['likes'];
+    $num_comentarios = count($comentarios);
+    $likes = $publicacion['likes'];
     $likes = json_decode($likes, true);
-    $dislikes = $_POST['dislikes'];
+    $dislikes = $publicacion['dislikes'];
     $dislikes = json_decode($dislikes, true);
-    $numlikes = $_POST['numlikes'];
-    $numdislikes = $_POST['numdislikes'];
-    if ($multimedia) {
-        $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
-        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-            $multi = "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación'>";
-        } elseif (in_array($extension, ['mp4', 'webm'])) {
-            $multi = "<video controls><source src='../Recursos/multimedia/$multimedia' type='video/$extension'></video>";
-        }
-    } else {
-        $multi = '';
+    $numlikes = count($likes);
+    $numdislikes = count($dislikes);
+
+if ($multimedia) {
+    $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
+    if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+        $multi = "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación'>";
+    } elseif (in_array($extension, ['mp4', 'webm'])) {
+        $multi = "<video controls><source src='../Recursos/multimedia/$multimedia' type='video/$extension'></video>";
     }
+} else {
+    $multi = '';
+}
+    
 
     $contenidoPrincipal .= <<<EOS
         <div class="tweet" id="publistas">

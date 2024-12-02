@@ -32,6 +32,8 @@ date_default_timezone_set('Europe/Madrid');
 $publicaciones = json_decode($_SESSION['publicaciones'], true);
 $tituloPagina = "Página Principal";
 
+
+
 $contenidoPrincipal = <<<EOS
    <h1>Bienvenido {$_SESSION['nick']}</h1>
    <button id="publicaBtn">Publica</button> 
@@ -64,6 +66,7 @@ foreach ($publicaciones as $publicacion) {
     $dislikes = $publicacion['dislikes'];
     $numlikes = count($likes ?? []);
     $numdislikes = count($dislikes ?? []);
+    $urlTweet = "localhost:3000/Verpublicacion.php?id=$id";
     $jsonComentarios = htmlspecialchars(json_encode($comentarios), ENT_QUOTES, 'UTF-8');
     $jsonLikes = htmlspecialchars(json_encode($likes), ENT_QUOTES, 'UTF-8');
     $jsonDislikes = htmlspecialchars(json_encode($dislikes), ENT_QUOTES, 'UTF-8');
@@ -131,7 +134,7 @@ foreach ($publicaciones as $publicacion) {
                             </form>
                         </div>
                     </div>
-                    <form method="POST" action="../Vista/Verpublicacion.php" class="formulario">
+                    <form method="POST" action="../Vista/Verpublicacion.php?id=$id" class="formulario">
                             <input type="hidden" name="nick" value="$nick">
                             <input type="hidden" name="texto" value="$texto">
                             <input type="hidden" name="hora" value="$Hora">
@@ -142,7 +145,6 @@ foreach ($publicaciones as $publicacion) {
                             <input type="hidden" name="num_comentarios" value="$num_comentarios">
                             <input type="hidden" name="numlikes" value="$numlikes">
                             <input type="hidden" name="numdislikes" value="$numdislikes">
-                            <input type="hidden" name="id" value="$id">
                             <button type="submit" class="botonPubli" name="Verpublicacion">Ver Publicación</button>
                     </form>
     EOS;
@@ -175,6 +177,14 @@ foreach ($publicaciones as $publicacion) {
     }
     $contenidoPrincipal .= <<<EOS
         <hr>
+        <div class="tweet" id="publistas">
+            
+            <div class="share-icon">
+                <input type="text" value="$urlTweet" readonly>
+                <button onclick="copiarEnlace(this.previousElementSibling)">Copiar enlace</button>
+            </div>
+            
+        </div>
         <h3>Comentarios</h3>       
     EOS;
 
