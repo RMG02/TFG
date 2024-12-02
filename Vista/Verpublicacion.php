@@ -42,9 +42,12 @@ EOS;
     $Hora = $_POST['hora'];
     $multimedia = $_POST['multimedia'];
     $comentarios = $_POST['comentarios'];
+    $comentarios = json_decode($comentarios, true);
     $num_comentarios = $_POST['num_comentarios'];
     $likes = $_POST['likes'];
+    $likes = json_decode($likes, true);
     $dislikes = $_POST['dislikes'];
+    $dislikes = json_decode($dislikes, true);
     $numlikes = $_POST['numlikes'];
     $numdislikes = $_POST['numdislikes'];
     if ($multimedia) {
