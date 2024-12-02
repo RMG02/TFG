@@ -24,8 +24,7 @@ if (isset($_SESSION['publicacionesUsuario'])) {
 
 function obtenerPublicacion($id) {
     global $publicacionModelo;
-    $Id = new ObjectId($id);
-    $resultado = $publicacionModelo->obtenerPublicacion($Id);
+    $resultado = $publicacionModelo->obtenerPublicacion($id);
     return $resultado;
 }
 

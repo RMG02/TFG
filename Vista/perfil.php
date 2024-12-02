@@ -4,6 +4,10 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+if (!isset($_SESSION['login']) || !$_SESSION['login']) {
+    header("Location: enter.php");
+    exit;
+}
 
 if (!isset($_SESSION['publicacionesUsuario'])) {
     header('Location: ../Controlador/Publicacion_controlador.php?PubliUsuario=true');
@@ -68,17 +72,23 @@ $contenidoPrincipal = <<<EOS
 EOS;
 
 foreach ($publicaciones as $publicacion) {
+    $nickuser = $_SESSION['nick'];
     $nick = $publicacion['nick'];
     $texto = $publicacion['contenido'];
     $id = $publicacion['_id']['$oid'];
     $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
+    $multimedia = $publicacion['multimedia'] ?? '';
     $comentarios = $publicacion['comentarios'];
     $num_comentarios = count($comentarios);
-    $multimedia = $publicacion['multimedia'] ?? '';
     $likes = $publicacion['likes'];
     $dislikes = $publicacion['dislikes'];
     $numlikes = count($likes ?? []);
     $numdislikes = count($dislikes ?? []);
+    $host = $_SERVER['HTTP_HOST']; 
+    $urlTweet = "$host/Vista/Verpublicacion.php?id=$id";
+    $jsonComentarios = htmlspecialchars(json_encode($comentarios), ENT_QUOTES, 'UTF-8');
+    $jsonLikes = htmlspecialchars(json_encode($likes), ENT_QUOTES, 'UTF-8');
+    $jsonDislikes = htmlspecialchars(json_encode($dislikes), ENT_QUOTES, 'UTF-8');
 
     if ($multimedia) {
         $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
@@ -142,11 +152,13 @@ foreach ($publicaciones as $publicacion) {
                             </form>
                         </div>
                     </div>
+                    
                     <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario"> 
                         <input type="hidden" name="id_publi" value="$id"> 
                         <input type="hidden" name="multi" value="../Recursos/multimedia/$multimedia"> 
                         <button type="submit" class="botonPubli" name="eliminarPublicacion">Eliminar publicación</button> 
                     </form>
+
                     <button type="button" class="botonPubli" name="editar">Editar publicación</button>
                     <div id="edit-$modalId" class="modal">
                         <div class="modal-content">
@@ -162,6 +174,17 @@ foreach ($publicaciones as $publicacion) {
                         </div>
                     </div>
                     <hr>
+                    <div class="comp" id="publicomp">
+                        <form method="GET" action="Verpublicacion.php" class="formulario">
+                            <input type="hidden" name="id" value="<?= $id ?>">
+                            <button type="submit" class="botonPubli">Ver Publicación</button>
+                        </form>
+                        <div class="share-icon">
+                            <input type="text" value="$urlTweet" readonly>
+                            <button onclick="copiarEnlace(this.previousElementSibling)">Copiar enlace</button>
+                        </div>
+                        
+                    </div>
                     <h3>Comentarios</h3>       
 
     EOS;

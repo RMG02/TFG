@@ -4,6 +4,11 @@ if (session_status() == PHP_SESSION_NONE) {
    session_start();
 }
 
+if (!isset($_SESSION['login']) || !$_SESSION['login']) {
+    header("Location: enter.php");
+    exit;
+}
+
 if (!isset($_SESSION['publicaciones'])) {
    header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true');
    exit;
@@ -67,7 +72,7 @@ foreach ($publicaciones as $publicacion) {
     $numlikes = count($likes ?? []);
     $numdislikes = count($dislikes ?? []);
     $host = $_SERVER['HTTP_HOST']; 
-    $urlTweet = "$host/Verpublicacion.php?id=$id";
+    $urlTweet = "$host/Vista/Verpublicacion.php?id=$id";
     $jsonComentarios = htmlspecialchars(json_encode($comentarios), ENT_QUOTES, 'UTF-8');
     $jsonLikes = htmlspecialchars(json_encode($likes), ENT_QUOTES, 'UTF-8');
     $jsonDislikes = htmlspecialchars(json_encode($dislikes), ENT_QUOTES, 'UTF-8');
@@ -135,9 +140,6 @@ foreach ($publicaciones as $publicacion) {
                             </form>
                         </div>
                     </div>
-                    <form method="POST" action="../Vista/Verpublicacion.php?id=$id" class="formulario">
-                            <button type="submit" class="botonPubli" name="Verpublicacion">Ver Publicación</button>
-                    </form>
     EOS;
 
     if ($nick == $_SESSION['nick']) {
@@ -168,8 +170,10 @@ foreach ($publicaciones as $publicacion) {
     }
     $contenidoPrincipal .= <<<EOS
         <hr>
-        <div class="tweet" id="publistas">
-            
+        <div class="comp" id="publicomp">
+            <form method="POST" action="../Vista/Verpublicacion.php?id=$id" class="formulario">
+                            <button type="submit" class="botonPubli" name="Verpublicacion">Ver Publicación</button>
+            </form>
             <div class="share-icon">
                 <input type="text" value="$urlTweet" readonly>
                 <button onclick="copiarEnlace(this.previousElementSibling)">Copiar enlace</button>

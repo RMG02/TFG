@@ -3,6 +3,10 @@
 if (session_status() == PHP_SESSION_NONE) {
    session_start();
 }
+if (!isset($_SESSION['login']) || !$_SESSION['login']) {
+    header("Location: enter.php");
+    exit;
+}
 
 if (!isset($_SESSION['publicaciones'])) {
    header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true');
@@ -10,7 +14,7 @@ if (!isset($_SESSION['publicaciones'])) {
 }
 
 require_once __DIR__ . "/plantillas/respuestas.php";
-require_once __DIR__ . "../../Modelo/Publicacion.php";
+require_once __DIR__ . "../../Controlador/Publicacion_controlador.php";
 
 $modalId = 0;
 $modalComId = 0;
@@ -29,7 +33,7 @@ if (isset($_SESSION['mensaje'])) {
 $publicacion = "";
 
 $idPublicacion = $_GET['id'];
-    $publicacion = obtenerPublicacion($idPublicacion);
+$publicacion = obtenerPublicacion($idPublicacion);
 
 date_default_timezone_set('Europe/Madrid');
 
@@ -40,20 +44,16 @@ $contenidoPrincipal = <<<EOS
    <h1>Tweet</h1>
 
 EOS;
-$nickuser = $_SESSION['nick'];
-
+    $nickuser = $_SESSION['nick'];
     $nick = $publicacion['nick'];
-    $texto = $publicacion['texto'];
-    $id = $publicacion['id'];
-    $Hora = $publicacion['hora'];
+    $texto = $publicacion['contenido'];
+    $id = $publicacion['_id'];
+    $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
     $multimedia = $publicacion['multimedia'];
     $comentarios = $publicacion['comentarios'];
-    $comentarios = json_decode($comentarios, true);
     $num_comentarios = count($comentarios);
     $likes = $publicacion['likes'];
-    $likes = json_decode($likes, true);
     $dislikes = $publicacion['dislikes'];
-    $dislikes = json_decode($dislikes, true);
     $numlikes = count($likes);
     $numdislikes = count($dislikes);
 
