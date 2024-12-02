@@ -15,7 +15,7 @@ class Publicacion {
         return $this->collection->insertOne($DatosPublicacion);
     }
 
-    public function obtenerPublicacion($id) {
+    function obtenerPublicacion($id) {
         $Id = new ObjectId($id);
         return $this->collection->findOne(['_id' => $Id]);
     }

@@ -66,7 +66,8 @@ foreach ($publicaciones as $publicacion) {
     $dislikes = $publicacion['dislikes'];
     $numlikes = count($likes ?? []);
     $numdislikes = count($dislikes ?? []);
-    $urlTweet = "localhost:3000/Verpublicacion.php?id=$id";
+    $host = $_SERVER['HTTP_HOST']; 
+    $urlTweet = "$host/Verpublicacion.php?id=$id";
     $jsonComentarios = htmlspecialchars(json_encode($comentarios), ENT_QUOTES, 'UTF-8');
     $jsonLikes = htmlspecialchars(json_encode($likes), ENT_QUOTES, 'UTF-8');
     $jsonDislikes = htmlspecialchars(json_encode($dislikes), ENT_QUOTES, 'UTF-8');
@@ -135,16 +136,6 @@ foreach ($publicaciones as $publicacion) {
                         </div>
                     </div>
                     <form method="POST" action="../Vista/Verpublicacion.php?id=$id" class="formulario">
-                            <input type="hidden" name="nick" value="$nick">
-                            <input type="hidden" name="texto" value="$texto">
-                            <input type="hidden" name="hora" value="$Hora">
-                            <input type="hidden" name="multimedia" value="$multimedia">
-                            <input type="hidden" name="comentarios" value='$jsonComentarios'>
-                            <input type="hidden" name="likes" value='$jsonLikes'>
-                            <input type="hidden" name="dislikes" value='$jsonDislikes'>
-                            <input type="hidden" name="num_comentarios" value="$num_comentarios">
-                            <input type="hidden" name="numlikes" value="$numlikes">
-                            <input type="hidden" name="numdislikes" value="$numdislikes">
                             <button type="submit" class="botonPubli" name="Verpublicacion">Ver Publicación</button>
                     </form>
     EOS;
