@@ -69,10 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (isset($_POST['Verpubli'])) {
-        $id = $_POST['id_publi']; 
-        header("Location: ../Vista/Verpublicacion.php?id=$id"); 
-        exit;
-    }
+    $id = $_POST['id_publi']; 
+    header("Location: ../Vista/Verpublicacion.php?id=$id"); 
+    exit;
+}
     
     if(isset($_POST['editarPublicacion'])){
         $archivo = $_FILES['nuevo_archivo'];

@@ -111,7 +111,7 @@ foreach ($publicaciones as $publicacion) {
                 $multi
                 <p>$texto</p>
                 <div class="comentarios-icon">
-                    <i class="fa fa-comments"></i> $num_comentarios
+                    <i class="fas fa-comments"></i> $num_comentarios
                 </div>
             </div>
             <div class="reacciones-icon">
