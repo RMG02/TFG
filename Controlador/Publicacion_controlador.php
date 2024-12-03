@@ -30,6 +30,11 @@ function obtenerPublicacion($id) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    if (isset($_POST['Verpubli'])) {
+        $idn = $_POST['id_publi']; 
+        header("Location: ../Vista/Verpublicacion.php?id=$idn"); 
+        exit;
+    }
 
     if (isset($_POST['crearPublicacion'])) {
         $archivo = $_FILES['archivo'];
