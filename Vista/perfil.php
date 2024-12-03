@@ -181,8 +181,8 @@ foreach ($publicaciones as $publicacion) {
                             <button type="submit" class="botonPubli" name="Verpubli">Ver Publicación</button>
                         </form>
                         <div class="share-icon">
-                            <input type="text" value="$urlTweet" readonly>
-                            <button onclick="copiarEnlace(this.previousElementSibling)">Copiar enlace</button>
+                            <input type="hidden" value="$urlTweet" readonly>
+                            <button onclick="copiarEnlace(this.previousElementSibling)"><i class="fas fa-share-alt"></i></button>
                         </div>
                     </div>
                     <h3>Comentarios</h3>       

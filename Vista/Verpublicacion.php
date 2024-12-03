@@ -8,11 +8,6 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
     exit;
 }
 
-if (!isset($_SESSION['publicaciones'])) {
-   header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true');
-   exit;
-}
-
 require_once __DIR__ . "/plantillas/respuestas.php";
 require_once __DIR__ . "../../Controlador/Publicacion_controlador.php";
 
@@ -154,8 +149,8 @@ if ($multimedia) {
         <hr>
         <div class="comp" id="publicomp">
             <div class="share-icon">
-                <input type="text" value="$urlTweet" readonly>
-                <button onclick="copiarEnlace(this.previousElementSibling)">Copiar enlace</button>
+                <input type="hidden" value="$urlTweet" readonly>
+                <button onclick="copiarEnlace(this.previousElementSibling)"><i class="fas fa-share-alt"></i></button>
             </div>
             
         </div>
