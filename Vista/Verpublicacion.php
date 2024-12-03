@@ -57,6 +57,8 @@ EOS;
     $dislikes = $publicacion['dislikes'];
     $numlikes = count($likes);
     $numdislikes = count($dislikes);
+    $host = $_SERVER['HTTP_HOST']; 
+    $urlTweet = "$host/Vista/Verpublicacion.php?id=$id";
 
 if ($multimedia) {
     $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
@@ -150,6 +152,13 @@ if ($multimedia) {
     }
     $contenidoPrincipal .= <<<EOS
         <hr>
+        <div class="comp" id="publicomp">
+            <div class="share-icon">
+                <input type="text" value="$urlTweet" readonly>
+                <button onclick="copiarEnlace(this.previousElementSibling)">Copiar enlace</button>
+            </div>
+            
+        </div>
         <h3>Comentarios</h3>       
     EOS;
 
