@@ -18,7 +18,7 @@ require_once __DIR__ . "../../Controlador/Publicacion_controlador.php";
 
 $modalId = 0;
 $modalComId = 0;
-$principal = true;
+$principal = false;
 $error = "";
 $mensaje = "";
 if (isset($_SESSION['error'])) {

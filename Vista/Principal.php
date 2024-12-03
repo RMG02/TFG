@@ -107,12 +107,12 @@ foreach ($publicaciones as $publicacion) {
                         <button type="submit" name="darlike" class="btn-like">
                             <input type="hidden" name="id_publi" value="$id">
                             <input type="hidden" name="nick_user" value="$nickuser">
-                            <i class="fa fa-thumbs-up"></i> $numlikes
+                            <i class="fas fa-thumbs-up"></i> $numlikes
                         </button>
                         <button type="submit" name="dardislike" class="btn-dislike">
                             <input type="hidden" name="id_publi" value="$id">
                             <input type="hidden" name="nick_user" value="$nickuser">
-                            <i class="fa fa-thumbs-down"></i> $numdislikes
+                            <i class="fas fa-thumbs-down"></i> $numdislikes
                         </button>
                     </form>
             </div>
@@ -172,7 +172,7 @@ foreach ($publicaciones as $publicacion) {
         <hr>
         <div class="comp" id="publicomp">
             <form method="POST" action="../Vista/Verpublicacion.php?id=$id" class="formulario">
-                            <button type="submit" class="botonPubli" name="Verpublicacion">Ver Publicación</button>
+                <button type="submit" class="botonPubli" name="Verpublicacion">Ver Publicación</button>
             </form>
             <div class="share-icon">
                 <input type="text" value="$urlTweet" readonly>

@@ -15,7 +15,7 @@ if (!isset($_SESSION['publicacionesUsuario'])) {
  }
  
  require_once __DIR__ . "/plantillas/respuestas.php";
- $principal = false;
+ $principal = true;
  $error = "";
  $mensaje = "";
  if (isset($_SESSION['error'])) {
@@ -120,12 +120,12 @@ foreach ($publicaciones as $publicacion) {
                         <button type="submit" name="darlike" class="btn-like">
                             <input type="hidden" name="id_publi" value="$id">
                             <input type="hidden" name="nick_user" value="$nick">
-                            <i class="fa fa-thumbs-up"></i> $numlikes
+                            <i class="fas fa-thumbs-up"></i> $numlikes
                         </button>
                         <button type="submit" name="dardislike" class="btn-dislike">
                             <input type="hidden" name="id_publi" value="$id">
                             <input type="hidden" name="nick_user" value="$nick">
-                            <i class="fa fa-thumbs-down"></i> $numdislikes
+                            <i class="fas fa-thumbs-down"></i> $numdislikes
                         </button>
                     </form>
             </div>
@@ -175,15 +175,15 @@ foreach ($publicaciones as $publicacion) {
                     </div>
                     <hr>
                     <div class="comp" id="publicomp">
-                        <form method="GET" action="Verpublicacion.php" class="formulario">
-                            <input type="hidden" name="id" value="<?= $id ?>">
-                            <button type="submit" class="botonPubli">Ver Publicación</button>
+                        <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                            <input type="hidden" name="principal" value="false">
+                            <input type="hidden" name="id_publi" value="$id"> 
+                            <button type="submit" class="botonPubli" name="Verpubli">Ver Publicación</button>
                         </form>
                         <div class="share-icon">
                             <input type="text" value="$urlTweet" readonly>
                             <button onclick="copiarEnlace(this.previousElementSibling)">Copiar enlace</button>
                         </div>
-                        
                     </div>
                     <h3>Comentarios</h3>       
 
