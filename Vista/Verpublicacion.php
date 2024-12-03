@@ -32,13 +32,14 @@ if (isset($_SESSION['mensaje'])) {
 }
 $publicacion = "";
 
-$idPublicacion = $_GET['id'];
+$idPublicacion = $_GET['id'] ?? null;
 $publicacion = obtenerPublicacion($idPublicacion);
+
 
 date_default_timezone_set('Europe/Madrid');
 
 
-$tituloPagina = "Página Principal";
+$tituloPagina = "Tweet";
 
 $contenidoPrincipal = <<<EOS
    <h1>Tweet</h1>
