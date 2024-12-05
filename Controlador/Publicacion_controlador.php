@@ -22,19 +22,11 @@ if (isset($_SESSION['publicacionesUsuario'])) {
     unset($_SESSION['publicacionesUsuario']);
 }
 
-function obtenerPublicacion($id) {
-    global $publicacionModelo;
-    $resultado = $publicacionModelo->obtenerPublicacion($id);
-    return $resultado;
+if (isset($_SESSION['id_publi'])) {
+    unset($_SESSION['id_publi']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    if (isset($_POST['Verpubli'])) {
-        $idn = $_POST['id_publi']; 
-        header("Location: ../Vista/Verpublicacion.php?id=$idn"); 
-        exit;
-    }
 
     if (isset($_POST['crearPublicacion'])) {
         $archivo = $_FILES['archivo'];
@@ -99,14 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = "Error al editar la publicación.";
         }
 
-        if($_POST['principal']){
-            header('Location: ../Vista/Principal.php');
-            exit;
-        }
-        else{
-            header('Location: ../Vista/perfil.php');
-            exit;
-        }
+        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+        exit;
+        
     }
 
     function eliminarImagenes($comentarios) {
@@ -124,6 +111,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     
     if (isset($_POST['eliminarPublicacion'])) {
+
+        if (isset($_SESSION['id_publi'])) {
+            unset($_SESSION['id_publi']);
+        }
+
         $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
         $publicacion = json_decode(json_encode($resultado), true);
     
@@ -143,13 +135,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['error'] = "Error al eliminar la publicación.";
             }
     
-            if ($_POST['principal']) {
-                header('Location: ../Vista/Principal.php');
-                exit;
-            } else {
-                header('Location: ../Vista/perfil.php');
-                exit;
-            }
+           
+            header('Location: ../Vista/Principal.php');
+            exit;
+            
         }
     }
     
@@ -175,7 +164,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         else{
             $_SESSION['error'] = "Error al dar like.";
         }
-        header('Location: ../Vista/Principal.php');
+
+        if(isset($_POST['princiapl'])){
+            if($_POST['princiapl']){
+                header('Location: ../Vista/Principal.php');
+                exit;
+            }
+            header('Location: ../Vista/perfil.php');
+            exit;
+        }
+
+        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+        exit;    
     }
     
     if (isset($_POST['dardislike'])) {
@@ -198,7 +198,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         else{
             $_SESSION['error'] = "Error al dar dislike.";
         }
-        header('Location: ../Vista/Principal.php');
+        
+        if(isset($_POST['princiapl'])){
+            if($_POST['princiapl']){
+                header('Location: ../Vista/Principal.php');
+                exit;
+            }
+            header('Location: ../Vista/perfil.php');
+            exit;
+        }
+
+        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+        exit;  
         
     }
 
@@ -229,14 +240,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = "Error al añadir el comentario.";
         }
         
-        if($_POST['principal']){
-            header('Location: ../Vista/Principal.php');
-            exit;
-        }
-        else{
-            header('Location: ../Vista/perfil.php');
-            exit;
-        }
+        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+        exit;
     }
     
     if (isset($_POST['eliminarComentario'])) {
@@ -253,14 +258,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = "Error al eliminar el comentario.";
         }
         
-        if($_POST['principal']){
-            header('Location: ../Vista/Principal.php');
-            exit;
-        }
-        else{
-            header('Location: ../Vista/perfil.php');
-            exit;
-        }
+       
+        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+        exit;
     }
 
     if (isset($_POST['editarComentario'])) {
@@ -286,14 +286,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = "Error al editar el comentario.";
         }
         
-        if($_POST['principal']){
-            header('Location: ../Vista/Principal.php');
-            exit;
-        }
-        else{
-            header('Location: ../Vista/perfil.php');
-            exit;
-        }
+        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+        exit;
     }
 
     
@@ -314,6 +308,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         exit; 
     }
 
+    if(isset($_GET['publi_id'])){
+        $resultado = $publicacionModelo->obtenerPublicacion($_GET['id']);
+        $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+        header('Location: ../Vista/Verpublicacion.php'); 
+        exit; 
+        
+    }
     
 }
 

@@ -21,6 +21,7 @@ if (isset($_SESSION['publicacionesUsuario'])) {
     unset($_SESSION['publicacionesUsuario']);
 }
 
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if(isset($_POST['añadirUsuario']) && $admin){

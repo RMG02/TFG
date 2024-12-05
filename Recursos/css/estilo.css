@@ -148,6 +148,29 @@ footer p {
     align-items: center;
 }
 
+.error_div{
+    width: 100%;
+    background: #ffffff;
+}
+
+.error_div p{
+    width: 100%;
+    display: flex;
+    margin-top: 10px;
+    width: 100vw;
+    min-height: 30px;
+    border-radius: 10px;
+    padding: 10px;
+    background: #ff6860;
+    border: 2px solid #dc1818;
+    color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    
+}
+
 .mensaje {
     display: flex;
     margin-top: 10px;
@@ -162,6 +185,28 @@ footer p {
     font-weight: bold;
     justify-content: center;
     align-items: center;
+}
+
+.mensaje_div{
+    width: 100%;
+    background: #ffffff;
+}
+
+.mensaje_div p{
+    display: flex;
+    margin-top: 10px;
+    min-width: 300px;
+    min-height: 30px;
+    border-radius: 10px;
+    padding: 10px;
+    background: #1ef993;
+    border: 2px solid #10f014;
+    color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .panel{
@@ -246,6 +291,7 @@ footer p {
 
 .tweet-header {
     display: flex;
+    padding: 10px;
     justify-content: space-between;
     font-size: 14px;
     color: #657786;
@@ -391,4 +437,91 @@ footer p {
     display: block;
 }
 
+.tweet-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    position: relative;
+}
 
+.reacciones-icon {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.dropdown {
+    position: absolute;
+    right: 0;
+}
+
+.dropbtn {
+    background-color: transparent;
+    border: none;
+    color: #000; 
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%; 
+    right: 0;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc; 
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    font-size: 14px; /* Ajuste del tamaño de fuente para estandarizar */
+}
+
+.dropdown-content form button {
+    width: 100%; /* Asegura que el botón en el formulario tenga la misma anchura */
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+    padding: 12px 16px; /* Ajuste de padding para estandarizar */
+    font-size: 14px; /* Ajuste del tamaño de fuente para estandarizar */
+}
+
+
+.dropdown-content form:hover, .dropdown-content button:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.imagen-vista {
+    width: 600px; /* Ajusta el ancho a 150 píxeles */
+    height: auto; /* Mantiene la proporción de la imagen */
+}
+
+.imagen-respuesta {
+    width: 600px; /* Ajusta el ancho a 150 píxeles */
+    height: auto; /* Mantiene la proporción de la imagen */
+}
+
+.imagen-respuesta_rec {
+    width: 580px; /* Ajusta el ancho a 150 píxeles */
+    height: auto; /* Mantiene la proporción de la imagen */
+}
+
+.imagen-editar {
+    width: 300px; /* Ajusta el ancho a 150 píxeles */
+    height: auto; /* Mantiene la proporción de la imagen */
+}

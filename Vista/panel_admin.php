@@ -16,6 +16,7 @@ if (isset($_SESSION['mensaje'])) {
 }
 
 
+
 $tituloPagina = "Panel Admin";
 
 $contenidoPrincipal = <<<EOS

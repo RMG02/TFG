@@ -57,8 +57,3 @@ function form_publi(){
 
 document.addEventListener("DOMContentLoaded", form_publi);
 
-function copiarEnlace(input) {
-    input.select();
-    document.execCommand("copy");
-    alert("Enlace copiado: " + input.value);
-}

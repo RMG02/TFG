@@ -71,11 +71,32 @@ class Publicacion {
         
     }
 
+    private function eliminarComentariosMultimedia(&$comentarios) {
+        foreach ($comentarios as &$comentario) {
+            // Eliminar archivo multimedia del comentario
+            if (!empty($comentario['multimedia'])) {
+                $archivo = "../Recursos/multimedia/{$comentario['multimedia']}";
+                if (file_exists($archivo)) {
+                    unlink($archivo);
+                }
+            }
+    
+            // Si el comentario tiene respuestas, eliminarlas recursivamente
+            if (!empty($comentario['respuestas'])) {
+                $this->eliminarComentariosMultimedia($comentario['respuestas']);
+            }
+        }
+    }
+    
+
     private function eliminarRespuesta(&$comentarios, $id_com) {
 
         foreach ($comentarios as &$comentario) {
                 foreach($comentario['respuestas'] as $posicion => $respuesta){
                     if ($respuesta['id_comentario'] == $id_com) {
+                        if(!empty($respuesta['respuestas'])){
+                            $this->eliminarComentariosMultimedia($respuesta['respuestas']);
+                        }
                         $respuestasArray = $comentario['respuestas']->getArrayCopy(); 
                         array_splice($respuestasArray, $posicion, 1); 
                         $comentario['respuestas'] = new \MongoDB\Model\BSONArray($respuestasArray);
@@ -93,9 +114,9 @@ class Publicacion {
     public function eliminarComentario($id_publi, $id_com, $esRespuesta) {
         $id = new ObjectId($id_publi);
         $comentarioId = new ObjectId($id_com);
-        if($esRespuesta){
-            $publicacion = $this->collection->findOne(['_id' => $id]);
+        $publicacion = $this->collection->findOne(['_id' => $id]);
 
+        if($esRespuesta){
             if ($publicacion) {
                
                 if($this->eliminarRespuesta($publicacion['comentarios'], $comentarioId)){
@@ -105,12 +126,25 @@ class Publicacion {
             return false; 
 
         }
-        $update = [
-            '$pull' => [
-                'comentarios' => ['id_comentario' => $comentarioId]
-            ]
-        ];
-        return $this->collection->updateOne( ['_id' => $id], $update);
+        if($publicacion){
+            foreach ($publicacion['comentarios'] as &$comentario) {
+                if ($comentario['id_comentario'] == $id_com) {
+                    if(!empty($comentario['respuestas'])){
+                        $this->eliminarComentariosMultimedia($comentario['respuestas']);
+                    }
+                    
+                    $update = [
+                        '$pull' => [
+                            'comentarios' => ['id_comentario' => $comentarioId]
+                        ]
+                    ];
+                    return $this->collection->updateOne( ['_id' => $id], $update);
+                }
+            }
+            
+        }
+        return false;
+        
     }
 
     private function editarRespuesta(&$comentarios, $id_com, $texto, $media) {
