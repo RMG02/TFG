@@ -152,21 +152,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (in_array($_POST['nick_user'], $likesArray)) {
             // Si el usuario ya dio like, quitarlo
             $resultado = $publicacionModelo->Likesq($_POST['nick_user'],$_POST['id_publi']);
+            if ($resultado) {
+                $_SESSION['mensaje'] = "Like quitado";
+            }
         } else {
             // Si no ha dado like, agregarlo
             $resultado = $publicacionModelo->Likes($_POST['nick_user'],$_POST['id_publi']);
+            if ($resultado) {
+                $_SESSION['mensaje'] = "Like dado";
+                
+            }
         }
 
-        if ($resultado) {
-            $_SESSION['mensaje'] = "Like dado";
-            
-        }
-        else{
+        if (!$resultado) {
             $_SESSION['error'] = "Error al dar like.";
-        }
+            
+        }  
+        
 
-        if(isset($_POST['princiapl'])){
-            if($_POST['princiapl']){
+        if(isset($_POST['principal'])){
+            if($_POST['principal']){
                 header('Location: ../Vista/Principal.php');
                 exit;
             }
@@ -187,16 +192,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (in_array($_POST['nick_user'],  $dislikesArray)) {
             // Si el usuario ya dio like, quitarlo
             $resultado = $publicacionModelo->DisLikesq($_POST['nick_user'],$_POST['id_publi']);
+            if ($resultado) {
+                $_SESSION['mensaje'] = "Dislike quitado";
+                
+            }
         } else {
             // Si no ha dado like, agregarlo
             $resultado = $publicacionModelo->DisLikes($_POST['nick_user'],$_POST['id_publi']);
+            if ($resultado) {
+                $_SESSION['mensaje'] = "Dislike dado";
+                
+            }
         }
-        if ($resultado) {
-            $_SESSION['mensaje'] = "Dislike dado";
-            
-        }
-        else{
+        
+        if (!$resultado) {
             $_SESSION['error'] = "Error al dar dislike.";
+            
         }
         
         if(isset($_POST['princiapl'])){
