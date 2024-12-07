@@ -525,3 +525,25 @@ footer p {
     width: 300px; /* Ajusta el ancho a 150 píxeles */
     height: auto; /* Mantiene la proporción de la imagen */
 }
+
+#notificaciones {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 300px;
+    z-index: 1000;
+}
+
+.notificacion {
+    background-color: #f1f1f1;
+    border-left: 5px solid #007BFF;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+.notificacion.hidden {
+    transform: translateY(-20px);
+    opacity: 0;
+}

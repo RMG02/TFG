@@ -100,7 +100,7 @@ foreach ($publicaciones as $publicacion) {
             </div>
             <div class="reacciones-icon">
                     
-                    <form method="POST" action="../Controlador/Publicacion_controlador.php">
+                    <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id')">
                         
                         <button type="submit" name="darlike" class="btn-like">
                             <input type="hidden" name="id_publi" value="$id">

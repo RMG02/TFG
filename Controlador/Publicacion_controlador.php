@@ -10,6 +10,7 @@ if (session_status() == PHP_SESSION_NONE) {
 $publicacionModelo = new Publicacion($db);
 $dir_archivos = '../Recursos/multimedia';
 
+
 if (isset($_SESSION['publicaciones'])) {
     unset($_SESSION['publicaciones']);
 }
