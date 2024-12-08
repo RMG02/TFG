@@ -9,6 +9,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
     exit;
 }
 
+
 if (!isset($_SESSION['publicaciones'])) {
    header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true');
    exit;
@@ -71,9 +72,10 @@ foreach ($publicaciones as $publicacion) {
     $num_comentarios = count($comentarios);
     $likes = $publicacion['likes'];
     $dislikes = $publicacion['dislikes'];
+    $likes_cadena = implode(",", $likes);
+    $dislikes_cadena = implode(",", $dislikes);
     $numlikes = count($likes ?? []);
     $numdislikes = count($dislikes ?? []);
-    
 
     if ($multimedia) {
         $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
@@ -100,8 +102,18 @@ foreach ($publicaciones as $publicacion) {
             </div>
             <div class="reacciones-icon">
                     
-                    <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id')">
-                        
+    EOS;
+    if($nickuser == $nick){
+        $contenidoPrincipal .= <<<EOS
+            <form method="POST" action="../Controlador/Publicacion_controlador.php">
+        EOS;
+    }
+    else{
+        $contenidoPrincipal .= <<<EOS
+            <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena')">
+        EOS;
+    }
+    $contenidoPrincipal .= <<<EOS
                         <button type="submit" name="darlike" class="btn-like">
                             <input type="hidden" name="id_publi" value="$id">
                             <input type="hidden" name="nick_user" value="$nickuser">
@@ -122,8 +134,8 @@ foreach ($publicaciones as $publicacion) {
                 <button type="submit" class="botonPubli" name="Verpublicacion"></button>
             </form>
         </div>
-        EOS;
-        $modalId++;
+    EOS;
+    $modalId++;
 }
 
 if ($error != "") {

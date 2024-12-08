@@ -49,6 +49,8 @@ $tituloPagina = "Tweet";
     $dislikes = $publicacion['dislikes'];
     $numlikes = count($likes);
     $numdislikes = count($dislikes);
+    $likes_cadena = implode(",", $likes);
+    $dislikes_cadena = implode(",", $dislikes);
     $host = $_SERVER['HTTP_HOST']; 
     $urlTweet = "$host/Vista/Verpublicacion.php?id=$id";
 
@@ -90,7 +92,18 @@ $contenidoPrincipal = <<<EOS
     </div>
     <div class="tweet-footer">
         <div class="reacciones-icon">
-            <form method="POST" action="../Controlador/Publicacion_controlador.php">
+EOS;
+if($nickuser == $nick){
+    $contenidoPrincipal .= <<<EOS
+        <form method="POST" action="../Controlador/Publicacion_controlador.php">
+    EOS;
+}
+else{
+    $contenidoPrincipal .= <<<EOS
+        <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena')">
+    EOS;
+}
+$contenidoPrincipal .= <<<EOS
                 <button type="submit" name="darlike" class="btn-like">
                     <input type="hidden" name="id_publi" value="$id">
                     <input type="hidden" name="nick_user" value="$nickuser">
@@ -139,12 +152,14 @@ $contenidoPrincipal .= <<<EOS
         </div>
     </div>
     <hr>
-    <h3>Comentarios</h3>
 EOS;
+    
+
 
 
 
     if (!empty($comentarios)) {
+        $contenidoPrincipal .= '<h3>Comentarios</h3>';
         foreach ($comentarios as $comentario) {
             $usuario = $comentario['usuario'];
             $id_com = $comentario['id_comentario']['$oid'];
@@ -245,10 +260,13 @@ EOS;
 
                             </div>
                             <hr>
-                            <h3>Respuestas</h3>
             EOS;
             if (!empty($comentario['respuestas'])) {
+                $contenidoPrincipal .= '<h3>Respuestas</h3>';
                 $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id);
+            }
+            else{
+                $contenidoPrincipal .= '<h3>No hay respuestas</h3>';
             }
             $contenidoPrincipal.= <<<EOS
                         </div>
@@ -259,6 +277,9 @@ EOS;
             
             $modalComId++;
         }
+    }
+    else{
+        $contenidoPrincipal .= '<h3>No hay comentarios</h3>';
     }
 
     

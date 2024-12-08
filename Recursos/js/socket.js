@@ -4,8 +4,6 @@ var Usuario = document.querySelector('meta[name="usuario"]').getAttribute('conte
 socket.emit("conectado", {usuario: Usuario});
 
 socket.on("notificacion", function(data) {
-    console.log("Notificación recibida: ", data);
-
     var divNotificaciones = document.getElementById("notificaciones");
 
     var notificacion = document.createElement("div");
@@ -20,20 +18,30 @@ socket.on("notificacion", function(data) {
         setTimeout(function() {
             divNotificaciones.removeChild(notificacion);
         }, 300);
-    }, 20000);
+    }, 10000);
 });
 
-function enviarDatos(event, usuario, usuario_des, id_publi) {
+function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes) {
     fetch('../../Controlador/Publicacion_controlador.php', {
     }).then(response => response.text())
       .then(result => {
           console.log(result);
 
-          if (event.submitter.name === 'darlike') {
-              darLike(usuario, usuario_des, id_publi);
-          } else if (event.submitter.name === 'dardislike') {
-              darDislike(usuario, usuario_des, id_publi);
-          }
+        if (event.submitter.name === 'darlike') {
+            // Comprobar si el usuario ya está en el array de likes
+            if (!likes.includes(usuario)) {
+                darLike(usuario, usuario_des, id_publi);
+            } else {
+                console.log("El usuario ya ha dado like a esta publicación.");
+            }
+        } else if (event.submitter.name === 'dardislike') {
+            // Comprobar si el usuario ya está en el array de dislikes
+            if (!dislikes.includes(usuario)) {
+                darDislike(usuario, usuario_des, id_publi);
+            } else {
+                console.log("El usuario ya ha dado dislike a esta publicación.");
+            }
+        }
           
       }).catch(error => {
           console.error('Error al enviar datos:', error);

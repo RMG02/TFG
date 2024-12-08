@@ -99,15 +99,15 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi) {
                         
                         </div>
                         <hr>
-                        <h3>Respuestas</h3>
-                       
         EOS;
         
         if (!empty($comentario['respuestas'])) {
+            $contenido .= '<h3>Respuestas</h3>';
             $modalResId++;           
             $contenido .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id_publi);        
         }
         else{
+            $contenido .= '<h3>No hay respuestas</h3>';
             $modalResId++; 
            
         }

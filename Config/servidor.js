@@ -11,7 +11,6 @@ io.on("connection", (socket) => {
         if(data.usuario){
             usuarios_conectados[data.usuario] = socket.id;
         }
-        console.log(usuarios_conectados);
     });
 
     socket.on("like-dado", (data) => {
@@ -28,7 +27,6 @@ io.on("connection", (socket) => {
         };
   
         if (socketID) {
-            notificacion.vista = true
             io.to(socketID).emit("notificacion", notificacion);
         }
 
@@ -51,7 +49,6 @@ io.on("connection", (socket) => {
         };
   
         if (socketID) {
-            notificacion.vista = true
             io.to(socketID).emit("notificacion", notificacion);
             
         }

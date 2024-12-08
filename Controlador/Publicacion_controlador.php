@@ -2,12 +2,15 @@
 
 require_once '../Config/config.php';
 require_once '../Modelo/Publicacion.php';
+require_once '../Modelo/Notificacion.php';
+
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 $publicacionModelo = new Publicacion($db);
+$NotificacionModelo = new Notificacion($db);
 $dir_archivos = '../Recursos/multimedia';
 
 
@@ -150,9 +153,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
         $likesArray = (array) $resultado['likes']; // Convierte BSONArray a array PHP
+        $dislikesArray = (array) $resultado['dislikes']; // Convierte BSONArray a array PHP
+
+        if(in_array($_POST['nick_user'], $dislikesArray)){
+            if (isset($_SESSION['notificaciones_usuario'])) {
+                unset($_SESSION['notificaciones_usuario']);
+            }
+            $NotificacionModelo->borrarNotificacion($_POST['id_publi'], $_POST['nick_user'], "dislike");
+
+        }
         if (in_array($_POST['nick_user'], $likesArray)) {
             // Si el usuario ya dio like, quitarlo
             $resultado = $publicacionModelo->Likesq($_POST['nick_user'],$_POST['id_publi']);
+
+            if (isset($_SESSION['notificaciones_usuario'])) {
+                unset($_SESSION['notificaciones_usuario']);
+            }
+            $NotificacionModelo->borrarNotificacion($_POST['id_publi'], $_POST['nick_user'], "like");
+
             if ($resultado) {
                 $_SESSION['mensaje'] = "Like quitado";
             }
@@ -187,12 +205,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['dardislike'])) {
 
         $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
-    
+        $likesArray = (array) $resultado['likes']; // Convierte BSONArray a array PHP
         $dislikesArray = (array) $resultado['dislikes']; // Convierte BSONArray a array PHP
-    
+        
+        if(in_array($_POST['nick_user'], $likesArray)){
+            if (isset($_SESSION['notificaciones_usuario'])) {
+                unset($_SESSION['notificaciones_usuario']);
+            }
+            $NotificacionModelo->borrarNotificacion($_POST['id_publi'], $_POST['nick_user'], "like");
+
+        }
         if (in_array($_POST['nick_user'],  $dislikesArray)) {
             // Si el usuario ya dio like, quitarlo
             $resultado = $publicacionModelo->DisLikesq($_POST['nick_user'],$_POST['id_publi']);
+            //eliminar notificacion anterior
+            if (isset($_SESSION['notificaciones_usuario'])) {
+                unset($_SESSION['notificaciones_usuario']);
+            }
+            $NotificacionModelo->borrarNotificacion($_POST['id_publi'], $_POST['nick_user'], "dislike");
+
             if ($resultado) {
                 $_SESSION['mensaje'] = "Dislike quitado";
                 

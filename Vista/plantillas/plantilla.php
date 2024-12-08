@@ -2,6 +2,16 @@
 if (session_status() == PHP_SESSION_NONE) {
    session_start();
 }
+
+if (isset($_SERVER['REQUEST_URI'])) { 
+    $_SESSION['url_anterior'] = $_SERVER['REQUEST_URI']; 
+}
+
+if (!isset($_SESSION['notificaciones_usuario'])) {
+    header('Location: ../Controlador/Notificacion_controlador.php?listarNotificacionesUsuario=true');
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +27,10 @@ if (session_status() == PHP_SESSION_NONE) {
 </head>
 <body>
 
-<?php require('comun/cabecera.php');?>
+<?php 
+require('comun/cabecera.php');
+
+?>
 
 <div id="contenedor">
 	<div id="notificaciones"></div>

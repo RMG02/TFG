@@ -44,6 +44,47 @@ header .menu p {
 }
 
 
+.menu-icon::after {
+    content: attr(titulo);
+    position: absolute;
+    top: 80px; /* Ajustar para la distancia desde el icono */
+    left: 90%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+    font-size: 14px;
+    pointer-events: none; /* Asegurarse de que el texto no interfiera con el ratón */
+}
+
+
+.menu-icon:hover::after {
+    opacity: 1;
+}
+
+
+#notification-counter {
+    position: absolute;
+    top: 25px; /* Ajustar según la posición deseada */
+    right: 180px; /* Ajustar según la posición deseada */
+    background-color: #ff3333; /* Rojo vibrante */
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px; /* Añadir un poco más de espacio */
+    font-size: 12px;
+    font-weight: bold;
+    display: none; /* Ocultar por defecto */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Añadir sombra para dar profundidad */
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Transiciones suaves */
+}
+
+
+
+
 #contenedor {
     width: 100%;
     background-color: white;
@@ -547,3 +588,16 @@ footer p {
     transform: translateY(-20px);
     opacity: 0;
 }
+
+.lista-notificaciones { 
+    margin: 20px; padding: 0; list-style: none; 
+}
+
+.notificacion.vista { 
+    background-color: #e6f7e6; /* Color más claro para notificaciones vistas */ 
+} 
+
+.notificacion.no-vista { 
+    background-color: #f5f5dc; /* Color diferente para notificaciones no vistas */ 
+}
+
