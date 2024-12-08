@@ -242,8 +242,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
         }
         
-        if(isset($_POST['princiapl'])){
-            if($_POST['princiapl']){
+        if(isset($_POST['principal'])){
+            if($_POST['principal']){
                 header('Location: ../Vista/Principal.php');
                 exit;
             }

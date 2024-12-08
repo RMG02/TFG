@@ -30,8 +30,11 @@ io.on("connection", (socket) => {
             io.to(socketID).emit("notificacion", notificacion);
         }
 
-        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', { notificacion: notificacion });
-        
+        // Usar URLSearchParams para formatear los datos
+        var params = new URLSearchParams();
+        params.append('notificacion', JSON.stringify(notificacion));
+
+        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)         
         
     });
   
@@ -53,8 +56,11 @@ io.on("connection", (socket) => {
             
         }
         
-        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', { notificacion: notificacion });
-          
+        // Usar URLSearchParams para formatear los datos
+        var params = new URLSearchParams();
+        params.append('notificacion', JSON.stringify(notificacion));
+
+        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)          
     });
   
       socket.on('disconnect', () => {
@@ -70,3 +76,6 @@ io.on("connection", (socket) => {
 server.listen(3000, function () {
     console.log("Servidor corriendo en http://localhost:3000");
   });
+
+
+

@@ -27,28 +27,27 @@ if (isset($_SESSION['id_publi'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
-    if(file_get_contents('php://input')){
-        $servidor_post = json_decode(file_get_contents('php://input'), true);
+
+    if (isset($_POST['notificacion'])) {
+        $servidor_post = json_decode($_POST['notificacion'], true);
         $notificacion = [
-            'usuario_publi'=> $servidor_post['notificacion']['usuario_publi'], 
-            'usuario_accion' => $servidor_post['notificacion']['usuario_accion'],
-            'mensaje' => $servidor_post['notificacion']['mensaje'],
-            'id_publi' => $servidor_post['notificacion']['id_publi'],
-            'enlace' => $servidor_post['notificacion']['enlace'],
-            'tipo' => $servidor_post['notificacion']['tipo'],
-            'fecha' => $servidor_post['notificacion']['fecha'],
-            'vista' => $servidor_post['notificacion']['vista'],
-            
+            'usuario_publi'=> $servidor_post['usuario_publi'], 
+            'usuario_accion' => $servidor_post['usuario_accion'],
+            'mensaje' => $servidor_post['mensaje'],
+            'id_publi' => $servidor_post['id_publi'],
+            'enlace' => $servidor_post['enlace'],
+            'tipo' => $servidor_post['tipo'],
+            'fecha' => $servidor_post['fecha'],
+            'vista' => $servidor_post['vista'],
         ];
         $NotificacionModelo->crearNotificacion($notificacion);
-        if (isset($_SESSION['notificaciones_usuario'])) {
-            unset($_SESSION['notificaciones_usuario']);
-        }
+        
     }
     if(isset($_POST['accion'])){
         if (isset($_SESSION['notificaciones_usuario'])) {
             unset($_SESSION['notificaciones_usuario']);
+            header('Location: ' . $_SESSION['url_anterior']);
+
         }
     }
 
@@ -69,3 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     
 }
+
+
+
