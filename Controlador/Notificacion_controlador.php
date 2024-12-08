@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'tipo' => $servidor_post['notificacion']['tipo'],
             'fecha' => $servidor_post['notificacion']['fecha'],
             'vista' => $servidor_post['notificacion']['vista'],
+            
         ];
         $NotificacionModelo->crearNotificacion($notificacion);
         if (isset($_SESSION['notificaciones_usuario'])) {
