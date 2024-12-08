@@ -13,6 +13,13 @@ io.on("connection", (socket) => {
         }
     });
 
+    socket.on("decrementar-reaccion", (data) => {
+        var socketID = usuarios_conectados[data.usuario];
+        if (socketID) {
+            io.to(socketID).emit("decremento", 1);
+        }
+    });
+
     socket.on("like-dado", (data) => {
         var socketID = usuarios_conectados[data.usuario_des];
         var notificacion = { 

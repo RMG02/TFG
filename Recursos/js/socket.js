@@ -12,6 +12,8 @@ socket.on("notificacion", function(data) {
 
     divNotificaciones.appendChild(notificacion);
 
+    actualizarContadorNotificaciones(1);
+
     // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
     fetch('../../Controlador/Notificacion_controlador.php', {
         method: 'POST',
@@ -41,6 +43,46 @@ socket.on("notificacion", function(data) {
     }, 10000);
 });
 
+socket.on("decremento", function(data) {
+    actualizarContadorNotificacionesDecremento(data);
+
+    // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
+    fetch('../../Controlador/Notificacion_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'accion': 'unset'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respuesta del servidor:', data);
+        if (data.status === 'success') {
+            console.log('Variable de sesión eliminada correctamente');
+        } else {
+            console.error('Error al eliminar la variable de sesión:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+});
+
+function actualizarContadorNotificacionesDecremento(decremento) {
+    var notificationCounter = document.getElementById('notification-counter');
+    var contadorActual = parseInt(notificationCounter.textContent) || 0;
+    contadorActual -= decremento;
+    notificationCounter.textContent = contadorActual;
+    notificationCounter.style.display = contadorActual > 0 ? 'inline' : 'none';
+}
+
+function actualizarContadorNotificaciones(incremento) {
+    var notificationCounter = document.getElementById('notification-counter');
+    var contadorActual = parseInt(notificationCounter.textContent) || 0;
+    contadorActual += incremento;
+    notificationCounter.textContent = contadorActual;
+    notificationCounter.style.display = contadorActual > 0 ? 'inline' : 'none';
+}
+
 function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes) {
     fetch('../../Controlador/Publicacion_controlador.php', {
     }).then(response => response.text())
@@ -49,17 +91,24 @@ function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes) {
 
         if (event.submitter.name === 'darlike') {
             // Comprobar si el usuario ya está en el array de likes
+            
             if (!likes.includes(usuario)) {
+                if(dislikes.includes(usuario)){
+                    socket.emit("decrementar-reaccion", {usuario: usuario_des});
+                }
                 darLike(usuario, usuario_des, id_publi);
             } else {
-                console.log("El usuario ya ha dado like a esta publicación.");
+                socket.emit("decrementar-reaccion", {usuario: usuario_des});
             }
         } else if (event.submitter.name === 'dardislike') {
             // Comprobar si el usuario ya está en el array de dislikes
             if (!dislikes.includes(usuario)) {
+                if(likes.includes(usuario)){
+                    socket.emit("decrementar-reaccion", {usuario: usuario_des});
+                }
                 darDislike(usuario, usuario_des, id_publi);
             } else {
-                console.log("El usuario ya ha dado dislike a esta publicación.");
+                socket.emit("decrementar-reaccion", {usuario: usuario_des});
             }
         }
           

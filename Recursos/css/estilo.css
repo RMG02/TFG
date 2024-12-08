@@ -70,7 +70,7 @@ header .menu p {
 #notification-counter {
     position: absolute;
     top: 25px; /* Ajustar según la posición deseada */
-    right: 180px; /* Ajustar según la posición deseada */
+    right: 130px; /* Ajustar según la posición deseada */
     background-color: #ff3333; /* Rojo vibrante */
     color: white;
     border-radius: 50%;

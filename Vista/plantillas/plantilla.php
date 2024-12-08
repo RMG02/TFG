@@ -7,9 +7,6 @@ if (isset($_SERVER['REQUEST_URI'])) {
     $_SESSION['url_anterior'] = $_SERVER['REQUEST_URI']; 
 }
 
-if (!isset($_SESSION['notificaciones_usuario'])) {
-    header('Location: ../Controlador/Notificacion_controlador.php?listarNotificacionesUsuario=true');
-}
 
 
 ?>

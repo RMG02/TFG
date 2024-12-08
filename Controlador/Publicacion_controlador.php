@@ -156,19 +156,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $dislikesArray = (array) $resultado['dislikes']; // Convierte BSONArray a array PHP
 
         if(in_array($_POST['nick_user'], $dislikesArray)){
-            if (isset($_SESSION['notificaciones_usuario'])) {
-                unset($_SESSION['notificaciones_usuario']);
-            }
             $NotificacionModelo->borrarNotificacion($_POST['id_publi'], $_POST['nick_user'], "dislike");
 
         }
         if (in_array($_POST['nick_user'], $likesArray)) {
             // Si el usuario ya dio like, quitarlo
             $resultado = $publicacionModelo->Likesq($_POST['nick_user'],$_POST['id_publi']);
-
-            if (isset($_SESSION['notificaciones_usuario'])) {
-                unset($_SESSION['notificaciones_usuario']);
-            }
             $NotificacionModelo->borrarNotificacion($_POST['id_publi'], $_POST['nick_user'], "like");
 
             if ($resultado) {
@@ -209,9 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $dislikesArray = (array) $resultado['dislikes']; // Convierte BSONArray a array PHP
         
         if(in_array($_POST['nick_user'], $likesArray)){
-            if (isset($_SESSION['notificaciones_usuario'])) {
-                unset($_SESSION['notificaciones_usuario']);
-            }
+            
             $NotificacionModelo->borrarNotificacion($_POST['id_publi'], $_POST['nick_user'], "like");
 
         }
@@ -219,9 +210,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Si el usuario ya dio like, quitarlo
             $resultado = $publicacionModelo->DisLikesq($_POST['nick_user'],$_POST['id_publi']);
             //eliminar notificacion anterior
-            if (isset($_SESSION['notificaciones_usuario'])) {
-                unset($_SESSION['notificaciones_usuario']);
-            }
             $NotificacionModelo->borrarNotificacion($_POST['id_publi'], $_POST['nick_user'], "dislike");
 
             if ($resultado) {
