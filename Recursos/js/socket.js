@@ -12,6 +12,26 @@ socket.on("notificacion", function(data) {
 
     divNotificaciones.appendChild(notificacion);
 
+    // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
+    fetch('../../Controlador/Notificacion_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'accion': 'unset'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respuesta del servidor:', data);
+        if (data.status === 'success') {
+            console.log('Variable de sesión eliminada correctamente');
+        } else {
+            console.error('Error al eliminar la variable de sesión:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
     // Auto-ocultar la notificación después de 5 segundos
     setTimeout(function() {
         notificacion.classList.add("hidden");

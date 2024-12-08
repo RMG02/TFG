@@ -45,6 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             unset($_SESSION['notificaciones_usuario']);
         }
     }
+    if(isset($_POST['accion'])){
+        if (isset($_SESSION['notificaciones_usuario'])) {
+            unset($_SESSION['notificaciones_usuario']);
+        }
+    }
 
     
     
