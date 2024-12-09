@@ -40,8 +40,8 @@ if (session_status() == PHP_SESSION_NONE) {
             if (isset($_SESSION['admin']) && $_SESSION['admin']) {
                 echo "<p><a href='/Vista/panel_admin.php' class='menu-icon' titulo='Panel Admin'><i class='fas fa-cogs'></i></a></p>";
             }
-            echo "<p><a href='/Vista/Notificaciones.php' class='menu-icon' titulo='Notificaciones'><i class='fas fa-bell'></i></a></p>";
             echo "<p><a href='/Vista/Recetas.php' class='menu-icon' titulo='Recetas'><i class='fas fa-utensils'></i></a></p>";
+            echo "<p><a href='/Vista/Notificaciones.php' class='menu-icon' titulo='Notificaciones'><i class='fas fa-bell'></i></a></p>";
             if($num_noti > 0){
                 echo "<span id='notification-counter' class='badge' style='display:inline;'>$num_noti</span></a></p>";
             }
