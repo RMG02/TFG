@@ -1,0 +1,324 @@
+<?php
+
+if (session_status() == PHP_SESSION_NONE) {
+   session_start();
+}
+if (!isset($_SESSION['login']) || !$_SESSION['login']) {
+    header("Location: enter.php");
+    exit;
+}
+
+require_once __DIR__ . "/plantillas/respuestas.php";
+
+$modalId = 0;
+$modalComId = 0;
+$principal = true;
+$error = "";
+$mensaje = "";
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+}
+
+if (isset($_SESSION['mensaje'])) {
+    $mensaje = $_SESSION['mensaje'];
+}
+$receta = "";
+
+$idreceta = $_GET['id'] ?? null;
+
+if (!isset($_SESSION['id_publi'])) {
+    header('Location: ../Controlador/Receta_controlador.php?publi_id=true&id='.$idreceta);
+    exit;
+}
+
+$receta = json_decode($_SESSION['id_publi'], true);
+date_default_timezone_set('Europe/Madrid');
+
+
+$tituloPagina = "Receta";
+
+    $nickuser = $_SESSION['nick'];
+    $nick = $receta['nick'];
+    $titulo = $receta['titulo'];
+    $ingredientes = $receta['ingredientes'];
+    $preparacion = $receta['preparacion'];
+    $id = $receta['_id']['$oid'];
+    $Hora = date('d/m/Y H:i:s', strtotime($receta['created_at']));
+    $multimedia = $receta['multimedia'];
+    $comentarios = $receta['comentarios'];
+    $num_comentarios = count($comentarios);
+    $likes = $receta['likes'];
+    $dislikes = $receta['dislikes'];
+    $numlikes = count($likes);
+    $numdislikes = count($dislikes);
+    $likes_cadena = implode(",", $likes);
+    $dislikes_cadena = implode(",", $dislikes);
+    $host = $_SERVER['HTTP_HOST']; 
+    $urlTweet = "$host/Vista/Verreceta.php?id=$id";
+
+
+if ($multimedia) {
+    $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
+    if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+        $multi = "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación' class='imagen-vista'>";
+        $multi_editar = "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación' class='imagen-editar'>";
+    } elseif (in_array($extension, ['mp4', 'webm'])) {
+        $multi = "<video controls><source src='../Recursos/multimedia/$multimedia' type='video/$extension'></video>";
+    }
+} else {
+    $multi = '';
+    $multi_editar = '';
+}
+    
+
+$contenidoPrincipal = <<<EOS
+    <div class="tweet-header">
+        <strong>$nick</strong>
+        <span class="tweet-time">$Hora</span>
+    </div>
+    <div class="recet-content">
+        <h2>$titulo</h2>
+        $multi
+        <h3>Ingredientes:</h3>
+        <p>$ingredientes</p>
+        <h3>Preparacion:</h3>
+        <p>$preparacion</p>
+        <button type="button" class="botonPubli" name="comen">Añadir Comentario</button>
+        <div id="comen-$modalId" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
+                    <input type="hidden" name="id_publi" value="$id">
+                    <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
+                    <input type="file" name="archivo"> 
+                    <button type="submit" class="botonPubli" name="agregarComentario">Añadir Comentario</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="tweet-footer">
+        <div class="reacciones-icon">
+EOS;
+if($nickuser == $nick){
+    $contenidoPrincipal .= <<<EOS
+        <form method="POST" action="../Controlador/Receta_controlador.php">
+    EOS;
+}
+else{
+    $contenidoPrincipal .= <<<EOS
+        <form method="POST" action="../Controlador/Receta_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena')">
+    EOS;
+}
+$contenidoPrincipal .= <<<EOS
+                <button type="submit" name="darlike" class="btn-like">
+                    <input type="hidden" name="id_publi" value="$id">
+                    <input type="hidden" name="nick_user" value="$nickuser">
+                    <i class="fa fa-thumbs-up"></i> $numlikes
+                </button>
+                <button type="submit" name="dardislike" class="btn-dislike">
+                    <input type="hidden" name="id_publi" value="$id">
+                    <input type="hidden" name="nick_user" value="$nickuser">
+                    <i class="fa fa-thumbs-down"></i> $numdislikes
+                </button>
+            </form>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">⋮</button>
+            <div class="dropdown-content">
+EOS;
+
+if ($nick == $_SESSION['nick']) {
+    $contenidoPrincipal .= <<<EOS
+                <form method="POST" action="../Controlador/Receta_controlador.php" class="formulario">
+                    <input type="hidden" name="id_publi" value="$id">
+                    <input type="hidden" name="multi" value="../Recursos/multimedia/$multimedia"> 
+                    <button type="submit" class="botonPubli" name="eliminarReceta">Eliminar receta</button>
+                </form>
+                <button type="button" class="botonPubli" name="editar">Editar receta</button>
+    EOS;
+}
+
+$contenidoPrincipal .= <<<EOS
+                <input type="hidden" value="$urlTweet" readonly>
+                <button type="button" class="botonPubli" name="compartir" onclick="copiarEnlace(this.previousElementSibling)">Compartir publicación</button>            
+            </div>
+        </div>
+        <div id="edit-$modalId" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
+                    $multi_editar
+                    <textarea name="titulo">$titulo</textarea>
+                    <textarea name="ingredientes">$ingredientes</textarea>
+                    <textarea name="preparacion">$preparacion</textarea>
+                    <input type="hidden" name="archivo_origen" value="$multimedia"> 
+                    <input type="file" name="nuevo_archivo"> 
+                    <input type="hidden" name="id_publi" value="$id">
+                    <button type="submit" class="botonPubli" name="editarReceta">Guardar cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr>
+EOS;
+    
+
+
+
+
+    if (!empty($comentarios)) {
+        $contenidoPrincipal .= '<h3>Comentarios</h3>';
+        foreach ($comentarios as $comentario) {
+            $usuario = $comentario['usuario'];
+            $id_com = $comentario['id_comentario']['$oid'];
+            $tex = $comentario['texto'];
+            $mult = $comentario['multimedia'] ?? '';
+            $fecha = date('d/m/Y H:i:s', strtotime($comentario['fecha']));
+            $num_respuestas = count($comentario['respuestas'] ?? []);
+            $modalResId = 0;
+
+            if ($mult) {
+                $extension = pathinfo($mult, PATHINFO_EXTENSION);
+                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+                    $multi_com = "<img src='../Recursos/multimedia/$mult' alt='Imagen de la publicación'  class='imagen-respuesta'>";
+                    $multi_editar = "<img src='../Recursos/multimedia/$mult' alt='Imagen de la publicación' class='imagen-editar'>";
+
+                } elseif (in_array($extension, ['mp4', 'webm'])) {
+                    $multi_com = "<video controls><source src='../Recursos/multimedia/$mult' type='video/$extension'></video>";
+                }
+            } else {
+                $multi_com = '';
+                $multi_editar = '';
+            }
+
+            $contenidoPrincipal .= <<<EOS
+                        <div class="comentario" name="comentario">
+                            $multi_com
+                            <br>
+                            <strong>$usuario:</strong>
+                            <span>$tex</span>
+                            <span class="comentario-time">$fecha</span>
+                            <div class="comentarios-icon">
+                                <i class="fa fa-comments"></i> $num_respuestas
+                            </div>
+                        </div>
+                        <div id="comentario-$modalComId" class="modal_publi">
+                            <div class="modal_publi-content">
+                                <span class="close_publi">&times;</span>
+                                <div class="tweet-header">
+                                    <strong>$usuario</strong>
+                                    <span class="tweet-time">$fecha</span>
+                                </div>
+                                <div class="comentario_mod">
+                                    $multi_com
+                                    <span>$tex</span>
+                                    <br>
+                                    <button type="button" class="botonPubli" name="responder" id="responder-$modalComId">Responder</button>
+                                    <div id="respuesta-$modalComId" class="modal">
+                                        <div class="modal-content">
+                                            <span class="close">&times;</span>
+                                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
+                                                <input type="hidden" name="id_publi" value="$id">
+                                                <input type="hidden" name="id_comen" value="$id_com"> 
+                                                <input type="hidden" name="esRespuesta" value="true">
+                                                <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
+                                                <input type="file" name="archivo"> 
+                                                <button type="submit" class="botonPubli" name="agregarComentario">Añadir Respuesta</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="tweet-footer">
+                                        
+                                                                
+            EOS;
+
+            if($usuario == $_SESSION['nick']){
+                $contenidoPrincipal .= <<<EOS
+                    <div class="dropdown">
+                        <button class="dropbtn">⋮</button>
+                        <div class="dropdown-content">
+                            <form method="POST" action="../Controlador/Receta_controlador.php" class="formulario">
+                                <input type="hidden" name="id_comen" value="$id_com"> 
+                                <input type="hidden" name="multi" value="../Recursos/multimedia/$mult"> 
+                                <input type="hidden" name="id_publi" value="$id">
+                                <button type="submit" class="botonPubli" name="eliminarComentario">Eliminar comentario</button>
+                            </form> 
+                            <button type="button" class="botonPubli" name="editar_com">Editar comentario</button>
+                        </div>
+                    </div> 
+                    <div id="editCom-$modalComId" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            $multi_editar
+                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
+                            <textarea name="contenido">$tex</textarea>
+                            <input type="hidden" name="archivo_origen" value="$mult"> 
+                            <input type="file" name="nuevo_archivo"> 
+                            <input type="hidden" name="id_comen" value="$id_com"> 
+                            <input type="hidden" name="id_publi" value="$id">
+                            <button type="submit" class="botonPubli" name="editarComentario">Guardar cambios</button>
+                            </form>
+                        </div>
+                    </div>
+                                
+                EOS;
+            }
+
+            $contenidoPrincipal .= <<<EOS
+
+                            </div>
+                            <hr>
+            EOS;
+            if (!empty($comentario['respuestas'])) {
+                $contenidoPrincipal .= '<h3>Respuestas</h3>';
+                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id);
+            }
+            else{
+                $contenidoPrincipal .= '<h3>No hay respuestas</h3>';
+            }
+            $contenidoPrincipal.= <<<EOS
+                        </div>
+                    </div>
+                </div>
+            EOS;
+            
+            
+            $modalComId++;
+        }
+    }
+    else{
+        $contenidoPrincipal .= '<h3>No hay comentarios</h3>';
+    }
+
+    
+    $contenidoPrincipal .= <<<EOS
+                 
+                </div>
+            
+    EOS;
+    $modalId++;
+
+
+if ($error != "") {
+    $contenidoPrincipal .= <<<EOS
+        <div class="error_div">
+            <p>$error</p>
+        </div>
+    EOS;
+    unset($_SESSION['error']);
+}
+
+if ($mensaje != "") {
+    $contenidoPrincipal .= <<<EOS
+        <div class="mensaje_div">
+            <p>$mensaje</p>
+        </div>
+    EOS;
+    unset($_SESSION['mensaje']);
+}
+
+require_once __DIR__ . "/plantillas/plantilla.php";
+?>
+
+<script src="../Recursos/js/Verpubli.js"></script>
+

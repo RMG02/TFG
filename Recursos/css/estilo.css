@@ -353,6 +353,14 @@ footer p {
     margin-top: 5px;
 }
 
+.recet-content p {
+    text-align: left;
+}
+
+.recet-content h3 {
+    text-align: left;
+}
+
 .botonPubli {
     color: white;
     background-color: #333;
@@ -600,4 +608,6 @@ footer p {
 .notificacion.no-vista { 
     background-color: #f5f5dc; /* Color diferente para notificaciones no vistas */ 
 }
+
+
 
