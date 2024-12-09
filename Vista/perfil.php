@@ -57,18 +57,6 @@ $contenidoPrincipal = <<<EOS
     </div>
     <hr>
     <h3>Mis publicaciones</h3>
-    <button id="publicaBtn">Publica</button> 
-   <div id="formPublicacion" class="modal"> 
-      <div class="modal-content">
-         <span class="close">&times;</span>
-         <form class="formulario" method="post" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php"> 
-            <textarea name="contenido" placeholder="Escribe tu publicación aquí..."></textarea> 
-            <input type="file" name="archivo"> 
-            <input type="hidden" name="principal" value="$principal">
-            <button type="submit" name="crearPublicacion">Publicar</button> 
-         </form> 
-      </div>
-   </div>
     <input type="text" id="buscador" onkeyup="filtrarPerfil()" placeholder="Buscar por texto...">
     <div id="publicaciones">
 EOS;
