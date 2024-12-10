@@ -15,14 +15,12 @@ $tituloPagina = "Página de Edicion";
 
 $contenidoPrincipal = <<<EOS
     <div class="contenedor">
-        <form method="POST" class="formulario" action="../Controlador/Usuario_controlador.php">
-                
+        <form method="POST" class="formulario" action="../Controlador/Usuario_controlador.php">      
                 <label for="nombre"> Nombre </label>
                 <input id='nombre' type='text' name='nombre'  placeholder='{$_SESSION['nombre']}'> 
                 
                 <label for="nick"> Nick </label>
                 <input id="nick" type="text" name="nick" placeholder='{$_SESSION['nick']}' /> 
-
                 
                 <label for="email"> Email </label>
                 <input id="email" type="text" name="email" placeholder='{$_SESSION['email']}' /> 

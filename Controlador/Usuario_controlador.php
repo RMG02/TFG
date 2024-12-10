@@ -2,12 +2,16 @@
 
 require_once '../Config/config.php';
 require_once '../Modelo/Usuario.php';
+require_once '../Modelo/Receta.php';
+require_once '../Modelo/Publicacion.php';
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 $usuarioModelo = new Usuario($db);
+$recetaModelo = new Receta($db);
+$publicacionModelo = new Publicacion($db);
 
 if (isset($_SESSION['publicaciones'])) {
     unset($_SESSION['publicaciones']);
@@ -71,6 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: ../Vista/Editarperfil.php');
         }
         else{
+            $antiguonick = $_SESSION['nick'];
+            $nuevonick = $DatosUsuario['nick'];
             $_SESSION['email'] = $DatosUsuario['email'];
             $_SESSION['nick'] = $DatosUsuario['nick'];
             $_SESSION['nombre'] = $DatosUsuario['nombre'];
@@ -78,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['login'] = true;
             $_SESSION['admin'] = $DatosUsuario['admin'];
             $_SESSION['mensaje'] = "Datos modificados";
+            $publicacionModelo->cambiarnickpublicacion($antiguonick,$nuevonick);
             header('Location: ../Vista/perfil.php');
         }
         

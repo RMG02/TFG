@@ -39,6 +39,8 @@ class Usuario {
         return true;
     }
 
+    
+
     public function editarUsuario($email, $datos, $nick) {
         $filter = ['email' => $email];
         $nuevoEmail = $datos['email'];
