@@ -55,6 +55,7 @@ $tituloPagina = "Receta";
     $dislikes_cadena = implode(",", $dislikes);
     $host = $_SERVER['HTTP_HOST']; 
     $urlTweet = "$host/Vista/Verreceta.php?id=$id";
+    $extension = "";
 
 
 if ($multimedia) {
@@ -140,7 +141,16 @@ if ($nick == $_SESSION['nick']) {
 
 $contenidoPrincipal .= <<<EOS
                 <input type="hidden" value="$urlTweet" readonly>
-                <button type="button" class="botonPubli" name="compartir" onclick="copiarEnlace(this.previousElementSibling)">Compartir publicación</button>            
+                <button type="button" class="botonPubli" name="compartir" onclick="copiarEnlace(this.previousElementSibling)">Compartir receta</button> 
+                <button id="download-btn" 
+                    data-title="$titulo" 
+                    data-ingredients="$ingredientes" 
+                    data-preparation="$preparacion" 
+                    data-nick="$nick" 
+                    data-multimedia="$multimedia" 
+                    data-extension="$extension">Descargar PDF
+                    
+                </button>           
             </div>
         </div>
         <div id="edit-$modalId" class="modal">
@@ -319,6 +329,7 @@ if ($mensaje != "") {
 
 require_once __DIR__ . "/plantillas/plantilla.php";
 ?>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="../Recursos/js/Verpubli.js"></script>
+
 

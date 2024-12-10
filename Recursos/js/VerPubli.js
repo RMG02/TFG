@@ -112,3 +112,76 @@ function copiarEnlace(input) {
         console.error("Elemento no es seleccionable");
     }
 }
+
+document.getElementById('download-btn').addEventListener('click', function () {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Datos receta
+    const title = this.dataset.title.toUpperCase();
+    const nick = this.dataset.nick.replace(/\\n/g, '\n');
+    const ingredients = this.dataset.ingredients.replace(/\\n/g, '\n');
+    const preparation = this.dataset.preparation.replace(/\\n/g, '\n');
+    const multimedia = this.dataset.multimedia;
+    const extension = this.dataset.extension;
+
+    // Agregar título
+    doc.setFontSize(18);
+    doc.text(title, 10, 10);
+
+    let textStartY = 30; // Posición inicial para el texto
+
+    // Comprobar si hay imagen en la receta
+    if (multimedia !== '' && ['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
+        const img = new Image();
+        img.src = `../Recursos/multimedia/${multimedia}`;
+        img.onload = function () {
+            const imgWidth = this.width;
+            const imgHeight = this.height;
+
+            const pageWidth = doc.internal.pageSize.getWidth(); 
+            const maxWidth = pageWidth - 20; 
+            const scaleFactor = maxWidth / imgWidth;
+
+            const scaledWidth = imgWidth * scaleFactor;
+            const scaledHeight = imgHeight * scaleFactor;
+
+            // Agregar imagen al PDF
+            doc.addImage(img, extension.toUpperCase(), 10, 20, scaledWidth, scaledHeight);
+            textStartY = 20 + scaledHeight + 10; // Actualizar posición inicial del texto
+
+            agregarTexto(doc, ingredients, preparation, nick, textStartY);//Añadir la informacion
+            doc.save(`Receta.pdf`);//guardar el pdf
+        };
+        img.onerror = function () {
+            alert("Error al cargar la imagen. El PDF se generará sin ella."); //se genera el pdf sin la imagen
+            agregarTexto(doc, ingredients, preparation, nick, textStartY);
+            doc.save(`Receta.pdf`);
+        };
+    } else {
+        // Si no hay imagen se añade el texto solo
+        agregarTexto(doc, ingredients, preparation, nick, textStartY);
+        doc.save(`Receta.pdf`);
+    }
+});
+
+// Función para agregar texto al PDF
+function agregarTexto(doc, ingredients, preparation, nick, startY) {
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("Ingredientes:", 10, startY);
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "normal");
+    doc.text(ingredients, 10, startY + 10);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("Preparación:", 10, startY + 40);
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "normal");
+    doc.text(preparation, 10, startY + 50);
+
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "italic");
+    doc.text(`Creado por: ${nick}`, 10, startY + 90);
+}
+

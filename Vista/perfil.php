@@ -67,14 +67,22 @@ $contenidoPrincipal = <<<EOS
          </div>
     </div>
     <hr>
-    <form method="POST" action="../Vista/perfil.php">
-                <input type="hidden" name="verreceta" value='false'>
-                <button type="submit" class="boton_lista" name="publicaciones">Verpublicaciones</button>
-    </form>
-    <form method="POST" action="../Vista/perfil.php">
-                <input type="hidden" name="verreceta" value='true'>
-                <button type="submit" class="boton_lista" name="publicaciones">Ver recetas</button>
-    </form>
+
+    <div class="dropdown">
+            <button class="dropbtn">⋮</button>
+            <div class="dropdown-content">
+                <form method="POST" action="../Vista/perfil.php">
+                    <input type="hidden" name="verreceta" value='false'>
+                    <button type="submit" class="boton_lista" name="publicaciones">Verpublicaciones</button>
+                </form>
+                <form method="POST" action="../Vista/perfil.php">
+                    <input type="hidden" name="verreceta" value='true'>
+                    <button type="submit" class="boton_lista" name="publicaciones">Ver recetas</button>
+                </form>
+            </div>         
+    </div>
+    
+    
 
     <h3>Mis tweets</h3>
         <input type="text" id="buscador" onkeyup="filtrarPerfil()" placeholder="Buscar por texto...">
