@@ -163,6 +163,58 @@ class Receta {
         }
         return false;
     }
+
+    public function cambiarnickpublicacion($antiguonick, $nuevonick) {
+        // Obtener todas las publicaciones donde pueda estar el nick antiguo
+        $recetas = $this->collection->find([
+            '$or' => [
+                ['nick' => $antiguonick],
+                ['comentarios.nick' => $antiguonick],
+                ['comentarios.respuestas.nick' => $antiguonick]
+            ]
+        ]);
+    
+        foreach ($recetas as $receta) {
+            $actualizado = false;
+    
+            // Cambiar el nick en la publicación principal
+            if (isset($receta['nick']) && $receta['nick'] === $antiguonick) {
+                $receta['nick'] = $nuevonick;
+                $actualizado = true;
+            }
+    
+            // Cambiar el nick en los comentarios y respuestas
+            if (isset($receta['comentarios'])) {
+                $comentarios = $receta['comentarios'];
+                $this->actualizarNickEnComentarios($comentarios, $antiguonick, $nuevonick, $actualizado);
+                $receta['comentarios'] = $comentarios; // Actualizar en la publicación
+            }
+    
+            // Si hubo cambios, guardar la publicación actualizada
+            if ($actualizado) {
+                $this->collection->replaceOne(
+                    ['_id' => $receta['_id']],
+                    $receta
+                );
+            }
+        }
+    }
+    
+    private function actualizarNickEnComentarios(&$comentarios, $antiguonick, $nuevonick, &$actualizado) {
+        foreach ($comentarios as &$comentario) {
+            // Cambiar el nick en el comentario actual
+            if (isset($comentario['usuario']) && $comentario['usuario'] === $antiguonick) {
+                $comentario['usuario'] = $nuevonick;
+                $actualizado = true;
+            }
+    
+            // Cambiar el nick en las respuestas si existen
+            if (isset($comentario['respuestas'])) {
+                $this->actualizarNickEnComentarios($comentario['respuestas'], $antiguonick, $nuevonick, $actualizado);
+            }
+        }
+    }
+    
     public function editarComentario($id_publi, $id_com, $texto, $media, $esRespuesta) {
         $id = new ObjectId($id_publi);
         $comentarioId = new ObjectId($id_com);

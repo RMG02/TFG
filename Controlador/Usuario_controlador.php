@@ -85,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['admin'] = $DatosUsuario['admin'];
             $_SESSION['mensaje'] = "Datos modificados";
             $publicacionModelo->cambiarnickpublicacion($antiguonick,$nuevonick);
+            $recetaModelo->cambiarnickpublicacion($antiguonick,$nuevonick);
             header('Location: ../Vista/perfil.php');
         }
         
