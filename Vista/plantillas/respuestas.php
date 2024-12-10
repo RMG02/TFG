@@ -62,7 +62,7 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi) {
                                     
         EOS;
 
-        if($usuario == $_SESSION['nick']){
+        if($usuario == $_SESSION['nick'] || $_SESSION['admin'] == true){
             $contenido .= <<<EOS
                 <div class="dropdown">
                     <button class="dropbtn">⋮</button>

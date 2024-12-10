@@ -128,7 +128,7 @@ $contenidoPrincipal .= <<<EOS
             <div class="dropdown-content">
 EOS;
 
-if ($nick == $_SESSION['nick']) {
+if ($nick == $_SESSION['nick'] || $_SESSION['admin'] == true) {
     $contenidoPrincipal .= <<<EOS
                 <form method="POST" action="../Controlador/Receta_controlador.php" class="formulario">
                     <input type="hidden" name="id_publi" value="$id">
@@ -242,7 +242,7 @@ EOS;
                                                                 
             EOS;
 
-            if($usuario == $_SESSION['nick']){
+            if($usuario == $_SESSION['nick'] || $_SESSION['admin'] == true){
                 $contenidoPrincipal .= <<<EOS
                     <div class="dropdown">
                         <button class="dropbtn">⋮</button>
