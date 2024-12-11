@@ -7,6 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 ?>
 <header>
+    
 
     <?php
     $logo = '../../../Recursos/imagenes/Logo.png';

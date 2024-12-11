@@ -53,8 +53,16 @@ $contenidoPrincipal = <<<EOS
             <textarea name="titulo" placeholder="Escribe un Titulo" required></textarea>
             <textarea name="ingredientes" placeholder="Escribe ingredientes y la cantidad" required></textarea> 
             <textarea name="preparacion" placeholder="Escribe la preparación" required></textarea>
+            <input type="number" min="0" name="tiempo" placeholder="Tiempo tarda en minutos" required>
             <input type="hidden" name="recetat" value="$recetat">
-            <input type="file" name="archivo"> 
+            <p>Dificultad de la receta</p><select name="dificultad" required>
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+            <option value=4">4</option>
+            <option value=5>5</option>  
+            </select>
+            <input type="file" name="archivo" required> 
             <button type="submit" name="crearReceta">Publicar</button> 
          </form> 
       </div>

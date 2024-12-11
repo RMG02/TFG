@@ -50,6 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'titulo' => $_POST['titulo'],
             'ingredientes' => $_POST['ingredientes'],
             'preparacion' => $_POST['preparacion'],
+            'dificultad' => (int) $_POST['dificultad'],
+            'tiempo' => $_POST['tiempo'],
             'multimedia' => $archivo_subido,
             'likes' => [],
             'dislikes' => []

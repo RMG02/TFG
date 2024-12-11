@@ -604,5 +604,15 @@ footer p {
     background-color: #e6f7e6; 
 } 
 
+.dificultad-receta {
+    margin-top: 10px;
+    font-size: 1em; /* Color del gorro de chef */
+}
+
+.dificultad-receta i {
+    margin-right: 5px;
+    color:#dc1818;
+}
+
 
 

@@ -18,6 +18,7 @@ if (isset($_SERVER['REQUEST_URI'])) {
 	<meta name="usuario" content="<?php echo isset($_SESSION['nick']) ? $_SESSION['nick'] : null; ?>">
 	<link rel="stylesheet" type="text/css" href="../Recursos/css/estilo.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
 	<script src="http://localhost:3000/socket.io/socket.io.js"></script> 
 	<script src="../Recursos/js/socket.js"></script>
 	<title><?= $tituloPagina ?></title>
@@ -37,4 +38,6 @@ require('comun/cabecera.php');
 <?php require('comun/footer.php');?>
 
 </body>
+
+
 </html>

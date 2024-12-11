@@ -1,4 +1,7 @@
+
+
 function Perfil() {
+    
     var spans = document.getElementsByClassName("close");
     var spans_publi = document.getElementsByClassName("close_publi");
     var comentar = document.getElementsByName("comen");
@@ -114,6 +117,8 @@ function copiarEnlace(input) {
 }
 
 document.getElementById('download-btn').addEventListener('click', function () {
+    
+
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
@@ -124,6 +129,10 @@ document.getElementById('download-btn').addEventListener('click', function () {
     const preparation = this.dataset.preparation.replace(/\\n/g, '\n');
     const multimedia = this.dataset.multimedia;
     const extension = this.dataset.extension;
+    
+    
+
+
 
     // Agregar título
     doc.setFontSize(18);
@@ -154,34 +163,43 @@ document.getElementById('download-btn').addEventListener('click', function () {
             doc.save(`Receta.pdf`);//guardar el pdf
         };
         img.onerror = function () {
+            var tiempo = parseInt(this.dataset.tiempo);
+            var dificultad = parseInt(this.dataset.dificultad);
             alert("Error al cargar la imagen. El PDF se generará sin ella."); //se genera el pdf sin la imagen
-            agregarTexto(doc, ingredients, preparation, nick, textStartY);
+            agregarTexto(doc, ingredients, preparation, nick, textStartY,tiempo,dificultad);
             doc.save(`Receta.pdf`);
         };
     } else {
         // Si no hay imagen se añade el texto solo
-        agregarTexto(doc, ingredients, preparation, nick, textStartY);
+        var tiempo = parseInt(this.dataset.tiempo);
+        var dificultad = parseInt(this.dataset.dificultad);
+        console.log(tiempo,dificultad);
+        agregarTexto(doc, ingredients, preparation, nick, textStartY,tiempo,dificultad);
         doc.save(`Receta.pdf`);
     }
 });
 
 // Función para agregar texto al PDF
-function agregarTexto(doc, ingredients, preparation, nick, startY) {
+function agregarTexto(doc, ingredients, preparation, nick, startY,tiempox,dificultadx) {
+    console.log(tiempox,dificultadx);
+
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("Ingredientes:", 10, startY);
+    doc.text(`Tiempo: '<i class="fas fa-clock"></i>' ${tiempox || 'No especificado'} minutos`, 10, startY);
+    doc.text(`Dificultad: ${dificultadx}`, 10, startY + 10);
+    doc.text("Ingredientes:", 10, startY + 30);
     doc.setFontSize(14);
     doc.setFont("helvetica", "normal");
-    doc.text(ingredients, 10, startY + 10);
+    doc.text(ingredients, 10, startY + 40);
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("Preparación:", 10, startY + 40);
+    doc.text("Preparación:", 10, startY + 60);
     doc.setFontSize(14);
     doc.setFont("helvetica", "normal");
-    doc.text(preparation, 10, startY + 50);
+    doc.text(preparation, 10, startY + 70);
 
     doc.setFontSize(12);
     doc.setFont("helvetica", "italic");
-    doc.text(`Creado por: ${nick}`, 10, startY + 90);
+    doc.text(`Creado por: ${nick}`, 10, startY + 110);
 }
 

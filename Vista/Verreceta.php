@@ -55,7 +55,14 @@ $tituloPagina = "Receta";
     $dislikes_cadena = implode(",", $dislikes);
     $host = $_SERVER['HTTP_HOST']; 
     $urlTweet = "$host/Vista/Verreceta.php?id=$id";
+    $dificultad = (int) $receta['dificultad'];
+    $tiempo = $receta['tiempo'];
     $extension = "";
+    $dificultadHTML = '';
+    for ($j = 0; $j < $dificultad; $j++) {
+        $dificultadHTML .= '<span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span>';
+    }
+
 
 
 if ($multimedia) {
@@ -82,6 +89,14 @@ $contenidoPrincipal = <<<EOS
         $multi
         <h3>Ingredientes:</h3>
         <p>$ingredientes</p>
+        <h3>Tiempo<h3>
+        <div class="tiempo-receta">
+            <i class="fa fa-clock"></i> <span>$tiempo min</span>
+        </div></p>
+        <div class="dificultad-receta">
+            <span>Dificultad: </span>
+            $dificultadHTML
+        </div>
         <h3>Preparacion:</h3>
         <p>$preparacion</p>
         <button type="button" class="botonPubli" name="comen">Añadir Comentario</button>
@@ -146,10 +161,11 @@ $contenidoPrincipal .= <<<EOS
                     data-title="$titulo" 
                     data-ingredients="$ingredientes" 
                     data-preparation="$preparacion" 
+                    data-dificultad=$dificultad
+                    data-tiempo=$tiempo
                     data-nick="$nick" 
                     data-multimedia="$multimedia" 
                     data-extension="$extension">Descargar PDF
-                    
                 </button>           
             </div>
         </div>
@@ -162,6 +178,14 @@ $contenidoPrincipal .= <<<EOS
                     <textarea name="ingredientes">$ingredientes</textarea>
                     <textarea name="preparacion">$preparacion</textarea>
                     <input type="hidden" name="archivo_origen" value="$multimedia"> 
+                    <input type="number" name="tiempo" value="$tiempo">
+                    <p>Dificultad de la receta</p><select name="dificultad" value="$dificultad">
+                    <option value=1>1</option>
+                    <option value=2>2</option>
+                    <option value=3>3</option>
+                    <option value=4>4</option>
+                    <option value=5>5</option>  
+                    </select>
                     <input type="file" name="nuevo_archivo"> 
                     <input type="hidden" name="id_publi" value="$id">
                     <button type="submit" class="botonPubli" name="editarReceta">Guardar cambios</button>
@@ -331,5 +355,6 @@ require_once __DIR__ . "/plantillas/plantilla.php";
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="../Recursos/js/Verpubli.js"></script>
+
 
 
