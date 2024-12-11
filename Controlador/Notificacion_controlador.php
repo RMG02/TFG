@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_SESSION['notificaciones_usuario'])) {
             unset($_SESSION['notificaciones_usuario']);
             header('Location: ' . $_SESSION['url_anterior']);
-            exit;
+            
         }
     }
 
@@ -61,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(isset($_GET['listarNotificacionesUsuario'])){
         $notificaciones = $NotificacionModelo->obtenerTodasNotificaciones($_SESSION['nick']);
         $_SESSION['notificaciones_usuario'] = json_encode(iterator_to_array($notificaciones));
-        header('Location: ' . $_SESSION['url_anterior']);
-        exit; 
+        header('Location: ../Vista/Notificaciones.php');
+        
     }
 
     

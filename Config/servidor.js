@@ -30,7 +30,6 @@ io.on("connection", (socket) => {
             enlace: "http://localhost:8000/Vista/Verpublicacion.php?id=" + data.id_publi,
             tipo: data.tipo,
             fecha: new Date().toISOString(),
-            vista: false
         };
   
         if (socketID) {
@@ -55,7 +54,6 @@ io.on("connection", (socket) => {
             enlace: "http://localhost:8000/Vista/Verpublicacion.php?id=" + data.id_publi,
             tipo: data.tipo,
             fecha: new Date().toISOString(),
-            vista: false
         };
   
         if (socketID) {

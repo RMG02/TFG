@@ -10,6 +10,9 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
     exit;
 }
 
+if (!isset($_SESSION['notificaciones_usuario'])) {
+    header('Location: ../Controlador/Notificacion_controlador.php?listarNotificacionesUsuario=true');
+}
 
 $error = "";
 $mensaje = "";
@@ -31,30 +34,18 @@ $tituloPagina = "Notificaciones";
 
 
 if(!empty($notificaciones)){
-    $contenidoPrincipal = <<<EOS
-    <div class="filtros-notificaciones">
-        <button onclick="mostrarTodas()">Mostrar todas</button>
-        <button onclick="mostrarNoVistas()">Mostrar no vistas</button>
-    </div>
-    <div class="lista-notificaciones">
-    EOS;
 
-
-    $contenidoPrincipal .= '<div class="lista-notificaciones">';
+    $contenidoPrincipal = '<div class="lista-notificaciones">';
     foreach ($notificaciones as $notificacion) {
         $fecha = date('d/m/Y H:i:s', strtotime($notificacion['fecha']));
-        $vista = $notificacion['vista'] ? 'vista' : 'no-vista';
         $id = $notificacion['_id']['$oid'];
         $contenidoPrincipal .= <<<EOS
-            <div class="notificacion $vista">
-                <p>{$notificacion['mensaje']}</p>
+            <div class="notificacion vista">
+                <p><strong>{$notificacion['mensaje']}</strong></p>
                 <p><a href="{$notificacion['enlace']}">Ver publicación</a></p>
-                <p><small>{$notificacion['fecha']}</small></p>
+                <p><small>$fecha</small></p>
+            </div>
         EOS;
-        if (!$vista) {
-            $contenidoPrincipal .= '<button onclick="marcarComoVista('.$id.')">Marcar como vista</button>';
-        }
-        $contenidoPrincipal .= '</div>';
     }
     $contenidoPrincipal .= '</div>';
 }
@@ -66,4 +57,13 @@ else{
 require_once __DIR__ . "/plantillas/plantilla.php";
 ?>
 
-<script src="../Recursos/js/MostrarNoti.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    localStorage.setItem('notificationCounter', 0);
+
+    var notificationCounter = document.getElementById('notification-counter');
+    var contadorActual = parseInt(localStorage.getItem('notificationCounter')) || 0;
+    notificationCounter.textContent = contadorActual;
+    notificationCounter.style.display = contadorActual > 0 ? 'inline' : 'none';
+});
+</script>

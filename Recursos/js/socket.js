@@ -8,7 +8,7 @@ socket.on("notificacion", function(data) {
 
     var notificacion = document.createElement("div");
     notificacion.className = "notificacion";
-    notificacion.innerHTML = data.mensaje + "<br><a href=" + data.enlace +">Ver publicación</a>";
+    notificacion.innerHTML = "<strong>"+data.mensaje+"</strong>";
 
     divNotificaciones.appendChild(notificacion);
 
@@ -34,7 +34,6 @@ socket.on("notificacion", function(data) {
         console.error('Error en la solicitud:', error);
     });
 
-    // Auto-ocultar la notificación después de 5 segundos
     setTimeout(function() {
         notificacion.classList.add("hidden");
         setTimeout(function() {
@@ -71,8 +70,12 @@ function actualizarContadorNotificacionesDecremento(decremento) {
     var notificationCounter = document.getElementById('notification-counter');
     var contadorActual = parseInt(notificationCounter.textContent) || 0;
     contadorActual -= decremento;
-    notificationCounter.textContent = contadorActual;
-    notificationCounter.style.display = contadorActual > 0 ? 'inline' : 'none';
+    if(contadorActual >= 0){
+        notificationCounter.textContent = contadorActual;
+        notificationCounter.style.display = contadorActual > 0 ? 'inline' : 'none';
+        localStorage.setItem('notificationCounter', contadorActual);
+    }
+    
 }
 
 function actualizarContadorNotificaciones(incremento) {
@@ -81,6 +84,7 @@ function actualizarContadorNotificaciones(incremento) {
     contadorActual += incremento;
     notificationCounter.textContent = contadorActual;
     notificationCounter.style.display = contadorActual > 0 ? 'inline' : 'none';
+    localStorage.setItem('notificationCounter', contadorActual);
 }
 
 function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes) {
