@@ -129,11 +129,9 @@ document.getElementById('download-btn').addEventListener('click', function () {
     const preparation = this.dataset.preparation.replace(/\\n/g, '\n');
     const multimedia = this.dataset.multimedia;
     const extension = this.dataset.extension;
+    var tiempo = parseInt(this.dataset.tiempo);
+    var dificultad = parseInt(this.dataset.dificultad);
     
-    
-
-
-
     // Agregar título
     doc.setFontSize(18);
     doc.text(title, 10, 10);
@@ -159,21 +157,16 @@ document.getElementById('download-btn').addEventListener('click', function () {
             doc.addImage(img, extension.toUpperCase(), 10, 20, scaledWidth, scaledHeight);
             textStartY = 20 + scaledHeight + 10; // Actualizar posición inicial del texto
 
-            agregarTexto(doc, ingredients, preparation, nick, textStartY);//Añadir la informacion
+            agregarTexto(doc, ingredients, preparation, nick, textStartY,tiempo,dificultad);//Añadir la informacion
             doc.save(`Receta.pdf`);//guardar el pdf
         };
         img.onerror = function () {
-            var tiempo = parseInt(this.dataset.tiempo);
-            var dificultad = parseInt(this.dataset.dificultad);
             alert("Error al cargar la imagen. El PDF se generará sin ella."); //se genera el pdf sin la imagen
             agregarTexto(doc, ingredients, preparation, nick, textStartY,tiempo,dificultad);
             doc.save(`Receta.pdf`);
         };
     } else {
         // Si no hay imagen se añade el texto solo
-        var tiempo = parseInt(this.dataset.tiempo);
-        var dificultad = parseInt(this.dataset.dificultad);
-        console.log(tiempo,dificultad);
         agregarTexto(doc, ingredients, preparation, nick, textStartY,tiempo,dificultad);
         doc.save(`Receta.pdf`);
     }
@@ -181,25 +174,36 @@ document.getElementById('download-btn').addEventListener('click', function () {
 
 // Función para agregar texto al PDF
 function agregarTexto(doc, ingredients, preparation, nick, startY,tiempox,dificultadx) {
-    console.log(tiempox,dificultadx);
-
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text(`Tiempo: '<i class="fas fa-clock"></i>' ${tiempox || 'No especificado'} minutos`, 10, startY);
-    doc.text(`Dificultad: ${dificultadx}`, 10, startY + 10);
-    doc.text("Ingredientes:", 10, startY + 30);
+    const tiempoIcono = new Image();
+    tiempoIcono.src = '../Recursos/imagenes/reloj.png';
+        doc.text(`Tiempo`, 10, startY);
+        doc.addImage(tiempoIcono, 'PNG', 15, startY + 7, 5, 5); 
+        doc.text(`${tiempox || 'No especificado'} minutos`, 20, startY + 10);
+    
+    const dificultadIcono = new Image();
+    dificultadIcono.src = '../Recursos/imagenes/chef.png'; 
+        doc.text("Dificultad:", 10, startY + 20);
+        let xPosition = 20; // Posición inicial para los iconos
+        for (let i = 0; i < dificultadx; i++) {
+            doc.addImage(dificultadIcono, 'PNG', xPosition, startY + 30, 5, 5);
+            xPosition += 6; // Ajusta la distancia entre los iconos
+        }
+    
+    doc.text("Ingredientes:", 10, startY + 40);
     doc.setFontSize(14);
     doc.setFont("helvetica", "normal");
-    doc.text(ingredients, 10, startY + 40);
+    doc.text(ingredients, 10, startY + 50);
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("Preparación:", 10, startY + 60);
+    doc.text("Preparación:", 10, startY + 70);
     doc.setFontSize(14);
     doc.setFont("helvetica", "normal");
-    doc.text(preparation, 10, startY + 70);
+    doc.text(preparation, 10, startY + 80);
 
     doc.setFontSize(12);
     doc.setFont("helvetica", "italic");
-    doc.text(`Creado por: ${nick}`, 10, startY + 110);
+    doc.text(`Creado por: ${nick}`, 10, startY + 120);
 }
 
