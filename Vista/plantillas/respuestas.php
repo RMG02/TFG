@@ -1,5 +1,5 @@
 <?php
-function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi) {
+function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $tipo_publicacion) {
     $contenido = "";
     foreach ($comentarios as $comentario) {
         $usuario = $comentario['usuario'];
@@ -48,18 +48,27 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi) {
                                     <div id="respuesta-$modalComId-$modalResId" class="modal">
                                         <div class="modal-content">
                                             <span class="close">&times;</span>
-                                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
-                                                <input type="hidden" name="id_publi" value="$id_publi">
-                                                <input type="hidden" name="id_comen" value="$id_com"> 
-                                                <input type="hidden" name="esRespuesta" value="true">
-                                                <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
-                                                <input type="file" name="archivo"> 
-                                                <button type="submit" class="botonPubli" name="agregarComentario">Añadir Respuesta</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="tweet-footer">              
-                                    
+        EOS;
+        if($tipo_publicacion == "publicacion"){
+            $contenido .= <<<EOS
+                <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
+            EOS;
+        }else{
+            $contenido .= <<<EOS
+                <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
+            EOS;
+        }
+        $contenido .= <<<EOS
+                        <input type="hidden" name="id_publi" value="$id_publi">
+                        <input type="hidden" name="id_comen" value="$id_com"> 
+                        <input type="hidden" name="esRespuesta" value="true">
+                        <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
+                        <input type="file" name="archivo"> 
+                        <button type="submit" class="botonPubli" name="agregarComentario">Añadir Respuesta</button>
+                    </form>
+                </div>
+            </div>
+            <div class="tweet-footer">                       
         EOS;
 
         if($usuario == $_SESSION['nick'] || $_SESSION['admin'] == true){
@@ -67,7 +76,17 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi) {
                 <div class="dropdown">
                     <button class="dropbtn">⋮</button>
                     <div class="dropdown-content">
-                        <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
+            EOS;
+            if($tipo_publicacion == "publicacion"){
+                $contenido .= <<<EOS
+                    <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                EOS;
+            }else{
+                $contenido .= <<<EOS
+                    <form method="POST" action="../Controlador/Receta_controlador.php" class="formulario">
+                EOS;
+            }
+            $contenido .= <<<EOS
                             <input type="hidden" name="id_comen" value="$id_com"> 
                             <input type="hidden" name="multi" value="../Recursos/multimedia/$mult"> 
                             <input type="hidden" name="esRespuesta" value="true">
@@ -81,7 +100,17 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi) {
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         $multi_editar
-                        <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
+            EOS;
+            if($tipo_publicacion == "publicacion"){
+                $contenido .= <<<EOS
+                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                EOS;
+            }else{
+                $contenido .= <<<EOS
+                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
+                EOS;
+            }
+            $contenido .= <<<EOS
                             <textarea name="contenido">$tex</textarea>
                             <input type="hidden" name="archivo_origen" value="$mult"> 
                             <input type="file" name="nuevo_archivo"> 
@@ -104,7 +133,7 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi) {
         if (!empty($comentario['respuestas'])) {
             $contenido .= '<h3>Respuestas</h3>';
             $modalResId++;           
-            $contenido .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id_publi);        
+            $contenido .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id_publi, $tipo_publicacion);        
         }
         else{
             $contenido .= '<h3>No hay respuestas</h3>';

@@ -319,7 +319,7 @@ EOS;
             EOS;
             if (!empty($comentario['respuestas'])) {
                 $contenidoPrincipal .= '<h3>Respuestas</h3>';
-                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id);
+                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id, $tipo_publicacion);
             }
             else{
                 $contenidoPrincipal .= '<h3>No hay respuestas</h3>';

@@ -106,8 +106,8 @@ foreach ($recetas as $receta) {
                 <strong>$nick</strong> <span class="tweet-time">$Hora</span>
             </div>
             <div class="tweet-content">
-                $multi
                 <strong>$texto</strong>
+                $multi
                 <div class="comentarios-icon">
                     <i class="fas fa-comments"></i> $num_comentarios
                 </div>
