@@ -7,7 +7,13 @@ if (isset($_SERVER['REQUEST_URI'])) {
     $_SESSION['url_anterior'] = $_SERVER['REQUEST_URI']; 
 }
 
+if (isset($_SESSION['publicaciones'])) {
+	unset($_SESSION['publicaciones']);
+}
 
+if (isset($_SESSION['recetas'])) {
+	unset($_SESSION['recetas']);
+}
 
 ?>
 

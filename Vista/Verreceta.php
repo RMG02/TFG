@@ -106,7 +106,18 @@ $contenidoPrincipal = <<<EOS
         <div id="comen-$modalId" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
+EOS;
+if($nickuser == $nick){
+    $contenidoPrincipal .= <<<EOS
+        <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
+    EOS;
+}
+else{
+    $contenidoPrincipal .= <<<EOS
+        <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '', '', '$tipo_publicacion')">
+    EOS;
+}
+$contenidoPrincipal .= <<<EOS
                     <input type="hidden" name="id_publi" value="$id">
                     <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
                     <input type="file" name="archivo"> 

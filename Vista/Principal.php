@@ -12,7 +12,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
 
 if (!isset($_SESSION['publicaciones'])) {
    header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true');
-   exit;
+   
 }
 
 

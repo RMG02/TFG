@@ -117,6 +117,8 @@ function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes, tip
             } else {
                 socket.emit("decrementar-reaccion", {usuario: usuario_des});
             }
+        } else if(event.submitter.name === 'agregarComentario'){
+            socket.emit("nuevo-comentario", { usuario: usuario, usuario_des: usuario_des, id_publi: id_publi, tipo: "nuevo comentario", tipo_publicacion: tipo_publicacion });
         }
           
       }).catch(error => {

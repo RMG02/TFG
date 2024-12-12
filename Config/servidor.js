@@ -86,15 +86,48 @@ io.on("connection", (socket) => {
 
         axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)          
     });
+
+    socket.on("nuevo-comentario", (data) => {
+        if(data.tipo_publicacion == "publicacion"){
+            var tipo_mensaje = data.usuario + " ha comentado tu publicación";
+            var tipo_enlace = "http://localhost:8000/Vista/Verpublicacion.php?id=" + data.id_publi;
+        }
+        else if(data.tipo_publicacion == "receta"){
+            var tipo_mensaje = data.usuario + " ha comentado tu receta";
+            var tipo_enlace = "http://localhost:8000/Vista/Verreceta.php?id=" + data.id_publi;
+        }
+        var socketID = usuarios_conectados[data.usuario_des];
+        var notificacion = { 
+            usuario_publi: data.usuario_des, 
+            usuario_accion: data.usuario,
+            mensaje: tipo_mensaje,
+            id_publi: data.id_publi,
+            enlace: tipo_enlace,
+            tipo: data.tipo,
+            fecha: new Date().toISOString(),
+            tipo_publicacion: data.tipo_publicacion
+        };
   
-      socket.on('disconnect', () => {
-          for (let usuario in usuarios_conectados) {
-              if (usuarios_conectados[usuario] === socket.id) {
-                  delete usuarios_conectados[usuario];
-                  break;
-              }
-          }
-      });
+        if (socketID) {
+            io.to(socketID).emit("notificacion", notificacion);
+        }
+
+        // Usar URLSearchParams para formatear los datos
+        var params = new URLSearchParams();
+        params.append('notificacion', JSON.stringify(notificacion));
+
+        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)         
+        
+    });
+  
+    socket.on('disconnect', () => {
+        for (let usuario in usuarios_conectados) {
+            if (usuarios_conectados[usuario] === socket.id) {
+                delete usuarios_conectados[usuario];
+                break;
+            }
+        }
+    });
 });
 
 server.listen(3000, function () {

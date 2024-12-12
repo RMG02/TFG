@@ -12,7 +12,6 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
 
 if (!isset($_SESSION['recetas'])) {
    header('Location: ../Controlador/Receta_controlador.php?listarRecetas=true');
-   exit;
 }
 
 
