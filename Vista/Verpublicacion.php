@@ -13,6 +13,7 @@ require_once __DIR__ . "/plantillas/respuestas.php";
 $modalId = 0;
 $modalComId = 0;
 $principal = true;
+$tipo_publicacion = "publicacion";
 $error = "";
 $mensaje = "";
 if (isset($_SESSION['error'])) {
@@ -100,7 +101,7 @@ if($nickuser == $nick){
 }
 else{
     $contenidoPrincipal .= <<<EOS
-        <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena')">
+        <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion')">
     EOS;
 }
 $contenidoPrincipal .= <<<EOS

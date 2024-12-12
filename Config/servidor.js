@@ -21,15 +21,24 @@ io.on("connection", (socket) => {
     });
 
     socket.on("like-dado", (data) => {
+        if(data.tipo_publicacion == "publicacion"){
+            var tipo_mensaje = data.usuario + " ha dado like a tu publicación";
+            var tipo_enlace = "http://localhost:8000/Vista/Verpublicacion.php?id=" + data.id_publi;
+        }
+        else if(data.tipo_publicacion == "receta"){
+            var tipo_mensaje = data.usuario + " ha dado like a tu receta";
+            var tipo_enlace = "http://localhost:8000/Vista/Verreceta.php?id=" + data.id_publi;
+        }
         var socketID = usuarios_conectados[data.usuario_des];
         var notificacion = { 
             usuario_publi: data.usuario_des, 
             usuario_accion: data.usuario,
-            mensaje: data.usuario + " ha dado like a tu publicación",
+            mensaje: tipo_mensaje,
             id_publi: data.id_publi,
-            enlace: "http://localhost:8000/Vista/Verpublicacion.php?id=" + data.id_publi,
+            enlace: tipo_enlace,
             tipo: data.tipo,
             fecha: new Date().toISOString(),
+            tipo_publicacion: data.tipo_publicacion
         };
   
         if (socketID) {
@@ -45,15 +54,25 @@ io.on("connection", (socket) => {
     });
   
     socket.on("dislike-dado", (data) => {
+        if(data.tipo_publicacion == "publicacion"){
+            var tipo_mensaje = data.usuario + " ha dado dislike a tu publicación"
+            var tipo_enlace = "http://localhost:8000/Vista/Verpublicacion.php?id=" + data.id_publi;
+        }
+        else if(data.tipo_publicacion == "receta"){
+            var tipo_mensaje = data.usuario + " ha dado dislike a tu receta";
+            var tipo_enlace = "http://localhost:8000/Vista/Verreceta.php?id=" + data.id_publi;
+        }
+
         var socketID = usuarios_conectados[data.usuario_des];
         var notificacion = { 
             usuario_publi: data.usuario_des, 
             usuario_accion: data.usuario,
-            mensaje: data.usuario + " ha dado dislike a tu publicación",
+            mensaje: tipo_mensaje,
             id_publi: data.id_publi,
-            enlace: "http://localhost:8000/Vista/Verpublicacion.php?id=" + data.id_publi,
+            enlace: tipo_enlace,
             tipo: data.tipo,
             fecha: new Date().toISOString(),
+            tipo_publicacion: data.tipo_publicacion
         };
   
         if (socketID) {

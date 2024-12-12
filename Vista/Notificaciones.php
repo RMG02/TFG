@@ -10,6 +10,10 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
     exit;
 }
 
+if (isset($_SESSION['id_publi'])) {
+    unset($_SESSION['id_publi']);
+}
+
 if (!isset($_SESSION['notificaciones_usuario'])) {
     header('Location: ../Controlador/Notificacion_controlador.php?listarNotificacionesUsuario=true');
 }
@@ -42,7 +46,20 @@ if(!empty($notificaciones)){
         $contenidoPrincipal .= <<<EOS
             <div class="notificacion vista">
                 <p><strong>{$notificacion['mensaje']}</strong></p>
+        EOS;
+
+        if($notificacion['tipo_publicacion'] == "publicacion"){
+            $contenidoPrincipal .= <<<EOS
                 <p><a href="{$notificacion['enlace']}">Ver publicación</a></p>
+            EOS;
+        }
+        else if($notificacion['tipo_publicacion'] == "receta"){
+            $contenidoPrincipal .= <<<EOS
+                <p><a href="{$notificacion['enlace']}">Ver receta</a></p>
+            EOS;
+        }
+
+        $contenidoPrincipal .= <<<EOS
                 <p><small>$fecha</small></p>
             </div>
         EOS;

@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'enlace' => $servidor_post['enlace'],
             'tipo' => $servidor_post['tipo'],
             'fecha' => $servidor_post['fecha'],
-            'vista' => $servidor_post['vista'],
+            'tipo_publicacion' => $servidor_post['tipo_publicacion'],
         ];
         $NotificacionModelo->crearNotificacion($notificacion);
         

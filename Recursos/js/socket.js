@@ -67,10 +67,12 @@ socket.on("decremento", function(data) {
 });
 
 function actualizarContadorNotificacionesDecremento(decremento) {
+    console.log("decremento");
     var notificationCounter = document.getElementById('notification-counter');
     var contadorActual = parseInt(notificationCounter.textContent) || 0;
     contadorActual -= decremento;
     if(contadorActual >= 0){
+        console.log("decremento de verdad");
         notificationCounter.textContent = contadorActual;
         notificationCounter.style.display = contadorActual > 0 ? 'inline' : 'none';
         localStorage.setItem('notificationCounter', contadorActual);
@@ -79,6 +81,7 @@ function actualizarContadorNotificacionesDecremento(decremento) {
 }
 
 function actualizarContadorNotificaciones(incremento) {
+    console.log("aumento");
     var notificationCounter = document.getElementById('notification-counter');
     var contadorActual = parseInt(notificationCounter.textContent) || 0;
     contadorActual += incremento;
@@ -87,7 +90,7 @@ function actualizarContadorNotificaciones(incremento) {
     localStorage.setItem('notificationCounter', contadorActual);
 }
 
-function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes) {
+function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes, tipo_publicacion) {
     fetch('../../Controlador/Publicacion_controlador.php', {
     }).then(response => response.text())
       .then(result => {
@@ -100,7 +103,7 @@ function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes) {
                 if(dislikes.includes(usuario)){
                     socket.emit("decrementar-reaccion", {usuario: usuario_des});
                 }
-                darLike(usuario, usuario_des, id_publi);
+                darLike(usuario, usuario_des, id_publi, tipo_publicacion);
             } else {
                 socket.emit("decrementar-reaccion", {usuario: usuario_des});
             }
@@ -110,7 +113,7 @@ function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes) {
                 if(likes.includes(usuario)){
                     socket.emit("decrementar-reaccion", {usuario: usuario_des});
                 }
-                darDislike(usuario, usuario_des, id_publi);
+                darDislike(usuario, usuario_des, id_publi, tipo_publicacion);
             } else {
                 socket.emit("decrementar-reaccion", {usuario: usuario_des});
             }
@@ -121,12 +124,12 @@ function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes) {
       });
 }
 
-function darLike(usuario, usuario_des, id_publi) {
-    socket.emit("like-dado", { usuario: usuario, usuario_des: usuario_des, id_publi: id_publi, tipo: "like" });
+function darLike(usuario, usuario_des, id_publi, tipo_publicacion) {
+    socket.emit("like-dado", { usuario: usuario, usuario_des: usuario_des, id_publi: id_publi, tipo: "like", tipo_publicacion: tipo_publicacion });
 }
 
-function darDislike(usuario, usuario_des, id_publi) {
-    socket.emit("dislike-dado", { usuario: usuario, usuario_des: usuario_des, id_publi: id_publi, tipo: "dislike"});
+function darDislike(usuario, usuario_des, id_publi, tipo_publicacion) {
+    socket.emit("dislike-dado", { usuario: usuario, usuario_des: usuario_des, id_publi: id_publi, tipo: "dislike", tipo_publicacion: tipo_publicacion});
 }
 
 
