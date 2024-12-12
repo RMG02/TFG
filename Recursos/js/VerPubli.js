@@ -174,36 +174,82 @@ document.getElementById('download-btn').addEventListener('click', function () {
 
 // Función para agregar texto al PDF
 function agregarTexto(doc, ingredients, preparation, nick, startY,tiempox,dificultadx) {
+    /*doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    const tiempoIcono = new Image();
+    tiempoIcono.src = '../Recursos/imagenes/reloj.png';
+        doc.text(`Tiempo:`, 10, startY);
+        doc.addImage(tiempoIcono, 'PNG', 35, startY-4, 5, 5); 
+        doc.text(`${tiempox || 'No especificado'} minutos`, 40, startY);
+    
+    const dificultadIcono = new Image();
+    dificultadIcono.src = '../Recursos/imagenes/chef.png'; 
+        doc.text("Dificultad:", 140, startY);
+        let xPosition = 170; // Posición inicial para los iconos
+        for (let i = 0; i < dificultadx; i++) {
+            doc.addImage(dificultadIcono, 'PNG', xPosition, startY-5, 5, 5);
+            xPosition += 6; // Ajusta la distancia entre los iconos
+        }
+    
+    doc.text("Ingredientes:", 10, startY + 20);
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "normal");
+    doc.text(ingredients, 10, startY + 30);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("Preparación:", 10, startY + 50);
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "normal");
+    doc.text(preparation, 10, startY + 60);
+
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "italic");
+    doc.text(`Creado por: ${nick}`, 10, startY + 120);*/
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
     const tiempoIcono = new Image();
     tiempoIcono.src = '../Recursos/imagenes/reloj.png';
-        doc.text(`Tiempo`, 10, startY);
-        doc.addImage(tiempoIcono, 'PNG', 15, startY + 7, 5, 5); 
-        doc.text(`${tiempox || 'No especificado'} minutos`, 20, startY + 10);
-    
+    doc.text(`Tiempo:`, 10, startY);
+    doc.addImage(tiempoIcono, 'PNG', 35, startY - 4, 5, 5);
+    doc.text(`${tiempox || 'No especificado'} minutos`, 42, startY);
+
     const dificultadIcono = new Image();
-    dificultadIcono.src = '../Recursos/imagenes/chef.png'; 
-        doc.text("Dificultad:", 10, startY + 20);
-        let xPosition = 20; // Posición inicial para los iconos
-        for (let i = 0; i < dificultadx; i++) {
-            doc.addImage(dificultadIcono, 'PNG', xPosition, startY + 30, 5, 5);
-            xPosition += 6; // Ajusta la distancia entre los iconos
-        }
-    
-    doc.text("Ingredientes:", 10, startY + 40);
+    dificultadIcono.src = '../Recursos/imagenes/chef.png';
+    doc.text("Dificultad:", 140, startY);
+    let xPosition = 170; // Initial position for icons
+    for (let i = 0; i < dificultadx; i++) {
+        doc.addImage(dificultadIcono, 'PNG', xPosition, startY - 5, 5, 5);
+        xPosition += 6; // Adjust distance between icons
+    }
+
+    // Add Ingredientes
+    doc.text("Ingredientes:", 10, startY + 20);
     doc.setFontSize(14);
     doc.setFont("helvetica", "normal");
-    doc.text(ingredients, 10, startY + 50);
+    let ingredientsStartY = startY + 30;
+    let ingredientsHeight = doc.getTextDimensions(ingredients).h;
+    let lines = ingredients.split('\n').length;
+    let ingredientsTotalHeight = lines * 7; // Assuming 7 units per line
+    doc.text(ingredients, 10, ingredientsStartY);
+
+    // Add Preparación below Ingredientes
+    let preparationStartY = ingredientsStartY + ingredientsTotalHeight + 10;
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("Preparación:", 10, startY + 70);
+    doc.text("Preparación:", 10, preparationStartY);
     doc.setFontSize(14);
     doc.setFont("helvetica", "normal");
-    doc.text(preparation, 10, startY + 80);
+    let preparationHeight = doc.getTextDimensions(preparation).h;
+    let preparationLines = preparation.split('\n').length;
+    let preparationTotalHeight = preparationLines * 7; // Assuming 7 units per line
+    doc.text(preparation, 10, preparationStartY + 10);
 
+    // Add Creado por
     doc.setFontSize(12);
     doc.setFont("helvetica", "italic");
-    doc.text(`Creado por: ${nick}`, 10, startY + 120);
+    let creadoPorStartY = preparationStartY + preparationTotalHeight + 20;
+    doc.text(`Creado por: ${nick}`, 10, creadoPorStartY);
 }
+
+
 

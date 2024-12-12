@@ -43,6 +43,8 @@ $tituloPagina = "Receta";
     $titulo = $receta['titulo'];
     $ingredientes = $receta['ingredientes'];
     $preparacion = $receta['preparacion'];
+    $ingredientesx = nl2br($ingredientes);
+    $preparacionx = nl2br($preparacion);
     $id = $receta['_id']['$oid'];
     $Hora = date('d/m/Y H:i:s', strtotime($receta['created_at']));
     $multimedia = $receta['multimedia'];
@@ -88,8 +90,6 @@ $contenidoPrincipal = <<<EOS
     <div class="recet-content">
         <h2>$titulo</h2>
         $multi
-        <h3>Ingredientes:</h3>
-        <p>$ingredientes</p>
         <h3>Tiempo<h3>
         <div class="tiempo-receta">
             <i class="fa fa-clock"></i> <span>$tiempo min</span>
@@ -98,8 +98,10 @@ $contenidoPrincipal = <<<EOS
             <span>Dificultad: </span>
             $dificultadHTML
         </div>
+        <h3>Ingredientes:</h3>
+        <p>$ingredientesx</p>
         <h3>Preparacion:</h3>
-        <p>$preparacion</p>
+        <p>$preparacionx</p>
         <button type="button" class="botonPubli" name="comen">Añadir Comentario</button>
         <div id="comen-$modalId" class="modal">
             <div class="modal-content">
