@@ -118,6 +118,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             unset($_SESSION['id_publi']);
         }
 
+        if (isset($_SESSION['notificaciones_usuario'])) {
+            unset($_SESSION['notificaciones_usuario']);            
+        }
+        
+        $NotificacionModelo->borrarNotificacion($_POST['id_publi'], $_SESSION['nick'], "publicacion");
         $resultado = $recetaModelo->obtenerReceta($_POST['id_publi']);
         $receta = json_decode(json_encode($resultado), true);
     
@@ -138,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
     
            
-            header('Location: ../Vista/Principal.php');
+            header('Location: ../Vista/Recetas.php');
             exit;
             
         }

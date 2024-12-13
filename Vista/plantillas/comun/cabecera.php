@@ -28,7 +28,7 @@ if (session_status() == PHP_SESSION_NONE) {
             echo "<p><a href='/Vista/Notificaciones.php' class='menu-icon' titulo='Notificaciones'><i class='fas fa-bell'></i></a></p>";
             echo "<span id='notification-counter' class='badge' style='display:none;'></span></a></p>";
             echo "<p><a href='/Vista/perfil.php' class='menu-icon' titulo='Perfil'><i class='fas fa-user'></i></a></p>";
-            echo "<p><a href='../Controlador/logout.php' class='menu-icon' titulo='Logout'><i class='fas fa-sign-out-alt'></i></a></p>";
+            echo "<p><a href='../Controlador/logout.php' class='menu-icon' titulo='Logout' onclick='LogOut()'><i class='fas fa-sign-out-alt'></i></a></p>";
             
         } else {
             echo "<p><a href='Login.php'>Iniciar sesión</a></p>";
@@ -42,9 +42,17 @@ if (session_status() == PHP_SESSION_NONE) {
 document.addEventListener("DOMContentLoaded", function() {
     var notificationCounter = document.getElementById('notification-counter');
     var contadorActual = parseInt(localStorage.getItem('notificationCounter')) || 0;
-    notificationCounter.textContent = contadorActual;
+    if(contadorActual < 0){
+        notificationCounter.textContent = 0;
+    }
+    else{
+        notificationCounter.textContent = contadorActual;
+    }
+    
     notificationCounter.style.display = contadorActual > 0 ? 'inline' : 'none';
     
 });
 </script>
+<script src="../Recursos/js/socket.js"></script>
+
 

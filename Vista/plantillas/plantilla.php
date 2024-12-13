@@ -26,7 +26,6 @@ if (isset($_SESSION['recetas'])) {
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 	<script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
 	<script src="http://localhost:3000/socket.io/socket.io.js"></script> 
-	<script src="../Recursos/js/socket.js"></script>
 	<title><?= $tituloPagina ?></title>
 </head>
 <body>
@@ -35,7 +34,6 @@ if (isset($_SESSION['recetas'])) {
 require('comun/cabecera.php');
 
 ?>
-
 <div id="contenedor">
 	<div id="notificaciones"></div>
 	<?= $contenidoPrincipal ?>

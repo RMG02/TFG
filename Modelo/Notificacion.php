@@ -16,13 +16,21 @@ class Notificacion {
             'usuario_accion' => $usuario_accion,
             'tipo' => $tipo
         ];
-    
-        return $this->collection->deleteMany($filtro);
-
+        
+        if ($tipo != "publicacion") {
+            return $this->collection->deleteMany($filtro);
+        } else {
+            return $this->collection->deleteMany(['id_publi' => $id_publi]);
+        }
     }
     
     public function obtenerTodasNotificaciones($usuario) {
         return $this->collection->find(['usuario_publi' => $usuario], ['sort' => ['fecha' => -1]]);
+
+    }
+
+    public function obtenerTodasNotificacionesId($id) {
+        return $this->collection->find(['id_publi' => $id]);
 
     }
 

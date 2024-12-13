@@ -4,12 +4,26 @@ var server = require("http").Server(app);
 var io = require("socket.io")(server);
 var axios = require('axios'); 
 var usuarios_conectados = {}; 
+var contador_notificaciones = {};
+
   
 io.on("connection", (socket) => {
 
     socket.on("conectado", (data) => {
+        console.log("usuario conctado", data.usuario);
+
         if(data.usuario){
             usuarios_conectados[data.usuario] = socket.id;
+            /*if(contador_notificaciones.hasOwnProperty(data.usuario)){
+                io.to(usuarios_conectados[data.usuario]).emit("actualizar-contador", contador_notificaciones[data.usuario]);
+            }
+            else{
+                contador_notificaciones[data.usuario] = data.num_noti;
+            }*/
+            console.log("usuarios conctado", usuarios_conectados);
+            console.log("num notificaciones", contador_notificaciones);
+
+            
         }
     });
 
@@ -18,6 +32,8 @@ io.on("connection", (socket) => {
         if (socketID) {
             io.to(socketID).emit("decremento", 1);
         }
+        contador_notificaciones[data.usuario] -= 1;
+        
     });
 
     socket.on("like-dado", (data) => {
@@ -44,7 +60,9 @@ io.on("connection", (socket) => {
         if (socketID) {
             io.to(socketID).emit("notificacion", notificacion);
         }
-
+        
+        contador_notificaciones[data.usuario_des] += 1;
+        
         // Usar URLSearchParams para formatear los datos
         var params = new URLSearchParams();
         params.append('notificacion', JSON.stringify(notificacion));
@@ -80,6 +98,8 @@ io.on("connection", (socket) => {
             
         }
         
+        contador_notificaciones[data.usuario_des] += 1;
+        
         // Usar URLSearchParams para formatear los datos
         var params = new URLSearchParams();
         params.append('notificacion', JSON.stringify(notificacion));
@@ -111,6 +131,9 @@ io.on("connection", (socket) => {
         if (socketID) {
             io.to(socketID).emit("notificacion", notificacion);
         }
+        
+        contador_notificaciones[data.usuario_des] += 1;
+        
 
         // Usar URLSearchParams para formatear los datos
         var params = new URLSearchParams();
@@ -119,7 +142,8 @@ io.on("connection", (socket) => {
         axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)         
         
     });
-  
+    
+    
     socket.on('disconnect', () => {
         for (let usuario in usuarios_conectados) {
             if (usuarios_conectados[usuario] === socket.id) {

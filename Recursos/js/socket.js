@@ -1,7 +1,24 @@
 var socket = io.connect("http://localhost:3000", { transports: ['websocket'], forceNew: true });
 
 var Usuario = document.querySelector('meta[name="usuario"]').getAttribute('content');
-socket.emit("conectado", {usuario: Usuario});
+var contadorActual = localStorage.getItem('notificationCounter');
+
+socket.emit("conectado", {usuario: Usuario, num_noti: contadorActual});
+
+
+socket.on("actualizar-contador", function(data) {
+    var notificationCounter = document.getElementById('notification-counter');
+    if(data >= 0){
+        contador = data;
+    }
+    else{
+        contador = 0;
+    }
+    notificationCounter.textContent = contador;
+    notificationCounter.style.display = contador > 0 ? 'inline' : 'none';
+    localStorage.setItem('notificationCounter', contador);
+    
+});
 
 socket.on("notificacion", function(data) {
     var divNotificaciones = document.getElementById("notificaciones");
@@ -67,12 +84,10 @@ socket.on("decremento", function(data) {
 });
 
 function actualizarContadorNotificacionesDecremento(decremento) {
-    console.log("decremento");
     var notificationCounter = document.getElementById('notification-counter');
     var contadorActual = parseInt(notificationCounter.textContent) || 0;
     contadorActual -= decremento;
     if(contadorActual >= 0){
-        console.log("decremento de verdad");
         notificationCounter.textContent = contadorActual;
         notificationCounter.style.display = contadorActual > 0 ? 'inline' : 'none';
         localStorage.setItem('notificationCounter', contadorActual);
@@ -80,8 +95,8 @@ function actualizarContadorNotificacionesDecremento(decremento) {
     
 }
 
+
 function actualizarContadorNotificaciones(incremento) {
-    console.log("aumento");
     var notificationCounter = document.getElementById('notification-counter');
     var contadorActual = parseInt(notificationCounter.textContent) || 0;
     contadorActual += incremento;
