@@ -10,19 +10,14 @@ var contador_notificaciones = {};
 io.on("connection", (socket) => {
 
     socket.on("conectado", (data) => {
-        console.log("usuario conctado", data.usuario);
 
         if(data.usuario){
             usuarios_conectados[data.usuario] = socket.id;
-            /*if(contador_notificaciones.hasOwnProperty(data.usuario)){
+            if(contador_notificaciones.hasOwnProperty(data.usuario)){
                 io.to(usuarios_conectados[data.usuario]).emit("actualizar-contador", contador_notificaciones[data.usuario]);
+                delete contador_notificaciones[data.usuario];
             }
-            else{
-                contador_notificaciones[data.usuario] = data.num_noti;
-            }*/
-            console.log("usuarios conctado", usuarios_conectados);
-            console.log("num notificaciones", contador_notificaciones);
-
+            
             
         }
     });
@@ -32,7 +27,10 @@ io.on("connection", (socket) => {
         if (socketID) {
             io.to(socketID).emit("decremento", 1);
         }
-        contador_notificaciones[data.usuario] -= 1;
+        else{
+            contador_notificaciones[data.usuario] -= 1;
+
+        }
         
     });
 
@@ -60,8 +58,10 @@ io.on("connection", (socket) => {
         if (socketID) {
             io.to(socketID).emit("notificacion", notificacion);
         }
+        else{
+            contador_notificaciones[data.usuario_des] += 1;
+        }
         
-        contador_notificaciones[data.usuario_des] += 1;
         
         // Usar URLSearchParams para formatear los datos
         var params = new URLSearchParams();
@@ -97,8 +97,11 @@ io.on("connection", (socket) => {
             io.to(socketID).emit("notificacion", notificacion);
             
         }
+        else{
+            contador_notificaciones[data.usuario_des] += 1;
+
+        }
         
-        contador_notificaciones[data.usuario_des] += 1;
         
         // Usar URLSearchParams para formatear los datos
         var params = new URLSearchParams();
@@ -131,8 +134,10 @@ io.on("connection", (socket) => {
         if (socketID) {
             io.to(socketID).emit("notificacion", notificacion);
         }
+        else{
+            contador_notificaciones[data.usuario_des] += 1;
+        }
         
-        contador_notificaciones[data.usuario_des] += 1;
         
 
         // Usar URLSearchParams para formatear los datos
@@ -143,7 +148,10 @@ io.on("connection", (socket) => {
         
     });
     
-    
+    socket.on('desconectado', (data) => {
+        contador_notificaciones[data.usuario] = data.num_noti;
+    });
+
     socket.on('disconnect', () => {
         for (let usuario in usuarios_conectados) {
             if (usuarios_conectados[usuario] === socket.id) {
