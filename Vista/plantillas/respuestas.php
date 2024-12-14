@@ -1,5 +1,5 @@
 <?php
-function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $tipo_publicacion) {
+function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $tipo_publicacion, $id_comentario_anterior, $usuario_anterior) {
     $contenido = "";
     foreach ($comentarios as $comentario) {
         $usuario = $comentario['usuario'];
@@ -50,18 +50,35 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
                                             <span class="close">&times;</span>
         EOS;
         if($tipo_publicacion == "publicacion"){
-            $contenido .= <<<EOS
+            if($usuario == $_SESSION['nick']){
+                $contenido .= <<<EOS
                 <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
-            EOS;
+                EOS;
+            }
+            else{
+                $contenido .= <<<EOS
+                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '{$_SESSION['nick']}','$usuario', '$id_publi', '$tipo_publicacion', 'true')">
+                EOS;
+            }
+            
         }else{
-            $contenido .= <<<EOS
-                <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
-            EOS;
+            if($usuario == $_SESSION['nick']){
+                $contenido .= <<<EOS
+                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
+                EOS;
+            }
+            else{
+                $contenido .= <<<EOS
+                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '{$_SESSION['nick']}','$usuario', '$id_com', '$tipo_publicacion', 'true')">
+                EOS;
+            }
+            
         }
         $contenido .= <<<EOS
                         <input type="hidden" name="id_publi" value="$id_publi">
                         <input type="hidden" name="id_comen" value="$id_com"> 
                         <input type="hidden" name="esRespuesta" value="true">
+                        <input type="hidden" name="usuario_origen" value="$usuario"> 
                         <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
                         <input type="file" name="archivo"> 
                         <button type="submit" class="botonPubli" name="agregarComentario">Añadir Respuesta</button>
@@ -79,18 +96,19 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
             EOS;
             if($tipo_publicacion == "publicacion"){
                 $contenido .= <<<EOS
-                    <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                    <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario" onsubmit="ComentarioEliminado('$usuario_anterior')">
                 EOS;
             }else{
                 $contenido .= <<<EOS
-                    <form method="POST" action="../Controlador/Receta_controlador.php" class="formulario">
+                    <form method="POST" action="../Controlador/Receta_controlador.php" class="formulario" onsubmit="ComentarioEliminado('$usuario_anterior')">
                 EOS;
             }
             $contenido .= <<<EOS
-                            <input type="hidden" name="id_comen" value="$id_com"> 
                             <input type="hidden" name="multi" value="../Recursos/multimedia/$mult"> 
                             <input type="hidden" name="esRespuesta" value="true">
                             <input type="hidden" name="id_publi" value="$id_publi">
+                            <input type="hidden" name="id_comentario_origen" value="$id_comentario_anterior">
+                            <input type="hidden" name="id_comen" value="$id_com"> 
                             <button type="submit" class="botonPubli" name="eliminarComentario">Eliminar comentario</button>
                         </form>
                         <button type="button" class="botonPubli" name="editar_com_rec">Editar comentario</button>                  
@@ -131,9 +149,11 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
         EOS;
         
         if (!empty($comentario['respuestas'])) {
+            $usuario_anterior = $usuario;
+            $id_comentario_anterior = $id_com;
             $contenido .= '<h3>Respuestas</h3>';
             $modalResId++;           
-            $contenido .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id_publi, $tipo_publicacion);        
+            $contenido .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id_publi, $tipo_publicacion, $id_comentario_anterior, $usuario_anterior);        
         }
         else{
             $contenido .= '<h3>No hay respuestas</h3>';

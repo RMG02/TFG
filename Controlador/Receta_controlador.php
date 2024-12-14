@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 $_SESSION['error'] = "Error al eliminar la receta.";
             }
-    
+            
            
             header('Location: ../Vista/Recetas.php');
             exit;
@@ -268,13 +268,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
     
         $resultado = $recetaModelo->agregarComentario($_POST['id_publi'], $comentario, $id_com_origen);
-        if ($resultado) {
+        if ($resultado['resultado']) {
             $_SESSION['mensaje'] = "Comentario añadido";
         } else {
             $_SESSION['error'] = "Error al añadir el comentario.";
         }
-        
-        header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
+
+        if ($resultado['resultado']) {
+            $id_comentario = $resultado['id_comentario']->__toString();
+            if($_POST['usuario_origen'] != $_SESSION['nick']){
+                echo json_encode(['success' => true, 'id_comentario' => $id_comentario, 'redirect_url' => '../Vista/Verreceta.php?id='.$_POST['id_publi']]);
+            }
+            else{
+                header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
+            }
+        } else {
+            header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
+        }
         exit;
     }
     
@@ -284,7 +294,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         $esRespuesta = isset($_POST['esRespuesta']) ? true : null;
-
+        if($esRespuesta){
+            $NotificacionModelo->borrarNotificacionComentario($_POST['id_publi'], $_POST['id_comen'], $_POST['id_comentario_origen']);
+        }
+        else{
+            $NotificacionModelo->borrarNotificacionComentario($_POST['id_publi'], $_POST['id_comen'], null);
+        }
         $resultado = $recetaModelo->eliminarComentario($_POST['id_publi'], $_POST['id_comen'], $esRespuesta);
         if ($resultado) {
             $_SESSION['mensaje'] = "Comentario eliminado";

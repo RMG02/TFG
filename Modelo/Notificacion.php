@@ -33,19 +33,23 @@ class Notificacion {
         return $this->collection->find(['id_publi' => $id]);
 
     }
-
-    /*public function marcarComoVista($notificacionId) {
+    public function borrarNotificacionComentario($id_publi, $id_comentario, $id_comentario_origen){
+        if($id_comentario_origen){
+            $filtro = [
+                'id_publi' => $id_comentario_origen,
+                'id_comentario' => $id_comentario
+            ];
+        }
+        else{
+            $filtro = [
+                'id_publi' => $id_publi,
+                'id_comentario' => $id_comentario
+            ];
+        }
+        
+        return $this->collection->deleteMany($filtro);
     }
 
-    public function obtenerNotificacionesNoVistas($usuario) {
-        
-    }
-
-       
-    
-
-    public function borrarNotificacion($notificacionId) {
-        
-    }*/
+   
 }
 ?>

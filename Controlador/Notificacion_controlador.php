@@ -30,16 +30,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['notificacion'])) {
         $servidor_post = json_decode($_POST['notificacion'], true);
-        $notificacion = [
-            'usuario_publi'=> $servidor_post['usuario_publi'], 
-            'usuario_accion' => $servidor_post['usuario_accion'],
-            'mensaje' => $servidor_post['mensaje'],
-            'id_publi' => $servidor_post['id_publi'],
-            'enlace' => $servidor_post['enlace'],
-            'tipo' => $servidor_post['tipo'],
-            'fecha' => $servidor_post['fecha'],
-            'tipo_publicacion' => $servidor_post['tipo_publicacion'],
-        ];
+        if(isset($servidor_post['id_comentario'])){
+            $notificacion = [
+                'usuario_publi'=> $servidor_post['usuario_publi'], 
+                'usuario_accion' => $servidor_post['usuario_accion'],
+                'mensaje' => $servidor_post['mensaje'],
+                'id_publi' => $servidor_post['id_publi'],
+                'enlace' => $servidor_post['enlace'],
+                'tipo' => $servidor_post['tipo'],
+                'fecha' => $servidor_post['fecha'],
+                'tipo_publicacion' => $servidor_post['tipo_publicacion'],
+                'id_comentario' => $servidor_post['id_comentario']
+            ];
+        }
+        else{
+            $notificacion = [
+                'usuario_publi'=> $servidor_post['usuario_publi'], 
+                'usuario_accion' => $servidor_post['usuario_accion'],
+                'mensaje' => $servidor_post['mensaje'],
+                'id_publi' => $servidor_post['id_publi'],
+                'enlace' => $servidor_post['enlace'],
+                'tipo' => $servidor_post['tipo'],
+                'fecha' => $servidor_post['fecha'],
+                'tipo_publicacion' => $servidor_post['tipo_publicacion'],
+            ];
+        }
+        
         $NotificacionModelo->crearNotificacion($notificacion);
         
     }

@@ -51,11 +51,14 @@ class Publicacion {
             if ($publicacion) {
                
                 if ($this->añadirRespuesta($publicacion['comentarios'], $Id_origen, $comentario)) {
-                    return $this->collection->updateOne(['_id' => $Id], ['$set' => ['comentarios' => $publicacion['comentarios']]]);
+                    $resultado = $this->collection->updateOne(['_id' => $Id], ['$set' => ['comentarios' => $publicacion['comentarios']]]);
                 }
                 
             }
-            return false;
+            else{
+                $resultado = false;
+
+            }
         }
         else{
             $update = [ 
@@ -66,8 +69,20 @@ class Publicacion {
                         ] 
                     ] 
                 ];
-            return $this->collection->updateOne(['_id' => $Id], $update);
+            $resultado = $this->collection->updateOne(['_id' => $Id], $update);
         }
+        if($resultado){
+            return [
+                'resultado' => $resultado,
+                'id_comentario' => $comentario['id_comentario']
+            ];
+        }
+        else{
+            return [
+                'resultado' => $resultado,
+            ];
+        }
+        
         
     }
 

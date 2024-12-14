@@ -270,14 +270,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
     
         $resultado = $publicacionModelo->agregarComentario($_POST['id_publi'], $comentario, $id_com_origen);
-        if ($resultado) {
+        if ($resultado['resultado']) {
             $_SESSION['mensaje'] = "Comentario añadido";
         } else {
             $_SESSION['error'] = "Error al añadir el comentario.";
         }
-        
-        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+
+        if ($resultado['resultado']) {
+            $id_comentario = $resultado['id_comentario']->__toString();
+            if($_POST['usuario_origen'] != $_SESSION['nick']){
+                $mirar = json_encode(['success' => true, 'id_comentario' => $id_comentario, 'redirect_url' => '../Vista/Verpublicacion.php?id='.$_POST['id_publi']]);
+                echo json_encode(['success' => true, 'id_comentario' => $id_comentario, 'redirect_url' => '../Vista/Verpublicacion.php?id='.$_POST['id_publi']]);
+            }
+            else{
+                header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);        
+            }
+        } else {
+            header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);        
+        }
         exit;
+        
     }
     
     if (isset($_POST['eliminarComentario'])) {
@@ -286,6 +298,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         $esRespuesta = isset($_POST['esRespuesta']) ? true : null;
+        
+        if($esRespuesta){
+            $NotificacionModelo->borrarNotificacionComentario($_POST['id_publi'], $_POST['id_comen'], $_POST['id_comentario_origen']);
+        }
+        else{
+            $NotificacionModelo->borrarNotificacionComentario($_POST['id_publi'], $_POST['id_comen'], null);
+        }
 
         $resultado = $publicacionModelo->eliminarComentario($_POST['id_publi'], $_POST['id_comen'], $esRespuesta);
         if ($resultado) {

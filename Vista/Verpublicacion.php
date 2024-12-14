@@ -90,12 +90,13 @@ if($nickuser == $nick){
 }
 else{
     $contenidoPrincipal .= <<<EOS
-        <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '', '', '$tipo_publicacion')">
+        <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '$nickuser','$nick', '$id', '$tipo_publicacion', '')">
     EOS;
 }
 $contenidoPrincipal .= <<<EOS
                     <input type="hidden" name="id_publi" value="$id">
                     <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
+                    <input type="hidden" name="usuario_origen" value="$nick"> 
                     <input type="file" name="archivo"> 
                     <button type="submit" class="botonPubli" name="agregarComentario">Añadir Comentario</button>
                 </form>
@@ -112,7 +113,7 @@ if($nickuser == $nick){
 }
 else{
     $contenidoPrincipal .= <<<EOS
-        <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion')">
+        <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
     EOS;
 }
 $contenidoPrincipal .= <<<EOS
@@ -135,7 +136,7 @@ EOS;
 
 if ($nick == $_SESSION['nick'] || $_SESSION['admin'] == true) {
     $contenidoPrincipal .= <<<EOS
-                <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario" onsubmit="unset()">
                     <input type="hidden" name="id_publi" value="$id">
                     <input type="hidden" name="multi" value="../Recursos/multimedia/$multimedia"> 
                     <button type="submit" class="botonPubli" name="eliminarPublicacion">Eliminar publicación</button>
@@ -221,9 +222,21 @@ EOS;
                                     <div id="respuesta-$modalComId" class="modal">
                                         <div class="modal-content">
                                             <span class="close">&times;</span>
-                                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
+            EOS;
+            if($nickuser == $usuario){
+                $contenidoPrincipal .= <<<EOS
+                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                EOS;
+            }
+            else{
+                $contenidoPrincipal .= <<<EOS
+                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '$nickuser','$usuario', '$id_com', '$tipo_publicacion', 'true')">
+                EOS;
+            }
+            $contenidoPrincipal .= <<<EOS
                                                 <input type="hidden" name="id_publi" value="$id">
                                                 <input type="hidden" name="id_comen" value="$id_com"> 
+                                                <input type="hidden" name="usuario_origen" value="$usuario"> 
                                                 <input type="hidden" name="esRespuesta" value="true">
                                                 <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
                                                 <input type="file" name="archivo"> 
@@ -241,7 +254,7 @@ EOS;
                     <div class="dropdown">
                         <button class="dropbtn">⋮</button>
                         <div class="dropdown-content">
-                            <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                            <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario" onsubmit="ComentarioEliminado('$nick')">
                                 <input type="hidden" name="id_comen" value="$id_com"> 
                                 <input type="hidden" name="multi" value="../Recursos/multimedia/$mult"> 
                                 <input type="hidden" name="id_publi" value="$id">
@@ -274,8 +287,10 @@ EOS;
                             <hr>
             EOS;
             if (!empty($comentario['respuestas'])) {
+                $id_comentario_anterior = $id_com;
+                $usuario_anterior = $usuario;
                 $contenidoPrincipal .= '<h3>Respuestas</h3>';
-                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id, $tipo_publicacion);
+                $contenidoPrincipal .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id, $tipo_publicacion, $id_comentario_anterior, $usuario_anterior);
             }
             else{
                 $contenidoPrincipal .= '<h3>No hay respuestas</h3>';

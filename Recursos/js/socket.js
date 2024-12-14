@@ -61,6 +61,29 @@ socket.on("notificacion", function(data) {
     }, 10000);
 });
 
+socket.on("unset_noti", function(data) {
+    // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
+    fetch('../../Controlador/Notificacion_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'accion': 'unset'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respuesta del servidor:', data);
+        if (data.status === 'success') {
+            console.log('Variable de sesión eliminada correctamente');
+        } else {
+            console.error('Error al eliminar la variable de sesión:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+});
+
+
 socket.on("decremento", function(data) {
     actualizarContadorNotificacionesDecremento(data);
 
@@ -110,7 +133,7 @@ function actualizarContadorNotificaciones(incremento) {
     localStorage.setItem('notificationCounter', contadorActual);
 }
 
-function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes, tipo_publicacion) {
+function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes, tipo_publicacion, id_com, respuesta) {
     fetch('../../Controlador/Publicacion_controlador.php', {
     }).then(response => response.text())
       .then(result => {
@@ -138,7 +161,7 @@ function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes, tip
                 socket.emit("decrementar-reaccion", {usuario: usuario_des});
             }
         } else if(event.submitter.name === 'agregarComentario'){
-            socket.emit("nuevo-comentario", { usuario: usuario, usuario_des: usuario_des, id_publi: id_publi, tipo: "nuevo comentario", tipo_publicacion: tipo_publicacion });
+            socket.emit("nuevo-comentario", { usuario: usuario, usuario_des: usuario_des, id_publi: id_publi, tipo: "nuevo comentario", tipo_publicacion: tipo_publicacion, id_com: id_com, respuesta:respuesta });
         }
           
       }).catch(error => {
@@ -154,8 +177,47 @@ function darDislike(usuario, usuario_des, id_publi, tipo_publicacion) {
     socket.emit("dislike-dado", { usuario: usuario, usuario_des: usuario_des, id_publi: id_publi, tipo: "dislike", tipo_publicacion: tipo_publicacion});
 }
 
+function unset(){
+    socket.emit("unset", {});
+
+}
+
+function ComentarioEliminado(usuario){
+    unset();
+    socket.emit("decrementar-reaccion", {usuario: usuario});
+
+}
 
 
+function NuevoComentario(event, nickuser, nick, id_publi, tipo_publicacion, respuesta) {
 
+    event.preventDefault();
+    var datosForm = new FormData(event.target);
+    datosForm.append('agregarComentario', 'true');
+    var url = (tipo_publicacion == "receta") ? '../../Controlador/Receta_controlador.php' : '../../Controlador/Publicacion_controlador.php';
+    fetch(url, {
+        method: 'POST',
+        body: datosForm
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        if (data.success) {
+            var id_comentario = data.id_comentario;
+            if(respuesta){
+                enviarDatos(event, nickuser, nick, id_publi, '', '', tipo_publicacion, id_comentario, respuesta);
+            }
+            else{
+                enviarDatos(event, nickuser, nick, id_publi, '', '', tipo_publicacion, id_comentario, '');
+            }
+            window.location.href = data.redirect_url;
+        } else {
+            console.error('Error al agregar comentario:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
 
+}
+    
 

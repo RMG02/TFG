@@ -34,6 +34,7 @@ io.on("connection", (socket) => {
         
     });
 
+
     socket.on("like-dado", (data) => {
         if(data.tipo_publicacion == "publicacion"){
             var tipo_mensaje = data.usuario + " ha dado like a tu publicación";
@@ -110,15 +111,33 @@ io.on("connection", (socket) => {
         axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)          
     });
 
+    socket.on("unset", () => {
+        socket.broadcast.emit("unset_noti");
+    });
+
     socket.on("nuevo-comentario", (data) => {
         if(data.tipo_publicacion == "publicacion"){
-            var tipo_mensaje = data.usuario + " ha comentado tu publicación";
+            if(data.respuesta){
+                var tipo_mensaje = data.usuario + " ha respondido a tu comentario en una publicación";
+            }
+            else{
+                var tipo_mensaje = data.usuario + " ha comentado tu publicación";
+            }
             var tipo_enlace = "http://localhost:8000/Vista/Verpublicacion.php?id=" + data.id_publi;
         }
         else if(data.tipo_publicacion == "receta"){
-            var tipo_mensaje = data.usuario + " ha comentado tu receta";
+            if(data.respuesta){
+                var tipo_mensaje = data.usuario + " ha respondido a tu comentario en una receta";
+
+            }
+            else{
+                var tipo_mensaje = data.usuario + " ha comentado tu receta";
+
+            }
             var tipo_enlace = "http://localhost:8000/Vista/Verreceta.php?id=" + data.id_publi;
         }
+
+        
         var socketID = usuarios_conectados[data.usuario_des];
         var notificacion = { 
             usuario_publi: data.usuario_des, 
@@ -128,7 +147,8 @@ io.on("connection", (socket) => {
             enlace: tipo_enlace,
             tipo: data.tipo,
             fecha: new Date().toISOString(),
-            tipo_publicacion: data.tipo_publicacion
+            tipo_publicacion: data.tipo_publicacion,
+            id_comentario: data.id_com,
         };
   
         if (socketID) {
@@ -150,6 +170,7 @@ io.on("connection", (socket) => {
     
     socket.on('desconectado', (data) => {
         contador_notificaciones[data.usuario] = data.num_noti;
+        console.log(contador_notificaciones);
     });
 
     socket.on('disconnect', () => {
