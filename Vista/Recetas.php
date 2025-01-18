@@ -91,11 +91,9 @@ foreach ($recetas as $receta) {
 
     if ($multimedia) {
         $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
-        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+        if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
             $multi = "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación'>";
-        } elseif (in_array($extension, ['mp4', 'webm'])) {
-            $multi = "<video controls><source src='../Recursos/multimedia/$multimedia' type='video/$extension'></video>";
-        }
+        } 
     } else {
         $multi = '';
     }

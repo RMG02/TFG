@@ -70,12 +70,10 @@ $tituloPagina = "Receta";
 
 if ($multimedia) {
     $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
-    if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+    if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
         $multi = "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación' class='imagen-vista'>";
         $multi_editar = "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación' class='imagen-editar'>";
-    } elseif (in_array($extension, ['mp4', 'webm'])) {
-        $multi = "<video controls><source src='../Recursos/multimedia/$multimedia' type='video/$extension'></video>";
-    }
+    } 
 } else {
     $multi = '';
     $multi_editar = '';
@@ -102,22 +100,16 @@ $contenidoPrincipal = <<<EOS
         <p>$ingredientesx</p>
         <h3>Preparacion:</h3>
         <p>$preparacionx</p>
+        
+EOS;
+if($nickuser != $nick){
+    
+    $contenidoPrincipal .= <<<EOS
         <button type="button" class="botonPubli" name="comen">Añadir Comentario</button>
         <div id="comen-$modalId" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-EOS;
-if($nickuser == $nick){
-    $contenidoPrincipal .= <<<EOS
-        <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
-    EOS;
-}
-else{
-    $contenidoPrincipal .= <<<EOS
-        <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '$nickuser','$nick', '$id', '$tipo_publicacion', '')">
-    EOS;
-}
-$contenidoPrincipal .= <<<EOS
+                <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '$nickuser','$nick', '$id', '$tipo_publicacion', '')">
                     <input type="hidden" name="id_publi" value="$id">
                     <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
                     <input type="file" name="archivo"> 
@@ -129,7 +121,16 @@ $contenidoPrincipal .= <<<EOS
     </div>
     <div class="tweet-footer">
         <div class="reacciones-icon">
-EOS;
+    EOS;
+}
+else{
+
+    $contenidoPrincipal .= <<<EOS
+        </div>
+        <div class="tweet-footer">
+            <div class="reacciones-icon">
+    EOS;
+}
 if($nickuser == $nick){
     $contenidoPrincipal .= <<<EOS
         <form method="POST" action="../Controlador/Receta_controlador.php">
@@ -228,13 +229,11 @@ EOS;
 
             if ($mult) {
                 $extension = pathinfo($mult, PATHINFO_EXTENSION);
-                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+                if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
                     $multi_com = "<img src='../Recursos/multimedia/$mult' alt='Imagen de la publicación'  class='imagen-respuesta'>";
                     $multi_editar = "<img src='../Recursos/multimedia/$mult' alt='Imagen de la publicación' class='imagen-editar'>";
 
-                } elseif (in_array($extension, ['mp4', 'webm'])) {
-                    $multi_com = "<video controls><source src='../Recursos/multimedia/$mult' type='video/$extension'></video>";
-                }
+                } 
             } else {
                 $multi_com = '';
                 $multi_editar = '';
@@ -262,33 +261,30 @@ EOS;
                                     $multi_com
                                     <span>$tex</span>
                                     <br>
-                                    <button type="button" class="botonPubli" name="responder" id="responder-$modalComId">Responder</button>
-                                    <div id="respuesta-$modalComId" class="modal">
-                                        <div class="modal-content">
-                                            <span class="close">&times;</span>
+                                    
             EOS;
-            if($nickuser == $usuario){
+            if($nickuser != $usuario){
                 $contenidoPrincipal .= <<<EOS
-                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
-                EOS;
-            }
-            else{
-                $contenidoPrincipal .= <<<EOS
-                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '$nickuser','$usuario', '$id_com', '$tipo_publicacion', 'true')">
+                    <button type="button" class="botonPubli" name="responder" id="responder-$modalComId">Responder</button>
+                    <div id="respuesta-$modalComId" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '$nickuser','$usuario', '$id_com', '$tipo_publicacion', 'true')">
+                                <input type="hidden" name="id_publi" value="$id">
+                                <input type="hidden" name="id_comen" value="$id_com"> 
+                                <input type="hidden" name="esRespuesta" value="true">
+                                <input type="hidden" name="usuario_origen" value="$usuario"> 
+                                <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
+                                <input type="file" name="archivo"> 
+                                <button type="submit" class="botonPubli" name="agregarComentario">Añadir Respuesta</button>
+                            </form>
+                        </div>
+                    </div>
                 EOS;
             }
             $contenidoPrincipal .= <<<EOS
-                                                <input type="hidden" name="id_publi" value="$id">
-                                                <input type="hidden" name="id_comen" value="$id_com"> 
-                                                <input type="hidden" name="esRespuesta" value="true">
-                                                <input type="hidden" name="usuario_origen" value="$usuario"> 
-                                                <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
-                                                <input type="file" name="archivo"> 
-                                                <button type="submit" class="botonPubli" name="agregarComentario">Añadir Respuesta</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="tweet-footer">
+                                                
+            <div class="tweet-footer">
                                         
                                                                 
             EOS;
