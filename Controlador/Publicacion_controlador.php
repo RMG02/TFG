@@ -39,6 +39,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($archivo && $archivo['error'] == 0) {
             $tmp_name = $archivo['tmp_name'];
             $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
+            // Verificar si la extensión es una imagen
+            $permitidas = array('jpg', 'jpeg', 'png');
+            if (!in_array($extension, $permitidas)) {
+                $_SESSION['error'] = "Error al crear la publicación, solo se permiten imágenes.";
+                if($_POST['principal']){
+                    header('Location: ../Vista/Principal.php');
+                    exit;
+                }
+                else{
+                    header('Location: ../Vista/perfil.php');
+                    exit;
+                }
+            }
             $nombre = uniqid() . '.' . $extension;
             move_uploaded_file($tmp_name, "$dir_archivos/$nombre");
             $archivo_subido = $nombre;
@@ -81,6 +94,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             unlink($anterior);
             $tmp_name = $archivo['tmp_name'];
             $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
+            // Verificar si la extensión es una imagen
+            $permitidas = array('jpg', 'jpeg', 'png');
+            if (!in_array($extension, $permitidas)) {
+                $_SESSION['error'] = "Error al modificar la publicación, solo se permiten imágenes.";
+                header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+                exit;
+            }
             $nombre = uniqid() . '.' . $extension;
             move_uploaded_file($tmp_name, "$dir_archivos/$nombre");
             $archivo_subido = $nombre;
@@ -257,6 +277,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($archivo && $archivo['error'] == 0) {
             $tmp_name = $archivo['tmp_name'];
             $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
+            // Verificar si la extensión es una imagen
+            $permitidas = array('jpg', 'jpeg', 'png');
+            if (!in_array($extension, $permitidas)) {
+                $_SESSION['error'] = "Error al crear el comentario, solo se permiten imágenes.";
+                header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);        
+                exit;
+            }
             $nombre = uniqid() . '.' . $extension;
             move_uploaded_file($tmp_name, "$dir_archivos/$nombre");
             $archivo_subido = $nombre;
@@ -329,6 +356,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             unlink($anterior);
             $tmp_name = $archivo['tmp_name'];
             $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
+            // Verificar si la extensión es una imagen
+            $permitidas = array('jpg', 'jpeg', 'png');
+            if (!in_array($extension, $permitidas)) {
+                $_SESSION['error'] = "Error al editar el comentario, solo se permiten imágenes.";
+                header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+                exit;
+            }
             $nombre = uniqid() . '.' . $extension;
             move_uploaded_file($tmp_name, "$dir_archivos/$nombre");
             $archivo_subido = $nombre;

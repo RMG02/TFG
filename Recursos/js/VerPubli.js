@@ -12,7 +12,6 @@ function Perfil() {
     var responder = document.getElementsByName("responder");
     var comentarios_rec = document.getElementsByName("comentario_rec");
     var responder_rec = document.getElementsByName("responder_rec");
-
     if(comentar.length != 0){
         comentar[0].onclick = function() {
             var modal = document.getElementById("comen-" + 0);
@@ -56,17 +55,21 @@ function Perfil() {
             };
             j++;
         }
-        responder[i].onclick = function() {
-            var modal = document.getElementById("respuesta-" + i);
-            console.log(modal);
-            modal.style.display = "block";
-        };
+        var modal = document.getElementById("respuesta-" + i);
+        if(modal){
+            responder[i].onclick = function() {
+                var modal = document.getElementById("respuesta-" + i);
+                console.log(modal);
+                modal.style.display = "block";
+            };
+        }
+       
     }
 
    
-    var i = 0, j = 0, k = 0, l = 0;
+    var i = 0, j = 0, k = 0, l = 0, r = 0;
     while (i < comentarios_rec.length) {
-        let currentI = i, currentJ = j, currentK = k, currentL = l; 
+        let currentI = i, currentJ = j, currentK = k, currentL = l, currentR = r; 
         var modal = document.getElementById("comentario-" + currentJ + "-" + currentK);
         if (modal) {
             comentarios_rec[currentI].onclick = function() {
@@ -86,11 +89,18 @@ function Perfil() {
                 }
                 
             }
-
-            responder_rec[currentI].onclick = function() {
-                var modal = document.getElementById("respuesta-" + currentJ + "-" + currentK);
-                modal.style.display = "block"; 
-            };
+            var respModal = document.getElementById("respuesta-" + currentJ + "-" + currentK);
+            if(respModal){
+                if(responder_rec[currentR]){
+                    responder_rec[currentR].onclick = function() {
+                        var respModal = document.getElementById("respuesta-" + currentJ + "-" + currentK);
+                        respModal.style.display = "block"; 
+                    };
+                    r++;
+                }
+                
+            }
+            
 
             i++;
             k++;

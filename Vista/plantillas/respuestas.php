@@ -11,12 +11,10 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
 
         if ($mult) {
             $extension = pathinfo($mult, PATHINFO_EXTENSION);
-            if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+            if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
                 $multi_com = "<img src='../Recursos/multimedia/$mult' alt='Imagen de la publicación' class='imagen-respuesta_rec'>";
                 $multi_editar = "<img src='../Recursos/multimedia/$mult' alt='Imagen de la publicación' class='imagen-editar'>";
-            } elseif (in_array($extension, ['mp4', 'webm'])) {
-                $multi_com = "<video controls><source src='../Recursos/multimedia/$mult' type='video/$extension'></video>";
-            }
+            } 
         } else {
             $multi_com = '';
             $multi_editar = '';
@@ -44,47 +42,53 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
                                     $multi_com
                                     <span>$tex</span>
                                     <br>
-                                    <button type="button" class="botonPubli" name="responder_rec">Responder</button>
-                                    <div id="respuesta-$modalComId-$modalResId" class="modal">
-                                        <div class="modal-content">
-                                            <span class="close">&times;</span>
+                                    
         EOS;
         if($tipo_publicacion == "publicacion"){
-            if($usuario == $_SESSION['nick']){
+            if($usuario != $_SESSION['nick']){
                 $contenido .= <<<EOS
-                <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario">
-                EOS;
-            }
-            else{
-                $contenido .= <<<EOS
-                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '{$_SESSION['nick']}','$usuario', '$id_publi', '$tipo_publicacion', 'true')">
+                    <button type="button" class="botonPubli" name="responder_rec">Responder</button>
+                    <div id="respuesta-$modalComId-$modalResId" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Publicacion_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '{$_SESSION['nick']}','$usuario', '$id_publi', '$tipo_publicacion', 'true')">
+                                <input type="hidden" name="id_publi" value="$id_publi">
+                                <input type="hidden" name="id_comen" value="$id_com"> 
+                                <input type="hidden" name="esRespuesta" value="true">
+                                <input type="hidden" name="usuario_origen" value="$usuario"> 
+                                <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
+                                <input type="file" name="archivo"> 
+                                <button type="submit" class="botonPubli" name="agregarComentario">Añadir Respuesta</button>
+                            </form>
+                        </div>
+                    </div>
                 EOS;
             }
             
         }else{
-            if($usuario == $_SESSION['nick']){
+            if($usuario != $_SESSION['nick']){
                 $contenido .= <<<EOS
-                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario">
-                EOS;
-            }
-            else{
-                $contenido .= <<<EOS
-                    <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '{$_SESSION['nick']}','$usuario', '$id_com', '$tipo_publicacion', 'true')">
+                    <button type="button" class="botonPubli" name="responder_rec">Responder</button>
+                    <div id="respuesta-$modalComId-$modalResId" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '{$_SESSION['nick']}','$usuario', '$id_com', '$tipo_publicacion', 'true')">
+                                <input type="hidden" name="id_publi" value="$id_publi">
+                                <input type="hidden" name="id_comen" value="$id_com"> 
+                                <input type="hidden" name="esRespuesta" value="true">
+                                <input type="hidden" name="usuario_origen" value="$usuario"> 
+                                <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
+                                <input type="file" name="archivo"> 
+                                <button type="submit" class="botonPubli" name="agregarComentario">Añadir Respuesta</button>
+                            </form>
+                        </div>
+                    </div>
                 EOS;
             }
             
         }
         $contenido .= <<<EOS
-                        <input type="hidden" name="id_publi" value="$id_publi">
-                        <input type="hidden" name="id_comen" value="$id_com"> 
-                        <input type="hidden" name="esRespuesta" value="true">
-                        <input type="hidden" name="usuario_origen" value="$usuario"> 
-                        <textarea name="texto" placeholder="Escribe un comentario..."></textarea>
-                        <input type="file" name="archivo"> 
-                        <button type="submit" class="botonPubli" name="agregarComentario">Añadir Respuesta</button>
-                    </form>
-                </div>
-            </div>
+                        
             <div class="tweet-footer">                       
         EOS;
 
@@ -152,7 +156,7 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
             $usuario_anterior = $usuario;
             $id_comentario_anterior = $id_com;
             $contenido .= '<h3>Respuestas</h3>';
-            $modalResId++;           
+            $modalResId++;    
             $contenido .= mostrarRespuestas($comentario['respuestas'], $modalComId, $modalResId, $id_publi, $tipo_publicacion, $id_comentario_anterior, $usuario_anterior);        
         }
         else{
