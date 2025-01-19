@@ -72,7 +72,7 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
                     <div id="respuesta-$modalComId-$modalResId" class="modal">
                         <div class="modal-content">
                             <span class="close">&times;</span>
-                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '{$_SESSION['nick']}','$usuario', '$id_com', '$tipo_publicacion', 'true')">
+                            <form method="POST" enctype="multipart/form-data" action="../Controlador/Receta_controlador.php" class="formulario" onsubmit="NuevoComentario(event, '{$_SESSION['nick']}','$usuario', '$id_publi', '$tipo_publicacion', 'true')">
                                 <input type="hidden" name="id_publi" value="$id_publi">
                                 <input type="hidden" name="id_comen" value="$id_com"> 
                                 <input type="hidden" name="esRespuesta" value="true">

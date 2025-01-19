@@ -19,6 +19,7 @@ socket.on("actualizar-contador", function(data) {
     notificationCounter.textContent = contador;
     notificationCounter.style.display = contador > 0 ? 'inline' : 'none';
     localStorage.setItem('notificationCounter', contador);
+
     
 });
 
@@ -109,7 +110,7 @@ socket.on("decremento", function(data) {
 });
 
 function LogOut(){
-    socket.emit("desconectado", {usuario: Usuario, num_noti: contadorActual});
+    socket.emit("desconectado", {usuario: Usuario, num_noti: localStorage.getItem('notificationCounter')});
 }
 function actualizarContadorNotificacionesDecremento(decremento) {
     var notificationCounter = document.getElementById('notification-counter');
@@ -125,6 +126,7 @@ function actualizarContadorNotificacionesDecremento(decremento) {
 
 
 function actualizarContadorNotificaciones(incremento) {
+
     var notificationCounter = document.getElementById('notification-counter');
     var contadorActual = parseInt(notificationCounter.textContent) || 0;
     contadorActual += incremento;

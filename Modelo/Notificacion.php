@@ -1,4 +1,7 @@
 <?php
+
+use MongoDB\BSON\ObjectId;
+
 class Notificacion {
     private $collection;
 
@@ -22,6 +25,12 @@ class Notificacion {
         } else {
             return $this->collection->deleteMany(['id_publi' => $id_publi]);
         }
+    }
+
+    public function borrarNotificacionUnica($id) {
+        $Id = new ObjectId($id);
+
+        return $this->collection->deleteOne(['_id' => $Id]);
     }
     
     public function obtenerTodasNotificaciones($usuario) {

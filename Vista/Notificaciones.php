@@ -61,6 +61,10 @@ if(!empty($notificaciones)){
 
         $contenidoPrincipal .= <<<EOS
                 <p><small>$fecha</small></p>
+                 <form method="POST" action="../Controlador/Notificacion_controlador.php" class="formulario">
+                    <input type="hidden" name="id_noti" value="$id">
+                    <button type="submit" class="eliminar-notification" name="eliminarNotificacion"><i class="fas fa-times"></i></button>
+                </form>
             </div>
         EOS;
     }
@@ -68,6 +72,18 @@ if(!empty($notificaciones)){
 }
 else{
     $contenidoPrincipal = '<h3>No hay notificaciones</h3>';
+}
+
+if ($error != "") {
+    $contenidoPrincipal .= <<<EOS
+        <p class="error">$error</p>
+EOS;
+}
+
+if ($mensaje != "") {
+    $contenidoPrincipal .= <<<EOS
+        <p class="mensaje">$mensaje</p>
+EOS;
 }
 
 

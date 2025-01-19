@@ -67,6 +67,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
+    if(isset($_POST['eliminarNotificacion'])){
+        if (isset($_SESSION['notificaciones_usuario'])) {
+            unset($_SESSION['notificaciones_usuario']);
+            
+        }
+
+        $resultado = $NotificacionModelo->borrarNotificacionUnica($_POST['id_noti']);
+
+        if ($resultado) {
+            $_SESSION['mensaje'] = "Notificación eliminada";
+        } else {
+            $_SESSION['error'] = "Error al eliminar la notificación.";
+        }
+
+        header('Location: ../Vista/Notificaciones.php');
+        exit;
+    }
+
     
     
         

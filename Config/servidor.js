@@ -28,7 +28,7 @@ io.on("connection", (socket) => {
             io.to(socketID).emit("decremento", 1);
         }
         else{
-            contador_notificaciones[data.usuario] -= 1;
+            contador_notificaciones[data.usuario]--;
 
         }
         
@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
             io.to(socketID).emit("notificacion", notificacion);
         }
         else{
-            contador_notificaciones[data.usuario_des] += 1;
+            contador_notificaciones[data.usuario_des]++;
         }
         
         
@@ -99,7 +99,7 @@ io.on("connection", (socket) => {
             
         }
         else{
-            contador_notificaciones[data.usuario_des] += 1;
+            contador_notificaciones[data.usuario_des]++;
 
         }
         
@@ -155,7 +155,7 @@ io.on("connection", (socket) => {
             io.to(socketID).emit("notificacion", notificacion);
         }
         else{
-            contador_notificaciones[data.usuario_des] += 1;
+            contador_notificaciones[data.usuario_des]++;
         }
         
         
