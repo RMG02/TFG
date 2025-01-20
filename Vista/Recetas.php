@@ -101,7 +101,7 @@ foreach ($recetas as $receta) {
     $contenidoPrincipal .= <<<EOS
         <div class="tweet" id="publistas">
             <div class="tweet-header">
-                <strong>$nick</strong> <span class="tweet-time">$Hora</span>
+                <a href="../Vista/PerfilPublico.php?nick=$nick"><strong>$nick</strong></a> <span class="tweet-time">$Hora</span>
             </div>
             <div class="tweet-content">
                 <strong>$texto</strong>

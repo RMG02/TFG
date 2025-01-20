@@ -31,6 +31,10 @@ class Usuario {
         return $this->collection->deleteOne(['email' => $email]);
     }
 
+    public function obtenerUsuario($nick){
+        return $this->collection->findOne(['nick' => $nick]);
+    }
+
     public function confirmar($password,$email) {
         $usuario = $this->collection->findOne(['email' => $email]);
         if (!password_verify($password, $usuario['password'])) {

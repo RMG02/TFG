@@ -24,7 +24,7 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
 
                         <div class="comentario" name="comentario_rec">
                             $multi_com
-                            <strong>$usuario:</strong>
+                            <a href="../Vista/PerfilPublico.php?nick=$usuario"><strong>$usuario</strong></a>
                             <span>$tex</span>
                             <span class="comentario-time">$fecha</span>
                             <div class="comentarios-icon">
@@ -35,7 +35,7 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
                             <div class="modal_publi-content">
                                 <span class="close_publi">&times;</span>
                                 <div class="tweet-header">
-                                    <strong>$usuario</strong>
+                                    <a href="../Vista/PerfilPublico.php?nick=$usuario"><strong>$usuario</strong></a>
                                     <span class="tweet-time">$fecha</span>
                                 </div>
                                 <div class="comentario_mod">

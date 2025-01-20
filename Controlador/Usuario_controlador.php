@@ -107,6 +107,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
     }
 
+    if(isset($_GET['Usuarion'])){
+        $resultado = $usuarioModelo->obtenerUsuario($_GET['nick_Usuario']);
+        $_SESSION['nickUser'] = json_encode(iterator_to_array($resultado));
+        print("Hola");
+        header('Location: ../Vista/PerfilPublico.php'); 
+        exit; 
+        
+    }
+
 
     
 }
