@@ -31,8 +31,12 @@ class Usuario {
         return $this->collection->deleteOne(['email' => $email]);
     }
 
-    public function obtenerUsuario($nick){
-        return $this->collection->findOne(['nick' => $nick]);
+    public function obtenerUsuario($email) {
+        $usuario = $this->collection->findOne(['email' => $email]);
+        if ($usuario) {
+            return $usuario;
+        }
+        return null;
     }
 
     public function confirmar($password,$email) {
@@ -82,6 +86,38 @@ class Usuario {
     
     public function ListaUsuarios() {
         return $this->collection->find();
+    }
+
+    public function noSeguir($emailpropio,$emailseguir){
+        $filter = ['email' => $emailseguir];
+        $update =
+                [
+                    '$pull' => ['seguidores' => $emailpropio] // Asegurarse de quitar el seguidor si existía
+                ];
+         
+        $filter2 = ['email' => $emailpropio];
+        $update2 =
+                [
+                    '$pull' => ['siguiendo' => $emailseguir] // Asegurarse de quitar el seguidor si existía
+                ];
+        
+        return $this->collection->updateOne($filter, $update) && $this->collection->updateOne($filter2, $update2);
+    }
+
+    public function Seguir($emailpropio,$emailseguir){
+        $filter = ['email' => $emailseguir];
+        $update =
+                [
+                    '$push' => ['seguidores' => $emailpropio] 
+                ];
+         
+        $filter2 = ['email' => $emailpropio];
+        $update2 =
+                [
+                    '$push' => ['siguiendo' => $emailseguir] 
+                ];
+        
+        return $this->collection->updateOne($filter, $update) && $this->collection->updateOne($filter2, $update2);
     }
     
 }

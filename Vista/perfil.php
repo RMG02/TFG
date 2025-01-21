@@ -47,12 +47,19 @@ if($verreceta){
 $tituloPagina = "Página de Perfil";
 $modalId = 0;
 $modalComId = 0;
+$seguidores = $_SESSION['seguidores'];
+$siguiendo = $_SESSION['siguiendo'];
+
+$numseguidores = is_array($seguidores) ? count($seguidores) : 0;
+$numsiguiendo = is_array($siguiendo) ? count($siguiendo) : 0;
 
 $contenidoPrincipal = <<<EOS
     <h3>Datos usuario:</h3>
     <p>Nick: {$_SESSION['nick']}</p>
     <p>Nombre: {$_SESSION['nombre']} </p> 
     <p>Email: {$_SESSION['email']} </p> 
+    <p>Seguidores: {$numseguidores} </p> 
+    <p>Siguiendo: {$numsiguiendo} </p>
     <p><a href='/Vista/Editarperfil.php'>Editar perfil</a></p>
     <button type="button" class="botonInit" id="botonInit">Eliminar cuenta</button>
     <div id="eliminar"class="modal">

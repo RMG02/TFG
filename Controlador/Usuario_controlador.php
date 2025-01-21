@@ -54,6 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['nick'] = $usuario['nick'];
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['password'] = $usuario['password'];
+            $_SESSION['seguidores'] = $usuario['seguidores'];
+            $_SESSION['siguiendo'] = $usuario['siguiendo'];
             $_SESSION['login'] = true;
             $_SESSION['admin'] = $usuario['admin'];
             header('Location: ../Vista/Principal.php');
@@ -61,6 +63,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = "Email o contraseña incorrectos.";
             header('Location: ../Vista/Login.php');
         }
+    }
+
+    if (isset($_POST['Seguir'])) {
+        
+        $usuarioseguir = $usuarioModelo->obtenerUsuario($_POST['emailseguir']);
+        $seguidores = (array) $usuarioseguir['seguidores']; // Convierte BSONArray a array PHP
+
+        if(in_array($_POST['emailpropio'], $seguidores)){
+            $resultado = $usuarioModelo->noSeguir($_POST['emailpropio'], $_POST['emailseguir'], "noSeguir");
+            if ($resultado) {
+                $_SESSION['mensaje'] = "Lo has dejado de seguir";
+                
+            }
+        
+        }else {
+            
+            $resultado = $usuarioModelo->Seguir($_POST['emailpropio'], $_POST['emailseguir'], "Seguir");
+            if ($resultado) {
+                $_SESSION['mensaje'] = "Lo has empezado a seguir";
+                
+            }
+        }
+
+        if (!$resultado) {
+            $_SESSION['error'] = "Error al seguir.";
+            
+        } else{
+            $usuarioActualizado = $usuarioModelo->obtenerUsuario($_POST['emailseguir']);
+            $_SESSION['emailUser'] = json_encode(iterator_to_array($usuarioActualizado));
+            $usuarioActualizadox = $usuarioModelo->obtenerUsuario($_POST['emailpropio']);
+            $_SESSION['seguidores'] = $usuarioActualizadox['seguidores'];
+            $_SESSION['siguiendo'] = $usuarioActualizadox['siguiendo'];
+            
+        }
+        
+
+        header('Location: ../Vista/PerfilPublico.php?email_user='.$_POST['emailseguir']);
+        exit;    
     }
 
     if (isset($_POST['editar'])) {
@@ -106,16 +146,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         
     }
-
-    if(isset($_GET['Usuarion'])){
-        $resultado = $usuarioModelo->obtenerUsuario($_GET['nick_Usuario']);
-        $_SESSION['nickUser'] = json_encode(iterator_to_array($resultado));
-        print("Hola");
-        header('Location: ../Vista/PerfilPublico.php'); 
-        exit; 
-        
-    }
-
+    
+    
 
     
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
+    if (isset($_GET['Usuarion'])) {
+        $resultado = $usuarioModelo->obtenerUsuario($_GET['email_Usur']);
+        $_SESSION['emailUser'] = json_encode(iterator_to_array($resultado));
+        header('Location: ../Vista/PerfilPublico.php'); 
+        exit; 
+    }
+
 }
