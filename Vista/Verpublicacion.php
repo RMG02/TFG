@@ -39,6 +39,7 @@ date_default_timezone_set('Europe/Madrid');
 $tituloPagina = "Tweet";
 
     $nickuser = $_SESSION['nick'];
+    $email = $publicacion['email'];
     $nick = $publicacion['nick'];
     $texto = $publicacion['contenido'];
     $id = $publicacion['_id']['$oid'];
@@ -70,7 +71,9 @@ if ($multimedia) {
 
 $contenidoPrincipal = <<<EOS
     <div class="tweet-header">
-        <strong>$nick</strong>
+        <a href="../Vista/PerfilPublico.php?email_user=$email">
+            <strong>$nick</strong>
+        </a>
         <span class="tweet-time">$Hora</span>
     </div>
     <div class="tweet-content">
@@ -176,6 +179,7 @@ EOS;
         $contenidoPrincipal .= '<h3>Comentarios</h3>';
         foreach ($comentarios as $comentario) {
             $usuario = $comentario['usuario'];
+            $emailc = $comentario['email'];
             $id_com = $comentario['id_comentario']['$oid'];
             $tex = $comentario['texto'];
             $mult = $comentario['multimedia'] ?? '';
@@ -199,7 +203,9 @@ EOS;
                         <div class="comentario" name="comentario">
                             $multi_com
                             <br>
-                            <strong>$usuario:</strong>
+                            <a href="../Vista/PerfilPublico.php?email_user=$emailc">
+                                <strong>$usuario</strong>
+                            </a>
                             <span>$tex</span>
                             <span class="comentario-time">$fecha</span>
                             <div class="comentarios-icon">

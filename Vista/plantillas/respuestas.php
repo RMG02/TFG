@@ -3,6 +3,7 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
     $contenido = "";
     foreach ($comentarios as $comentario) {
         $usuario = $comentario['usuario'];
+        $email = $comentario['email'];
         $id_com = $comentario['id_comentario']['$oid'];
         $tex = $comentario['texto'];
         $mult = $comentario['multimedia'] ?? '';
@@ -24,7 +25,9 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
 
                         <div class="comentario" name="comentario_rec">
                             $multi_com
-                            <strong>$usuario</strong></a>
+                            <a href="../Vista/PerfilPublico.php?email_user=$email">
+                                <strong>$usuario</strong>
+                            </a>
                             <span>$tex</span>
                             <span class="comentario-time">$fecha</span>
                             <div class="comentarios-icon">

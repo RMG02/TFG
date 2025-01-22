@@ -65,7 +65,7 @@ EOS;
 foreach ($publicaciones as $publicacion) {
     $nickuser = $_SESSION['nick'];
     $nick = $publicacion['nick'];
-    $email = $publicacion['user_email'];
+    $email = $publicacion['email'];
     $texto = $publicacion['contenido'];
     $id = $publicacion['_id']['$oid'];
     $Hora = date('d/m/Y H:i:s', strtotime($publicacion['created_at']));
