@@ -35,10 +35,10 @@ $email = $usuario['email'];
 $nombre = $usuario['nombre'];
 $seguidores = $usuario['seguidores'];
 $siguiendo = $usuario['siguiendo'];
+unset($_SESSION['emailUser']);
 
 $numseguidores = is_array($seguidores) ? count($seguidores) : 0;
 $numsiguiendo = is_array($siguiendo) ? count($siguiendo) : 0;
-
 // Obtener el email del usuario en sesión
 $emailSesion = $_SESSION['email'];
 
