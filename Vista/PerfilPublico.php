@@ -56,7 +56,6 @@ $contenidoPrincipal = <<<EOS
     </div>
     <div class="tweet-content">
 
-        <p>Email: {$email}</p>
         <p>Nombre: {$nombre}</p>
         <p>Seguidores: {$numseguidores}</p>
         <p>Siguiendo: {$numsiguiendo}</p>

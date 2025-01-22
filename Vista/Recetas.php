@@ -75,6 +75,7 @@ EOS;
 
 foreach ($recetas as $receta) {
     $nickuser = $_SESSION['nick'];
+    $email = $_SESSION['user_email'];
     $nick = $receta['nick'];
     $texto = $receta['titulo'];
     $id = $receta['_id']['$oid'];
@@ -101,7 +102,7 @@ foreach ($recetas as $receta) {
     $contenidoPrincipal .= <<<EOS
         <div class="tweet" id="publistas">
             <div class="tweet-header">
-                <a href="../Vista/PerfilPublico.php?nick=$nick"><strong>$nick</strong></a> <span class="tweet-time">$Hora</span>
+                <a href="../Vista/PerfilPublico.php?email_user=$email"><strong>$nick</strong></a> <span class="tweet-time">$Hora</span>
             </div>
             <div class="tweet-content">
                 <strong>$texto</strong>

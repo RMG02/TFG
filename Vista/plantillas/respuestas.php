@@ -24,7 +24,7 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
 
                         <div class="comentario" name="comentario_rec">
                             $multi_com
-                            <a href="../Vista/PerfilPublico.php?nick=$usuario"><strong>$usuario</strong></a>
+                            <strong>$usuario</strong></a>
                             <span>$tex</span>
                             <span class="comentario-time">$fecha</span>
                             <div class="comentarios-icon">
