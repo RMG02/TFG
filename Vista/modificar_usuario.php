@@ -25,6 +25,7 @@ if (isset($_SESSION['mensaje'])) {
 $usuarios = json_decode($_SESSION['listaUsuarios'], true);
 
 $tituloPagina = "Lista de Usuarios";
+$modalId = -1;
 
 // Construcción del contenido principal de forma dinámica
 $contenidoPrincipal = <<<EOS
@@ -51,7 +52,7 @@ foreach ($usuarios as $index => $usuario) {
     $nick = $usuario['nick'];
     $rol = $usuario['admin'] ? "Admin" : "Usuario";
     $pass = $usuario['password'];
-    $modalId = $index;
+    $modalId++;
     $contenidoPrincipal .= <<<EOS
     <tr>
         <td>$nombre</td>

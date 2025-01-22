@@ -4,12 +4,12 @@ function cerrar() {
 
     for (let i = 0; i < botones.length; i++) {
         botones[i].onclick = function() {
-            var modal = document.getElementById(i + 1);
+            var modal = document.getElementById(i);
             modal.style.display = "block";
         };
 
         spans[i].onclick = function() {
-            var modal = document.getElementById(i + 1);
+            var modal = document.getElementById(i);
             modal.style.display = "none";
         };
     }
