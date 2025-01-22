@@ -29,7 +29,7 @@ $tituloPagina = "Perfil";
 
 $usuario = json_decode($_SESSION['emailUser'], true);
 
-echo "<script>console.log('Usuario:', " . json_encode($usuario) . ");</script>";
+
 
 $nick = $usuario['nick'];
 $email = $usuario['email'];

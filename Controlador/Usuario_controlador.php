@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['siguiendo'] = $usuario['siguiendo'];
             $_SESSION['login'] = true;
             $_SESSION['admin'] = $usuario['admin'];
+            $_SESSION['usuariopropio'] = json_encode($usuario);
             header('Location: ../Vista/Principal.php');
         } else {
             $_SESSION['error'] = "Email o contraseña incorrectos.";
@@ -68,13 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['Seguir'])) {
         
         $usuarioseguir = $usuarioModelo->obtenerUsuario($_POST['emailseguir']);
-        $seguidores = (array) $usuarioseguir['seguidores']; // Convierte BSONArray a array PHP
+        $seguidores = (array) $usuarioseguir['seguidores']; 
 
         if(in_array($_POST['emailpropio'], $seguidores)){
             $resultado = $usuarioModelo->noSeguir($_POST['emailpropio'], $_POST['emailseguir'], "noSeguir");
             if ($resultado) {
                 $_SESSION['mensaje'] = "Lo has dejado de seguir";
-                
             }
         
         }else {
@@ -93,8 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $usuarioActualizado = $usuarioModelo->obtenerUsuario($_POST['emailseguir']);
             $_SESSION['emailUser'] = json_encode(iterator_to_array($usuarioActualizado));
             $usuarioActualizadox = $usuarioModelo->obtenerUsuario($_POST['emailpropio']);
-            $_SESSION['seguidores'] = $usuarioActualizadox['seguidores'];
-            $_SESSION['siguiendo'] = $usuarioActualizadox['siguiendo'];
+            $_SESSION['usuariopropio'] = json_encode(iterator_to_array($usuarioActualizadox));
             
         }
         

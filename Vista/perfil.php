@@ -47,8 +47,14 @@ if($verreceta){
 $tituloPagina = "Página de Perfil";
 $modalId = 0;
 $modalComId = 0;
-$seguidores = $_SESSION['seguidores'];
-$siguiendo = $_SESSION['siguiendo'];
+
+
+$usuario = json_decode($_SESSION['usuariopropio'], true);
+$siguiendo = $usuario['siguiendo'];
+$seguidores = $usuario['seguidores'];
+
+
+
 
 $numseguidores = is_array($seguidores) ? count($seguidores) : 0;
 $numsiguiendo = is_array($siguiendo) ? count($siguiendo) : 0;
