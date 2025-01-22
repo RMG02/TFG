@@ -75,7 +75,7 @@ EOS;
 
 foreach ($recetas as $receta) {
     $nickuser = $_SESSION['nick'];
-    $email = $receta['user_email'];
+    $email = $receta['email'];
     $nick = $receta['nick'];
     $texto = $receta['titulo'];
     $id = $receta['_id']['$oid'];
