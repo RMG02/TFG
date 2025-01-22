@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     
         $DatosReceta = [
-            'user_email' => $_SESSION['email'],
+            'email' => $_SESSION['email'],
             'nick' => $_SESSION['nick'],
             'titulo' => $_POST['titulo'],
             'ingredientes' => $_POST['ingredientes'],
