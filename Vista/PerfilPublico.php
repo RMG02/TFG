@@ -27,9 +27,8 @@ if (!isset($_SESSION['emailUser'])) {
 
 $tituloPagina = "Perfil";
 
+// Decodificar los datos del usuario
 $usuario = json_decode($_SESSION['emailUser'], true);
-
-
 
 $nick = $usuario['nick'];
 $email = $usuario['email'];
@@ -40,31 +39,46 @@ $siguiendo = $usuario['siguiendo'];
 $numseguidores = is_array($seguidores) ? count($seguidores) : 0;
 $numsiguiendo = is_array($siguiendo) ? count($siguiendo) : 0;
 
-// Comprobar si el usuario de la sesión está en el array de seguidores
+// Obtener el email del usuario en sesión
 $emailSesion = $_SESSION['email'];
-$esSeguidor = is_array($seguidores) && in_array($emailSesion, $seguidores);
 
-// Determinar el texto del botón
-$textoBoton = $esSeguidor ? "Dejar de Seguir" : "Seguir";
+// Verificar si es el propio perfil
+$esMiPerfil = $emailSesion === $email;
 
-// Cambiar la acción del formulario dependiendo del estado
-$accionFormulario = $esSeguidor ? "DejarSeguir" : "Seguir";
+// Si no es el propio perfil, mostramos el botón de "Seguir"
+$mostrarBotonSeguir = !$esMiPerfil;
+
+if (!$esMiPerfil) {
+    // Comprobar si el usuario de la sesión está en el array de seguidores
+    $esSeguidor = is_array($seguidores) && in_array($emailSesion, $seguidores);
+
+    // Determinar el texto del botón
+    $textoBoton = $esSeguidor ? "Dejar de Seguir" : "Seguir";
+
+    // Cambiar la acción del formulario dependiendo del estado
+    $accionFormulario = $esSeguidor ? "DejarSeguir" : "Seguir";
+
+    // Mostrar el formulario con el botón de seguir
+    $botonSeguir = <<<EOS
+    <form method="POST" action="../Controlador/Usuario_controlador.php">
+        <input type="hidden" name="emailpropio" value="{$emailSesion}">
+        <input type="hidden" name="emailseguir" value="{$email}">
+        <button type="submit" class="boton_lista" name="Seguir">{$textoBoton}</button>
+    </form>
+    EOS;
+} else {
+    $botonSeguir = ''; // No mostramos el botón si es el propio perfil
+}
 
 $contenidoPrincipal = <<<EOS
     <div class="tweet-header">
         <strong>Nick: {$nick}</strong>
     </div>
     <div class="tweet-content">
-
         <p>Nombre: {$nombre}</p>
         <p>Seguidores: {$numseguidores}</p>
         <p>Siguiendo: {$numsiguiendo}</p>
-        <form method="POST" action="../Controlador/Usuario_controlador.php">
-                <input type="hidden" name="emailpropio" value="{$emailSesion}">
-                <input type="hidden" name="emailseguir" value="{$email}">
-                <button type="submit" class="boton_lista" name="Seguir">{$textoBoton}</button>
-        </form>
-
+        {$botonSeguir}  <!-- Muestra el botón si no es el propio perfil -->
     </div>  
 EOS;
 
