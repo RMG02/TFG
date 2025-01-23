@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     
         $DatosPublicacion = [
-            'user_email' => $_SESSION['email'],
+            'email' => $_SESSION['email'],
             'nick' => $_SESSION['nick'],
             'contenido' => $_POST['contenido'],
             'multimedia' => $archivo_subido,
@@ -394,6 +394,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $publicaciones = $publicacionModelo->ListaPublicacionUsuario($_SESSION['nick']);
         $_SESSION['publicacionesUsuario'] = json_encode(iterator_to_array($publicaciones));
         header('Location: ../Vista/perfil.php'); 
+        exit; 
+    }
+    if(isset($_GET['PubliUseroo'])){
+        $publicaciones = $publicacionModelo->ListaPublicacionUsuario($_SESSION['nickpublicooo']);
+        $_SESSION['publicacionesUsuariop'] = json_encode(iterator_to_array($publicaciones));
+        header('Location: ../Vista/PerfilPublico.php'); 
         exit; 
     }
 

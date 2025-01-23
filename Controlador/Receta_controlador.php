@@ -385,6 +385,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Location: ../Vista/perfil.php'); 
         exit; 
     }
+    if(isset($_GET['ReceUseroo'])){
+        $recetas = $recetaModelo->ListaRecetaUsuario($_SESSION['nickpublicooo']);
+        $_SESSION['RecetasUsuariop'] = json_encode(iterator_to_array($recetas));
+        header('Location: ../Vista/PerfilPublico.php'); 
+        exit; 
+    }
 
     if(isset($_GET['publi_id'])){
         $resultado = $recetaModelo->obtenerReceta($_GET['id']);
