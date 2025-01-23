@@ -171,6 +171,15 @@ function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes, tip
       });
 }
 
+function enviarSeguidor(usuario_actual, usuario_dest, tipo) {
+    if(tipo == "Seguir"){
+        socket.emit("follow", { usuario_actual: usuario_actual, usuario_dest: usuario_dest});
+    }else if(tipo == "Dejar de Seguir"){
+        socket.emit("unfollow", { usuario_actual: usuario_actual, usuario_dest: usuario_dest});
+    }
+
+}
+
 function darLike(usuario, usuario_des, id_publi, tipo_publicacion) {
     socket.emit("like-dado", { usuario: usuario, usuario_des: usuario_des, id_publi: id_publi, tipo: "like", tipo_publicacion: tipo_publicacion });
 }

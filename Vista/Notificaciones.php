@@ -58,6 +58,11 @@ if(!empty($notificaciones)){
                 <p><a href="{$notificacion['enlace']}">Ver receta</a></p>
             EOS;
         }
+        else if($notificacion['tipo_publicacion'] == "follows"){
+            $contenidoPrincipal .= <<<EOS
+                <p><a href="{$notificacion['enlace']}">Ver usuario</a></p>
+            EOS;
+        }
 
         $contenidoPrincipal .= <<<EOS
                 <p><small>$fecha</small></p>

@@ -167,6 +167,74 @@ io.on("connection", (socket) => {
         axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)         
         
     });
+
+    socket.on("follow", (data) => {
+        var mensaje = data.usuario_actual + " te ha seguido";
+        var enlace = "http://localhost:8000/Vista/PerfilPublico.php?nick_user=" + data.usuario_actual;
+
+        var socketID = usuarios_conectados[data.usuario_dest];
+        var notificacion = { 
+            usuario_publi: data.usuario_dest, 
+            usuario_accion: data.usuario_actual,
+            mensaje: mensaje,
+            id_publi: null,
+            enlace: enlace,
+            tipo: "follow",
+            fecha: new Date().toISOString(),
+            tipo_publicacion: "follows"
+        };
+  
+        if (socketID) {
+            io.to(socketID).emit("notificacion", notificacion);
+            
+        }
+        else{
+            contador_notificaciones[data.usuario_dest]++;
+
+        }
+        
+        
+        // Usar URLSearchParams para formatear los datos
+        var params = new URLSearchParams();
+        params.append('notificacion', JSON.stringify(notificacion));
+
+        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)
+        
+    });
+
+    socket.on("unfollow", (data) => {
+        var mensaje = data.usuario_actual + " te ha dejado de seguir";
+        var enlace = "http://localhost:8000/Vista/PerfilPublico.php?nick_user=" + data.usuario_actual;
+
+        var socketID = usuarios_conectados[data.usuario_dest];
+        var notificacion = { 
+            usuario_publi: data.usuario_dest, 
+            usuario_accion: data.usuario_actual,
+            mensaje: mensaje,
+            id_publi: null,
+            enlace: enlace,
+            tipo: "unfollow",
+            fecha: new Date().toISOString(),
+            tipo_publicacion: "follows"
+        };
+  
+        if (socketID) {
+            io.to(socketID).emit("notificacion", notificacion);
+            
+        }
+        else{
+            contador_notificaciones[data.usuario_dest]++;
+
+        }
+        
+        
+        // Usar URLSearchParams para formatear los datos
+        var params = new URLSearchParams();
+        params.append('notificacion', JSON.stringify(notificacion));
+
+        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)
+        
+    });
     
     socket.on('desconectado', (data) => {
         contador_notificaciones[data.usuario] = data.num_noti;

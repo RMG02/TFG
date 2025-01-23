@@ -81,7 +81,7 @@ $textoBoton = $esSeguidor ? "Dejar de Seguir" : "Seguir";
 
 // Cambiar la acción del formulario dependiendo del estado
 $accionFormulario = $esSeguidor ? "DejarSeguir" : "Seguir";
-
+$usuarioActual = $_SESSION['nick'];
 $contenidoPrincipal = <<<EOS
 
     <div class="tweet-content">
@@ -89,7 +89,7 @@ $contenidoPrincipal = <<<EOS
         <p><strong>{$nick}</strong></p>
         <p>Seguidores: {$numseguidores}</p>
         <p>Siguiendo: {$numsiguiendo}</p>
-        <form method="POST" action="../Controlador/Usuario_controlador.php">
+        <form method="POST" action="../Controlador/Usuario_controlador.php" onsubmit="enviarSeguidor('$usuarioActual', '$nick', '$textoBoton')">
                 <input type="hidden" name="emailpropio" value="{$emailSesion}">
                 <input type="hidden" name="emailseguir" value="{$email}">
                 <button type="submit" class="boton_lista" name="Seguir">{$textoBoton}</button>
