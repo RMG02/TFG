@@ -39,7 +39,7 @@ date_default_timezone_set('Europe/Madrid');
 $tituloPagina = "Tweet";
 
     $nickuser = $_SESSION['nick'];
-    $email = $publicacion['user_email'];
+    $email = $publicacion['email'];
     $nick = $publicacion['nick'];
     $texto = $publicacion['contenido'];
     $id = $publicacion['_id']['$oid'];
