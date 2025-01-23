@@ -39,6 +39,14 @@ class Usuario {
         return null;
     }
 
+    public function obtenerUsuarioNick($nick) {
+        $usuario = $this->collection->findOne(['nick' => $nick]);
+        if ($usuario) {
+            return $usuario;
+        }
+        return null;
+    }
+
     public function confirmar($password,$email) {
         $usuario = $this->collection->findOne(['email' => $email]);
         if (!password_verify($password, $usuario['password'])) {

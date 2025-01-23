@@ -97,7 +97,7 @@ $contenidoPrincipal = <<<EOS
     
     
 
-    <h3>Mis tweets</h3>
+    <h3>Mis publicaciones</h3>
         <input type="text" id="buscador" onkeyup="filtrarPerfil()" placeholder="Buscar por texto...">
         <div id="publicaciones">
     

@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     
         $DatosPublicacion = [
-            'email' => $_SESSION['email'],
+            'user_email' => $_SESSION['email'],
             'nick' => $_SESSION['nick'],
             'contenido' => $_POST['contenido'],
             'multimedia' => $archivo_subido,
@@ -291,7 +291,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
         $comentario = [
             'usuario' => $_SESSION['nick'],
-            'email' => $_SESSION['email'],
             'texto' => $_POST['texto'],
             'fecha' => date(DATE_ISO8601),
             'multimedia' => $archivo_subido

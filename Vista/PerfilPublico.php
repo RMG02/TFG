@@ -19,20 +19,41 @@ if (isset($_SESSION['mensaje'])) {
 }
 
 $emailUsuario = $_GET['email_user'] ?? null;
-if( $emailUsuario == $_SESSION['email']){
-    header('Location: ../Vista/perfil.php');
-    exit;
+$nickUsuario = $_GET['nick_user'] ?? null;
+
+if($emailUsuario){
+    if( $emailUsuario == $_SESSION['email']){
+        header('Location: ../Vista/perfil.php');
+        exit;
+    }
+    
+    if (!isset($_SESSION['emailUser'])) {
+        header('Location: ../Controlador/Usuario_controlador.php?Usuarion=true&email_Usur='.$emailUsuario);
+        exit;
+    }
+}
+else if($nickUsuario){
+    if( $nickUsuario == $_SESSION['nick']){
+        header('Location: ../Vista/perfil.php');
+        exit;
+    }
+
+    if (!isset($_SESSION['nickUser'])) {
+        header('Location: ../Controlador/Usuario_controlador.php?UsuarionNick=true&nick_Usur='.$nickUsuario);
+        exit;
+    }
 }
 
-if (!isset($_SESSION['emailUser'])) {
-    header('Location: ../Controlador/Usuario_controlador.php?Usuarion=true&email_Usur='.$emailUsuario);
-    exit;
-}
 
 
 $tituloPagina = "Perfil";
 
-$usuario = json_decode($_SESSION['emailUser'], true);
+if(isset($_SESSION['emailUser'])){
+    $usuario = json_decode($_SESSION['emailUser'], true);
+}
+else if(isset($_SESSION['nickUser'])){
+    $usuario = json_decode($_SESSION['nickUser'], true);
+}
 
 
 
@@ -45,7 +66,12 @@ $siguiendo = $usuario['siguiendo'];
 $numseguidores = is_array($seguidores) ? count($seguidores) : 0;
 $numsiguiendo = is_array($siguiendo) ? count($siguiendo) : 0;
 
-unset($_SESSION['emailUser']);
+if(isset($_SESSION['emailUser'])){
+    unset($_SESSION['emailUser']);
+}
+else if(isset($_SESSION['nickUser'])){
+    unset($_SESSION['nickUser']);
+}
 // Comprobar si el usuario de la sesión está en el array de seguidores
 $emailSesion = $_SESSION['email'];
 $esSeguidor = is_array($seguidores) && in_array($emailSesion, $seguidores);
@@ -57,12 +83,10 @@ $textoBoton = $esSeguidor ? "Dejar de Seguir" : "Seguir";
 $accionFormulario = $esSeguidor ? "DejarSeguir" : "Seguir";
 
 $contenidoPrincipal = <<<EOS
-    <div class="tweet-header">
-        <strong>Nick: {$nick}</strong>
-    </div>
+
     <div class="tweet-content">
 
-        <p>Nombre: {$nombre}</p>
+        <p><strong>{$nick}</strong></p>
         <p>Seguidores: {$numseguidores}</p>
         <p>Siguiendo: {$numsiguiendo}</p>
         <form method="POST" action="../Controlador/Usuario_controlador.php">

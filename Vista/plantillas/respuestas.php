@@ -3,7 +3,6 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
     $contenido = "";
     foreach ($comentarios as $comentario) {
         $usuario = $comentario['usuario'];
-        $email = $comentario['email'];
         $id_com = $comentario['id_comentario']['$oid'];
         $tex = $comentario['texto'];
         $mult = $comentario['multimedia'] ?? '';
@@ -25,9 +24,7 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
 
                         <div class="comentario" name="comentario_rec">
                             $multi_com
-                            <a href="../Vista/PerfilPublico.php?email_user=$email">
-                                <strong>$usuario</strong>
-                            </a>
+                            <a href="../Vista/PerfilPublico.php?nick_user=$usuario" class="nick-link" onclick="event.stopPropagation();"><strong>$usuario:</strong></a>
                             <span>$tex</span>
                             <span class="comentario-time">$fecha</span>
                             <div class="comentarios-icon">
@@ -38,7 +35,7 @@ function mostrarRespuestas($comentarios, $modalComId, &$modalResId, $id_publi, $
                             <div class="modal_publi-content">
                                 <span class="close_publi">&times;</span>
                                 <div class="tweet-header">
-                                    <a href="../Vista/PerfilPublico.php?nick=$usuario"><strong>$usuario</strong></a>
+                                    <a href="../Vista/PerfilPublico.php?nick_user=$usuario" class="nick-link"><strong>$usuario</strong></a>
                                     <span class="tweet-time">$fecha</span>
                                 </div>
                                 <div class="comentario_mod">

@@ -39,7 +39,7 @@ date_default_timezone_set('Europe/Madrid');
 $tituloPagina = "Tweet";
 
     $nickuser = $_SESSION['nick'];
-    $email = $publicacion['email'];
+    $email = $publicacion['user_email'];
     $nick = $publicacion['nick'];
     $texto = $publicacion['contenido'];
     $id = $publicacion['_id']['$oid'];
@@ -71,9 +71,7 @@ if ($multimedia) {
 
 $contenidoPrincipal = <<<EOS
     <div class="tweet-header">
-        <a href="../Vista/PerfilPublico.php?email_user=$email">
-            <strong>$nick</strong>
-        </a>
+        <a href="../Vista/PerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a>
         <span class="tweet-time">$Hora</span>
     </div>
     <div class="tweet-content">
@@ -179,7 +177,6 @@ EOS;
         $contenidoPrincipal .= '<h3>Comentarios</h3>';
         foreach ($comentarios as $comentario) {
             $usuario = $comentario['usuario'];
-            $emailc = $comentario['email'];
             $id_com = $comentario['id_comentario']['$oid'];
             $tex = $comentario['texto'];
             $mult = $comentario['multimedia'] ?? '';
@@ -203,9 +200,7 @@ EOS;
                         <div class="comentario" name="comentario">
                             $multi_com
                             <br>
-                            <a href="../Vista/PerfilPublico.php?email_user=$emailc">
-                                <strong>$usuario</strong>
-                            </a>
+                            <a href="../Vista/PerfilPublico.php?nick_user=$usuario" class="nick-link" onclick="event.stopPropagation();"><strong>$usuario:</strong></a>
                             <span>$tex</span>
                             <span class="comentario-time">$fecha</span>
                             <div class="comentarios-icon">
@@ -216,7 +211,7 @@ EOS;
                             <div class="modal_publi-content">
                                 <span class="close_publi">&times;</span>
                                 <div class="tweet-header">
-                                    <strong>$usuario</strong>
+                                    <a href="../Vista/PerfilPublico.php?nick_user=$usuario" class="nick-link"><strong>$usuario</strong></a>
                                     <span class="tweet-time">$fecha</span>
                                 </div>
                                 <div class="comentario_mod">

@@ -631,5 +631,8 @@ footer p {
     color:#dc1818;
 }
 
-
+.nick-link:hover {
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Añade una sombra sutil */
+}
 
