@@ -397,7 +397,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         exit; 
     }
     if(isset($_GET['PubliUseroo'])){
-        $publicaciones = $publicacionModelo->ListaPublicacionUsuario($_SESSION['nickpublicooo']);
+        $publicaciones = $publicacionModelo->ListaPublicacionUsuariop($_SESSION['nickpublicooo']);
         $_SESSION['publicacionesUsuariop'] = json_encode(iterator_to_array($publicaciones));
         header('Location: ../Vista/PerfilPublico.php'); 
         exit; 

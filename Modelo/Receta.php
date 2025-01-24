@@ -292,6 +292,10 @@ class Receta {
         return $this->collection->find(['nick' => $nick], ['sort' => ['created_at' => -1]]);
     }
 
+    public function ListaRecetaUsuariop($nick) {
+        return $this->collection->find(['nick' => $nick]);
+    }
+
         
     public function Likes($nick,$publi){
         $Id = new ObjectId($publi);

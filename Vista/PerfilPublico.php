@@ -7,6 +7,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
     header("Location: enter.php");
     exit;
 }
+require_once __DIR__ . "/plantillas/respuestas.php";
 
 $error = "";
 $mensaje = "";
@@ -22,11 +23,11 @@ $emailUsuario = $_GET['email_user'] ?? null;
 $nickUsuario = $_GET['nick_user'] ?? null;
 
 
-if($nickUsuario == null){
-    $nickUsuario = $_POST['nick_user'] ?? null;
+if(isset($_POST['nick_user'])){
+    $nickUsuario = $_POST['nick_user'];
 }
 
-$verreceta = isset($_POST['verreceta']) ? filter_var($_POST['verreceta'], FILTER_VALIDATE_BOOLEAN) : false;
+
 
 
 
@@ -56,6 +57,8 @@ else if($nickUsuario){
 
 
 $tituloPagina = "Perfil";
+$modalId = 0;
+$modalComId = 0;
 
 if(isset($_SESSION['emailUser'])){
     $usuario = json_decode($_SESSION['emailUser'], true);
@@ -76,12 +79,7 @@ $numseguidores = is_array($seguidores) ? count($seguidores) : 0;
 $numsiguiendo = is_array($siguiendo) ? count($siguiendo) : 0;
 
 
-if(isset($_SESSION['emailUser'])){
-    unset($_SESSION['emailUser']);
-}
-else if(isset($_SESSION['nickUser'])){
-    unset($_SESSION['nickUser']);
-}
+
 
 if (!isset($_SESSION['publicacionesUsuariop'])) {
     $_SESSION['nickpublicooo'] = $nick;
@@ -95,11 +93,22 @@ if (!isset($_SESSION['publicacionesUsuariop'])) {
     exit;
 }
 
+$verreceta = isset($_POST['verreceta']) ? filter_var($_POST['verreceta'], FILTER_VALIDATE_BOOLEAN) : false;
+echo "<pre>";
+var_dump($verreceta); // Muestra 'No definido' si la clave no existe
+echo "</pre>";
+
 if($verreceta){
-   
     $recetas = json_decode($_SESSION['RecetasUsuariop'], true);
 }else{
     $publicaciones = json_decode($_SESSION['publicacionesUsuariop'], true);
+}
+
+if(isset($_SESSION['emailUser'])){
+    unset($_SESSION['emailUser']);
+}
+else if(isset($_SESSION['nickUser'])){
+    unset($_SESSION['nickUser']);
 }
 
 
@@ -130,19 +139,19 @@ $contenidoPrincipal = <<<EOS
     </div> 
     
     <div class="dropdown">
-            <button class="dropbtn">⋮</button>
-            <div class="dropdown-content">
-                <form method="POST" action="../Vista/PerfilPublico.php">
-                    <input type="hidden" name="verreceta" value='false'>
-                    <input type="hidden" name="nick_user" value=$nick>
-                    <button type="submit" class="boton_lista" name="publicaciones">Verpublicaciones</button>
-                </form>
-                <form method="POST" action="../Vista/PerfilPublico.php">
-                    <input type="hidden" name="verreceta" value='true'>
-                    <input type="hidden" name="nick_user" value=$nick>
-                    <button type="submit" class="boton_lista" name="publicaciones">Ver recetas</button>
-                </form>
-            </div>         
+        <button class="dropbtn" aria-label="Opciones de perfil">⋮</button>
+        <div class="dropdown-content">
+            <form method="POST" action="../Vista/PerfilPublico.php">
+                <input type="hidden" name="verreceta" value="false">
+                <input type="hidden" name="nick_user" value="$nick">
+                <button type="submit" class="boton_lista" name="publicaciones">Ver publicaciones</button>
+            </form>
+            <form method="POST" action="../Vista/PerfilPublico.php">
+                <input type="hidden" name="verreceta" value="true">
+                <input type="hidden" name="nick_user" value="$nick">
+                <button type="submit" class="boton_lista" name="recetas">Ver recetas</button>
+            </form>
+        </div>
     </div>
     
     
@@ -152,7 +161,7 @@ $contenidoPrincipal = <<<EOS
         <div id="publicaciones">
 EOS;
 
-if($verreceta){
+if($verreceta == true){
     foreach ($recetas as $receta) {
         $nick = $receta['nick'];
         $titulo = $receta['titulo'];
@@ -217,7 +226,7 @@ if($verreceta){
             </div>
         EOS;
         $modalId++;
-     }
+    }
 }else{
     foreach ($publicaciones as $publicacion) {
         
@@ -264,13 +273,11 @@ if($verreceta){
                             <button type="submit" name="darlike" class="btn-like">
                                 <input type="hidden" name="id_publi" value="$id">
                                 <input type="hidden" name="nick_user" value="$nick">
-                                <input type="hidden" name="principal" value="$principal">
                                 <i class="fas fa-thumbs-up"></i> $numlikes
                             </button>
                             <button type="submit" name="dardislike" class="btn-dislike">
                                 <input type="hidden" name="id_publi" value="$id">
                                 <input type="hidden" name="nick_user" value="$nick">
-                                <input type="hidden" name="principal" value="$principal">
                                 <i class="fas fa-thumbs-down"></i> $numdislikes
                             </button>
                         </form>
