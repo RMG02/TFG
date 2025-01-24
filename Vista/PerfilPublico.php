@@ -11,6 +11,7 @@ require_once __DIR__ . "/plantillas/respuestas.php";
 
 $error = "";
 $mensaje = "";
+$_SESSION['verrecetax'] = isset($_POST['verreceta']) ? filter_var($_POST['verreceta'], FILTER_VALIDATE_BOOLEAN) : false;
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
 }
@@ -87,22 +88,21 @@ if (!isset($_SESSION['publicacionesUsuariop'])) {
     exit;
 }
 
- if (!isset($_SESSION['RecetasUsuariop'])) {
+ if (!isset($_SESSION['Recetasssss'])) {
     $_SESSION['nickpublicooo'] = $nick;
     header('Location: ../Controlador/Receta_controlador.php?ReceUseroo=true');
     exit;
 }
 
-$verreceta = isset($_POST['verreceta']) ? filter_var($_POST['verreceta'], FILTER_VALIDATE_BOOLEAN) : false;
-echo "<pre>";
-var_dump($verreceta); // Muestra 'No definido' si la clave no existe
-echo "</pre>";
 
-if($verreceta){
-    $recetas = json_decode($_SESSION['RecetasUsuariop'], true);
+
+
+if($_SESSION['verrecetax']){
+    $recetas = json_decode($_SESSION['Recetasssss'], true);
 }else{
     $publicaciones = json_decode($_SESSION['publicacionesUsuariop'], true);
 }
+
 
 if(isset($_SESSION['emailUser'])){
     unset($_SESSION['emailUser']);
@@ -110,6 +110,7 @@ if(isset($_SESSION['emailUser'])){
 else if(isset($_SESSION['nickUser'])){
     unset($_SESSION['nickUser']);
 }
+
 
 
  
@@ -120,6 +121,8 @@ $esSeguidor = is_array($seguidores) && in_array($emailSesion, $seguidores);
 // Determinar el texto del botón
 $textoBoton = $esSeguidor ? "Dejar de Seguir" : "Seguir";
 
+$t = true;
+$f = false;
 // Cambiar la acción del formulario dependiendo del estado
 $accionFormulario = $esSeguidor ? "DejarSeguir" : "Seguir";
 $usuarioActual = $_SESSION['nick'];
@@ -142,14 +145,14 @@ $contenidoPrincipal = <<<EOS
         <button class="dropbtn" aria-label="Opciones de perfil">⋮</button>
         <div class="dropdown-content">
             <form method="POST" action="../Vista/PerfilPublico.php">
-                <input type="hidden" name="verreceta" value="false">
+                <input type="hidden" name="verreceta" value="{$f}">
                 <input type="hidden" name="nick_user" value="$nick">
                 <button type="submit" class="boton_lista" name="publicaciones">Ver publicaciones</button>
             </form>
             <form method="POST" action="../Vista/PerfilPublico.php">
-                <input type="hidden" name="verreceta" value="true">
+                <input type="hidden" name="verreceta" value="{$t}">
                 <input type="hidden" name="nick_user" value="$nick">
-                <button type="submit" class="boton_lista" name="recetas">Ver recetas</button>
+                <button type="submit" class="boton_lista" name="publicaciones">Ver recetas</button>
             </form>
         </div>
     </div>
@@ -161,7 +164,7 @@ $contenidoPrincipal = <<<EOS
         <div id="publicaciones">
 EOS;
 
-if($verreceta == true){
+if($_SESSION['verrecetax'] ){
     foreach ($recetas as $receta) {
         $nick = $receta['nick'];
         $titulo = $receta['titulo'];
