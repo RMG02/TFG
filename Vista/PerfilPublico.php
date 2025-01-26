@@ -11,7 +11,6 @@ require_once __DIR__ . "/plantillas/respuestas.php";
 
 $error = "";
 $mensaje = "";
-$_SESSION['verrecetax'] = isset($_POST['verreceta']) ? filter_var($_POST['verreceta'], FILTER_VALIDATE_BOOLEAN) : false;
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
 }
@@ -22,6 +21,7 @@ if (isset($_SESSION['mensaje'])) {
 
 $emailUsuario = $_GET['email_user'] ?? null;
 $nickUsuario = $_GET['nick_user'] ?? null;
+$verreceta = $_GET['verreceta'] ?? false;
 
 
 if(isset($_POST['nick_user'])){
@@ -33,24 +33,54 @@ if(isset($_POST['nick_user'])){
 
 
 if($emailUsuario){
+    if (!isset($_SESSION['publicacionesUsuarioPublico'])) {
+        header('Location: ../Controlador/Publicacion_controlador.php?PubliUsuarioPublico=true&email=' . $emailUsuario);
+        exit;
+    }
+
+    if (!isset($_SESSION['RecetasUsuarioPublico'])) {
+        header('Location: ../Controlador/Receta_controlador.php?ReceUsuarioPublico=true&email=' . $emailUsuario);
+        exit;
+    }
+
     if( $emailUsuario == $_SESSION['email']){
         header('Location: ../Vista/perfil.php');
         exit;
     }
     
     if (!isset($_SESSION['emailUser'])) {
-        header('Location: ../Controlador/Usuario_controlador.php?Usuarion=true&email_Usur='.$emailUsuario);
+        if($verreceta){
+            header('Location: ../Controlador/Usuario_controlador.php?Usuarion=true&verreceta=true&email_Usur='.$emailUsuario);
+        }
+        else{
+            header('Location: ../Controlador/Usuario_controlador.php?Usuarion=true&email_Usur='.$emailUsuario);
+        }
         exit;
     }
 }
 else if($nickUsuario){
+    if (!isset($_SESSION['publicacionesUsuarioPublico'])) {
+        header('Location: ../Controlador/Publicacion_controlador.php?PubliUsuarioPublico=true&nick=' . $nickUsuario);
+        exit;
+     }
+
+    if (!isset($_SESSION['RecetasUsuarioPublico'])) {
+        header('Location: ../Controlador/Receta_controlador.php?ReceUsuarioPublico=true&nick=' . $nickUsuario);
+        exit;
+    }
+
     if( $nickUsuario == $_SESSION['nick']){
         header('Location: ../Vista/perfil.php');
         exit;
     }
 
     if (!isset($_SESSION['nickUser'])) {
-        header('Location: ../Controlador/Usuario_controlador.php?UsuarionNick=true&nick_Usur='.$nickUsuario);
+        if($verreceta){
+            header('Location: ../Controlador/Usuario_controlador.php?UsuarionNick=true&verreceta=true&nick_Usur='.$nickUsuario);
+        }
+        else{
+            header('Location: ../Controlador/Usuario_controlador.php?UsuarionNick=true&nick_Usur='.$nickUsuario);
+        }
         exit;
     }
 }
@@ -80,30 +110,6 @@ $numseguidores = is_array($seguidores) ? count($seguidores) : 0;
 $numsiguiendo = is_array($siguiendo) ? count($siguiendo) : 0;
 
 
-
-
-if (!isset($_SESSION['publicacionesUsuariop'])) {
-    $_SESSION['nickpublicooo'] = $nick;
-    header('Location: ../Controlador/Publicacion_controlador.php?PubliUseroo=true');
-    exit;
-}
-
- if (!isset($_SESSION['Recetasssss'])) {
-    $_SESSION['nickpublicooo'] = $nick;
-    header('Location: ../Controlador/Receta_controlador.php?ReceUseroo=true');
-    exit;
-}
-
-
-
-
-if($_SESSION['verrecetax']){
-    $recetas = json_decode($_SESSION['Recetasssss'], true);
-}else{
-    $publicaciones = json_decode($_SESSION['publicacionesUsuariop'], true);
-}
-
-
 if(isset($_SESSION['emailUser'])){
     unset($_SESSION['emailUser']);
 }
@@ -121,8 +127,6 @@ $esSeguidor = is_array($seguidores) && in_array($emailSesion, $seguidores);
 // Determinar el texto del botón
 $textoBoton = $esSeguidor ? "Dejar de Seguir" : "Seguir";
 
-$t = true;
-$f = false;
 // Cambiar la acción del formulario dependiendo del estado
 $accionFormulario = $esSeguidor ? "DejarSeguir" : "Seguir";
 $usuarioActual = $_SESSION['nick'];
@@ -140,21 +144,31 @@ $contenidoPrincipal = <<<EOS
         </form>
 
     </div> 
-    
+    <hr>
+
+
+EOS;
+
+
+if($verreceta){
+    $recetas = json_decode($_SESSION['RecetasUsuarioPublico'], true);
+}else{
+    $publicaciones = json_decode($_SESSION['publicacionesUsuarioPublico'], true);
+}
+
+
+$contenidoPrincipal .= <<<EOS
+
     <div class="dropdown">
-        <button class="dropbtn" aria-label="Opciones de perfil">⋮</button>
-        <div class="dropdown-content">
-            <form method="POST" action="../Vista/PerfilPublico.php">
-                <input type="hidden" name="verreceta" value="{$f}">
-                <input type="hidden" name="nick_user" value="$nick">
-                <button type="submit" class="boton_lista" name="publicaciones">Ver publicaciones</button>
-            </form>
-            <form method="POST" action="../Vista/PerfilPublico.php">
-                <input type="hidden" name="verreceta" value="{$t}">
-                <input type="hidden" name="nick_user" value="$nick">
-                <button type="submit" class="boton_lista" name="publicaciones">Ver recetas</button>
-            </form>
-        </div>
+            <button class="dropbtn">⋮</button>
+            <div class="dropdown-content">
+                <form method="POST" action="../Vista/PerfilPublico.php?email_user=$email&verreceta=false">
+                    <button type="submit" class="boton_lista" name="publicaciones">Ver publicaciones</button>
+                </form>
+                <form method="POST" action="../Vista/PerfilPublico.php?email_user=$email&verreceta=true">
+                    <button type="submit" class="boton_lista" name="publicaciones">Ver recetas</button>
+                </form>
+            </div>         
     </div>
     
     
@@ -164,8 +178,10 @@ $contenidoPrincipal = <<<EOS
         <div id="publicaciones">
 EOS;
 
-if($_SESSION['verrecetax'] ){
+
+if($verreceta){
     foreach ($recetas as $receta) {
+        $nickuser = $_SESSION['nick'];
         $nick = $receta['nick'];
         $titulo = $receta['titulo'];
         $id = $receta['_id']['$oid'];
@@ -175,8 +191,12 @@ if($_SESSION['verrecetax'] ){
         $num_comentarios = count($comentarios);
         $likes = $receta['likes'];
         $dislikes = $receta['dislikes'];
+        $likes_cadena = implode(",", $likes);
+        $dislikes_cadena = implode(",", $dislikes);
         $numlikes = count($likes ?? []);
         $numdislikes = count($dislikes ?? []);
+        $tipo_publicacion = "receta";
+
        
         if ($multimedia) {
             $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
@@ -209,13 +229,11 @@ if($_SESSION['verrecetax'] ){
                             <button type="submit" name="darlike" class="btn-like">
                                 <input type="hidden" name="id_publi" value="$id">
                                 <input type="hidden" name="nick_user" value="$nick">
-                                <input type="hidden" name="principal" value="$principal">
                                 <i class="fas fa-thumbs-up"></i> $numlikes
                             </button>
                             <button type="submit" name="dardislike" class="btn-dislike">
                                 <input type="hidden" name="id_publi" value="$id">
                                 <input type="hidden" name="nick_user" value="$nick">
-                                <input type="hidden" name="principal" value="$principal">
                                 <i class="fas fa-thumbs-down"></i> $numdislikes
                             </button>
                         </form>
@@ -229,10 +247,10 @@ if($_SESSION['verrecetax'] ){
             </div>
         EOS;
         $modalId++;
-    }
+     }
 }else{
     foreach ($publicaciones as $publicacion) {
-        
+        $nickuser = $_SESSION['nick'];
         $nick = $publicacion['nick'];
         $texto = $publicacion['contenido'];
         $id = $publicacion['_id']['$oid'];
@@ -242,8 +260,12 @@ if($_SESSION['verrecetax'] ){
         $num_comentarios = count($comentarios);
         $likes = $publicacion['likes'];
         $dislikes = $publicacion['dislikes'];
+        $likes_cadena = implode(",", $likes);
+        $dislikes_cadena = implode(",", $dislikes);
         $numlikes = count($likes ?? []);
         $numdislikes = count($dislikes ?? []);
+        $tipo_publicacion = "publicacion";
+
     
         if ($multimedia) {
             $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
@@ -271,7 +293,8 @@ if($_SESSION['verrecetax'] ){
                     </div>
                 </div>
                 <div class="reacciones-icon">
-                        <form method="POST" action="../Controlador/Publicacion_controlador.php">
+                        <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
+
                             
                             <button type="submit" name="darlike" class="btn-like">
                                 <input type="hidden" name="id_publi" value="$id">
@@ -296,7 +319,6 @@ if($_SESSION['verrecetax'] ){
         $modalId++;
     }
 }
-
 
 
 if ($error != "") {

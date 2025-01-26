@@ -121,7 +121,7 @@ foreach ($recetas as $receta) {
     }
     else{
         $contenidoPrincipal .= <<<EOS
-            <form method="POST" action="../Controlador/Receta_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '')">
+            <form method="POST" action="../Controlador/Receta_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
         EOS;
     }
     $contenidoPrincipal .= <<<EOS

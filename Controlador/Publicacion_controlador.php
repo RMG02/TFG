@@ -26,6 +26,10 @@ if (isset($_SESSION['publicacionesUsuario'])) {
     unset($_SESSION['publicacionesUsuario']);
 }
 
+if (isset($_SESSION['publicacionesUsuarioPublico'])) {
+    unset($_SESSION['publicacionesUsuarioPublico']);
+}
+
 if (isset($_SESSION['id_publi'])) {
     unset($_SESSION['id_publi']);
 }
@@ -396,11 +400,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Location: ../Vista/perfil.php'); 
         exit; 
     }
-    if(isset($_GET['PubliUseroo'])){
-        $publicaciones = $publicacionModelo->ListaPublicacionUsuariop($_SESSION['nickpublicooo']);
-        $_SESSION['publicacionesUsuariop'] = json_encode(iterator_to_array($publicaciones));
-        header('Location: ../Vista/PerfilPublico.php'); 
-        exit; 
+    if(isset($_GET['PubliUsuarioPublico'])){
+        if (isset($_GET['nick'])) {
+            $nick = $_GET['nick'];
+            $publicaciones = $publicacionModelo->ListaPublicacionUsuario($nick);
+            $_SESSION['publicacionesUsuarioPublico'] = json_encode(iterator_to_array($publicaciones));
+            header('Location: ../Vista/PerfilPublico.php?nick_user=' . $nick); 
+            exit; 
+        }
+        else{
+            $email = $_GET['email'];
+            $publicaciones = $publicacionModelo->ListaPublicacionUsuarioEmail($email);
+            $_SESSION['publicacionesUsuarioPublico'] = json_encode(iterator_to_array($publicaciones));
+            header('Location: ../Vista/PerfilPublico.php?email_user=' . $email); 
+            exit; 
+        }
+        
     }
 
     if(isset($_GET['publi_id'])){

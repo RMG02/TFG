@@ -26,6 +26,10 @@ if (isset($_SESSION['recetasUsuario'])) {
     unset($_SESSION['recetasUsuario']);
 }
 
+if (isset($_SESSION['RecetasUsuarioPublico'])) {
+    unset($_SESSION['RecetasUsuarioPublico']);
+}
+
 if (isset($_SESSION['id_publi'])) {
     unset($_SESSION['id_publi']);
 }
@@ -385,11 +389,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Location: ../Vista/perfil.php'); 
         exit; 
     }
-    if(isset($_GET['ReceUseroo'])){
-        $recetas = $recetaModelo->ListaRecetaUsuariop($_SESSION['nickpublicooo']);
-        $_SESSION['Recetasssss'] = json_encode(iterator_to_array($recetas));
-        header('Location: ../Vista/PerfilPublico.php'); 
-        exit; 
+    if(isset($_GET['ReceUsuarioPublico'])){
+        if (isset($_GET['nick'])) {
+            $nick = $_GET['nick'];
+            $recetas = $recetaModelo->ListaRecetaUsuario($nick);
+            $_SESSION['RecetasUsuarioPublico'] = json_encode(iterator_to_array($recetas));
+            header('Location: ../Vista/PerfilPublico.php?nick_user=' . $nick); 
+            exit; 
+        }
+        else{
+            $email = $_GET['email'];
+            $recetas = $recetaModelo->ListaRecetaUsuarioEmail($email);
+            $_SESSION['RecetasUsuarioPublico'] = json_encode(iterator_to_array($recetas));
+            header('Location: ../Vista/PerfilPublico.php?email_user=' . $email); 
+            exit; 
+        }
     }
 
     if(isset($_GET['publi_id'])){

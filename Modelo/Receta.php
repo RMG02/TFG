@@ -292,8 +292,8 @@ class Receta {
         return $this->collection->find(['nick' => $nick], ['sort' => ['created_at' => -1]]);
     }
 
-    public function ListaRecetaUsuariop($nick) {
-        return $this->collection->find(['nick' => $nick]);
+    public function ListaRecetaUsuarioEmail($email) {
+        return $this->collection->find(['email' => $email], ['sort' => ['created_at' => -1]]);
     }
 
         

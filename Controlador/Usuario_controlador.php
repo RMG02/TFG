@@ -153,16 +153,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
     if (isset($_GET['Usuarion'])) {
-        $resultado = $usuarioModelo->obtenerUsuario($_GET['email_Usur']);
+        $email = $_GET['email_Usur'];
+        $resultado = $usuarioModelo->obtenerUsuario($email);
         $_SESSION['emailUser'] = json_encode(iterator_to_array($resultado));
-        header('Location: ../Vista/PerfilPublico.php'); 
+        if(isset($_GET['verreceta'])){
+            header('Location: ../Vista/PerfilPublico.php?verreceta=true&email_user=' . $email);  
+
+        }
+        else{
+            header('Location: ../Vista/PerfilPublico.php?email_user=' . $email);  
+        }
         exit; 
     }
 
     if (isset($_GET['UsuarionNick'])) {
-        $resultado = $usuarioModelo->obtenerUsuarioNick($_GET['nick_Usur']);
+        $nick = $_GET['nick_Usur'];
+        $resultado = $usuarioModelo->obtenerUsuarioNick($nick);
         $_SESSION['nickUser'] = json_encode(iterator_to_array($resultado));
-        header('Location: ../Vista/PerfilPublico.php'); 
+        if(isset($_GET['verreceta'])){
+            //header('Location: ../Vista/PerfilPublico.php?nick_user=' . $nick); 
+            header('Location: ../Vista/PerfilPublico.php');
+        }
+        else{
+            //header('Location: ../Vista/PerfilPublico.php?verreceta=true&nick_user=' . $nick); 
+            header('Location: ../Vista/PerfilPublico.php?verreceta=true'); 
+
+        }
         exit; 
     }
 }

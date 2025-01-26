@@ -86,7 +86,7 @@ $contenidoPrincipal = <<<EOS
             <div class="dropdown-content">
                 <form method="POST" action="../Vista/perfil.php">
                     <input type="hidden" name="verreceta" value='false'>
-                    <button type="submit" class="boton_lista" name="publicaciones">Verpublicaciones</button>
+                    <button type="submit" class="boton_lista" name="publicaciones">Ver publicaciones</button>
                 </form>
                 <form method="POST" action="../Vista/perfil.php">
                     <input type="hidden" name="verreceta" value='true'>

@@ -295,8 +295,8 @@ class Publicacion {
         return $this->collection->find(['nick' => $nick], ['sort' => ['created_at' => -1]]);
     }
 
-    public function ListaPublicacionUsuariop($nick) {
-        return $this->collection->find(['nick' => $nick]);
+    public function ListaPublicacionUsuarioEmail($email) {
+        return $this->collection->find(['email' => $email], ['sort' => ['created_at' => -1]]);
     }
 
         
