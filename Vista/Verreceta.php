@@ -83,7 +83,7 @@ if ($multimedia) {
 
 $contenidoPrincipal = <<<EOS
     <div class="tweet-header">
-        <a href="../Vista/PerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a>
+        <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a>
         <span class="tweet-time">$Hora</span>
     </div>
     <div class="recet-content">
@@ -244,7 +244,7 @@ EOS;
                         <div class="comentario" name="comentario">
                             $multi_com
                             <br>
-                            <a href="../Vista/PerfilPublico.php?nick_user=$usuario" class="nick-link" onclick="event.stopPropagation();"><strong>$usuario:</strong></a>
+                            <a href="../Vista/unsetPerfilPublico.php?nick_user=$usuario" class="nick-link" onclick="event.stopPropagation();"><strong>$usuario:</strong></a>
                             <span>$tex</span>
                             <span class="comentario-time">$fecha</span>
                             <div class="comentarios-icon">
@@ -255,7 +255,7 @@ EOS;
                             <div class="modal_publi-content">
                                 <span class="close_publi">&times;</span>
                                 <div class="tweet-header">
-                                    <a href="../Vista/PerfilPublico.php?nick_user=$usuario" class="nick-link"><strong>$usuario</strong></a>
+                                    <a href="../Vista/unsetPerfilPublico.php?nick_user=$usuario" class="nick-link"><strong>$usuario</strong></a>
                                     <span class="tweet-time">$fecha</span>
                                 </div>
                                 <div class="comentario_mod">

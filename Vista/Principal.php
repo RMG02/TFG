@@ -93,7 +93,7 @@ foreach ($publicaciones as $publicacion) {
     $contenidoPrincipal .= <<<EOS
         <div class="tweet" id="publistas">
             <div class="tweet-header">
-                <a href="../Vista/PerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a> <span class="tweet-time">$Hora</span>
+                <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a> <span class="tweet-time">$Hora</span>
             </div>
             <div class="tweet-content">
                 $multi

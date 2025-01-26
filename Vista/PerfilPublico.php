@@ -49,7 +49,7 @@ if($emailUsuario){
     }
     
     if (!isset($_SESSION['emailUser'])) {
-        if($verreceta){
+        if($verreceta == "true"){
             header('Location: ../Controlador/Usuario_controlador.php?Usuarion=true&verreceta=true&email_Usur='.$emailUsuario);
         }
         else{
@@ -150,10 +150,11 @@ $contenidoPrincipal = <<<EOS
 EOS;
 
 
-if($verreceta){
+if($verreceta == "true"){
     $recetas = json_decode($_SESSION['RecetasUsuarioPublico'], true);
 }else{
     $publicaciones = json_decode($_SESSION['publicacionesUsuarioPublico'], true);
+
 }
 
 
@@ -179,7 +180,7 @@ $contenidoPrincipal .= <<<EOS
 EOS;
 
 
-if($verreceta){
+if($verreceta == "true"){
     foreach ($recetas as $receta) {
         $nickuser = $_SESSION['nick'];
         $nick = $receta['nick'];
