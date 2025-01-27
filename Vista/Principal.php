@@ -52,7 +52,6 @@ if (isset($_SESSION['publicaciones'])) {
     unset($_SESSION['publicaciones']);
 }
 
-echo var_dump(($verseguidores));
 
 $contenidoPrincipal = <<<EOS
    <h1>Bienvenido {$_SESSION['nick']}</h1>
