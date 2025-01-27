@@ -390,7 +390,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['listarPublicaciones'])) { 
         $publicaciones = $publicacionModelo->ListaPublicacion(); 
         $_SESSION['publicaciones'] = json_encode(iterator_to_array($publicaciones)); 
-        header('Location: ../Vista/Principal.php'); 
+        header('Location: ../Vista/Principal.php?verseguidores='.$_GET['verseguidores']); 
         exit; 
     } 
 

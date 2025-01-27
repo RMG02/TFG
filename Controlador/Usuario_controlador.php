@@ -94,6 +94,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['emailUser'] = json_encode(iterator_to_array($usuarioActualizado));
             $usuarioActualizadox = $usuarioModelo->obtenerUsuario($_POST['emailpropio']);
             $_SESSION['usuariopropio'] = json_encode(iterator_to_array($usuarioActualizadox));
+            if($usuarioActualizadox){
+                $_SESSION['siguiendo'] = $usuarioActualizadox['siguiendo'];
+            }
+            
             
         }
         
@@ -151,6 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
 }
 
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
     if (isset($_GET['Usuarion'])) {
         $email = $_GET['email_Usur'];
@@ -181,4 +186,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
         exit; 
     }
+
 }
