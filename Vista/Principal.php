@@ -53,6 +53,7 @@ if (isset($_SESSION['publicaciones'])) {
 }
 
 
+
 $contenidoPrincipal = <<<EOS
    <h1>Bienvenido {$_SESSION['nick']}</h1>
    <div class="dropdown">
@@ -91,7 +92,7 @@ foreach ($publicaciones as $publicacion) {
     
 
 
-    if (($verseguidores == "false") || ($verseguidores == "true" && in_array($publicacion['email'],$siguiendo, false))) {
+    if (($verseguidores == "false") || ($verseguidores == "true" && in_array($publicacion['email'],$siguiendo, false)) ||  $receta['email'] == $_SESSION['email'] ) {
         $nickuser = $_SESSION['nick'];
         $nick = $publicacion['nick'];
         $email = $publicacion['email'];

@@ -379,7 +379,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['listarRecetas'])) { 
         $recetas = $recetaModelo->ListaReceta(); 
         $_SESSION['recetas'] = json_encode(iterator_to_array($recetas)); 
-        header('Location: ../Vista/Recetas.php'); 
+        
+        header('Location: ../Vista/Recetas.php?verseguidores='.$_GET['verseguidores']); 
         exit; 
     } 
 

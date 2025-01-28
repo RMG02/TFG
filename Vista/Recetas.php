@@ -8,10 +8,10 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
     header("Location: enter.php");
     exit;
 }
-
+$verseguidores = $_GET['verseguidores'] ?? "false";
 
 if (!isset($_SESSION['recetas'])) {
-   header('Location: ../Controlador/Receta_controlador.php?listarRecetas=true');
+   header('Location: ../Controlador/Receta_controlador.php?listarRecetas=true&verseguidores='.$verseguidores);
 }
 
 
@@ -38,14 +38,28 @@ if (isset($_SESSION['mensaje'])) {
 date_default_timezone_set('Europe/Madrid');
 
 
+
 $recetas = json_decode($_SESSION['recetas'], true);
 $tituloPagina = "Página recetas";
+$usuario = json_decode($_SESSION['usuariopropio'], true);
+$siguiendo = $usuario['siguiendo'];
 
 
 
 $contenidoPrincipal = <<<EOS
    <h1>Bienvenido {$_SESSION['nick']}</h1>
    <h2>Página de recetas</h2>
+   <div class="dropdown">
+                <button class="dropbtn">⋮</button>
+                <div class="dropdown-content">
+                    <form method="POST" action="../Vista/Recetas.php?verseguidores=false">
+                            <button type="submit" class="boton_lista" name="publicaciones">Explorar</button>
+                    </form>
+                    <form method="POST" action="../Vista/Recetas.php?verseguidores=true">
+                            <button type="submit" class="boton_lista" name="publicaciones">Ver contenido seguidores</button>
+                    </form>
+                </div>         
+    </div>
    <button id="publicaBtn">Publica</button> 
    <div id="formPublicacion" class="modal"> 
       <div class="modal-content">
@@ -74,79 +88,82 @@ $contenidoPrincipal = <<<EOS
 EOS;
 
 foreach ($recetas as $receta) {
-    $nickuser = $_SESSION['nick'];
-    $email = $receta['email'];
-    $nick = $receta['nick'];
-    $texto = $receta['titulo'];
-    $id = $receta['_id']['$oid'];
-    $Hora = date('d/m/Y H:i:s', strtotime($receta['created_at']));
-    $multimedia = $receta['multimedia'] ?? '';
-    $comentarios = $receta['comentarios'];
-    $num_comentarios = count($comentarios);
-    $likes = $receta['likes'];
-    $dislikes = $receta['dislikes'];
-    $likes_cadena = implode(",", $likes);
-    $dislikes_cadena = implode(",", $dislikes);
-    $numlikes = count($likes ?? []);
-    $numdislikes = count($dislikes ?? []);
 
-    if ($multimedia) {
-        $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
-        if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
-            $multi = "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación'>";
-        } 
-    } else {
-        $multi = '';
-    }
+    if (($verseguidores == "false") || ($verseguidores == "true" && in_array($receta['email'],$siguiendo, false))|| $receta['email'] == $_SESSION['email'] ) {
+            $nickuser = $_SESSION['nick'];
+            $email = $receta['email'];
+            $nick = $receta['nick'];
+            $texto = $receta['titulo'];
+            $id = $receta['_id']['$oid'];
+            $Hora = date('d/m/Y H:i:s', strtotime($receta['created_at']));
+            $multimedia = $receta['multimedia'] ?? '';
+            $comentarios = $receta['comentarios'];
+            $num_comentarios = count($comentarios);
+            $likes = $receta['likes'];
+            $dislikes = $receta['dislikes'];
+            $likes_cadena = implode(",", $likes);
+            $dislikes_cadena = implode(",", $dislikes);
+            $numlikes = count($likes ?? []);
+            $numdislikes = count($dislikes ?? []);
 
-    $contenidoPrincipal .= <<<EOS
-        <div class="tweet" id="publistas">
-            <div class="tweet-header">
-                <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a> <span class="tweet-time">$Hora</span>
-            </div>
-            <div class="tweet-content">
-                <strong>$texto</strong>
-                $multi
-                <div class="comentarios-icon">
-                    <i class="fas fa-comments"></i> $num_comentarios
+            if ($multimedia) {
+                $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
+                if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+                    $multi = "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación'>";
+                } 
+            } else {
+                $multi = '';
+            }
+
+            $contenidoPrincipal .= <<<EOS
+                <div class="tweet" id="publistas">
+                    <div class="tweet-header">
+                        <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a> <span class="tweet-time">$Hora</span>
+                    </div>
+                    <div class="tweet-content">
+                        <strong>$texto</strong>
+                        $multi
+                        <div class="comentarios-icon">
+                            <i class="fas fa-comments"></i> $num_comentarios
+                        </div>
+                    </div>
+                    <div class="reacciones-icon">
+                            
+            EOS;
+            if($nickuser == $nick){
+                $contenidoPrincipal .= <<<EOS
+                    <form method="POST" action="../Controlador/Receta_controlador.php">
+                EOS;
+            }
+            else{
+                $contenidoPrincipal .= <<<EOS
+                    <form method="POST" action="../Controlador/Receta_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
+                EOS;
+            }
+            $contenidoPrincipal .= <<<EOS
+                                <button type="submit" name="darlike" class="btn-like">
+                                    <input type="hidden" name="id_publi" value="$id">
+                                    <input type="hidden" name="nick_user" value="$nickuser">
+                                    <input type="hidden" name="principal" value="$principal">
+                                    <i class="fas fa-thumbs-up"></i> $numlikes
+                                </button>
+                                <button type="submit" name="dardislike" class="btn-dislike">
+                                    <input type="hidden" name="id_publi" value="$id">
+                                    <input type="hidden" name="nick_user" value="$nickuser">
+                                    <input type="hidden" name="principal" value="$principal">
+                                    <i class="fas fa-thumbs-down"></i> $numdislikes
+                                </button>
+                            </form>
+                    </div>
                 </div>
-            </div>
-            <div class="reacciones-icon">
-                    
-    EOS;
-    if($nickuser == $nick){
-        $contenidoPrincipal .= <<<EOS
-            <form method="POST" action="../Controlador/Receta_controlador.php">
-        EOS;
-    }
-    else{
-        $contenidoPrincipal .= <<<EOS
-            <form method="POST" action="../Controlador/Receta_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
-        EOS;
-    }
-    $contenidoPrincipal .= <<<EOS
-                        <button type="submit" name="darlike" class="btn-like">
-                            <input type="hidden" name="id_publi" value="$id">
-                            <input type="hidden" name="nick_user" value="$nickuser">
-                            <input type="hidden" name="principal" value="$principal">
-                            <i class="fas fa-thumbs-up"></i> $numlikes
-                        </button>
-                        <button type="submit" name="dardislike" class="btn-dislike">
-                            <input type="hidden" name="id_publi" value="$id">
-                            <input type="hidden" name="nick_user" value="$nickuser">
-                            <input type="hidden" name="principal" value="$principal">
-                            <i class="fas fa-thumbs-down"></i> $numdislikes
-                        </button>
+                <div id="$modalId" class="modal_publi">
+                    <form method="POST" action="../Vista/Verreceta.php?id=$id" class="formulario">
+                        <button type="submit" class="botonPubli" name="Verreceta"></button>
                     </form>
-            </div>
-        </div>
-        <div id="$modalId" class="modal_publi">
-            <form method="POST" action="../Vista/Verreceta.php?id=$id" class="formulario">
-                <button type="submit" class="botonPubli" name="Verreceta"></button>
-            </form>
-        </div>
-    EOS;
-    $modalId++;
+                </div>
+            EOS;
+            $modalId++;
+    }
 }
 
 if ($error != "") {
