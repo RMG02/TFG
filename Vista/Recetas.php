@@ -82,12 +82,24 @@ $contenidoPrincipal = <<<EOS
          </form> 
       </div>
    </div>
+   
 
 <input type="text" id="buscador" onkeyup="filtrarUsuarios()" placeholder="Buscar por nick...">
 <div id="publicaciones">
 EOS;
 
+if($verseguidores == "true"){
+    $contenidoPrincipal .= <<<EOS
+        <p>Recetas personas que sigues</p>
+    EOS;
+}else{
+    $contenidoPrincipal .= <<<EOS
+        <p>Explorar</p>
+    EOS;
+}
 foreach ($recetas as $receta) {
+
+    
 
     if (($verseguidores == "false") || ($verseguidores == "true" && in_array($receta['email'],$siguiendo, false))|| $receta['email'] == $_SESSION['email'] ) {
             $nickuser = $_SESSION['nick'];

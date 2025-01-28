@@ -85,7 +85,15 @@ $contenidoPrincipal = <<<EOS
 <input type="text" id="buscador" onkeyup="filtrarUsuarios()" placeholder="Buscar por nick...">
 <div id="publicaciones">
 EOS;
-
+if($verseguidores == "true"){
+    $contenidoPrincipal .= <<<EOS
+        <p>Publicaciones personas que sigues</p>
+    EOS;
+}else{
+    $contenidoPrincipal .= <<<EOS
+        <p>Explorar</p>
+    EOS;
+}
 
 foreach ($publicaciones as $publicacion) {
    
