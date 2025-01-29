@@ -143,6 +143,11 @@ $contenidoPrincipal = <<<EOS
                 <button type="submit" class="boton_lista" name="Seguir">{$textoBoton}</button>
         </form>
 
+        <form method="POST" action="../Controlador/Conversaciones_controlador.php">
+                <input type="hidden" name="usuario1" value="{$_SESSION['nick']}">
+                <input type="hidden" name="usuario2" value="{$nick}">
+                <button type="submit" class="boton_lista" name="abrirConversacion">Enviar mensaje</button>
+        </form>
     </div> 
     <hr>
 
