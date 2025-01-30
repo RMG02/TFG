@@ -102,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['usuariopropio'] = json_encode(iterator_to_array($usuarioActualizadox));
             if($usuarioActualizadox){
                 $_SESSION['siguiendo'] = $usuarioActualizadox['siguiendo'];
+                $_SESSION['seguidores'] = $usuarioActualizadox['seguidores'];
             }
             
             
