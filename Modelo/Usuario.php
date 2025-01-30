@@ -112,6 +112,18 @@ class Usuario {
         return $this->collection->updateOne($filter, $update) && $this->collection->updateOne($filter2, $update2);
     }
 
+    public function preferencias($type, $status, $email) {
+        
+        $filter = ['email' => $email];
+    
+        
+        $update = [
+            '$set' => [$type => $status] 
+        ];
+    
+        return $this->collection->updateOne($filter, $update);
+    }
+
     public function Seguir($emailpropio,$emailseguir){
         $filter = ['email' => $emailseguir];
         $update =

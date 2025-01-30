@@ -35,7 +35,9 @@ date_default_timezone_set('Europe/Madrid');
 
 $tituloPagina = "Notificaciones";
 
-
+$contenidoPrincipal = <<<EOS
+    <p><a href='/Vista/Preferencias.php' class='menu-icon' title='Preferencias'> <i class='fas fa-bell'></i></a></p>
+EOS;
 
 if(!empty($notificaciones)){
 
@@ -76,7 +78,8 @@ if(!empty($notificaciones)){
     $contenidoPrincipal .= '</div>';
 }
 else{
-    $contenidoPrincipal = '<h3>No hay notificaciones</h3>';
+    
+    $contenidoPrincipal .= '<h3>No hay notificaciones</h3>';
 }
 
 if ($error != "") {

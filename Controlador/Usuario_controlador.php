@@ -35,7 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'password' => $_POST['password'],
             'seguidores' =>[],
             'siguiendo' =>[],
-            'admin' => false
+            'admin' => false,
+            'notilikes' => true,
+            'notiseguidores' => true,
+            'noticomentarios' => true
 
         ];
         $resultado = $usuarioModelo->registro($DatosUsuario);
@@ -56,9 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['password'] = $usuario['password'];
             $_SESSION['seguidores'] = $usuario['seguidores'];
             $_SESSION['siguiendo'] = $usuario['siguiendo'];
+            $_SESSION['usuariopropio'] = json_encode($usuario);
             $_SESSION['login'] = true;
             $_SESSION['admin'] = $usuario['admin'];
-            $_SESSION['usuariopropio'] = json_encode($usuario);
+            $_SESSION['notilikes'] = $usuario['notilikes'];
+            $_SESSION['notiseguidores'] = $usuario['notiseguidores'];
+            $_SESSION['noticomentarios'] = $usuario['noticomentarios'];
             header('Location: ../Vista/Principal.php');
         } else {
             $_SESSION['error'] = "Email o contraseña incorrectos.";
@@ -148,6 +154,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         
+    }
+
+    if (isset($_POST["ischanged"])) {
+        $type = $_POST["type"];
+        $status = $_POST["status"] == "1" ? 1 : 0;
+    
+        // Guardar en sesión (opcionalmente, podrías guardarlo en una BD)
+        $resultado = $usuarioModelo->preferencias($type,$status,$_SESSION['email']);
+        
+        $_SESSION[$type] = $status;
+        header('Location: ../Vista/Preferencias.php');
+        exit;
+    
     }
     
     
