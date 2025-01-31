@@ -153,7 +153,13 @@ foreach ($publicaciones as $publicacion) {
                     </form>
                 </div>
             </div>
+        <div id="$modalId" class="modal_publi">
+            <form method="POST" action="../Vista/Verpublicacion.php?id=$id" class="formulario">
+                <button type="submit" class="botonPubli" name="Verpublicacion"></button>
+            </form>
+        </div>
         EOS;
+        $modalId++;
     }
 }
 
