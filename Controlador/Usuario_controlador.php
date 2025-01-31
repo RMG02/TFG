@@ -65,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['notilikes'] = $usuario['notilikes'];
             $_SESSION['notiseguidores'] = $usuario['notiseguidores'];
             $_SESSION['noticomentarios'] = $usuario['noticomentarios'];
+
             header('Location: ../Vista/Principal.php');
         } else {
             $_SESSION['error'] = "Email o contraseña incorrectos.";
@@ -190,6 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
         exit; 
     }
+
 
     if (isset($_GET['UsuarionNick'])) {
         $nick = $_GET['nick_Usur'];

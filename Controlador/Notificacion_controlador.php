@@ -99,6 +99,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         
     }
 
+    if (isset($_GET['get_session_vars'])) {
+        echo json_encode([
+            'notilikes' => $_SESSION['notilikes'],
+            'noticomentarios' => $_SESSION['noticomentarios'],
+            'notiseguidores' => $_SESSION['notiseguidores']
+        ]);
+        exit;
+    }
+
+
     
 }
 

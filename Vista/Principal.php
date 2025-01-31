@@ -97,9 +97,6 @@ if($verseguidores == "true"){
 
 foreach ($publicaciones as $publicacion) {
    
-    
-
-
     if (($verseguidores == "false") || ($verseguidores == "true" && in_array($publicacion['email'],$siguiendo, false)) ||  $receta['email'] == $_SESSION['email'] ) {
         $nickuser = $_SESSION['nick'];
         $nick = $publicacion['nick'];

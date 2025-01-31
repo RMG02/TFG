@@ -24,6 +24,39 @@ socket.on("actualizar-contador", function(data) {
 });
 
 socket.on("notificacion", function(data) {
+
+    fetch('../../Controlador/Notificacion_controlador.php?get_session_vars=true')
+    .then(response => response.json())
+    .then(data => {
+        window.notilikes = data.notilikes;
+        window.noticomentarios = data.noticomentarios;
+        window.notiseguidores = data.notiseguidores;
+
+        console.log("Configuración de notificaciones:");
+        console.log("Likes:", window.notilikes);
+        console.log("Comentarios:", window.noticomentarios);
+        console.log("Seguidores:", window.notiseguidores);
+
+    })
+    .catch(error => {
+        console.error("Error al obtener variables de sesión:", error);
+    });
+
+    var mostrarNotificacion = false;
+
+    if ((data.tipo === "follow" || data.tipo === "unfollow") && notiseguidores) {
+        mostrarNotificacion = true;
+    } else if (data.tipo === "nuevo comentario" && noticomentarios) {
+        mostrarNotificacion = true;
+    } else if ((data.tipo === "like" || data.tipo === "dislike") && notilikes) {
+        mostrarNotificacion = true;
+    }
+
+    if (!mostrarNotificacion){
+        actualizarContadorNotificaciones(1);
+        return;
+    } 
+
     var divNotificaciones = document.getElementById("notificaciones");
 
     var notificacion = document.createElement("div");
