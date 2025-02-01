@@ -36,12 +36,14 @@ date_default_timezone_set('Europe/Madrid');
 $tituloPagina = "Notificaciones";
 
 $contenidoPrincipal = <<<EOS
-    <p><a href='/Vista/Preferencias.php' title='Preferencias'> <i class="fas fa-tools"></i></a></p>
+    <div class="menu">
+        <p><a href='/Vista/Preferencias.php' class='menu-icon' titulo='Preferencias'> <i class="fas fa-tools"></i></a></p>
+    </div>
 EOS;
 
 if(!empty($notificaciones)){
 
-    $contenidoPrincipal = '<div class="lista-notificaciones">';
+    $contenidoPrincipal .= '<div class="lista-notificaciones">';
     foreach ($notificaciones as $notificacion) {
         $fecha = date('d/m/Y H:i:s', strtotime($notificacion['fecha']));
         $id = $notificacion['_id']['$oid'];
