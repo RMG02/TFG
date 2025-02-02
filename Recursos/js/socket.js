@@ -25,7 +25,7 @@ socket.on("actualizar-contador", function(data) {
 
 socket.on("notificacion", function(data) {
 
-    fetch('../../Controlador/Notificacion_controlador.php?get_session_vars=true')
+    /*fetch('../../Controlador/Notificacion_controlador.php?get_session_vars=true')
     .then(response => response.json())
     .then(data => {
         window.notilikes = data.notilikes;
@@ -55,7 +55,7 @@ socket.on("notificacion", function(data) {
     if (!mostrarNotificacion){
         actualizarContadorNotificaciones(1);
         return;
-    } 
+    } */
 
     var divNotificaciones = document.getElementById("notificaciones");
 
@@ -230,6 +230,12 @@ function ComentarioEliminado(usuario){
     unset();
     socket.emit("decrementar-reaccion", {usuario: usuario});
 
+}
+
+function enviarMensaje(usuario_actual, usuario_dest, chatId) {
+    
+    socket.emit("nuevo-mensaje", { usuario_actual: usuario_actual, usuario_dest: usuario_dest, chatId: chatId});
+    
 }
 
 

@@ -65,7 +65,7 @@ foreach ($conversacion['mensajes'] as $mensaje) {
 
 $contenidoPrincipal .= <<<EOS
     </div>
-    <form id="form-mensaje" method="POST" action="../Controlador/Conversaciones_controlador.php" class="form-chat">
+    <form id="form-mensaje" method="POST" action="../Controlador/Conversaciones_controlador.php" class="form-chat" onsubmit="enviarMensaje('{$_SESSION['nick']}','$otroUsuario', '$conversacionId')">
         <input type="hidden" name="conversacionId" value="$conversacionId">
         <input type="hidden" name="usuario_receptor" value="$otroUsuario">
         <input type="hidden" name="usuario_emisor" value="{$_SESSION['nick']}">
@@ -77,3 +77,12 @@ EOS;
 require_once __DIR__ . "/plantillas/plantilla.php";
 
 ?>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var chatContainer = document.querySelector(".chat-container");
+    if (chatContainer) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+});
+</script>

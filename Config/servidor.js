@@ -158,8 +158,6 @@ io.on("connection", (socket) => {
             contador_notificaciones[data.usuario_des]++;
         }
         
-        
-
         // Usar URLSearchParams para formatear los datos
         var params = new URLSearchParams();
         params.append('notificacion', JSON.stringify(notificacion));
@@ -167,6 +165,40 @@ io.on("connection", (socket) => {
         axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)         
         
     });
+
+    socket.on("nuevo-mensaje", (data) => {
+        var mensaje = data.usuario_actual + " te ha enviado un mensaje";
+        var enlace = "http://localhost:8000/Vista/chat.php?conversacionId=" + data.chatId;
+
+        var socketID = usuarios_conectados[data.usuario_dest];
+        var notificacion = { 
+            usuario_publi: data.usuario_dest, 
+            usuario_accion: data.usuario_actual,
+            mensaje: mensaje,
+            id_publi: null,
+            enlace: enlace,
+            tipo: "mensaje",
+            fecha: new Date().toISOString(),
+            tipo_publicacion: "mensaje"
+        };
+  
+        if (socketID) {
+            io.to(socketID).emit("notificacion", notificacion);
+            
+        }
+        else{
+            contador_notificaciones[data.usuario_des]++;
+
+        }
+        
+        
+        // Usar URLSearchParams para formatear los datos
+        var params = new URLSearchParams();
+        params.append('notificacion', JSON.stringify(notificacion));
+
+        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)          
+    });
+
 
     socket.on("follow", (data) => {
         var mensaje = data.usuario_actual + " te ha seguido";
