@@ -19,6 +19,7 @@ if (isset($_SESSION['mensaje'])) {
 $notiseguidores = $_SESSION['notiseguidores'];
 $notilikes = $_SESSION['notilikes'];
 $noticomentarios = $_SESSION['noticomentarios'];
+$notimensajes = $_SESSION['notimensajes'];
 $tituloPagina = "Panel preferencias";
 
 $contenidoPrincipal = "<h1>Panel de preferencias</h1>";
@@ -46,6 +47,15 @@ $contenidoPrincipal .= '<br><div class="preference-container">
             <label for="switch-comments" class="switch-button__label"></label>
         </div>
     </div>';
+
+$contenidoPrincipal .= '<br><div class="preference-container">
+        <label class="notification-text" for="switch-messajes">Notificaciones de mensajes</label>
+        <div class="switch-button">
+            <input type="checkbox" name="switch-messages" id="switch-messages" class="switch-button__checkbox" onchange="updatePreference(\'notimensajes\', this.checked)" ' . ($notimensajes ? 'checked' : '') . '>
+            <label for="switch-messages" class="switch-button__label"></label>
+        </div>
+    </div>';
+
 
 
 

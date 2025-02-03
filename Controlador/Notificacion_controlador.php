@@ -103,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo json_encode([
             'notilikes' => $_SESSION['notilikes'],
             'noticomentarios' => $_SESSION['noticomentarios'],
-            'notiseguidores' => $_SESSION['notiseguidores']
+            'notiseguidores' => $_SESSION['notiseguidores'],
+            'notimensajes' => $_SESSION['notimensajes']
         ]);
         exit;
     }

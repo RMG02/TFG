@@ -38,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'admin' => false,
             'notilikes' => true,
             'notiseguidores' => true,
-            'noticomentarios' => true
+            'noticomentarios' => true,
+            'notimensajes' => true
 
         ];
         $resultado = $usuarioModelo->registro($DatosUsuario);
@@ -65,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['notilikes'] = $usuario['notilikes'];
             $_SESSION['notiseguidores'] = $usuario['notiseguidores'];
             $_SESSION['noticomentarios'] = $usuario['noticomentarios'];
+            $_SESSION['notimensajes'] = $usuario['notimensajes'];
 
             header('Location: ../Vista/Principal.php');
         } else {

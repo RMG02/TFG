@@ -8,92 +8,81 @@ socket.emit("conectado", {usuario: Usuario, num_noti: contadorActual});
 
 
 
-socket.on("actualizar-contador", function(data) {
-    var notificationCounter = document.getElementById('notification-counter');
-    if(data >= 0){
-        contador = data;
-    }
-    else{
-        contador = 0;
-    }
-    notificationCounter.textContent = contador;
-    notificationCounter.style.display = contador > 0 ? 'inline' : 'none';
-    localStorage.setItem('notificationCounter', contador);
-
-    
-});
-
 socket.on("notificacion", function(data) {
 
-    /*fetch('../../Controlador/Notificacion_controlador.php?get_session_vars=true')
+    fetch('../../Controlador/Notificacion_controlador.php?get_session_vars=true')
     .then(response => response.json())
-    .then(data => {
-        window.notilikes = data.notilikes;
-        window.noticomentarios = data.noticomentarios;
-        window.notiseguidores = data.notiseguidores;
+    .then(preferencias => {
+        window.notilikes = preferencias.notilikes;
+        window.noticomentarios = preferencias.noticomentarios;
+        window.notiseguidores = preferencias.notiseguidores;
+        window.notimensajes = preferencias.notimensajes;
 
-        console.log("Configuración de notificaciones:");
+        console.log("Configuración de notificaciones actualizada:");
         console.log("Likes:", window.notilikes);
         console.log("Comentarios:", window.noticomentarios);
         console.log("Seguidores:", window.notiseguidores);
+        console.log("Mensajes:", window.notimensajes);
 
+        // Ahora que tenemos las preferencias, evaluamos si mostrar la notificación
+        var mostrarNotificacion = false;
+
+        if ((data.tipo === "follow" || data.tipo === "unfollow") && window.notiseguidores) {
+            mostrarNotificacion = true;
+        } else if (data.tipo === "nuevo comentario" && window.noticomentarios) {
+            mostrarNotificacion = true;
+        } else if ((data.tipo === "like" || data.tipo === "dislike") && window.notilikes) {
+            mostrarNotificacion = true;
+        } else if (data.tipo === "mensaje" && window.notimensajes) {
+            mostrarNotificacion = true;
+        }
+
+        if (!mostrarNotificacion) {
+            actualizarContadorNotificaciones(1);
+            return;
+        }
+
+        var divNotificaciones = document.getElementById("notificaciones");
+
+        var notificacion = document.createElement("div");
+        notificacion.className = "notificacion";
+        notificacion.innerHTML = "<strong>" + data.mensaje + "</strong>";
+
+        divNotificaciones.appendChild(notificacion);
+
+        actualizarContadorNotificaciones(1);
+
+        // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
+        fetch('../../Controlador/Notificacion_controlador.php', {
+            method: 'POST',
+            body: new URLSearchParams({
+                'accion': 'unset'
+            })
+        })
+        .then(response => response.json())
+        .then(respuesta => {
+            if (respuesta.status === 'success') {
+                console.log('Variable de sesión eliminada correctamente');
+            } else {
+                console.error('Error al eliminar la variable de sesión:', respuesta.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+        });
+
+        setTimeout(function() {
+            notificacion.classList.add("hidden");
+            setTimeout(function() {
+                divNotificaciones.removeChild(notificacion);
+            }, 300);
+        }, 10000);
     })
     .catch(error => {
         console.error("Error al obtener variables de sesión:", error);
     });
-
-    var mostrarNotificacion = false;
-
-    if ((data.tipo === "follow" || data.tipo === "unfollow") && notiseguidores) {
-        mostrarNotificacion = true;
-    } else if (data.tipo === "nuevo comentario" && noticomentarios) {
-        mostrarNotificacion = true;
-    } else if ((data.tipo === "like" || data.tipo === "dislike") && notilikes) {
-        mostrarNotificacion = true;
-    }
-
-    if (!mostrarNotificacion){
-        actualizarContadorNotificaciones(1);
-        return;
-    } */
-
-    var divNotificaciones = document.getElementById("notificaciones");
-
-    var notificacion = document.createElement("div");
-    notificacion.className = "notificacion";
-    notificacion.innerHTML = "<strong>"+data.mensaje+"</strong>";
-
-    divNotificaciones.appendChild(notificacion);
-
-    actualizarContadorNotificaciones(1);
-
-    // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
-    fetch('../../Controlador/Notificacion_controlador.php', {
-        method: 'POST',
-        body: new URLSearchParams({
-            'accion': 'unset'
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Respuesta del servidor:', data);
-        if (data.status === 'success') {
-            console.log('Variable de sesión eliminada correctamente');
-        } else {
-            console.error('Error al eliminar la variable de sesión:', data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error en la solicitud:', error);
-    });
-
-    setTimeout(function() {
-        notificacion.classList.add("hidden");
-        setTimeout(function() {
-            divNotificaciones.removeChild(notificacion);
-        }, 300);
-    }, 10000);
 });
+
 
 socket.on("unset_noti", function(data) {
     // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
