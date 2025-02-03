@@ -19,6 +19,8 @@ if (!isset($_SESSION['publicacionesUsuario'])) {
     exit;
  }
 
+ 
+
 
  
  require_once __DIR__ . "/plantillas/respuestas.php";

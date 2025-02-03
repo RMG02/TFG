@@ -75,6 +75,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
+
+    if(isset($_POST['usuariopropio'])){
+
+        $usuarioActualizadox = $usuarioModelo->obtenerUsuario($_SESSION['email']);
+        $_SESSION['usuariopropio'] = json_encode(iterator_to_array($usuarioActualizadox));
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;   
+        
+    }
+
     if (isset($_POST['Seguir'])) {
         
         $usuarioseguir = $usuarioModelo->obtenerUsuario($_POST['emailseguir']);

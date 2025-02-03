@@ -81,6 +81,29 @@ socket.on("notificacion", function(data) {
     .catch(error => {
         console.error("Error al obtener variables de sesión:", error);
     });
+    
+});
+
+socket.on("actualizar_usuario", function(data) {
+    // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
+    fetch('../../Controlador/Usuario_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'usuariopropio': 'unset'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respuesta del servidor:', data);
+        if (data.status === 'success') {
+            console.log('Variable de sesión eliminada correctamente');
+        } else {
+            console.error('Error al eliminar la variable de sesión:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
 });
 
 

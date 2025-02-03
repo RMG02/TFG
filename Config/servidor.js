@@ -200,7 +200,7 @@ io.on("connection", (socket) => {
     });
 
 
-    socket.on("follow", (data) => {
+    socket.on("follow", async (data) => {
         var mensaje = data.usuario_actual + " te ha seguido";
         var enlace = "http://localhost:8000/Vista/PerfilPublico.php?nick_user=" + data.usuario_actual;
 
@@ -218,7 +218,7 @@ io.on("connection", (socket) => {
   
         if (socketID) {
             io.to(socketID).emit("notificacion", notificacion);
-            
+            io.to(socketID).emit("actualizar_usuario");
         }
         else{
             contador_notificaciones[data.usuario_dest]++;
@@ -230,11 +230,15 @@ io.on("connection", (socket) => {
         var params = new URLSearchParams();
         params.append('notificacion', JSON.stringify(notificacion));
 
-        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)
+        await axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)
+        
+        if (socketID) {
+            io.to(socketID).emit("actualizar_usuario"); 
+        }
         
     });
 
-    socket.on("unfollow", (data) => {
+    socket.on("unfollow", async (data) => {
         var mensaje = data.usuario_actual + " te ha dejado de seguir";
         var enlace = "http://localhost:8000/Vista/PerfilPublico.php?nick_user=" + data.usuario_actual;
 
@@ -252,7 +256,8 @@ io.on("connection", (socket) => {
   
         if (socketID) {
             io.to(socketID).emit("notificacion", notificacion);
-            
+            io.to(socketID).emit("actualizar_usuario");
+
         }
         else{
             contador_notificaciones[data.usuario_dest]++;
@@ -264,7 +269,11 @@ io.on("connection", (socket) => {
         var params = new URLSearchParams();
         params.append('notificacion', JSON.stringify(notificacion));
 
-        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)
+        await axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)
+
+        if (socketID) {
+            io.to(socketID).emit("actualizar_usuario"); 
+        }
         
     });
     
