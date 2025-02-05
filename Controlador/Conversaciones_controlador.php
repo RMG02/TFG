@@ -28,10 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if(isset($_POST['AgregarMensaje'])){
-        $resultado = $conversacionesModelo->agregarMensaje($_POST['conversacionId'], $_POST['usuario_emisor'], $_POST['contenido'], $_POST['usuario_receptor']);
-        $resultado = $conversacionesModelo->obtenerConversaciones($nick);
+        $servidor_post = json_decode($_POST['AgregarMensaje'], true);
+    
+        $resultado = $conversacionesModelo->agregarMensaje($servidor_post['conversacion_id'], $servidor_post['usuario_emisor'], $servidor_post['contenido'], $servidor_post['usuario_receptor'], $servidor_post['hora']);
+        $resultado = $conversacionesModelo->obtenerConversaciones(usuario: $_SESSION['nick']);
         $_SESSION['conversaciones'] = json_encode(iterator_to_array($resultado));
-        header('Location: ../Vista/chat.php?conversacionId=' . $_POST['conversacionId']); 
         exit;
     }
 

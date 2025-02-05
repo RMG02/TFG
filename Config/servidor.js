@@ -181,9 +181,18 @@ io.on("connection", (socket) => {
             fecha: new Date().toISOString(),
             tipo_publicacion: "mensaje"
         };
-  
+        
+        var men = {
+            conversacion_id: data.chatId,
+            usuario_emisor: data.usuario_actual,
+            usuario_receptor: data.usuario_dest,
+            contenido: data.mensaje,
+            hora: new Date().toISOString()
+        } 
+
         if (socketID) {
             io.to(socketID).emit("notificacion", notificacion);
+            io.to(socketID).emit("mostrar-mensaje", men);
             
         }
         else{
@@ -196,7 +205,13 @@ io.on("connection", (socket) => {
         var params = new URLSearchParams();
         params.append('notificacion', JSON.stringify(notificacion));
 
-        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)          
+        var param_men = new URLSearchParams();
+        param_men.append('AgregarMensaje', JSON.stringify(men));
+
+        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)      
+
+        axios.post('http://localhost:8000/Controlador/Conversaciones_controlador.php', param_men)          
+   
     });
 
 

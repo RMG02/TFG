@@ -36,7 +36,7 @@ foreach ($conversacion['usuarios'] as $usu){
 // Contenido principal
 $contenidoPrincipal = <<<EOS
    <h1>$otroUsuario</h1>
-   <div class="chat-container">
+   <div id="chat-cont" class="chat-container">
 EOS;
 
 foreach ($conversacion['mensajes'] as $mensaje) {
@@ -65,13 +65,15 @@ foreach ($conversacion['mensajes'] as $mensaje) {
 
 $contenidoPrincipal .= <<<EOS
     </div>
-    <form id="form-mensaje" method="POST" action="../Controlador/Conversaciones_controlador.php" class="form-chat" onsubmit="enviarMensaje('{$_SESSION['nick']}','$otroUsuario', '$conversacionId')">
-        <input type="hidden" name="conversacionId" value="$conversacionId">
-        <input type="hidden" name="usuario_receptor" value="$otroUsuario">
-        <input type="hidden" name="usuario_emisor" value="{$_SESSION['nick']}">
-        <input type="text" name="contenido" placeholder="Escribe tu mensaje..." class="input-mensaje">
-        <button type="submit" class="btn-enviar" name="AgregarMensaje">Enviar</button>
+    
+    <form id="form-mensaje" class="form-chat" onsubmit="return false;"> 
+        <input type="hidden" id="conversacionId" value="$conversacionId">
+        <input type="hidden" id="usuario_receptor" value="$otroUsuario">
+        <input type="hidden" id="usuario_emisor" value="{$_SESSION['nick']}">
+        <input type="text" id="contenido" placeholder="Escribe tu mensaje..." class="input-mensaje">
+        <button type="button" class="btn-enviar" onclick="enviarMensaje('{$_SESSION['nick']}', '$otroUsuario', '$conversacionId', document.getElementById('contenido').value)">Enviar</button>
     </form>
+
 EOS;
 
 require_once __DIR__ . "/plantillas/plantilla.php";

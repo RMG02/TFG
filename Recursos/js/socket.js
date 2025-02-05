@@ -84,6 +84,27 @@ socket.on("notificacion", function(data) {
     
 });
 
+socket.on("mostrar-mensaje", (data) => {
+
+    const chatContainer = document.getElementById("chat-cont");  
+
+    const mensajeDiv = document.createElement("div");
+    mensajeDiv.classList.add("mensaje_recibido");  
+
+    mensajeDiv.innerHTML = `
+        <p><strong>${data.usuario_emisor}:</strong> ${data.contenido}</p>
+        <p><small>${new Date(data.hora).toLocaleString()}</small></p>  
+    `;
+
+    chatContainer.appendChild(mensajeDiv);
+
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    
+});
+
+
+
 socket.on("actualizar_usuario", function(data) {
     // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
     fetch('../../Controlador/Usuario_controlador.php', {
@@ -244,11 +265,31 @@ function ComentarioEliminado(usuario){
 
 }
 
-function enviarMensaje(usuario_actual, usuario_dest, chatId) {
-    
-    socket.emit("nuevo-mensaje", { usuario_actual: usuario_actual, usuario_dest: usuario_dest, chatId: chatId});
-    
+function enviarMensaje(usuario_actual, usuario_dest, chatId, mensaje) {
+    if (mensaje.trim() === '') {
+        alert('El mensaje no puede estar vacío');
+        return;
+    }
+
+    const chatContainer = document.getElementById("chat-cont");  
+
+    const mensajeDiv = document.createElement("div");
+    mensajeDiv.classList.add("mensaje_enviado");  
+
+    mensajeDiv.innerHTML = `
+        <p><strong>Tú:</strong> ${mensaje}</p>
+        <p><small>${new Date(new Date().toISOString()).toLocaleString()}</small></p>  
+    `;
+
+    chatContainer.appendChild(mensajeDiv);
+
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    socket.emit("nuevo-mensaje", {usuario_actual: usuario_actual, usuario_dest: usuario_dest, chatId: chatId, mensaje: mensaje});
+
 }
+
+
 
 
 function NuevoComentario(event, nickuser, nick, id_publi, tipo_publicacion, respuesta) {

@@ -22,13 +22,13 @@ class Conversacion {
     }
 
     // Agregar un mensaje a una conversación
-    public function agregarMensaje($conversacionId, $emisor, $contenido, $receptor) {
+    public function agregarMensaje($conversacionId, $emisor, $contenido, $receptor, $hora) {
         $mensaje = [
             'mensaje_id' => new ObjectId(),
             'usuario_emisor' => $emisor,
             'usuario_receptor' => $receptor,
             'contenido' => $contenido,
-            'hora' => date(DATE_ISO8601)
+            'hora' => $hora,
         ];
         $id = new ObjectId($conversacionId);
         return $this->collection->updateOne(
