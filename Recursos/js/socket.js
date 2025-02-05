@@ -6,6 +6,16 @@ var contadorActual = localStorage.getItem('notificationCounter');
 socket.emit("conectado", {usuario: Usuario, num_noti: contadorActual});
 
 
+socket.on("actualizar-contador", (data) => {
+
+    var notificationCounter = document.getElementById('notification-counter');
+    var contadorActual = data;
+    notificationCounter.textContent = contadorActual;
+    notificationCounter.style.display = contadorActual > 0 ? 'inline' : 'none';
+    localStorage.setItem('notificationCounter', contadorActual);
+
+});
+
 
 
 socket.on("notificacion", function(data) {

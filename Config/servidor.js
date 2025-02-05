@@ -6,6 +6,7 @@ var axios = require('axios');
 var usuarios_conectados = {}; 
 var contador_notificaciones = {};
 
+
   
 io.on("connection", (socket) => {
 
@@ -13,6 +14,7 @@ io.on("connection", (socket) => {
 
         if(data.usuario){
             usuarios_conectados[data.usuario] = socket.id;
+            
             if(contador_notificaciones.hasOwnProperty(data.usuario)){
                 io.to(usuarios_conectados[data.usuario]).emit("actualizar-contador", contador_notificaciones[data.usuario]);
                 delete contador_notificaciones[data.usuario];
@@ -29,7 +31,9 @@ io.on("connection", (socket) => {
         }
         else{
             contador_notificaciones[data.usuario]--;
-
+            if(contador_notificaciones[data.usuario] < 0){
+                contador_notificaciones[data.usuario] = 0;
+            }
         }
         
     });
@@ -196,7 +200,7 @@ io.on("connection", (socket) => {
             
         }
         else{
-            contador_notificaciones[data.usuario_des]++;
+            contador_notificaciones[data.usuario_dest]++;
 
         }
         
@@ -294,7 +298,6 @@ io.on("connection", (socket) => {
     
     socket.on('desconectado', (data) => {
         contador_notificaciones[data.usuario] = data.num_noti;
-        console.log(contador_notificaciones);
     });
 
     socket.on('disconnect', () => {
@@ -309,6 +312,7 @@ io.on("connection", (socket) => {
 
 server.listen(3000, function () {
     console.log("Servidor corriendo en http://localhost:3000");
+
   });
 
 

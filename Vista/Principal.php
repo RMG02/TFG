@@ -137,7 +137,19 @@ foreach ($publicaciones as $publicacion) {
                     </div>
                 </div>
                 <div class="reacciones-icon">
-                    <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
+        EOS;
+
+if($nickuser == $nick){
+    $contenidoPrincipal .= <<<EOS
+        <form method="POST" action="../Controlador/Publicacion_controlador.php">
+    EOS;
+}
+else{
+    $contenidoPrincipal .= <<<EOS
+        <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
+    EOS;
+}
+$contenidoPrincipal .= <<<EOS
                         <button type="submit" name="darlike" class="btn-like">
                             <input type="hidden" name="id_publi" value="$id">
                             <input type="hidden" name="nick_user" value="$nickuser">

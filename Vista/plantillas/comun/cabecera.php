@@ -26,7 +26,6 @@ if (session_status() == PHP_SESSION_NONE) {
             }
             echo "<p><a href='/Vista/Recetas.php' class='menu-icon' titulo='Recetas'><i class='fas fa-utensils'></i></a></p>";
             echo "<p><a href='/Vista/chats.php' class='menu-icon' titulo='chats'><i class='fas fa-envelope'></i></a></p>";
-            echo "<span id='chats-counter' class='badge' style='display:none;'></span></a></p>";
             echo "<p><a href='/Vista/Notificaciones.php' class='menu-icon' titulo='Notificaciones'><i class='fas fa-bell'></i></a></p>";
             echo "<span id='notification-counter' class='badge' style='display:none;'></span></a></p>";
             echo "<p><a href='/Vista/perfil.php' class='menu-icon' titulo='Perfil'><i class='fas fa-user'></i></a></p>";
@@ -52,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     notificationCounter.style.display = contadorActual > 0 ? 'inline' : 'none';
-    
+
 });
 </script>
 <script src="../Recursos/js/socket.js"></script>
