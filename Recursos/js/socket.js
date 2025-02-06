@@ -28,12 +28,6 @@ socket.on("notificacion", function(data) {
         window.notiseguidores = preferencias.notiseguidores;
         window.notimensajes = preferencias.notimensajes;
 
-        console.log("Configuración de notificaciones actualizada:");
-        console.log("Likes:", window.notilikes);
-        console.log("Comentarios:", window.noticomentarios);
-        console.log("Seguidores:", window.notiseguidores);
-        console.log("Mensajes:", window.notimensajes);
-
         // Ahora que tenemos las preferencias, evaluamos si mostrar la notificación
         var mostrarNotificacion = false;
 
@@ -94,15 +88,56 @@ socket.on("notificacion", function(data) {
     
 });
 
+socket.on("mostrar-mensaje-per", (data, id) => {
+
+    const chatContainer = document.getElementById("chat-cont"); 
+
+    const mensajeDiv = document.getElementById("mensajeEnviado-");
+    mensajeDiv.id = "mensajeEnviado-" + id;
+    mensajeDiv.setAttribute("onclick", `mostrarOpciones('${id}')`);
+
+    const parrafoP = document.getElementById("contenido-");
+    parrafoP.id = "contenido-" + id;
+
+    const modalDiv = document.createElement("div");
+    modalDiv.classList.add("modal_men"); 
+    modalDiv.id = "mensaje-" + id;
+ 
+    modalDiv.innerHTML = `
+            <div class="modal_men-content">
+                <span class="close_men" onclick="cerrarModal('mensaje-${id}')">&times;</span>  
+                <button type="button" class="mod-men" onclick="eliminarMensaje('${id}', '${data.usuario_receptor}')">Eliminar mensaje</button>
+                <button type="button" class="mod-men" onclick="mostrarEditar('${id}')">Editar mensaje</button>
+                <div id="edit-${id}" class="modal_men">
+                    <div class="modal_men-content">
+                        <span class="close_men" onclick="cerrarModal('edit-${id}')">&times;</span>
+                        <p>Modifica tu mensaje</p>
+                        <input type="text" id="nuevoContenido-${id}" value="${data.contenido}" class="input-mensaje"> 
+                        <button type="button" class="mod-men" onclick="editarMensaje('${id}', '${data.usuario_receptor}', document.getElementById('nuevoContenido-${id}').value); cerrarModal('edit-${id}'); cerrarModal('mensaje-${id}')">Editar</button>
+                    </div>
+                </div>
+            </div>
+    `;
+
+    chatContainer.appendChild(modalDiv);
+
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    
+});
+
+
 socket.on("mostrar-mensaje", (data) => {
 
     const chatContainer = document.getElementById("chat-cont");  
 
     const mensajeDiv = document.createElement("div");
+    mensajeDiv.id = "mensajeRecibido-";
     mensajeDiv.classList.add("mensaje_recibido");  
 
     mensajeDiv.innerHTML = `
-        <p><strong>${data.usuario_emisor}:</strong> ${data.contenido}</p>
+        <p class="nombre-usuario"><strong>${data.usuario_emisor}</strong></p>
+        <p id="contenido--">${data.contenido}</p>
         <p><small>${new Date(data.hora).toLocaleString()}</small></p>  
     `;
 
@@ -110,6 +145,40 @@ socket.on("mostrar-mensaje", (data) => {
 
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
+    
+});
+
+socket.on("mostrar-mensaje-modal", (data) => {
+
+    const chatContainer = document.getElementById("chat-cont"); 
+    const mensajeDiv = document.getElementById("mensajeRecibido-");
+    mensajeDiv.id = "mensajeRecibido-" + data;
+    const parrafoP = document.getElementById("contenido--");
+    parrafoP.id = "contenido-" + data;
+
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    
+});
+
+
+socket.on("elim-mensaje", (data) => {
+    var chatContainer = document.getElementById("chat-cont");  
+    var mensajeDiv = document.getElementById("mensajeRecibido-" + data);
+    if (mensajeDiv) {
+        chatContainer.removeChild(mensajeDiv);
+    } 
+
+    
+});
+
+
+socket.on("edit-mensaje", (data) => {
+
+    var mensajeDiv = document.getElementById("contenido-" + data.mensaje_id);
+    if (mensajeDiv) {
+        mensajeDiv.innerHTML = `${data.contenido}`;
+    }
     
 });
 
@@ -215,7 +284,6 @@ function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes, tip
     fetch('../../Controlador/Publicacion_controlador.php', {
     }).then(response => response.text())
       .then(result => {
-          console.log(result);
 
         if (event.submitter.name === 'darlike') {
             // Comprobar si el usuario ya está en el array de likes
@@ -282,22 +350,26 @@ function enviarMensaje(usuario_actual, usuario_dest, chatId, mensaje) {
     }
 
     const chatContainer = document.getElementById("chat-cont");  
-
     const mensajeDiv = document.createElement("div");
     mensajeDiv.classList.add("mensaje_enviado");  
-
+    mensajeDiv.id = "mensajeEnviado-";
     mensajeDiv.innerHTML = `
-        <p><strong>Tú:</strong> ${mensaje}</p>
-        <p><small>${new Date(new Date().toISOString()).toLocaleString()}</small></p>  
+        <p class="nombre-usuario"><strong>Tú</strong></p>
+        <p id="contenido-">${mensaje}</p>
+        <p><small>${new Date(new Date().toISOString()).toLocaleString()}</small></p> 
     `;
-
     chatContainer.appendChild(mensajeDiv);
 
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
+
+    document.getElementById('contenido').value = '';
+
+
     socket.emit("nuevo-mensaje", {usuario_actual: usuario_actual, usuario_dest: usuario_dest, chatId: chatId, mensaje: mensaje});
 
 }
+
 
 
 
@@ -334,3 +406,30 @@ function NuevoComentario(event, nickuser, nick, id_publi, tipo_publicacion, resp
 }
     
 
+function eliminarMensaje(mensajeId, usuario) {
+    
+    var mensajeDiv = document.getElementById("mensajeEnviado-" + mensajeId);
+    var modalDiv = document.getElementById("mensaje-" + mensajeId);
+
+    if (mensajeDiv) {
+        mensajeDiv.parentNode.removeChild(mensajeDiv);
+    } 
+    if (modalDiv) {
+        modalDiv.parentNode.removeChild(modalDiv);
+    }
+
+    socket.emit("eliminar-mensaje", { mensajeId: mensajeId, usuario: usuario});
+
+}
+
+function editarMensaje(mensajeId, usuario, contenido) {
+
+    var mensajeDiv = document.getElementById("contenido-" + mensajeId);
+
+    if (mensajeDiv) {
+        mensajeDiv.innerHTML = `${contenido}`;
+    }
+    
+    socket.emit("editar-mensaje", { mensajeId: mensajeId, usuario: usuario, contenido: contenido});
+
+}

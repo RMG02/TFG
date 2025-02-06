@@ -70,7 +70,7 @@ header .menu p {
 #notification-counter {
     position: absolute;
     top: 25px; /* Ajustar según la posición deseada */
-    right: 130px; /* Ajustar según la posición deseada */
+    right: 32px; /* Ajustar según la posición deseada */
     background-color: #ff3333; /* Rojo vibrante */
     color: white;
     border-radius: 50%;
@@ -276,16 +276,6 @@ footer p {
     text-align: center;
     border-radius: 10px;
 }
-
-/*.modal-content {
-    background-color: #fff;
-    margin: 15% auto; /* Centrando vertical y horizontalmente 
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Ajusta el ancho según sea necesario 
-    max-height: 70%; /* Limita la altura para permitir el desplazamiento 
-    overflow-y: auto; /* Permite el desplazamiento vertical 
-}*/
 
 
 .close {
@@ -696,6 +686,7 @@ footer p {
 /* Estilo para los mensajes enviados */
 .mensaje_enviado {
     background-color: #e6f7ff;
+    cursor: pointer;
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 12px;
@@ -830,3 +821,77 @@ footer p {
 .switch-button .switch-button__checkbox:checked + .switch-button__label:before {
     transform: translateX(1.5rem);  /* Ajustado proporcionalmente */
 }
+
+
+
+.modal_men {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(5px); /* Efecto desenfoque */
+    align-items: center;
+    justify-content: center;
+}
+
+
+.modal_men-content {
+    background-color: #fff;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+
+
+
+.close_men {
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s ease-in-out;
+}
+
+.close_men:hover {
+    color: #e74c3c;
+}
+
+
+.mod-men {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    text-align: center;  
+    box-sizing: border-box; 
+    background-color: #3498db;
+    color: white;
+}
+
+/* Efecto cuando el botón es presionado */
+.mod-men:active {
+    transform: scale(0.95);
+}
+
+.nombre-usuario {
+    text-align: left;  /* Alinea "Tú:" a la izquierda */
+    margin: 0;
+    font-weight: bold; /* Para mantener "Tú:" en negrita */
+}
+
+

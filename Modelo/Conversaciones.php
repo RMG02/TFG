@@ -31,10 +31,13 @@ class Conversacion {
             'hora' => $hora,
         ];
         $id = new ObjectId($conversacionId);
-        return $this->collection->updateOne(
+        $this->collection->updateOne(
             ['_id' => $id],
             ['$push' => ['mensajes' => $mensaje]]
         );
+
+        return $mensaje['mensaje_id'];
+
     }
 
     // Obtener mensajes de una conversación
@@ -56,5 +59,23 @@ class Conversacion {
         $resultado = $this->collection->find(['usuarios' => [ '$all' => [$usuario1, $usuario2]]]);
         $conversacion = json_encode(iterator_to_array($resultado));
         return $conversacion;
+    }
+
+    public function eliminarMensaje($mensaje_id) {
+        $id = new ObjectId($mensaje_id);
+        
+        return $this->collection->updateOne(
+            ['mensajes.mensaje_id' => $id],
+            ['$pull' => ['mensajes' => ['mensaje_id' => $id]]] 
+        );
+    }
+
+    public function editarMensaje($mensaje_id, $contenido) {
+        $id = new ObjectId($mensaje_id);
+        
+        return $this->collection->updateOne(
+            ['mensajes.mensaje_id' => $id],  
+            ['$set' => ['mensajes.$.contenido' => $contenido]] 
+        );
     }
 }

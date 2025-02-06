@@ -1,7 +1,6 @@
 
 
 function Perfil() {
-    
     var spans = document.getElementsByClassName("close");
     var spans_publi = document.getElementsByClassName("close_publi");
     var comentar = document.getElementsByName("comen");

@@ -175,6 +175,8 @@ io.on("connection", (socket) => {
         var enlace = "http://localhost:8000/Vista/chat.php?conversacionId=" + data.chatId;
 
         var socketID = usuarios_conectados[data.usuario_dest];
+        var socketIDPer = usuarios_conectados[data.usuario_actual];
+
         var notificacion = { 
             usuario_publi: data.usuario_dest, 
             usuario_accion: data.usuario_actual,
@@ -191,7 +193,7 @@ io.on("connection", (socket) => {
             usuario_emisor: data.usuario_actual,
             usuario_receptor: data.usuario_dest,
             contenido: data.mensaje,
-            hora: new Date().toISOString()
+            hora: new Date().toISOString(),
         } 
 
         if (socketID) {
@@ -213,6 +215,56 @@ io.on("connection", (socket) => {
         param_men.append('AgregarMensaje', JSON.stringify(men));
 
         axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)      
+
+        axios.post('http://localhost:8000/Controlador/Conversaciones_controlador.php', param_men)
+            .then(response => {
+                const mensajeId = response.data.mensaje_id;
+                io.to(socketIDPer).emit("mostrar-mensaje-per", men, mensajeId);
+                io.to(socketID).emit("mostrar-mensaje-modal", mensajeId);
+
+                
+               
+            })
+            .catch(error => console.error("Error en la petición:", error));       
+   
+    });
+
+    socket.on("eliminar-mensaje", (data) => {
+
+        var socketID = usuarios_conectados[data.usuario];
+        
+        if (socketID) {
+            io.to(socketID).emit("elim-mensaje", data.mensajeId);   
+        }
+        
+        var men = {
+            mensaje_id: data.mensajeId,
+        } 
+
+        var param_men = new URLSearchParams();
+        param_men.append('EliminarMensaje', JSON.stringify(men));
+
+
+        axios.post('http://localhost:8000/Controlador/Conversaciones_controlador.php', param_men)          
+   
+    });
+
+    socket.on("editar-mensaje", (data) => {
+        var socketID = usuarios_conectados[data.usuario];
+
+        var men = {
+            mensaje_id: data.mensajeId,
+            contenido: data.contenido
+        } 
+        if (socketID) {
+            io.to(socketID).emit("edit-mensaje", men);   
+        }
+        
+        
+
+        var param_men = new URLSearchParams();
+        param_men.append('EditarMensaje', JSON.stringify(men));
+
 
         axios.post('http://localhost:8000/Controlador/Conversaciones_controlador.php', param_men)          
    

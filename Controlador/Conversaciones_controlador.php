@@ -29,13 +29,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if(isset($_POST['AgregarMensaje'])){
         $servidor_post = json_decode($_POST['AgregarMensaje'], true);
-    
-        $resultado = $conversacionesModelo->agregarMensaje($servidor_post['conversacion_id'], $servidor_post['usuario_emisor'], $servidor_post['contenido'], $servidor_post['usuario_receptor'], $servidor_post['hora']);
-        $resultado = $conversacionesModelo->obtenerConversaciones(usuario: $_SESSION['nick']);
-        $_SESSION['conversaciones'] = json_encode(iterator_to_array($resultado));
+        $men_id = $conversacionesModelo->agregarMensaje($servidor_post['conversacion_id'], $servidor_post['usuario_emisor'], $servidor_post['contenido'], $servidor_post['usuario_receptor'], $servidor_post['hora']);
+        if (isset($_SESSION['nick'])) {
+            $resultado = $conversacionesModelo->obtenerConversaciones(usuario: $_SESSION['nick']);
+            $_SESSION['conversaciones'] = json_encode(iterator_to_array($resultado));
+
+        }
+        // Enviar el ID del mensaje como respuesta JSON
+        $respuesta = [
+            'mensaje_id' => (string) $men_id // Devolver el ID como string
+        ];
+        
+        echo json_encode($respuesta);
         exit;
     }
 
+    if(isset($_POST['EliminarMensaje'])){
+        $servidor_post = json_decode($_POST['EliminarMensaje'], true);
+        $resultado = $conversacionesModelo->eliminarMensaje($servidor_post['mensaje_id']);
+        exit;
+    }
+    
+    if(isset($_POST['EditarMensaje'])){
+        $servidor_post = json_decode($_POST['EditarMensaje'], true);
+        $resultado = $conversacionesModelo->editarMensaje($servidor_post['mensaje_id'], $servidor_post['contenido']);
+        exit;
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
