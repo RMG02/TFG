@@ -418,13 +418,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         
     }
 
-    if(isset($_GET['publi_id'])){
-        $resultado = $publicacionModelo->obtenerPublicacion($_GET['id']);
-        $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
-        header('Location: ../Vista/Verpublicacion.php'); 
-        exit; 
-        
+    if (isset($_GET['publi_id'])) {
+        $id = $_GET['id'] ?? ''; 
+    
+        if (!preg_match('/^[a-f0-9]{24}$/i', $id)) { 
+            $_SESSION['publidisponible'] = false;
+            $_SESSION['id_publi'] = "";
+        } else {
+            $resultado = $publicacionModelo->obtenerPublicacion($id);
+    
+            if ($resultado) {
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['publidisponible'] = true;
+            } else {
+                $_SESSION['publidisponible'] = false;
+                $_SESSION['id_publi'] = NULL;
+            }
+        }
+    
+        header('Location: ../Vista/Verpublicacion.php');
+        exit;
     }
+    
+    
     
 }
 
