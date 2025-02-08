@@ -158,7 +158,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if(isset($_POST['cerrarCuenta'])){
         if($usuarioModelo->confirmar($_POST['password'],$_SESSION['email']) == true){
+            $publicacionModelo->eliminarpublicacionescerrar($_SESSION['email']);
+            $recetaModelo->eliminarrecetascerrar($_SESSION['email']);
             $usuarioModelo->darBajaUsuario($_SESSION['email']);
+
             session_unset();
             session_destroy(); 
             header('Location: ../Vista/enter.php');

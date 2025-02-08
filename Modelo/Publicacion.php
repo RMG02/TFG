@@ -20,6 +20,9 @@ class Publicacion {
         return $this->collection->findOne(['_id' => $Id]);
     }
 
+    function eliminarpublicacionescerrar($email){
+        return $this->collection->deleteMany(['email' => $email]); 
+    }
 
     private function añadirRespuesta(&$comentarios, $id_com, $comentario_nuevo) {
 

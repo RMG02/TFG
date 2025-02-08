@@ -1,12 +1,16 @@
 <?php
 require_once '../Config/config.php';
 require_once '../Modelo/Usuario.php';
+require_once '../Modelo/Receta.php';
+require_once '../Modelo/Publicacion.php';
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 $usuarioModelo = new Usuario($db);
+$recetaModelo = new Receta($db);
+$publicacionModelo = new Publicacion($db);
 $admin = $_SESSION['admin'];
 
 if (isset($_SESSION['publicaciones'])) {
@@ -62,6 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         if($usuarioModelo->confirmar($_POST['password'],$_SESSION['email']) == true){
             $email = $_POST['email'];
+            $publicacionModelo->eliminarpublicacionescerrar($email);
+            $recetaModelo->eliminarrecetascerrar($email);
             $usuarioModelo->darBajaUsuario($email);
             $_SESSION['mensaje'] = "Usuario eliminado";
         }else{

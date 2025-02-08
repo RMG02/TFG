@@ -296,6 +296,10 @@ class Receta {
         return $this->collection->find(['email' => $email], ['sort' => ['created_at' => -1]]);
     }
 
+    function eliminarrecetascerrar($email){
+        return $this->collection->deleteMany(['email' => $email]); 
+    }
+
         
     public function Likes($nick,$publi){
         $Id = new ObjectId($publi);
