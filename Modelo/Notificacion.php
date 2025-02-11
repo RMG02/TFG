@@ -32,6 +32,25 @@ class Notificacion {
 
         return $this->collection->deleteOne(['_id' => $Id]);
     }
+
+    public function borrarTodasNotificaciones($notificacionesJSON) {
+        $notificaciones = json_decode($notificacionesJSON, true);
+
+        $ids = [];
+    
+        foreach ($notificaciones as $notificacion) {
+            if (isset($notificacion['_id']['$oid'])) {
+                $ids[] = new ObjectId($notificacion['_id']['$oid']);
+            }
+        }
+    
+        if (!empty($ids)) {
+            return $this->collection->deleteMany(['_id' => ['$in' => $ids]]);
+        }
+    
+        return 0;
+    }
+    
     
     public function obtenerTodasNotificaciones($usuario) {
         return $this->collection->find(['usuario_publi' => $usuario], ['sort' => ['fecha' => -1]]);

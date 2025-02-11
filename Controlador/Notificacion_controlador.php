@@ -85,6 +85,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    if(isset($_POST['eliminarTodas'])){
+    
+        $resultado = $NotificacionModelo->borrarTodasNotificaciones($_SESSION['notificaciones_usuario']);
+
+        if ($resultado) {
+            $_SESSION['mensaje'] = "Notificaciones eliminadas";
+            unset($_SESSION['notificaciones_usuario']);
+        } else {
+            $_SESSION['error'] = "Error al eliminar las notificaciones";
+        }
+
+        header('Location: ../Vista/Notificaciones.php');
+        exit;
+    }
+
     
     
         

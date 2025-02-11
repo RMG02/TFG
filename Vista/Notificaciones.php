@@ -39,7 +39,13 @@ $contenidoPrincipal = <<<EOS
     <div class="menu">
         <p><a href='/Vista/Preferencias.php' class='menu-icon' titulo='Preferencias'> <i class="fas fa-tools"></i></a></p>
     </div>
+    <div class="eliminar-todo-contenedor">
+        <form method="POST" action="../Controlador/Notificacion_controlador.php">
+            <button type="submit" class="eliminar-todo" name="eliminarTodas"><i class="fas fa-trash-alt"></i> Eliminar todas</button>
+        </form>
+    </div>
 EOS;
+
 
 if(!empty($notificaciones)){
 

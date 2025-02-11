@@ -38,49 +38,54 @@ $contenidoPrincipal = <<<EOS
    <h1>$otroUsuario</h1>
    <div id="chat-cont" class="chat-container">
 EOS;
+if (count($conversacion['mensajes']) > 0){
+    foreach ($conversacion['mensajes'] as $mensaje) {
+        $contenido = htmlspecialchars($mensaje['contenido'], ENT_QUOTES);
+        $emisor = htmlspecialchars($mensaje['usuario_emisor'], ENT_QUOTES);
+        $hora = date('d/m/Y H:i:s', strtotime($mensaje['hora']));
+        $id = $mensaje['mensaje_id']['$oid'];
 
-foreach ($conversacion['mensajes'] as $mensaje) {
-    $contenido = htmlspecialchars($mensaje['contenido'], ENT_QUOTES);
-    $emisor = htmlspecialchars($mensaje['usuario_emisor'], ENT_QUOTES);
-    $hora = date('d/m/Y H:i:s', strtotime($mensaje['hora']));
-    $id = $mensaje['mensaje_id']['$oid'];
-
-    if($mensaje['usuario_emisor'] == $_SESSION['nick']){
-        $contenidoPrincipal .= <<<EOS
-            <div class="mensaje_enviado" id="mensajeEnviado-$id" onclick="mostrarOpciones('$id')">
-                <p class="nombre-usuario"><strong>Tú</strong></p>
-                <p id="contenido-$id">$contenido</p>
-                <p><small>$hora</small></p>
-            </div>
-            <div id="mensaje-$id" class="modal_men">
-                <div class="modal_men-content">
-                    <span class="close_men" onclick="cerrarModal('mensaje-$id')">&times;</span>  
-                    <button type="button" class="mod-men" onclick="eliminarMensaje('$id', '$otroUsuario')">Eliminar mensaje</button>
-                    <button type="button" class="mod-men" onclick="mostrarEditar('$id')">Editar mensaje</button>
-                    <div id="edit-$id" class="modal_men">
-                        <div class="modal_men-content">
-                            <span class="close_men" onclick="cerrarModal('edit-$id')">&times;</span>
-                            <p>Modifica tu mensaje</p>
-                            <input type="text" id="nuevoContenido-$id" value="$contenido" class="input-mensaje"> 
-                            <button type="button" class="mod-men" onclick="editarMensaje('$id', '$otroUsuario', document.getElementById('nuevoContenido-$id').value); cerrarModal('edit-$id'); cerrarModal('mensaje-$id')">Editar</button>
+        if($mensaje['usuario_emisor'] == $_SESSION['nick']){
+            $contenidoPrincipal .= <<<EOS
+                <div class="mensaje_enviado" id="mensajeEnviado-$id" onclick="mostrarOpciones('$id')">
+                    <p class="nombre-usuario"><strong>Tú</strong></p>
+                    <p id="contenido-$id">$contenido</p>
+                    <p><small>$hora</small></p>
+                </div>
+                <div id="mensaje-$id" class="modal_men">
+                    <div class="modal_men-content">
+                        <span class="close_men" onclick="cerrarModal('mensaje-$id')">&times;</span>  
+                        <button type="button" class="mod-men" onclick="eliminarMensaje('$id', '$otroUsuario')">Eliminar mensaje</button>
+                        <button type="button" class="mod-men" onclick="mostrarEditar('$id')">Editar mensaje</button>
+                        <div id="edit-$id" class="modal_men">
+                            <div class="modal_men-content">
+                                <span class="close_men" onclick="cerrarModal('edit-$id')">&times;</span>
+                                <p>Modifica tu mensaje</p>
+                                <input type="text" id="nuevoContenido-$id" value="$contenido" class="input-mensaje"> 
+                                <button type="button" class="mod-men" onclick="editarMensaje('$id', '$otroUsuario', document.getElementById('nuevoContenido-$id').value); cerrarModal('edit-$id'); cerrarModal('mensaje-$id')">Editar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        EOS;
+            EOS;
+        }
+        else{
+            $contenidoPrincipal .= <<<EOS
+                <div class="mensaje_recibido" id="mensajeRecibido-$id">
+                    <p class="nombre-usuario"><strong>$emisor</strong></p>
+                    <p id="contenido-$id">$contenido</p>
+                    <p><small>$hora</small></p>
+                </div>
+            EOS;
+        }
+        
     }
-    else{
-        $contenidoPrincipal .= <<<EOS
-            <div class="mensaje_recibido" id="mensajeRecibido-$id">
-                <p class="nombre-usuario"><strong>$emisor</strong></p>
-                <p id="contenido-$id">$contenido</p>
-                <p><small>$hora</small></p>
-            </div>
-        EOS;
-    }
-    
 }
-
+else{
+    $contenidoPrincipal .= <<<EOS
+        <h2>No hay mensajes</h2>
+    EOS;
+}
 $contenidoPrincipal .= <<<EOS
     </div>
     

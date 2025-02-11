@@ -895,3 +895,22 @@ footer p {
 }
 
 
+.eliminar-todo-contenedor {
+    position: absolute;
+    top: 113px;
+    right: 20px;
+}
+
+.eliminar-todo {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.eliminar-todo:hover {
+    background-color: darkred;
+}
