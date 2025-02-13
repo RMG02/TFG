@@ -405,14 +405,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    if(isset($_POST["seguidores"])){
+        $_SESSION['verseguidores'] = $_POST["verseguidores"];
+        header('Location: ../Vista/Principal.php');
+    }
+
     
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
     if (isset($_GET['listarPublicaciones'])) { 
         $publicaciones = $publicacionModelo->ListaPublicacion(); 
-        $_SESSION['publicaciones'] = json_encode(iterator_to_array($publicaciones)); 
-        header('Location: ../Vista/Principal.php?verseguidores='.$_GET['verseguidores']); 
+        $_SESSION['publicaciones'] = json_encode(iterator_to_array($publicaciones));
+        $_SESSION['verseguidores'] = $_GET['verseguidores'];
+        header('Location: ../Vista/Principal.php'); 
         exit; 
     } 
 

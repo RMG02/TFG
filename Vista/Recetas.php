@@ -8,7 +8,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
     header("Location: enter.php");
     exit;
 }
-$verseguidores = $_GET['verseguidores'] ?? "false";
+$verseguidores = $_SESSION['verseguidoresreceta'] ?? "false";
 
 if (!isset($_SESSION['recetas'])) {
    header('Location: ../Controlador/Receta_controlador.php?listarRecetas=true&verseguidores='.$verseguidores);
@@ -52,10 +52,14 @@ $contenidoPrincipal = <<<EOS
    <div class="dropdown">
                 <button class="dropbtn">⋮</button>
                 <div class="dropdown-content">
-                    <form method="POST" action="../Vista/Recetas.php?verseguidores=false">
+                    <form method="POST" action="../Controlador/Receta_controlador.php">
+                            <input type="hidden" name="verseguidoresreceta" value="false">
+                            <input type="hidden" name="seguidoresreceta" value="true">
                             <button type="submit" class="boton_lista" name="publicaciones">Explorar</button>
                     </form>
-                    <form method="POST" action="../Vista/Recetas.php?verseguidores=true">
+                    <form method="POST" action="../Controlador/Receta_controlador.php">
+                        <input type="hidden" name="verseguidoresreceta" value="true">
+                            <input type="hidden" name="seguidoresreceta" value="true">
                             <button type="submit" class="boton_lista" name="publicaciones">Ver contenido seguidores</button>
                     </form>
                 </div>         

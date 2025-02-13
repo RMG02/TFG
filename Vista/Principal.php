@@ -9,7 +9,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
     exit;
 }
 
-$verseguidores = $_GET['verseguidores'] ?? "false";
+$verseguidores = $_SESSION['verseguidores'] ?? "false";
 
 if (!isset($_SESSION['publicaciones'])) {
     header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true&verseguidores='.$verseguidores);
@@ -59,10 +59,14 @@ $contenidoPrincipal = <<<EOS
    <div class="dropdown">
                 <button class="dropbtn">⋮</button>
                 <div class="dropdown-content">
-                    <form method="POST" action="../Vista/Principal.php?verseguidores=false">
+                    <form method="POST" action="../Controlador/Publicacion_controlador.php">
+                            <input type="hidden" name="verseguidores" value="false">
+                            <input type="hidden" name="seguidores" value="true">
                             <button type="submit" class="boton_lista" name="publicaciones">Explorar</button>
                     </form>
-                    <form method="POST" action="../Vista/Principal.php?verseguidores=true">
+                    <form method="POST" action="../Controlador/Publicacion_controlador.php">
+                            <input type="hidden" name="verseguidores" value="true">
+                            <input type="hidden" name="seguidores" value="true">
                             <button type="submit" class="boton_lista" name="publicaciones">Ver contenido seguidores</button>
                     </form>
                 </div>         
@@ -97,7 +101,7 @@ if($verseguidores == "true"){
 
 foreach ($publicaciones as $publicacion) {
    
-    if (($verseguidores == "false") || ($verseguidores == "true" && in_array($publicacion['email'],$siguiendo, false)) ||  $receta['email'] == $_SESSION['email'] ) {
+    if (($verseguidores == "false") || ($verseguidores == "true" && in_array($publicacion['email'],$siguiendo, false)) ||  $publicacion['email'] == $_SESSION['email'] ) {
         $nickuser = $_SESSION['nick'];
         $nick = $publicacion['nick'];
         $email = $publicacion['email'];

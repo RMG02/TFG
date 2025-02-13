@@ -392,6 +392,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit; 
     }
 
+    if(isset($_POST["seguidoresreceta"])){
+        $_SESSION['verseguidoresreceta'] = $_POST["verseguidoresreceta"];
+        header('Location: ../Vista/Recetas.php');
+    }
+
     
 }
 
@@ -399,8 +404,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['listarRecetas'])) { 
         $recetas = $recetaModelo->ListaReceta(); 
         $_SESSION['recetas'] = json_encode(iterator_to_array($recetas)); 
-        
-        header('Location: ../Vista/Recetas.php?verseguidores='.$_GET['verseguidores']); 
+        $_SESSION['verseguidoresreceta'] = $_GET['verseguidores'];
+        header('Location: ../Vista/Recetas.php'); 
         exit; 
     } 
 
