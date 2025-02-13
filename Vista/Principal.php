@@ -166,7 +166,9 @@ $contenidoPrincipal .= <<<EOS
                 </div>
             </div>
         <div id="$modalId" class="modal_publi">
-            <form method="POST" action="../Vista/Verpublicacion.php?id=$id" class="formulario">
+            <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                <input type="hidden" name="prueba_id" value="true">
+                <input type="hidden" name="idprueba" value="$id">
                 <button type="submit" class="botonPubli" name="Verpublicacion"></button>
             </form>
         </div>

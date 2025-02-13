@@ -25,12 +25,12 @@ if (isset($_SESSION['mensaje'])) {
 }
 $publicacion = "";
 
-$idPublicacion = $_GET['id'] ?? null;
+//$idPublicacion = $_GET['id'] ?? null;
 
-if (!isset($_SESSION['id_publi'])) {
-    header('Location: ../Controlador/Publicacion_controlador.php?publi_id=true&id='.$idPublicacion);
-    exit;
-}
+//if (!isset($_SESSION['id_publi'])) {
+ //   header('Location: ../Controlador/Publicacion_controlador.php?publi_id=true&id='.$idPublicacion);
+   // exit;
+//}
 if($_SESSION['publidisponible'] == false){
     $tituloPagina = "Tweet";
     $contenidoPrincipal = <<<EOS
