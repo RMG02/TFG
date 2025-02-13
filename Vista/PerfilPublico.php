@@ -19,9 +19,9 @@ if (isset($_SESSION['mensaje'])) {
     $mensaje = $_SESSION['mensaje'];
 }
 
-$emailUsuario = $_GET['email_user'] ?? null;
-$nickUsuario = $_GET['nick_user'] ?? null;
-$verreceta = $_GET['verreceta'] ?? false;
+$emailUsuario = $_SESSION['emailUserpublico'] ?? null;
+$nickUsuario = $_SESSION['nickUserpublico'] ?? null;
+$verreceta = $_SESSION['verreceta'] ?? false;
 
 
 if(isset($_POST['nick_user'])){

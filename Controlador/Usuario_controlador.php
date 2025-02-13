@@ -185,6 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     
     }
+
     
     
 
@@ -193,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
-    if (isset($_GET['Usuarion'])) {
+    if (isset($_GET['publicoemail'])) {
         $email = $_GET['email_Usur'] ?? '';
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) { 
             $_SESSION['usudisponible'] = false;
@@ -206,12 +207,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $_SESSION['emailUser'] = json_encode(iterator_to_array($resultado));
                 $_SESSION['usudisponible'] = true;
                 if(isset($_GET['verreceta'])){
-                    header('Location: ../Vista/PerfilPublico.php?verreceta=true&email_user=' . $email);  
+                    $_SESSION['emailUserpublico'] = $email;
+                    header('Location: ../Vista/PerfilPublico.php?verreceta=true');  
                     exit;
         
                 }
                 else{
-                    header('Location: ../Vista/PerfilPublico.php?email_user=' . $email);  
+                    $_SESSION['emailUserpublico'] = $email;
+                    header('Location: ../Vista/PerfilPublico.php');  
                     exit;
                 }
             } else {
@@ -226,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
 
-    if (isset($_GET['UsuarionNick'])) {
+    if (isset($_GET['publiconick'])) {
         $nick = $_GET['nick_Usur'] ?? '';
 
         if (empty($nick)) { 
@@ -241,11 +244,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $_SESSION['usudisponible'] = true;
                 if(isset($_GET['verreceta'])){
                     //header('Location: ../Vista/PerfilPublico.php?nick_user=' . $nick); 
+                    $_SESSION['nickUserpublico'] = $nick;
                     header('Location: ../Vista/PerfilPublico.php?verreceta=true'); 
                     exit;
                     
                 }
                 else{
+                    $_SESSION['nickUserpublico'] = $nick;
                     //header('Location: ../Vista/PerfilPublico.php?verreceta=true&nick_user=' . $nick); 
                     header('Location: ../Vista/PerfilPublico.php');
                     exit;

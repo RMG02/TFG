@@ -17,11 +17,11 @@ if(isset($_SESSION['RecetasUsuarioPublico'])){
 }
 
 if($emailUsuario){
-    header('Location: ../Vista/PerfilPublico.php?email_user='.$emailUsuario);
+    header('Location: ../Controlador/Usuario_controlador.php?publicoemail=true&email_Usur='.$emailUsuario);
     exit;
 }
 else{
-    header('Location: ../Vista/PerfilPublico.php?nick_user='.$nickUsuario);
+    header('Location: ../Controlador/Usuario_controlador.php?publiconick=true&nick_Usur='.$nickUsuario);
     exit;
 }
 
