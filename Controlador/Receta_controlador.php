@@ -372,6 +372,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    if(isset($_POST["pruebareceta_id"])){
+        $id = $_POST['idpruebareceta'] ?? ''; 
+        if (!preg_match('/^[a-f0-9]{24}$/i', $id)) { 
+            $_SESSION['recedisponible'] = false;
+            $_SESSION['id_publi'] = "";
+        } else {
+            $resultado = $recetaModelo->obtenerReceta($id);
+    
+            if ($resultado) {
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['recedisponible'] = true;
+            } else {
+                $_SESSION['recedisponible'] = false;
+                $_SESSION['id_publi'] = NULL;
+            }
+        }
+        header('Location: ../Vista/Verreceta.php'); 
+        exit; 
+    }
+
     
 }
 

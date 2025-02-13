@@ -25,12 +25,12 @@ if (isset($_SESSION['mensaje'])) {
 }
 $receta = "";
 
-$idreceta = $_GET['id'] ?? null;
+//$idreceta = $_GET['id'] ?? null;
 
-if (!isset($_SESSION['id_publi'])) {
-    header('Location: ../Controlador/Receta_controlador.php?publi_id=true&id='.$idreceta);
-    exit;
-}
+//if (!isset($_SESSION['id_publi'])) {
+ //   header('Location: ../Controlador/Receta_controlador.php?publi_id=true&id='.$idreceta);
+   // exit;
+//}
 
 if($_SESSION['recedisponible'] == false){
     $tituloPagina = "Receta";
