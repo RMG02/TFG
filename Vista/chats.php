@@ -29,6 +29,11 @@ $contenidoPrincipal = <<<EOS
    <div id="lista-conversaciones">
 EOS;
 
+if(empty($conversaciones)){
+    $contenidoPrincipal = <<<EOS
+        <h2>No tienes conversaciones</h2>
+EOS;
+}
 foreach ($conversaciones as $conv) {
     $conversacionId = $conv['_id']['$oid'];
     $usuarios = $conv['usuarios'];
@@ -37,15 +42,14 @@ foreach ($conversaciones as $conv) {
             $otroUsuario = $usu;
         }
     }
-    $no_leidos = 0; 
     
     $contenidoPrincipal .= <<<EOS
        <div class="conversacion">
            <a href="/Vista/chat.php?conversacionId=$conversacionId" class="enlace-conversacion">
                <p class="nombre-conversacion">$otroUsuario</p>
-               <span class="no-leidos">$no_leidos</span>
            </a>
        </div>
+       
 EOS;
 }
 

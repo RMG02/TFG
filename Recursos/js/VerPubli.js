@@ -112,17 +112,18 @@ function Perfil() {
 
 document.addEventListener("DOMContentLoaded", Perfil);
 
-function copiarEnlace(input) {
-    if (input && (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA')) {
-        const url = input.value;
-        navigator.clipboard.writeText(url).then(() => {
-            alert("Enlace copiado: " + url);
-        }).catch(err => {
-            console.error('Error al copiar el enlace: ', err);
-        });
-    } else {
-        console.error("Elemento no es seleccionable");
-    }
+
+function modal_compartir(id) {
+
+    
+    var modal = document.getElementById("compartir-" + id);
+    modal.style.display = "flex";
+    
+}
+
+function cerrar_modal_compartir(id){
+    var modal = document.getElementById(id);
+    modal.style.display = "none";
 }
 
 document.getElementById('download-btn').addEventListener('click', function () {

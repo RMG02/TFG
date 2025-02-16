@@ -17,12 +17,15 @@ date_default_timezone_set('Europe/Madrid');
 // Título de la página
 $tituloPagina = "Chat";
 
-
+$host = $_SERVER['HTTP_HOST']; 
 $conversacionId = $_GET['conversacionId'] ?? null;
+$compartir = $_GET['compartir'] ?? null;
+$id_comp = $_GET['id'] ?? null;
 
-if(!isset($_SESSION['conversacion'])){
-    header('Location: ../Controlador/Conversaciones_controlador.php?ObtenerConversacion=true&conversacionId=' . $conversacionId);
+if(!$_SESSION['conversacion']){
+    header('Location: ../Controlador/Conversaciones_controlador.php?ObtenerConversacion=true&conversacionId=' . $conversacionId . '&compartir=' . $compartir . '&id=' . $id_comp);
 }
+
 
 $conversacion = $_SESSION['conversacion'];
 unset($_SESSION['conversacion']);
@@ -33,14 +36,16 @@ foreach ($conversacion['usuarios'] as $usu){
     }
 }
 
+
 // Contenido principal
 $contenidoPrincipal = <<<EOS
-   <h1>$otroUsuario</h1>
-   <div id="chat-cont" class="chat-container">
+    <a href="../Vista/unsetPerfilPublico.php?nick_user=$otroUsuario" class="nick-link"><h1>$otroUsuario</h1></a>
+    <div id="chat-cont" class="chat-container">
 EOS;
-if (count($conversacion['mensajes']) > 0){
-    foreach ($conversacion['mensajes'] as $mensaje) {
-        $contenido = htmlspecialchars($mensaje['contenido'], ENT_QUOTES);
+
+
+foreach ($conversacion['mensajes'] as $mensaje) {
+        $contenido = strip_tags($mensaje['contenido'], '<a>');
         $emisor = htmlspecialchars($mensaje['usuario_emisor'], ENT_QUOTES);
         $hora = date('d/m/Y H:i:s', strtotime($mensaje['hora']));
         $id = $mensaje['mensaje_id']['$oid'];
@@ -79,12 +84,33 @@ if (count($conversacion['mensajes']) > 0){
             EOS;
         }
         
-    }
+}
+
+
+if($compartir == "publicacion"){
+
+    $texto_men = "Publicación compartida: <a href=\"http://$host/Vista/Verpublicacion.php?id=$id_comp\">Ver publicación</a>";
+    $contenidoPrincipal .= <<<EOS
+        <script type="text/javascript">
+            enviarMensaje('{$_SESSION['nick']}', '$otroUsuario', '$conversacionId', '$texto_men', true);
+        </script>
+    EOS;
+}
+else if($compartir == "receta"){
+    $texto_men = "Receta compartida: <a href=\"http://$host/Vista/Verreceta.php?id=$id_comp\">Ver receta</a>";
+    $contenidoPrincipal .= <<<EOS
+        <script type="text/javascript">
+            enviarMensaje('{$_SESSION['nick']}', '$otroUsuario', '$conversacionId', '$texto_men', true);
+        </script>
+    EOS;
 }
 else{
-    $contenidoPrincipal .= <<<EOS
-        <h2>No hay mensajes</h2>
-    EOS;
+    if(count($conversacion['mensajes']) == 0){
+        $contenidoPrincipal .= <<<EOS
+            <h2>No hay mensajes</h2>
+        EOS;
+    }
+    
 }
 $contenidoPrincipal .= <<<EOS
     </div>
@@ -94,7 +120,7 @@ $contenidoPrincipal .= <<<EOS
         <input type="hidden" id="usuario_receptor" value="$otroUsuario">
         <input type="hidden" id="usuario_emisor" value="{$_SESSION['nick']}">
         <input type="text" id="contenido" placeholder="Escribe tu mensaje..." class="input-mensaje">
-        <button type="button" class="btn-enviar" onclick="enviarMensaje('{$_SESSION['nick']}', '$otroUsuario', '$conversacionId', document.getElementById('contenido').value)">Enviar</button>
+        <button type="button" class="btn-enviar" onclick="enviarMensaje('{$_SESSION['nick']}', '$otroUsuario', '$conversacionId', document.getElementById('contenido').value, false)">Enviar</button>
     </form>
 
 EOS;

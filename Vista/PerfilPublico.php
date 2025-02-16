@@ -130,15 +130,14 @@ if($_SESSION['usudisponible'] == false){
 
         
         // Comprobar si el usuario de la sesión está en el array de seguidores
-        $emailSesion = $_SESSION['email'];
-        $esSeguidor = is_array($seguidores) && in_array($emailSesion, $seguidores);
+        $nickSesion = $_SESSION['nick'];
+        $esSeguidor = is_array($seguidores) && in_array($nickSesion, $seguidores);
 
         // Determinar el texto del botón
         $textoBoton = $esSeguidor ? "Dejar de Seguir" : "Seguir";
 
         // Cambiar la acción del formulario dependiendo del estado
         $accionFormulario = $esSeguidor ? "DejarSeguir" : "Seguir";
-        $usuarioActual = $_SESSION['nick'];
         $contenidoPrincipal = <<<EOS
 
             <div class="tweet-content">
@@ -146,13 +145,19 @@ if($_SESSION['usudisponible'] == false){
                 <p><strong>{$nick}</strong></p>
                 <p>Seguidores: {$numseguidores}</p>
                 <p>Siguiendo: {$numsiguiendo}</p>
-                <form method="POST" action="../Controlador/Usuario_controlador.php" onsubmit="enviarSeguidor('$usuarioActual', '$nick', '$textoBoton')">
-                        <input type="hidden" name="emailpropio" value="{$emailSesion}">
-                        <input type="hidden" name="emailseguir" value="{$email}">
+                <form method="POST" action="../Controlador/Usuario_controlador.php" onsubmit="enviarSeguidor('$nickSesion', '$nick', '$textoBoton')">
+                        <input type="hidden" name="nickPropio" value="{$nickSesion}">
+                        <input type="hidden" name="nickSeguir" value="{$nick}">
                         <button type="submit" class="boton_lista" name="Seguir">{$textoBoton}</button>
                 </form>
 
             </div> 
+
+            <form method="POST" action="../Controlador/Conversaciones_controlador.php">
+                <input type="hidden" name="usuario1" value="{$nickSesion}">
+                <input type="hidden" name="usuario2" value="{$nick}">
+                <button type="submit" class="boton_lista" name="abrirConversacion">Enviar mensaje</button>
+            </form>
             <hr>
 
 

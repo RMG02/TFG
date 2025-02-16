@@ -22,8 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }else{
             $id = $conversacion[0]['_id']['$oid'];
         }
-        $_SESSION['conversacion'] = $conversacion[0];
-        header('Location: ../Vista/chat.php?conversacionId=' . $id); 
+        if(isset($_POST['compartir'])){
+            header('Location: ../Vista/chat.php?conversacionId=' . $id . '&compartir=' . $_POST['compartir'] . '&id=' . $_POST['id_comp']); 
+        }
+        else{
+            header('Location: ../Vista/chat.php?conversacionId=' . $id); 
+        }
+        
         exit; 
     }
 
@@ -66,6 +71,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Location: ../Vista/chats.php'); 
         exit; 
     }
+    
+    if (isset($_GET['listarConversacionesAbiertas'])) {
+        $nick = $_GET['nick_Usur'];
+        $resultado = $conversacionesModelo->obtenerConversaciones($nick);
+        $_SESSION['conversaciones_abiertas'] = json_encode(iterator_to_array($resultado));
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;
+        
+    }
 
     if(isset($_GET['ObtenerConversacion'])){
 
@@ -73,8 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $conversacion = json_decode($resultado, true);
         $id = $conversacion['_id']['$oid'];
         $_SESSION['conversacion'] = $conversacion;
-        header('Location: ../Vista/chat.php?conversacionId=' . $id); 
+        header('Location: ../Vista/chat.php?conversacionId=' . $id . '&compartir=' . $_GET['compartir'] . '&id=' . $_GET['id']); 
         exit; 
     }
 
 }
+?>
+<script src="../Recursos/js/socket.js"></script>

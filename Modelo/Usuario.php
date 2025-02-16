@@ -96,17 +96,17 @@ class Usuario {
         return $this->collection->find();
     }
 
-    public function noSeguir($emailpropio,$emailseguir){
-        $filter = ['email' => $emailseguir];
+    public function noSeguir($nickPropio,$nickSeguir){
+        $filter = ['nick' => $nickSeguir];
         $update =
                 [
-                    '$pull' => ['seguidores' => $emailpropio] // Asegurarse de quitar el seguidor si existía
+                    '$pull' => ['seguidores' => $nickPropio] // Asegurarse de quitar el seguidor si existía
                 ];
          
-        $filter2 = ['email' => $emailpropio];
+        $filter2 = ['nick' => $nickPropio];
         $update2 =
                 [
-                    '$pull' => ['siguiendo' => $emailseguir] // Asegurarse de quitar el seguidor si existía
+                    '$pull' => ['siguiendo' => $nickSeguir] // Asegurarse de quitar el seguidor si existía
                 ];
         
         return $this->collection->updateOne($filter, $update) && $this->collection->updateOne($filter2, $update2);
@@ -124,17 +124,17 @@ class Usuario {
         return $this->collection->updateOne($filter, $update);
     }
 
-    public function Seguir($emailpropio,$emailseguir){
-        $filter = ['email' => $emailseguir];
+    public function Seguir($nickPropio,$nickSeguir){
+        $filter = ['nick' => $nickSeguir];
         $update =
                 [
-                    '$push' => ['seguidores' => $emailpropio] 
+                    '$push' => ['seguidores' => $nickPropio] 
                 ];
          
-        $filter2 = ['email' => $emailpropio];
+        $filter2 = ['nick' => $nickPropio];
         $update2 =
                 [
-                    '$push' => ['siguiendo' => $emailseguir] 
+                    '$push' => ['siguiendo' => $nickSeguir] 
                 ];
         
         return $this->collection->updateOne($filter, $update) && $this->collection->updateOne($filter2, $update2);

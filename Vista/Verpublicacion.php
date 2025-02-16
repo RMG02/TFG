@@ -23,14 +23,25 @@ if (isset($_SESSION['error'])) {
 if (isset($_SESSION['mensaje'])) {
     $mensaje = $_SESSION['mensaje'];
 }
-$publicacion = "";
 
+
+$publicacion = "";
 //$idPublicacion = $_GET['id'] ?? null;
 
-//if (!isset($_SESSION['id_publi'])) {
- //   header('Location: ../Controlador/Publicacion_controlador.php?publi_id=true&id='.$idPublicacion);
-   // exit;
-//}
+if(!isset($_SESSION['conversaciones_abiertas'])){
+    header('Location: ../Controlador/Conversaciones_controlador.php?listarConversacionesAbiertas=true&nick_Usur=' . $_SESSION['nick']);
+}
+
+
+$conversaciones = json_decode($_SESSION['conversaciones_abiertas'], true);
+unset($_SESSION['conversaciones_abiertas']);
+
+
+
+/*if (!isset($_SESSION['id_publi'])) {
+    header('Location: ../Controlador/Publicacion_controlador.php?publi_id=true&id='.$idPublicacion);
+    exit;
+}*/
 if($_SESSION['publidisponible'] == false){
     $tituloPagina = "Tweet";
     $contenidoPrincipal = <<<EOS
@@ -39,7 +50,6 @@ if($_SESSION['publidisponible'] == false){
         </div>
     EOS;
 }else{
-
 
 
     $publicacion = json_decode($_SESSION['id_publi'], true);
@@ -63,8 +73,6 @@ if($_SESSION['publidisponible'] == false){
         $numdislikes = count($dislikes);
         $likes_cadena = implode(",", $likes);
         $dislikes_cadena = implode(",", $dislikes);
-        $host = $_SERVER['HTTP_HOST']; 
-        $urlTweet = "$host/Vista/Verpublicacion.php?id=$id";
 
 
     if ($multimedia) {
@@ -158,8 +166,54 @@ if($_SESSION['publidisponible'] == false){
     }
 
     $contenidoPrincipal .= <<<EOS
-                    <input type="hidden" value="$urlTweet" readonly>
-                    <button type="button" class="botonPubli" name="compartir" onclick="copiarEnlace(this.previousElementSibling)">Compartir publicación</button>            
+                    <button type="button" class="botonPubli" name="compartir" onclick="modal_compartir('$id')">Compartir publicación</button>   
+                    <div id="compartir-$id" class="modal-compartir">
+                        <div class="modal-compartir-content">
+                            <span class="close_compartir" onclick="cerrar_modal_compartir('compartir-$id')">&times;</span>
+                            <h2>Compartir publicación con</h2>
+                            
+    EOS;
+                            if(empty($_SESSION['siguiendo']) && empty($conversaciones)){
+                                $contenidoPrincipal .= <<<EOS
+                                    <p> No sigues a ningún usuario</p>
+                                EOS;
+                            }
+                            else{
+                                $contenidoPrincipal .= <<<EOS
+                                    <ul>
+                                        <li>
+                                EOS;
+                                foreach ($conversaciones as $conv) {
+                                    $usuarios = $conv['usuarios'];
+                                    foreach ($usuarios as $usu){
+                                        if($usu != $_SESSION['nick'] && !in_array($usu, $_SESSION['siguiendo']) ){
+                                            $usuarios_a_mostrar[] = $usu;
+                                        }
+                                    }
+                                }
+                                foreach ($_SESSION['siguiendo'] as $usuario_seguido) {
+                                    $usuarios_a_mostrar[] = $usuario_seguido;
+                                }
+                                foreach ($usuarios_a_mostrar as $usuario) {
+                                    $contenidoPrincipal .= <<<EOS
+                                            <form method="POST" action="../Controlador/Conversaciones_controlador.php">
+                                                <input type="hidden" name="usuario1" value="{$_SESSION['nick']}">
+                                                <input type="hidden" name="usuario2" value="$usuario">
+                                                <input type="hidden" name="compartir" value="publicacion">
+                                                <input type="hidden" name="id_comp" value=$id>
+                                                <button type="submit" class="boton_lista" name="abrirConversacion">$usuario</button>
+                                            </form>
+                                        
+                                    EOS;
+                                }
+                                $contenidoPrincipal .= <<<EOS
+                                        </li>
+                                    </ul>
+                                EOS;
+                            }
+    $contenidoPrincipal .= <<<EOS
+                        </div>
+                    </div>     
                 </div>
             </div>
             <div id="edit-$modalId" class="modal">
@@ -323,7 +377,7 @@ if($_SESSION['publidisponible'] == false){
                 
         EOS;
         $modalId++;
-
+    
 }
 if ($error != "") {
     $contenidoPrincipal .= <<<EOS

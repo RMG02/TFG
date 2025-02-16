@@ -343,7 +343,7 @@ function ComentarioEliminado(usuario){
 
 }
 
-function enviarMensaje(usuario_actual, usuario_dest, chatId, mensaje) {
+function enviarMensaje(usuario_actual, usuario_dest, chatId, mensaje, compartir) {
     if (mensaje.trim() === '') {
         alert('El mensaje no puede estar vacío');
         return;
@@ -362,8 +362,9 @@ function enviarMensaje(usuario_actual, usuario_dest, chatId, mensaje) {
 
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
-
-    document.getElementById('contenido').value = '';
+    if(!compartir){
+        document.getElementById('contenido').value = '';
+    }
 
 
     socket.emit("nuevo-mensaje", {usuario_actual: usuario_actual, usuario_dest: usuario_dest, chatId: chatId, mensaje: mensaje});

@@ -53,13 +53,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['login'])) {
         $usuario = $usuarioModelo->login( $_POST['email'], password: $_POST['password']);
+        $usuario_resultado = json_decode(json_encode(iterator_to_array($usuario)), true);
         if ($usuario) {
             $_SESSION['email'] = $usuario['email'];
             $_SESSION['nick'] = $usuario['nick'];
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['password'] = $usuario['password'];
-            $_SESSION['seguidores'] = $usuario['seguidores'];
-            $_SESSION['siguiendo'] = $usuario['siguiendo'];
+            $_SESSION['seguidores'] = $usuario_resultado['seguidores'];
+            $_SESSION['siguiendo'] = $usuario_resultado['siguiendo'];
             $_SESSION['usuariopropio'] = json_encode($usuario);
             $_SESSION['login'] = true;
             $_SESSION['admin'] = $usuario['admin'];
@@ -87,18 +88,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['Seguir'])) {
         
-        $usuarioseguir = $usuarioModelo->obtenerUsuario($_POST['emailseguir']);
+        $usuarioseguir = $usuarioModelo->obtenerUsuarioNick($_POST['nickSeguir']);
         $seguidores = (array) $usuarioseguir['seguidores']; 
 
-        if(in_array($_POST['emailpropio'], $seguidores)){
-            $resultado = $usuarioModelo->noSeguir($_POST['emailpropio'], $_POST['emailseguir'], "noSeguir");
+        if(in_array($_POST['nickPropio'], $seguidores)){
+            $resultado = $usuarioModelo->noSeguir($_POST['nickPropio'], $_POST['nickSeguir']);
             if ($resultado) {
                 $_SESSION['mensaje'] = "Lo has dejado de seguir";
             }
         
         }else {
             
-            $resultado = $usuarioModelo->Seguir($_POST['emailpropio'], $_POST['emailseguir'], "Seguir");
+            $resultado = $usuarioModelo->Seguir($_POST['nickPropio'], $_POST['nickSeguir']);
             if ($resultado) {
                 $_SESSION['mensaje'] = "Lo has empezado a seguir";
                 
@@ -109,20 +110,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = "Error al seguir.";
             
         } else{
-            $usuarioActualizado = $usuarioModelo->obtenerUsuario($_POST['emailseguir']);
+            $usuarioActualizado = $usuarioModelo->obtenerUsuarioNick($_POST['nickSeguir']);
             $_SESSION['emailUser'] = json_encode(iterator_to_array($usuarioActualizado));
-            $usuarioActualizadox = $usuarioModelo->obtenerUsuario($_POST['emailpropio']);
+            $usuarioActualizadox = $usuarioModelo->obtenerUsuarioNick($_POST['nickPropio']);
             $_SESSION['usuariopropio'] = json_encode(iterator_to_array($usuarioActualizadox));
             if($usuarioActualizadox){
-                $_SESSION['siguiendo'] = $usuarioActualizadox['siguiendo'];
-                $_SESSION['seguidores'] = $usuarioActualizadox['seguidores'];
+                $usuario = json_decode($_SESSION['usuariopropio'], true);
+                $_SESSION['siguiendo'] = $usuario['siguiendo'];
+                $_SESSION['seguidores'] = $usuario['seguidores'];
             }
             
             
         }
         
-
-        header('Location: ../Vista/PerfilPublico.php?email_user='.$_POST['emailseguir']);
+        header('Location: ../Vista/unsetPerfilPublico.php?nick_user='.$_POST['nickSeguir']);
         exit;    
     }
 
@@ -266,5 +267,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         
         exit; 
     }
+
+    
+
 
 }
