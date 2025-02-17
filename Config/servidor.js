@@ -42,11 +42,11 @@ io.on("connection", (socket) => {
     socket.on("like-dado", (data) => {
         if(data.tipo_publicacion == "publicacion"){
             var tipo_mensaje = data.usuario + " ha dado like a tu publicación";
-            var tipo_enlace = "http://localhost:8000/Vista/Verpublicacion.php?id=" + data.id_publi;
+            var tipo_enlace = "http://localhost:8000/Controlador/Publicacion_controlador.php?publi_id=true&id=" + data.id_publi;
         }
         else if(data.tipo_publicacion == "receta"){
             var tipo_mensaje = data.usuario + " ha dado like a tu receta";
-            var tipo_enlace = "http://localhost:8000/Vista/Verreceta.php?id=" + data.id_publi;
+            var tipo_enlace = "http://localhost:8000/Controlador/Receta_controlador.php?publi_id=true&id=" + data.id_publi;
         }
         var socketID = usuarios_conectados[data.usuario_des];
         var notificacion = { 
@@ -79,11 +79,12 @@ io.on("connection", (socket) => {
     socket.on("dislike-dado", (data) => {
         if(data.tipo_publicacion == "publicacion"){
             var tipo_mensaje = data.usuario + " ha dado dislike a tu publicación"
-            var tipo_enlace = "http://localhost:8000/Vista/Verpublicacion.php?id=" + data.id_publi;
+            var tipo_enlace = "http://localhost:8000/Controlador/Publicacion_controlador.php?publi_id=true&id=" + data.id_publi;
+            
         }
         else if(data.tipo_publicacion == "receta"){
             var tipo_mensaje = data.usuario + " ha dado dislike a tu receta";
-            var tipo_enlace = "http://localhost:8000/Vista/Verreceta.php?id=" + data.id_publi;
+            var tipo_enlace = "http://localhost:8000/Controlador/Receta_controlador.php?publi_id=true&id=" + data.id_publi;
         }
 
         var socketID = usuarios_conectados[data.usuario_des];
@@ -127,7 +128,7 @@ io.on("connection", (socket) => {
             else{
                 var tipo_mensaje = data.usuario + " ha comentado tu publicación";
             }
-            var tipo_enlace = "http://localhost:8000/Vista/Verpublicacion.php?id=" + data.id_publi;
+            var tipo_enlace = "http://localhost:8000/Controlador/Publicacion_controlador.php?publi_id=true&id=" + data.id_publi;
         }
         else if(data.tipo_publicacion == "receta"){
             if(data.respuesta){
@@ -138,7 +139,7 @@ io.on("connection", (socket) => {
                 var tipo_mensaje = data.usuario + " ha comentado tu receta";
 
             }
-            var tipo_enlace = "http://localhost:8000/Vista/Verreceta.php?id=" + data.id_publi;
+            var tipo_enlace = "http://localhost:8000/Controlador/Receta_controlador.php?publi_id=true&id=" + data.id_publi;
         }
 
         
