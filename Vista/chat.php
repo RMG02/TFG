@@ -89,7 +89,7 @@ foreach ($conversacion['mensajes'] as $mensaje) {
 
 if($compartir == "publicacion"){
 
-    $texto_men = "Publicación compartida: <a href=\"http://$host/Vista/Verpublicacion.php?id=$id_comp\">Ver publicación</a>";
+    $texto_men = "Publicación compartida: <a href=\"http://$host/Controlador/Publicacion_controlador.php?publi_id=true&id=$id_comp\">Ver publicación</a>";
     $contenidoPrincipal .= <<<EOS
         <script type="text/javascript">
             enviarMensaje('{$_SESSION['nick']}', '$otroUsuario', '$conversacionId', '$texto_men', true);
@@ -97,7 +97,7 @@ if($compartir == "publicacion"){
     EOS;
 }
 else if($compartir == "receta"){
-    $texto_men = "Receta compartida: <a href=\"http://$host/Vista/Verreceta.php?id=$id_comp\">Ver receta</a>";
+    $texto_men = "Receta compartida: <a href=\"http://$host/Controlador/Receta_controlador.php?publi_id=true&id=$id_comp\">Ver receta</a>";
     $contenidoPrincipal .= <<<EOS
         <script type="text/javascript">
             enviarMensaje('{$_SESSION['nick']}', '$otroUsuario', '$conversacionId', '$texto_men', true);

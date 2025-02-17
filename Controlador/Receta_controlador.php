@@ -84,7 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(isset($_POST['editarReceta'])){
         $archivo = $_FILES['nuevo_archivo'];
         $archivo_subido = $_POST['archivo_origen'];
-
+        $esRespuesta = isset($_POST['esRespuesta']) ? true : null;
+        $id = $_POST['id_publi'] ?? ''; 
         if ($archivo && $archivo['error'] == 0) {
             $anterior = "../Recursos/multimedia/$archivo_subido";
             unlink($anterior);
@@ -94,7 +95,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $permitidas = array('jpg', 'jpeg', 'png');
             if (!in_array($extension, $permitidas)) {
                 $_SESSION['error'] = "Error al editar la receta, solo se permiten imágenes.";
-                header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
+                $resultado = $recetaModelo->obtenerReceta($id);
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['recedisponible'] = true; 
+                header('Location: ../Vista/Verreceta.php');
                 exit;
             }
             $nombre = uniqid() . '.' . $extension;
@@ -102,16 +106,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $archivo_subido = $nombre;
         }
 
-        $resultado = $recetaModelo->EditarReceta($_POST['contenido'], $_POST['id_publi'], $archivo_subido);
+        $resultado = $recetaModelo->EditarReceta($_POST['titulo'],$_POST['ingredientes'],$_POST['preparacion'],(int) $_POST['dificultad'],$_POST['tiempo'], $id, $archivo_subido);
         if ($resultado) {
             $_SESSION['mensaje'] = "Receta editada";
+            $resultadox = $recetaModelo->obtenerReceta($id);
+            $_SESSION['id_publi'] = json_encode(iterator_to_array($resultadox));
+            $_SESSION['recedisponible'] = true; 
             
         }
         else{
             $_SESSION['error'] = "Error al editar la receta.";
         }
-
-        header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
+        
+        header('Location: ../Vista/Verreceta.php');
         exit;
         
     }
@@ -269,6 +276,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $archivo = $_FILES['archivo'];
         $archivo_subido = '';
         $id_com_origen = isset($_POST['esRespuesta']) ? $_POST['id_comen'] : null;
+        $id = $_POST['id_publi'] ?? ''; 
+        
     
         if ($archivo && $archivo['error'] == 0) {
             $tmp_name = $archivo['tmp_name'];
@@ -277,7 +286,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $permitidas = array('jpg', 'jpeg', 'png');
             if (!in_array($extension, $permitidas)) {
                 $_SESSION['error'] = "Error al editar la receta, solo se permiten imágenes.";
-                header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
+                $resultado = $recetaModelo->obtenerReceta($id);
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['recedisponible'] = true; 
+                header('Location: ../Vista/Verreceta.php');
                 exit;
             }
             $nombre = uniqid() . '.' . $extension;
@@ -303,13 +315,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($resultado['resultado']) {
             $id_comentario = $resultado['id_comentario']->__toString();
             if($_POST['usuario_origen'] != $_SESSION['nick']){
-                echo json_encode(['success' => true, 'id_comentario' => $id_comentario, 'redirect_url' => '../Vista/Verreceta.php?id='.$_POST['id_publi']]);
+                $resultado = $recetaModelo->obtenerReceta($id);
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['recedisponible'] = true; 
+                echo json_encode(['success' => true, 'id_comentario' => $id_comentario, 'redirect_url' => '/Controlador/Receta_controlador.php?publi_id=true&id=' . $id]);
             }
             else{
-                header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
+                $resultado = $recetaModelo->obtenerReceta($id);
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['recedisponible'] = true; 
+                header('Location: ../Vista/Verreceta.php');
             }
         } else {
-            header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
+            $resultado = $recetaModelo->obtenerReceta($id);
+            $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+            $_SESSION['recedisponible'] = true; 
+            header('Location: ../Vista/Verreceta.php');
         }
         exit;
     }
@@ -318,7 +339,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if(isset($_POST['multi'])){
             unlink($_POST['multi']);
         }
-        
+        $id = $_POST['id_publi'] ?? ''; 
         $esRespuesta = isset($_POST['esRespuesta']) ? true : null;
         if($esRespuesta){
             $NotificacionModelo->borrarNotificacionComentario($_POST['id_publi'], $_POST['id_comen'], $_POST['id_comentario_origen']);
@@ -332,9 +353,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $_SESSION['error'] = "Error al eliminar el comentario.";
         }
-        
+        $resultado = $recetaModelo->obtenerReceta($id);
+        $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+        $_SESSION['recedisponible'] = true; 
        
-        header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
+        header('Location: ../Vista/Verreceta.php');
         exit;
     }
 
@@ -343,6 +366,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $archivo = $_FILES['nuevo_archivo'];
         $archivo_subido = $_POST['archivo_origen'];
         $esRespuesta = isset($_POST['esRespuesta']) ? true : null;
+        $id = $_POST['id_publi'] ?? ''; 
 
         if ($archivo && $archivo['error'] == 0) {
             $anterior = "../Recursos/multimedia/$archivo_subido";
@@ -353,7 +377,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $permitidas = array('jpg', 'jpeg', 'png');
             if (!in_array($extension, $permitidas)) {
                 $_SESSION['error'] = "Error al editar la receta, solo se permiten imágenes.";
-                header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
+                $resultado = $recetaModelo->obtenerReceta($id);
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['recedisponible'] = true; 
+                header('Location: ../Vista/Verreceta.php');
                 exit;
             }
             $nombre = uniqid() . '.' . $extension;
@@ -367,8 +394,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $_SESSION['error'] = "Error al editar el comentario.";
         }
-        
-        header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
+        $resultado = $recetaModelo->obtenerReceta($id);
+        $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+        $_SESSION['recedisponible'] = true; 
+        header('Location: ../Vista/Verreceta.php');
         exit;
     }
 

@@ -92,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(isset($_POST['editarPublicacion'])){
         $archivo = $_FILES['nuevo_archivo'];
         $archivo_subido = $_POST['archivo_origen'];
+        $id = $_POST['id_publi'] ?? '';  
 
         if ($archivo && $archivo['error'] == 0) {
             $anterior = "../Recursos/multimedia/$archivo_subido";
@@ -102,7 +103,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $permitidas = array('jpg', 'jpeg', 'png');
             if (!in_array($extension, $permitidas)) {
                 $_SESSION['error'] = "Error al modificar la publicación, solo se permiten imágenes.";
-                header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+                $resultado = $publicacionModelo->obtenerPublicacion($id);
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['publidisponible'] = true;  
+                header('Location: ../Vista/Verpublicacion.php');
                 exit;
             }
             $nombre = uniqid() . '.' . $extension;
@@ -117,9 +121,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         else{
             $_SESSION['error'] = "Error al editar la publicación.";
-        }
-
-        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+        } 
+        $resultado = $publicacionModelo->obtenerPublicacion($id);
+        $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+        $_SESSION['publidisponible'] = true;  
+        header('Location: ../Vista/Verpublicacion.php');
         exit;
         
     }
@@ -147,7 +153,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_SESSION['notificaciones_usuario'])) {
             unset($_SESSION['notificaciones_usuario']);            
         }
-
         $NotificacionModelo->borrarNotificacion($_POST['id_publi'], $_SESSION['nick'], "publicacion");
         $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
         $publicacion = json_decode(json_encode($resultado), true);
@@ -277,6 +282,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $archivo = $_FILES['archivo'];
         $archivo_subido = '';
         $id_com_origen = isset($_POST['esRespuesta']) ? $_POST['id_comen'] : null;
+        $id = $_POST['id_publi'] ?? ''; 
     
         if ($archivo && $archivo['error'] == 0) {
             $tmp_name = $archivo['tmp_name'];
@@ -285,7 +291,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $permitidas = array('jpg', 'jpeg', 'png');
             if (!in_array($extension, $permitidas)) {
                 $_SESSION['error'] = "Error al crear el comentario, solo se permiten imágenes.";
-                header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);        
+                $resultado = $publicacionModelo->obtenerPublicacion($id);
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['publidisponible'] = true;
+                header('Location: ../Vista/Verpublicacion.php');        
                 exit;
             }
             $nombre = uniqid() . '.' . $extension;
@@ -310,14 +319,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($resultado['resultado']) {
             $id_comentario = $resultado['id_comentario']->__toString();
             if($_POST['usuario_origen'] != $_SESSION['nick']){
-                $mirar = json_encode(['success' => true, 'id_comentario' => $id_comentario, 'redirect_url' => '../Vista/Verpublicacion.php?id='.$_POST['id_publi']]);
-                echo json_encode(['success' => true, 'id_comentario' => $id_comentario, 'redirect_url' => '../Vista/Verpublicacion.php?id='.$_POST['id_publi']]);
+                $resultado = $publicacionModelo->obtenerPublicacion($id);
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['publidisponible'] = true;
+                $mirar = json_encode(['success' => true,'id_comentario' => $id_comentario,'redirect_url' => '/Controlador/Publicacion_controlador.php?publi_id=true&id=' . $id]);
+                echo json_encode(['success' => true, 'id_comentario' => $id_comentario, 'redirect_url' => '/Controlador/Publicacion_controlador.php?publi_id=true&id=' . $id]);
             }
             else{
-                header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);        
+                $resultado = $publicacionModelo->obtenerPublicacion($id);
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['publidisponible'] = true;     
+                header('Location: ../Vista/Verpublicacion.php');   
             }
         } else {
-            header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);        
+                $resultado = $publicacionModelo->obtenerPublicacion($id);
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['publidisponible'] = true;   
+                header('Location: ../Vista/Verpublicacion.php');    
         }
         exit;
         
@@ -329,6 +347,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         $esRespuesta = isset($_POST['esRespuesta']) ? true : null;
+        $id = $_POST['id_publi'] ?? ''; 
         
         if($esRespuesta){
             $NotificacionModelo->borrarNotificacionComentario($_POST['id_publi'], $_POST['id_comen'], $_POST['id_comentario_origen']);
@@ -343,9 +362,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $_SESSION['error'] = "Error al eliminar el comentario.";
         }
-        
+
+        $resultado = $publicacionModelo->obtenerPublicacion($id);
+        $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+        $_SESSION['publidisponible'] = true; 
        
-        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+        header('Location: ../Vista/Verpublicacion.php');
         exit;
     }
 
@@ -354,6 +376,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $archivo = $_FILES['nuevo_archivo'];
         $archivo_subido = $_POST['archivo_origen'];
         $esRespuesta = isset($_POST['esRespuesta']) ? true : null;
+        $id = $_POST['id_publi'] ?? ''; 
 
         if ($archivo && $archivo['error'] == 0) {
             $anterior = "../Recursos/multimedia/$archivo_subido";
@@ -364,7 +387,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $permitidas = array('jpg', 'jpeg', 'png');
             if (!in_array($extension, $permitidas)) {
                 $_SESSION['error'] = "Error al editar el comentario, solo se permiten imágenes.";
-                header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+                $resultado = $publicacionModelo->obtenerPublicacion($id);
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['publidisponible'] = true;  
+                header('Location: ../Vista/Verpublicacion.php');
                 exit;
             }
             $nombre = uniqid() . '.' . $extension;
@@ -378,8 +404,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $_SESSION['error'] = "Error al editar el comentario.";
         }
-        
-        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+        $resultado = $publicacionModelo->obtenerPublicacion($id);
+        $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+        $_SESSION['publidisponible'] = true;  
+        header('Location: ../Vista/Verpublicacion.php');
         exit;
     }
 

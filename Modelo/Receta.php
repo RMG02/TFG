@@ -345,16 +345,19 @@ class Receta {
         return $this->collection->updateOne($filter, $update);
             
     }
-    
 
-    public function EditarReceta($texto, $id, $media) {
+    public function EditarReceta($titulo,$ingredientes,$preparacion,$dificultad,$tiempo, $id, $media) {
         
         $Id = new ObjectId($id);
         $filter = ['_id' => $Id];
         $update = [
             '$set' => [
                 'multimedia' => $media,
-                'contenido' => $texto,
+                'titulo' => $titulo,
+                'ingredientes' => $ingredientes,
+                'preparacion' => $preparacion,
+                'dificultad' => $dificultad,
+                'tiempo' => $tiempo,
                 'created_at' => date(DATE_ISO8601)
             ]
         ];
