@@ -197,6 +197,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
     if (isset($_GET['publicoemail'])) {
         $email = $_GET['email_Usur'] ?? '';
+
+        /*if(isset($_SESSION['nickUserpublico'] )){
+            unset($_SESSION['nickUserpublico'] );
+        } */
+
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) { 
             $_SESSION['usudisponible'] = false;
             $_SESSION['emailUser'] = "";
@@ -232,6 +237,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if (isset($_GET['publiconick'])) {
         $nick = $_GET['nick_Usur'] ?? '';
+
+        /*if(isset($_SESSION['emailUserpublico'])){
+            unset($_SESSION['emailUserpublico']);
+        }*/
 
         if (empty($nick)) { 
             $_SESSION['usudisponible'] = false;

@@ -219,8 +219,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
-        header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
-        exit;    
+        if(isset($_POST['perfilPublico'])){
+            $_SESSION['verreceta'] = true;
+            header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_user']);
+            exit;
+        }
+
+        if (!preg_match('/^[a-f0-9]{24}$/i', $_POST['id_publi'])) { 
+            $_SESSION['recedisponible'] = false;
+            $_SESSION['id_publi'] = "";
+        } else {
+            $resultado = $recetaModelo->obtenerReceta($_POST['id_publi']);
+    
+            if ($resultado) {
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['recedisponible'] = true;
+            } else {
+                $_SESSION['recedisponible'] = false;
+                $_SESSION['id_publi'] = NULL;
+            }
+        }
+        header('Location: ../Vista/Verreceta.php'); 
+        exit; 
+            
     }
     
     if (isset($_POST['dardislike'])) {
@@ -267,8 +288,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
-        header('Location: ../Vista/Verreceta.php?id='.$_POST['id_publi']);
-        exit;  
+        if(isset($_POST['perfilPublico'])){
+            $_SESSION['verreceta'] = true;
+            header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_user']);
+            exit;
+        }
+
+        if (!preg_match('/^[a-f0-9]{24}$/i', $_POST['id_publi'])) { 
+            $_SESSION['recedisponible'] = false;
+            $_SESSION['id_publi'] = "";
+        } else {
+            $resultado = $recetaModelo->obtenerReceta($_POST['id_publi']);
+    
+            if ($resultado) {
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['recedisponible'] = true;
+            } else {
+                $_SESSION['recedisponible'] = false;
+                $_SESSION['id_publi'] = NULL;
+            }
+        }
+        header('Location: ../Vista/Verreceta.php'); 
+        exit;   
         
     }
 

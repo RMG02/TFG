@@ -181,8 +181,9 @@ if($_SESSION['publidisponible'] == false){
                             }
                             else{
                                 $contenidoPrincipal .= <<<EOS
+                                    <input type="text" id="buscador-compartir" onkeyup="filtrarUsuariosCompartir()" placeholder="Buscar por nick...">
                                     <ul>
-                                        <li>
+                                       
                                 EOS;
                                 foreach ($conversaciones as $conv) {
                                     $usuarios = $conv['usuarios'];
@@ -197,6 +198,7 @@ if($_SESSION['publidisponible'] == false){
                                 }
                                 foreach ($usuarios_a_mostrar as $usuario) {
                                     $contenidoPrincipal .= <<<EOS
+                                        <li>
                                             <form method="POST" action="../Controlador/Conversaciones_controlador.php">
                                                 <input type="hidden" name="usuario1" value="{$_SESSION['nick']}">
                                                 <input type="hidden" name="usuario2" value="$usuario">
@@ -204,11 +206,11 @@ if($_SESSION['publidisponible'] == false){
                                                 <input type="hidden" name="id_comp" value=$id>
                                                 <button type="submit" class="boton_lista" name="abrirConversacion">$usuario</button>
                                             </form>
+                                        </li>
                                         
                                     EOS;
                                 }
                                 $contenidoPrincipal .= <<<EOS
-                                        </li>
                                     </ul>
                                 EOS;
                             }

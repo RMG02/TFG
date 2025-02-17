@@ -274,7 +274,7 @@ io.on("connection", (socket) => {
 
     socket.on("follow", async (data) => {
         var mensaje = data.usuario_actual + " te ha seguido";
-        var enlace = "http://localhost:8000/Vista/PerfilPublico.php?nick_user=" + data.usuario_actual;
+        var enlace = "http://localhost:8000/Vista/unsetPerfilPublico.php?nick_user=" + data.usuario_actual;
 
         var socketID = usuarios_conectados[data.usuario_dest];
         var notificacion = { 
@@ -312,7 +312,7 @@ io.on("connection", (socket) => {
 
     socket.on("unfollow", async (data) => {
         var mensaje = data.usuario_actual + " te ha dejado de seguir";
-        var enlace = "http://localhost:8000/Vista/PerfilPublico.php?nick_user=" + data.usuario_actual;
+        var enlace = "http://localhost:8000/Vista/unsetPerfilPublico.php?nick_user=" + data.usuario_actual;
 
         var socketID = usuarios_conectados[data.usuario_dest];
         var notificacion = { 

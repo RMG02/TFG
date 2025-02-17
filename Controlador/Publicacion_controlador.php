@@ -225,7 +225,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
-        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+        if(isset($_POST['perfilPublico'])){
+            $_SESSION['verreceta'] = false;
+            header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_user']);
+            exit;
+        }
+
+        if (!preg_match('/^[a-f0-9]{24}$/i', $_POST['id_publi'])) { 
+            $_SESSION['publidisponible'] = false;
+            $_SESSION['id_publi'] = "";
+        } else {
+            $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
+    
+            if ($resultado) {
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['publidisponible'] = true;
+            } else {
+                $_SESSION['publidisponible'] = false;
+                $_SESSION['id_publi'] = NULL;
+            }
+        }
+    
+        header('Location: ../Vista/Verpublicacion.php');
         exit;    
     }
     
@@ -273,7 +294,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
-        header('Location: ../Vista/Verpublicacion.php?id='.$_POST['id_publi']);
+        if(isset($_POST['perfilPublico'])){
+            $_SESSION['verreceta'] = false;
+            header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_user']);
+            exit;
+        }
+
+        if (!preg_match('/^[a-f0-9]{24}$/i', $_POST['id_publi'])) { 
+            $_SESSION['publidisponible'] = false;
+            $_SESSION['id_publi'] = "";
+        } else {
+            $resultado = $publicacionModelo->obtenerPublicacion($_POST['id_publi']);
+    
+            if ($resultado) {
+                $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
+                $_SESSION['publidisponible'] = true;
+            } else {
+                $_SESSION['publidisponible'] = false;
+                $_SESSION['id_publi'] = NULL;
+            }
+        }
+    
+        header('Location: ../Vista/Verpublicacion.php');
         exit;  
         
     }

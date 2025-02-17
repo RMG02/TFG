@@ -50,10 +50,10 @@ if($emailUsuario){
     
     if (!isset($_SESSION['emailUser'])) {
         if($verreceta == "true"){
-            header('Location: ../Controlador/Usuario_controlador.php?Usuarion=true&verreceta=true&email_Usur='.$emailUsuario);
+            header('Location: ../Controlador/Usuario_controlador.php?publicoemail=true&verreceta=true&email_Usur='.$emailUsuario);
         }
         else{
-            header('Location: ../Controlador/Usuario_controlador.php?Usuarion=true&email_Usur='.$emailUsuario);
+            header('Location: ../Controlador/Usuario_controlador.php?publicoemail=true&email_Usur='.$emailUsuario);
         }
         exit;
     }
@@ -76,10 +76,10 @@ else if($nickUsuario){
 
     if (!isset($_SESSION['nickUser'])) {
         if($verreceta){
-            header('Location: ../Controlador/Usuario_controlador.php?UsuarionNick=true&verreceta=true&nick_Usur='.$nickUsuario);
+            header('Location: ../Controlador/Usuario_controlador.php?publiconick=true&verreceta=true&nick_Usur='.$nickUsuario);
         }
         else{
-            header('Location: ../Controlador/Usuario_controlador.php?UsuarionNick=true&nick_Usur='.$nickUsuario);
+            header('Location: ../Controlador/Usuario_controlador.php?publiconick=true&nick_Usur='.$nickUsuario);
         }
         exit;
     }
@@ -177,18 +177,28 @@ if($_SESSION['usudisponible'] == false){
             <div class="dropdown">
                     <button class="dropbtn">⋮</button>
                     <div class="dropdown-content">
-                        <form method="POST" action="../Vista/PerfilPublico.php?email_user=$email&verreceta=false">
+                        <form method="POST" action="../Vista/unsetPerfilPublico.php?email_user=$email&verreceta=false">
                             <button type="submit" class="boton_lista" name="publicaciones">Ver publicaciones</button>
                         </form>
-                        <form method="POST" action="../Vista/PerfilPublico.php?email_user=$email&verreceta=true">
+                        <form method="POST" action="../Vista/unsetPerfilPublico.php?email_user=$email&verreceta=true">
                             <button type="submit" class="boton_lista" name="publicaciones">Ver recetas</button>
                         </form>
                     </div>         
             </div>
             
             
-
-            <h3>Publicaciones</h3>
+        EOS;
+        if($verreceta == "true"){
+            $contenidoPrincipal .= <<<EOS
+                <h3>Recetas</h3>
+            EOS;
+        }
+        else{
+            $contenidoPrincipal .= <<<EOS
+                <h3>Publicaciones</h3>
+            EOS;
+        }
+        $contenidoPrincipal .= <<<EOS
                 <input type="text" id="buscador" onkeyup="filtrarPerfil()" placeholder="Buscar por texto...">
                 <div id="publicaciones">
         EOS;
@@ -232,23 +242,25 @@ if($_SESSION['usudisponible'] == false){
                         <strong>$nick</strong> <span class="tweet-time">$Hora</span>
                     </div>
                     <div class="tweet-content">
-                            $multi
                             <p>$titulo</p>
+                            $multi       
                             <div class="comentarios-icon">
                                 <i class="fas fa-comments"></i> $num_comentarios
                             </div>
                         </div>
                         <div class="reacciones-icon">
-                                <form method="POST" action="../Controlador/Receta_controlador.php">
+                                <form method="POST" action="../Controlador/Receta_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
                                     
                                     <button type="submit" name="darlike" class="btn-like">
                                         <input type="hidden" name="id_publi" value="$id">
                                         <input type="hidden" name="nick_user" value="$nick">
+                                        <input type="hidden" name="perfilPublico" value=true>
                                         <i class="fas fa-thumbs-up"></i> $numlikes
                                     </button>
                                     <button type="submit" name="dardislike" class="btn-dislike">
                                         <input type="hidden" name="id_publi" value="$id">
                                         <input type="hidden" name="nick_user" value="$nick">
+                                        <input type="hidden" name="perfilPublico" value=true>
                                         <i class="fas fa-thumbs-down"></i> $numdislikes
                                     </button>
                                 </form>
@@ -315,11 +327,13 @@ if($_SESSION['usudisponible'] == false){
                                     <button type="submit" name="darlike" class="btn-like">
                                         <input type="hidden" name="id_publi" value="$id">
                                         <input type="hidden" name="nick_user" value="$nick">
+                                        <input type="hidden" name="perfilPublico" value=true>
                                         <i class="fas fa-thumbs-up"></i> $numlikes
                                     </button>
                                     <button type="submit" name="dardislike" class="btn-dislike">
                                         <input type="hidden" name="id_publi" value="$id">
                                         <input type="hidden" name="nick_user" value="$nick">
+                                        <input type="hidden" name="perfilPublico" value=true>
                                         <i class="fas fa-thumbs-down"></i> $numdislikes
                                     </button>
                                 </form>

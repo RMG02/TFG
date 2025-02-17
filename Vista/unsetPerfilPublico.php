@@ -8,8 +8,33 @@ if (session_status() == PHP_SESSION_NONE) {
 $emailUsuario = $_GET['email_user'] ?? null;
 $nickUsuario = $_GET['nick_user'] ?? null;
 
+if(isset($_GET['verreceta'])){
+    if($_GET['verreceta'] == "true"){
+        $_SESSION['verreceta'] = true;
+    }
+    else{
+        $_SESSION['verreceta'] = false;
+    }
+}
+
 if(isset($_SESSION['publicacionesUsuarioPublico'])){
     unset($_SESSION['publicacionesUsuarioPublico']);
+}
+
+if(isset($_SESSION['nickUserpublico'] )){
+    unset($_SESSION['nickUserpublico'] );
+} 
+
+if(isset($_SESSION['emailUserpublico'])){
+    unset($_SESSION['emailUserpublico']);
+}
+
+if(isset($_SESSION['emailUser'])){
+    unset($_SESSION['emailUser']);
+}
+
+if(isset($_SESSION['nickUser'])){
+    unset($_SESSION['nickUser']);
 }
 
 if(isset($_SESSION['RecetasUsuarioPublico'])){

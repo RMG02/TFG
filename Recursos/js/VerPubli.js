@@ -39,7 +39,7 @@ function Perfil() {
         };
     }
 
-    j = 0;
+    j = 0; k = 0;
     for (let i = 0; i < comentarios.length; i++) {
         comentarios[i].onclick = function() {
             var modal = document.getElementById("comentario-" + i);
@@ -56,11 +56,12 @@ function Perfil() {
         }
         var modal = document.getElementById("respuesta-" + i);
         if(modal){
-            responder[i].onclick = function() {
+            responder[k].onclick = function() {
                 var modal = document.getElementById("respuesta-" + i);
                 console.log(modal);
                 modal.style.display = "block";
             };
+            k++;
         }
        
     }
@@ -125,6 +126,26 @@ function cerrar_modal_compartir(id){
     var modal = document.getElementById(id);
     modal.style.display = "none";
 }
+
+function filtrarUsuariosCompartir() {
+    var busqueda = document.getElementById('buscador-compartir').value.toLowerCase();
+    var nombres = document.getElementsByTagName('li'); // Obtiene todos los <li>
+    
+    for (var i = 0; i < nombres.length; i++) {
+        console.log(nombres.length)
+        var boton = nombres[i].getElementsByTagName("button")[0]; // Busca el botón dentro del <li>
+        if (boton) {
+            console.log(nick)
+            var nick = boton.textContent.toLowerCase(); // Obtiene solo el texto del botón sin espacios
+            if (nick.startsWith(busqueda)) {
+                nombres[i].style.display = ""; // Muestra el usuario si coincide
+            } else {
+                nombres[i].style.display = "none"; // Oculta el usuario si no coincide
+            }
+        }
+    }
+}
+
 
 document.getElementById('download-btn').addEventListener('click', function () {
     
