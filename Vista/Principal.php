@@ -45,7 +45,8 @@ date_default_timezone_set('Europe/Madrid');
 $publicaciones = json_decode($_SESSION['publicaciones'], true);
 $tituloPagina = "Página Principal";
 $usuario = json_decode($_SESSION['usuariopropio'], true);
-$siguiendo = $usuario['siguiendo'];
+$siguiendo = is_array($usuario['siguiendo']) ? $usuario['siguiendo'] : [];
+var_dump($siguiendo);
 
 
 if (isset($_SESSION['publicaciones'])) {
@@ -101,7 +102,7 @@ if($verseguidores == "true"){
 
 foreach ($publicaciones as $publicacion) {
    
-    if (($verseguidores == "false") || ($verseguidores == "true" && in_array($publicacion['email'],$siguiendo, false)) ||  $publicacion['email'] == $_SESSION['email'] ) {
+    if (($verseguidores == "false") || ($verseguidores === "true" && in_array($publicacion['nick'],$siguiendo, true)) ||  $publicacion['email'] == $_SESSION['email'] ) {
         $nickuser = $_SESSION['nick'];
         $nick = $publicacion['nick'];
         $email = $publicacion['email'];

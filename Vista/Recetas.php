@@ -105,7 +105,7 @@ foreach ($recetas as $receta) {
 
     
 
-    if (($verseguidores == "false") || ($verseguidores == "true" && in_array($receta['email'],$siguiendo, false))|| $receta['email'] == $_SESSION['email'] ) {
+    if (($verseguidores == "false") || ($verseguidores == "true" && in_array($receta['nick'],$siguiendo, false))|| $receta['email'] == $_SESSION['email'] ) {
             $nickuser = $_SESSION['nick'];
             $email = $receta['email'];
             $nick = $receta['nick'];
