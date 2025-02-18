@@ -5,7 +5,7 @@ var io = require("socket.io")(server);
 var axios = require('axios'); 
 var usuarios_conectados = {}; 
 var contador_notificaciones = {};
-
+var usuarios_en_chat = {}
 
   
 io.on("connection", (socket) => {
@@ -19,10 +19,25 @@ io.on("connection", (socket) => {
                 io.to(usuarios_conectados[data.usuario]).emit("actualizar-contador", contador_notificaciones[data.usuario]);
                 delete contador_notificaciones[data.usuario];
             }
-            
-            
+
         }
     });
+
+    // Cuando el usuario entra al chat, puedes actualizar su estado
+    socket.on('entrar_chat', (data) => {
+        usuarios_en_chat[data.usuario] = data.chatId;
+        io.emit("actualizar-estado-usuarios", Object.keys(usuarios_en_chat));
+
+
+    });
+
+    // Cuando el usuario sale del chat, actualiza su estado
+    socket.on('salir_chat', (usuario) => {
+        delete usuarios_en_chat[usuario];
+        io.emit("actualizar-estado-usuarios", Object.keys(usuarios_en_chat));
+
+    });
+
 
     socket.on("decrementar-reaccion", (data) => {
         var socketID = usuarios_conectados[data.usuario];
@@ -177,6 +192,7 @@ io.on("connection", (socket) => {
 
         var socketID = usuarios_conectados[data.usuario_dest];
         var socketIDPer = usuarios_conectados[data.usuario_actual];
+        var enviar_noti = true;
 
         var notificacion = { 
             usuario_publi: data.usuario_dest, 
@@ -198,7 +214,12 @@ io.on("connection", (socket) => {
         } 
 
         if (socketID) {
-            io.to(socketID).emit("notificacion", notificacion);
+            if(usuarios_en_chat.hasOwnProperty(data.usuario_dest) && usuarios_en_chat[data.usuario_dest] == data.chatId){
+                enviar_noti = false;
+            }
+            else{
+                io.to(socketID).emit("notificacion", notificacion);
+            }
             io.to(socketID).emit("mostrar-mensaje", men);
             
         }
@@ -207,15 +228,18 @@ io.on("connection", (socket) => {
 
         }
         
+        if(enviar_noti){
+            // Usar URLSearchParams para formatear los datos
+            var params = new URLSearchParams();
+            params.append('notificacion', JSON.stringify(notificacion));
+            axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)      
+
+        }
         
-        // Usar URLSearchParams para formatear los datos
-        var params = new URLSearchParams();
-        params.append('notificacion', JSON.stringify(notificacion));
 
         var param_men = new URLSearchParams();
         param_men.append('AgregarMensaje', JSON.stringify(men));
 
-        axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)      
 
         axios.post('http://localhost:8000/Controlador/Conversaciones_controlador.php', param_men)
             .then(response => {
@@ -360,6 +384,7 @@ io.on("connection", (socket) => {
                 break;
             }
         }
+
     });
 });
 

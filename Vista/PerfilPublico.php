@@ -253,13 +253,15 @@ if($_SESSION['usudisponible'] == false){
                                     
                                     <button type="submit" name="darlike" class="btn-like">
                                         <input type="hidden" name="id_publi" value="$id">
-                                        <input type="hidden" name="nick_user" value="$nick">
+                                        <input type="hidden" name="nick_user" value="$nickuser">
+                                        <input type="hidden" name="nick_perfil" value="$nick">
                                         <input type="hidden" name="perfilPublico" value=true>
                                         <i class="fas fa-thumbs-up"></i> $numlikes
                                     </button>
                                     <button type="submit" name="dardislike" class="btn-dislike">
                                         <input type="hidden" name="id_publi" value="$id">
-                                        <input type="hidden" name="nick_user" value="$nick">
+                                        <input type="hidden" name="nick_user" value="$nickuser">
+                                        <input type="hidden" name="nick_perfil" value="$nick">
                                         <input type="hidden" name="perfilPublico" value=true>
                                         <i class="fas fa-thumbs-down"></i> $numdislikes
                                     </button>
@@ -326,13 +328,15 @@ if($_SESSION['usudisponible'] == false){
                                     
                                     <button type="submit" name="darlike" class="btn-like">
                                         <input type="hidden" name="id_publi" value="$id">
-                                        <input type="hidden" name="nick_user" value="$nick">
+                                        <input type="hidden" name="nick_user" value="$nickuser">
+                                        <input type="hidden" name="nick_perfil" value="$nick">
                                         <input type="hidden" name="perfilPublico" value=true>
                                         <i class="fas fa-thumbs-up"></i> $numlikes
                                     </button>
                                     <button type="submit" name="dardislike" class="btn-dislike">
                                         <input type="hidden" name="id_publi" value="$id">
-                                        <input type="hidden" name="nick_user" value="$nick">
+                                        <input type="hidden" name="nick_user" value="$nickuser">
+                                        <input type="hidden" name="nick_perfil" value="$nick">
                                         <input type="hidden" name="perfilPublico" value=true>
                                         <i class="fas fa-thumbs-down"></i> $numdislikes
                                     </button>

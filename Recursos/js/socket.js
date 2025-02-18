@@ -41,46 +41,44 @@ socket.on("notificacion", function(data) {
             mostrarNotificacion = true;
         }
 
-        if (!mostrarNotificacion) {
+        if (mostrarNotificacion) {
+            
+            var divNotificaciones = document.getElementById("notificaciones");
+
+            var notificacion = document.createElement("div");
+            notificacion.className = "notificacion";
+            notificacion.innerHTML = "<strong>" + data.mensaje + "</strong>";
+
+            divNotificaciones.appendChild(notificacion);
+
             actualizarContadorNotificaciones(1);
-            return;
-        }
 
-        var divNotificaciones = document.getElementById("notificaciones");
-
-        var notificacion = document.createElement("div");
-        notificacion.className = "notificacion";
-        notificacion.innerHTML = "<strong>" + data.mensaje + "</strong>";
-
-        divNotificaciones.appendChild(notificacion);
-
-        actualizarContadorNotificaciones(1);
-
-        // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
-        fetch('../../Controlador/Notificacion_controlador.php', {
-            method: 'POST',
-            body: new URLSearchParams({
-                'accion': 'unset'
+            // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
+            fetch('../../Controlador/Notificacion_controlador.php', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'accion': 'unset'
+                })
             })
-        })
-        .then(response => response.json())
-        .then(respuesta => {
-            if (respuesta.status === 'success') {
-                console.log('Variable de sesión eliminada correctamente');
-            } else {
-                console.error('Error al eliminar la variable de sesión:', respuesta.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error en la solicitud:', error);
-        });
+            .then(response => response.json())
+            .then(respuesta => {
+                if (respuesta.status === 'success') {
+                    console.log('Variable de sesión eliminada correctamente');
+                } else {
+                    console.error('Error al eliminar la variable de sesión:', respuesta.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+            });
 
-        setTimeout(function() {
-            notificacion.classList.add("hidden");
             setTimeout(function() {
-                divNotificaciones.removeChild(notificacion);
-            }, 300);
-        }, 10000);
+                notificacion.classList.add("hidden");
+                setTimeout(function() {
+                    divNotificaciones.removeChild(notificacion);
+                }, 300);
+            }, 10000);
+        }
     })
     .catch(error => {
         console.error("Error al obtener variables de sesión:", error);
@@ -141,6 +139,19 @@ socket.on("mostrar-mensaje", (data) => {
         <p><small>${new Date(data.hora).toLocaleString()}</small></p>  
     `;
 
+    var hijos = chatContainer.children;
+    var tieneMensajes = true;
+    for (var i = 0; i < hijos.length; i++) {
+        if (hijos[i].id == "mensajeVacio") {
+            tieneMensajes = false;
+            break;
+        }
+    }
+    if (!tieneMensajes) {
+        var mensajeVacio = document.getElementById("mensajeVacio")
+        chatContainer.removeChild(mensajeVacio);
+    }
+    
     chatContainer.appendChild(mensajeDiv);
 
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -168,7 +179,15 @@ socket.on("elim-mensaje", (data) => {
     if (mensajeDiv) {
         chatContainer.removeChild(mensajeDiv);
     } 
-
+    var hijos = chatContainer.children;
+    
+    if (hijos.length == 0) {
+        var mensajeVacio = document.createElement("h2");
+        mensajeVacio.id = "mensajeVacio";
+        mensajeVacio.style.color = "white";
+        mensajeVacio.textContent = "No hay mensajes";
+        chatContainer.appendChild(mensajeVacio);
+    }
     
 });
 
@@ -358,6 +377,20 @@ function enviarMensaje(usuario_actual, usuario_dest, chatId, mensaje, compartir)
         <p id="contenido-">${mensaje}</p>
         <p><small>${new Date(new Date().toISOString()).toLocaleString()}</small></p> 
     `;
+
+    var hijos = chatContainer.children;
+    var tieneMensajes = true;
+    for (var i = 0; i < hijos.length; i++) {
+        if (hijos[i].id == "mensajeVacio") {
+            tieneMensajes = false;
+            break;
+        }
+    }
+    if (!tieneMensajes) {
+        var mensajeVacio = document.getElementById("mensajeVacio")
+        chatContainer.removeChild(mensajeVacio);
+    }
+
     chatContainer.appendChild(mensajeDiv);
 
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -408,7 +441,7 @@ function NuevoComentario(event, nickuser, nick, id_publi, tipo_publicacion, resp
     
 
 function eliminarMensaje(mensajeId, usuario) {
-    
+    var chatContainer = document.getElementById("chat-cont");  
     var mensajeDiv = document.getElementById("mensajeEnviado-" + mensajeId);
     var modalDiv = document.getElementById("mensaje-" + mensajeId);
 
@@ -417,6 +450,16 @@ function eliminarMensaje(mensajeId, usuario) {
     } 
     if (modalDiv) {
         modalDiv.parentNode.removeChild(modalDiv);
+    }
+
+    var hijos = chatContainer.children;
+    
+    if (hijos.length == 0) {
+        var mensajeVacio = document.createElement("h2");
+        mensajeVacio.id = "mensajeVacio";
+        mensajeVacio.style.color = "white";
+        mensajeVacio.textContent = "No hay mensajes";
+        chatContainer.appendChild(mensajeVacio);
     }
 
     socket.emit("eliminar-mensaje", { mensajeId: mensajeId, usuario: usuario});

@@ -663,22 +663,25 @@ footer p {
 }
 
 
-/* Contenedor principal de los mensajes */
 .chat-container {
     width: 80%;
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #1e293b, #334155); /* Azul grisáceo oscuro */
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow-y: auto;
     max-height: 500px;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    border: 1px solid #475569;
 }
+
+
+
 
 /* Estilo para los mensajes enviados */
 .mensaje_enviado {

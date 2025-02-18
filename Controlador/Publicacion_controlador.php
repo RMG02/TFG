@@ -227,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if(isset($_POST['perfilPublico'])){
             $_SESSION['verreceta'] = false;
-            header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_user']);
+            header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_perfil']);
             exit;
         }
 
@@ -296,7 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if(isset($_POST['perfilPublico'])){
             $_SESSION['verreceta'] = false;
-            header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_user']);
+            header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_perfil']);
             exit;
         }
 

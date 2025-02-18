@@ -46,7 +46,6 @@ $publicaciones = json_decode($_SESSION['publicaciones'], true);
 $tituloPagina = "Página Principal";
 $usuario = json_decode($_SESSION['usuariopropio'], true);
 $siguiendo = is_array($usuario['siguiendo']) ? $usuario['siguiendo'] : [];
-var_dump($siguiendo);
 
 
 if (isset($_SESSION['publicaciones'])) {

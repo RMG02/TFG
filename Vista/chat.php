@@ -39,7 +39,7 @@ foreach ($conversacion['usuarios'] as $usu){
 
 // Contenido principal
 $contenidoPrincipal = <<<EOS
-    <a href="../Vista/unsetPerfilPublico.php?nick_user=$otroUsuario" class="nick-link"><h1>$otroUsuario</h1></a>
+    <a href="../Vista/unsetPerfilPublico.php?nick_user=$otroUsuario" class="nick-link"><h1>$otroUsuario <span id="estado">🔴</span> </h1></a>
     <div id="chat-cont" class="chat-container">
 EOS;
 
@@ -107,7 +107,7 @@ else if($compartir == "receta"){
 else{
     if(count($conversacion['mensajes']) == 0){
         $contenidoPrincipal .= <<<EOS
-            <h2>No hay mensajes</h2>
+            <h2 id="mensajeVacio" style="color: white;">No hay mensajes</h2>
         EOS;
     }
     
@@ -130,3 +130,29 @@ require_once __DIR__ . "/plantillas/plantilla.php";
 ?>
 
 <script src="../Recursos/js/chat.js"></script>
+
+<script type="text/javascript">
+    window.onload = function() {
+        var conversacionId = "<?php echo $conversacionId; ?>";
+        var usuarioActual = "<?php echo $_SESSION['nick']; ?>";
+        
+        socket.emit('entrar_chat', { usuario: usuarioActual, chatId: conversacionId });
+    };
+
+    window.onbeforeunload = function() {
+        var usuarioActual = "<?php echo $_SESSION['nick']; ?>";
+        
+        socket.emit('salir_chat', usuarioActual);
+    };
+
+    socket.on("actualizar-estado-usuarios", (usuariosConectados) => {
+        var estadoSpan = document.getElementById("estado");
+        var usuario = "<?php echo $otroUsuario; ?>";
+        if (usuariosConectados.includes(usuario)) {
+            estadoSpan.textContent = '🟢'; 
+        } else {
+            estadoSpan.textContent = '🔴'; 
+        }
+    });
+</script>
+
