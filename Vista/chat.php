@@ -148,7 +148,10 @@ require_once __DIR__ . "/plantillas/plantilla.php";
     socket.on("actualizar-estado-usuarios", (usuariosConectados) => {
         var estadoSpan = document.getElementById("estado");
         var usuario = "<?php echo $otroUsuario; ?>";
-        if (usuariosConectados.includes(usuario)) {
+        var usuarioActual = "<?php echo $_SESSION['nick']; ?>";
+        var conversacionId = "<?php echo $conversacionId; ?>";
+
+        if(usuariosConectados.hasOwnProperty(usuario) && usuariosConectados.hasOwnProperty(usuarioActual) && usuariosConectados[usuario] == usuariosConectados[usuarioActual]){
             estadoSpan.textContent = '🟢'; 
         } else {
             estadoSpan.textContent = '🔴'; 

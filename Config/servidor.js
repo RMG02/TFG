@@ -26,7 +26,7 @@ io.on("connection", (socket) => {
     // Cuando el usuario entra al chat, puedes actualizar su estado
     socket.on('entrar_chat', (data) => {
         usuarios_en_chat[data.usuario] = data.chatId;
-        io.emit("actualizar-estado-usuarios", Object.keys(usuarios_en_chat));
+        io.emit("actualizar-estado-usuarios", usuarios_en_chat);
 
 
     });
@@ -34,7 +34,7 @@ io.on("connection", (socket) => {
     // Cuando el usuario sale del chat, actualiza su estado
     socket.on('salir_chat', (usuario) => {
         delete usuarios_en_chat[usuario];
-        io.emit("actualizar-estado-usuarios", Object.keys(usuarios_en_chat));
+        io.emit("actualizar-estado-usuarios", usuarios_en_chat);
 
     });
 
