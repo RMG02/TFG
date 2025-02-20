@@ -2,6 +2,7 @@
 
 require_once '../Config/config.php';
 require_once '../Modelo/Conversaciones.php';
+require_once '../Modelo/Notificacion.php';
 
 
 if (session_status() == PHP_SESSION_NONE) {
@@ -9,6 +10,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $conversacionesModelo = new Conversacion($db);
+$NotificacionModelo = new Notificacion($db);
 
 
 
@@ -30,6 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         exit; 
+    }
+
+    if (isset($_POST['eliminarConversacion'])) {
+        if (isset($_SESSION['notificaciones_usuario'])) {
+            unset($_SESSION['notificaciones_usuario']);            
+        }
+        $NotificacionModelo->borrarNotificacionesConver($_POST['otroUsuario'], $_SESSION['nick'], "mensaje"); 
+        $resultado = $conversacionesModelo->eliminarConversacion($_POST['id_conver']);
+
+        header('Location: ../Vista/chats.php'); 
+        exit; 
+
     }
 
     if(isset($_POST['AgregarMensaje'])){
@@ -82,11 +96,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     if(isset($_GET['ObtenerConversacion'])){
-
+        
         $resultado = $conversacionesModelo->obtenerConversacionId($_GET['conversacionId']);
-        $conversacion = json_decode($resultado, true);
-        $id = $conversacion['_id']['$oid'];
-        $_SESSION['conversacion'] = $conversacion;
+        if($resultado != null){
+            $conversacion = json_decode($resultado, true);
+            $id = $conversacion['_id']['$oid'];
+            $_SESSION['conversacion'] = $conversacion;
+        }
+        else{
+            $id = null;
+            $_SESSION['conversacion'] = null;
+        }
+        
         header('Location: ../Vista/chat.php?conversacionId=' . $id . '&compartir=' . $_GET['compartir'] . '&id=' . $_GET['id']); 
         exit; 
     }

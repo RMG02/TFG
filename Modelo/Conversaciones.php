@@ -21,6 +21,12 @@ class Conversacion {
 
     }
 
+    public function eliminarConversacion($id){
+        $Id = new ObjectId($id);
+
+        return $this->collection->deleteOne(['_id' => $Id]);
+    }
+
     // Agregar un mensaje a una conversación
     public function agregarMensaje($conversacionId, $emisor, $contenido, $receptor, $hora) {
         $mensaje = [
@@ -44,7 +50,11 @@ class Conversacion {
     public function obtenerConversacionId($conversacionId) {
         $id = new ObjectId($conversacionId);
         $resultado = $this->collection->findOne(['_id' => $id]);
-        $conver = json_encode(iterator_to_array($resultado)); 
+        if ($resultado !== null) {
+            $conver = json_encode(iterator_to_array($resultado));
+        } else {
+            $conver = null;  // O puedes devolver '{}' si prefieres un objeto vacío
+        }
         return $conver;
     }
 

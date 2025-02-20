@@ -32,7 +32,7 @@ EOS;
 if(empty($conversaciones)){
     $contenidoPrincipal = <<<EOS
         <h2>No tienes conversaciones</h2>
-EOS;
+    EOS;
 }
 foreach ($conversaciones as $conv) {
     $conversacionId = $conv['_id']['$oid'];
@@ -45,9 +45,14 @@ foreach ($conversaciones as $conv) {
     
     $contenidoPrincipal .= <<<EOS
        <div class="conversacion">
-           <a href="/Vista/chat.php?conversacionId=$conversacionId" class="enlace-conversacion">
-               <p class="nombre-conversacion">$otroUsuario</p>
-           </a>
+            <form method="POST" action="../Controlador/Conversaciones_controlador.php" onsubmit="unset()">
+                <input type="hidden" name="id_conver" value="$conversacionId">
+                <input type="hidden" name="otroUsuario" value="$otroUsuario">
+                <button type="submit" class="eliminar-conver" name="eliminarConversacion" title="Eliminar conversación"><i class="fas fa-trash-alt"></i></button>
+            </form>
+            <a href="/Vista/chat.php?conversacionId=$conversacionId" class="enlace-conversacion">
+                <p class="nombre-conversacion">$otroUsuario</p>
+            </a>
        </div>
        
 EOS;

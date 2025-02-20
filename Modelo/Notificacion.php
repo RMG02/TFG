@@ -27,6 +27,21 @@ class Notificacion {
         }
     }
 
+    public function borrarNotificacionesConver($otroUsuario, $usuario, $tipo) {
+        
+        $filtro = [
+            '$and' => [
+                ['usuario_publi' => ['$in' => [$usuario, $otroUsuario]]],  
+                ['usuario_accion' => ['$in' => [$usuario, $otroUsuario]]], 
+                ['tipo' => $tipo] 
+            ]
+        ];
+        
+      
+        return $this->collection->deleteMany($filtro);
+        
+    }
+
     public function borrarNotificacionUnica($id) {
         $Id = new ObjectId($id);
 
