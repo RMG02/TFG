@@ -38,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_SESSION['notificaciones_usuario'])) {
             unset($_SESSION['notificaciones_usuario']);            
         }
-        $NotificacionModelo->borrarNotificacionesConver($_POST['otroUsuario'], $_SESSION['nick'], "mensaje"); 
-        $resultado = $conversacionesModelo->eliminarConversacion($_POST['id_conver']);
+        $NotificacionModelo->borrarNotificacionesConver($_SESSION['nick'], "mensaje"); 
+        $resultado = $conversacionesModelo->eliminarConversacion($_POST['id_conver'], $_SESSION['nick']);
 
         header('Location: ../Vista/chats.php'); 
         exit; 

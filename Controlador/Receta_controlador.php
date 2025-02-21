@@ -225,6 +225,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
+        if(isset($_POST['favoritos'])){
+            $_SESSION['verpublicaciones']= "false";
+            header('Location: ../Vista/favoritos.php');
+            exit;
+        }
+
         if (!preg_match('/^[a-f0-9]{24}$/i', $_POST['id_publi'])) { 
             $_SESSION['recedisponible'] = false;
             $_SESSION['id_publi'] = "";
@@ -293,6 +299,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_perfil']);
             exit;
         }
+
+        if(isset($_POST['favoritos'])){
+            $_SESSION['verpublicaciones']= "false";
+            header('Location: ../Vista/favoritos.php');
+            exit;
+        }
+
 
         if (!preg_match('/^[a-f0-9]{24}$/i', $_POST['id_publi'])) { 
             $_SESSION['recedisponible'] = false;

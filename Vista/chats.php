@@ -42,7 +42,11 @@ foreach ($conversaciones as $conv) {
             $otroUsuario = $usu;
         }
     }
-    
+
+    if(in_array($_SESSION['nick'], $conv['eliminada'])){
+        continue;
+    }
+
     $contenidoPrincipal .= <<<EOS
        <div class="conversacion">
             <form method="POST" action="../Controlador/Conversaciones_controlador.php" onsubmit="unset()">

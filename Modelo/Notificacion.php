@@ -27,12 +27,11 @@ class Notificacion {
         }
     }
 
-    public function borrarNotificacionesConver($otroUsuario, $usuario, $tipo) {
+    public function borrarNotificacionesConver($usuario, $tipo) {
         
         $filtro = [
             '$and' => [
-                ['usuario_publi' => ['$in' => [$usuario, $otroUsuario]]],  
-                ['usuario_accion' => ['$in' => [$usuario, $otroUsuario]]], 
+                ['usuario_publi' => $usuario],  
                 ['tipo' => $tipo] 
             ]
         ];

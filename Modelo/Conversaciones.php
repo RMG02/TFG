@@ -13,7 +13,8 @@ class Conversacion {
     public function crearConversacion($usuario1, $usuario2) {
         $conversacion = [
             'usuarios' => [$usuario1, $usuario2],
-            'mensajes' => []
+            'mensajes' => [],
+            'eliminada' => []
         ];
         $resultado = $this->collection->insertOne($conversacion);
         //$conversacion = json_encode(iterator_to_array($resultado));
@@ -21,10 +22,18 @@ class Conversacion {
 
     }
 
-    public function eliminarConversacion($id){
+    public function eliminarConversacion($id, $usuario){
         $Id = new ObjectId($id);
-
-        return $this->collection->deleteOne(['_id' => $Id]);
+        $resultado = $this->collection->findOne(['_id' => $Id]);
+        
+        if(count($resultado['eliminada']) == 1){
+            return $this->collection->deleteOne(['_id' => $Id]);
+        }
+        
+        return $this->collection->updateOne(
+            ['_id' => $Id], 
+            ['$push' => ['eliminada' => $usuario]] 
+        );
     }
 
     // Agregar un mensaje a una conversación
@@ -37,10 +46,23 @@ class Conversacion {
             'hora' => $hora,
         ];
         $id = new ObjectId($conversacionId);
-        $this->collection->updateOne(
-            ['_id' => $id],
-            ['$push' => ['mensajes' => $mensaje]]
-        );
+        $resultado = $this->collection->findOne(['_id' => $id]);
+        
+        if(in_array($receptor, (array) $resultado['eliminada'])){
+            $this->collection->updateOne(
+                ['_id' => $id],
+                [
+                    '$push' => ['mensajes' => $mensaje],
+                    '$pull' => ['eliminada' => $receptor]
+                ]
+            );
+        }
+        else{
+            $this->collection->updateOne(
+                ['_id' => $id],
+                ['$push' => ['mensajes' => $mensaje]]
+            );
+        }
 
         return $mensaje['mensaje_id'];
 

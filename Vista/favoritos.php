@@ -57,7 +57,6 @@ if (isset($_SESSION['publicacionesfavoritos'])) {
 
 
 $contenidoPrincipal = <<<EOS
-   <h1>Bienvenido {$_SESSION['nick']}</h1>
    <div class="dropdown">
                 <button class="dropbtn">⋮</button>
                 <div class="dropdown-content">
@@ -139,13 +138,13 @@ if($verpublicaciones == "true"){
                                 <button type="submit" name="darlike" class="btn-like">
                                     <input type="hidden" name="id_publi" value="$id">
                                     <input type="hidden" name="nick_user" value="$nickuser">
-                                    <input type="hidden" name="principal" value="$principal">
+                                    <input type="hidden" name="favoritos" value=true>
                                     <i class="fas fa-thumbs-up"></i> $numlikes
                                 </button>
                                 <button type="submit" name="dardislike" class="btn-dislike">
                                     <input type="hidden" name="id_publi" value="$id">
                                     <input type="hidden" name="nick_user" value="$nickuser">
-                                    <input type="hidden" name="principal" value="$principal">
+                                    <input type="hidden" name="favoritos" value=true>
                                     <i class="fas fa-thumbs-down"></i> $numdislikes
                                 </button>
                             </form>
@@ -232,13 +231,13 @@ if($verpublicaciones == "true"){
                                     <button type="submit" name="darlike" class="btn-like">
                                         <input type="hidden" name="id_publi" value="$id">
                                         <input type="hidden" name="nick_user" value="$nickuser">
-                                        <input type="hidden" name="principal" value="$principal">
+                                        <input type="hidden" name="favoritos" value=true>
                                         <i class="fas fa-thumbs-up"></i> $numlikes
                                     </button>
                                     <button type="submit" name="dardislike" class="btn-dislike">
                                         <input type="hidden" name="id_publi" value="$id">
                                         <input type="hidden" name="nick_user" value="$nickuser">
-                                        <input type="hidden" name="principal" value="$principal">
+                                        <input type="hidden" name="favoritos" value=true>
                                         <i class="fas fa-thumbs-down"></i> $numdislikes
                                     </button>
                                 </form>

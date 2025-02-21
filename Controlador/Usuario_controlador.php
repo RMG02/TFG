@@ -55,8 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['login'])) {
         $usuario = $usuarioModelo->login( $_POST['email'], password: $_POST['password']);
-        $usuario_resultado = json_decode(json_encode(iterator_to_array($usuario)), true);
         if ($usuario) {
+            $usuario_resultado = json_decode(json_encode(iterator_to_array($usuario)), true);
+
             $_SESSION['email'] = $usuario['email'];
             $_SESSION['nick'] = $usuario['nick'];
             $_SESSION['nombre'] = $usuario['nombre'];

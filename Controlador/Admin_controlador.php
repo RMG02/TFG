@@ -44,7 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             'password' => $_POST['password'],
             'seguidores' =>[],
             'siguiendo' =>[],
-            'admin' => $rol
+            'favoritospubli' =>[],
+            'favoritosreceta' =>[],
+            'admin' => $rol,
+            'notilikes' => true,
+            'notiseguidores' => true,
+            'noticomentarios' => true,
+            'notimensajes' => true
 
         ];
 
