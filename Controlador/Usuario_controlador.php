@@ -67,8 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['login'] = true;
             $_SESSION['admin'] = $usuario['admin'];
             $_SESSION['notilikes'] = $usuario['notilikes'];
-            $_SESSION['idsrecetas'] = $usuario['favoritosreceta'];
-            $_SESSION['idspublis'] = $usuario['favoritospubli'];
+            $_SESSION['idsrecetas'] = (array) $usuario['favoritosreceta'];
+            $_SESSION['idspublis'] = (array) $usuario['favoritospubli'];
             $_SESSION['notiseguidores'] = $usuario['notiseguidores'];
             $_SESSION['noticomentarios'] = $usuario['noticomentarios'];
             $_SESSION['notimensajes'] = $usuario['notimensajes'];
@@ -202,6 +202,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }else{
                 $_SESSION['error'] = "Usuario no encontrado";
             }
+            $usuario = $usuarioModelo->obtenerUsuarioNick($nick);
+            $_SESSION['idspublis'] = (array) $usuario['favoritospubli'];
             header('Location: ../Vista/Principal.php');
             exit;
         }else{
@@ -211,11 +213,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }else{
                 $_SESSION['error'] = "Usuario no encontrado";
             }
+            $usuario = $usuarioModelo->obtenerUsuarioNick($nick);
+            $_SESSION['idsrecetas'] = (array) $usuario['favoritosreceta'];
             header('Location: ../Vista/Recetas.php');
             exit;
         }
 
-        // Guardar en sesión (opcionalmente, podrías guardarlo en una BD)
         header('Location: ../Vista/Principal.php');
         exit;
     

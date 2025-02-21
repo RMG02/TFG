@@ -155,39 +155,49 @@ else{
     EOS;
 }
 $contenidoPrincipal .= <<<EOS
-                        <button type="submit" name="darlike" class="btn-like">
-                            <input type="hidden" name="id_publi" value="$id">
-                            <input type="hidden" name="nick_user" value="$nickuser">
-                            <input type="hidden" name="principal" value="$principal">
-                            <i class="fas fa-thumbs-up"></i> $numlikes
-                        </button>
-                        <button type="submit" name="dardislike" class="btn-dislike">
-                            <input type="hidden" name="id_publi" value="$id">
-                            <input type="hidden" name="nick_user" value="$nickuser">
-                            <input type="hidden" name="principal" value="$principal">
-                            <i class="fas fa-thumbs-down"></i> $numdislikes
-                        </button>
-                    </form>
-
-                    <form method="POST" action="../Controlador/Usuario_controlador.php">
-                        <button type="submit" name="favoritos" class="btn-like">
-                            <input type="hidden" name="publi" value="$id">
-                            <input type="hidden" name="tipo" value="$principal">
-                            <input type="hidden" name="nick_user" value="$nickuser">
-                            <i class="fas fa-star"></i>
-                        </button> 
-                    </form>
-                </div>
-            </div>
-        <div id="$modalId" class="modal_publi">
-            <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
-                <input type="hidden" name="prueba_id" value="true">
-                <input type="hidden" name="idprueba" value="$id">
-                <button type="submit" class="botonPubli" name="Verpublicacion"></button>
+                <button type="submit" name="darlike" class="btn-like">
+                    <input type="hidden" name="id_publi" value="$id">
+                    <input type="hidden" name="nick_user" value="$nickuser">
+                    <input type="hidden" name="principal" value="$principal">
+                    <i class="fas fa-thumbs-up"></i> $numlikes
+                </button>
+                <button type="submit" name="dardislike" class="btn-dislike">
+                    <input type="hidden" name="id_publi" value="$id">
+                    <input type="hidden" name="nick_user" value="$nickuser">
+                    <input type="hidden" name="principal" value="$principal">
+                    <i class="fas fa-thumbs-down"></i> $numdislikes
+                </button>
             </form>
-        </div>
-        EOS;
-        $modalId++;
+
+            <form method="POST" action="../Controlador/Usuario_controlador.php">
+                <button type="submit" name="favoritos" class="btn-like">
+                    <input type="hidden" name="publi" value="$id">
+                    <input type="hidden" name="tipo" value="$principal">
+                    <input type="hidden" name="nick_user" value="$nickuser">
+            EOS;
+
+            if (isset($_SESSION['idspublis']) && in_array($id, $_SESSION['idspublis'])) {
+                $contenidoPrincipal .= '<i class="fas fa-star"></i>';
+            } else {
+                $contenidoPrincipal .= '<i class="far fa-star"></i>';
+            }
+
+            $contenidoPrincipal .= <<<EOS
+                </button> 
+            </form>
+            </div>
+            </div>
+            <div id="$modalId" class="modal_publi">
+                <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                    <input type="hidden" name="prueba_id" value="true">
+                    <input type="hidden" name="idprueba" value="$id">
+                    <button type="submit" class="botonPubli" name="Verpublicacion"></button>
+                </form>
+            </div>
+            EOS;
+
+            $modalId++;
+
     }
 }
 
