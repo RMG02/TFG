@@ -20,6 +20,7 @@ require_once __DIR__ . "/plantillas/respuestas.php";
 $modalId = 0;
 $modalComId = 0;
 $principal = true;
+$recetaxx = false;
 $tipo_publicacion = "publicacion";
 $error = "";
 $mensaje = "";
@@ -41,7 +42,7 @@ if (isset($_SESSION['mensaje'])) {
 date_default_timezone_set('Europe/Madrid');
 
 
-
+$_SESSION['idspublis'] = (array) $_SESSION['idspublis'];
 $publicaciones = json_decode($_SESSION['publicaciones'], true);
 $tituloPagina = "Página Principal";
 $usuario = json_decode($_SESSION['usuariopropio'], true);
@@ -51,6 +52,7 @@ $siguiendo = is_array($usuario['siguiendo']) ? $usuario['siguiendo'] : [];
 if (isset($_SESSION['publicaciones'])) {
     unset($_SESSION['publicaciones']);
 }
+
 
 
 
@@ -118,6 +120,8 @@ foreach ($publicaciones as $publicacion) {
         $numlikes = count($likes ?? []);
         $numdislikes = count($dislikes ?? []);
         
+        
+        
 
         $multi = '';
         if ($multimedia) {
@@ -172,7 +176,8 @@ $contenidoPrincipal .= <<<EOS
             <form method="POST" action="../Controlador/Usuario_controlador.php">
                 <button type="submit" name="favoritos" class="btn-like">
                     <input type="hidden" name="publi" value="$id">
-                    <input type="hidden" name="tipo" value="$principal">
+                    <input type="hidden" name="tipo" value="true">
+                    <input type="hidden" name="urlfav" value="false">
                     <input type="hidden" name="nick_user" value="$nickuser">
             EOS;
 

@@ -154,6 +154,7 @@ if($verpublicaciones == "true"){
                                 <button type="submit" name="favoritos" class="btn-like">
                                     <input type="hidden" name="publi" value="$id">
                                     <input type="hidden" name="tipo" value="$principal">
+                                    <input type="hidden" name="urlfav" value="$principal">
                                     <input type="hidden" name="nick_user" value="$nickuser">
                                     <i class="fas fa-star"></i>
                                 </button> 
@@ -245,6 +246,7 @@ if($verpublicaciones == "true"){
                                     <button type="submit" name="favoritos" class="btn-like">
                                         <input type="hidden" name="publi" value="$id">
                                         <input type="hidden" name="tipo" value="$recetaxx">
+                                        <input type="hidden" name="urlfav" value="$principal">
                                         <input type="hidden" name="nick_user" value="$nickuser">
                                         <i class="fas fa-star"></i>
                                     </button> 

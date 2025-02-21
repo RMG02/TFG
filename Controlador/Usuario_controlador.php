@@ -194,35 +194,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST["favoritos"])) {
         $publicacion = $_POST["publi"];
         $nick = $_POST["nick_user"];
-
-        if($_POST["tipo"]){
-            $resultado = $usuarioModelo->favoritospublicacion($publicacion,$nick);
-            if($resultado){
-                $_SESSION['mensaje'] = "Publicacion añadida a favoritos";
-            }else{
+        $urlfav = isset($_POST["urlfav"]) && $_POST["urlfav"] === "true"; // Convertir a booleano
+    
+        if ($_POST["tipo"] === "true") { // Si es una publicación
+            $resultado = $usuarioModelo->favoritospublicacion($publicacion, $nick);
+    
+            if ($resultado) {
+                $_SESSION['mensaje'] = "Publicación añadida a favoritos";
+            } else {
                 $_SESSION['error'] = "Usuario no encontrado";
             }
+    
             $usuario = $usuarioModelo->obtenerUsuarioNick($nick);
             $_SESSION['idspublis'] = (array) $usuario['favoritospubli'];
-            header('Location: ../Vista/Principal.php');
+    
+            // Redirigir a la URL correspondiente
+            header('Location: ' . ($urlfav ? '../Vista/favoritos.php' : '../Vista/Principal.php'));
             exit;
-        }else{
-            $resultado = $usuarioModelo->favoritosreceta($publicacion,$nick);
-            if($resultado){
+        } else { // Si es una receta
+            $resultado = $usuarioModelo->favoritosreceta($publicacion, $nick);
+    
+            if ($resultado) {
                 $_SESSION['mensaje'] = "Receta añadida a favoritos";
-            }else{
+            } else {
                 $_SESSION['error'] = "Usuario no encontrado";
             }
+    
             $usuario = $usuarioModelo->obtenerUsuarioNick($nick);
             $_SESSION['idsrecetas'] = (array) $usuario['favoritosreceta'];
-            header('Location: ../Vista/Recetas.php');
+    
+            // Redirigir a la URL correspondiente
+            header('Location: ' . ($urlfav ? '../Vista/favoritos.php' : '../Vista/Recetas.php'));
             exit;
         }
-
-        header('Location: ../Vista/Principal.php');
-        exit;
-    
     }
+    
 
     
     

@@ -194,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $dislikesArray = (array) $resultado['dislikes']; // Convierte BSONArray a array PHP
 
         if(in_array($_POST['nick_user'], $dislikesArray)){
-            $NotificacionModelo->borrarNotificacion($_POST['id_publi'], $_POST['nick_user'], "dislike");
+            $NotificacionModelo->borrarNotificacion($_POST['id_publi'],$_POST['nick_user'], "dislike");
 
         }
         if (in_array($_POST['nick_user'], $likesArray)) {
@@ -234,6 +234,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_perfil']);
             exit;
         }
+
+        
 
         if (!preg_match('/^[a-f0-9]{24}$/i', $_POST['id_publi'])) { 
             $_SESSION['publidisponible'] = false;
