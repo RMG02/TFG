@@ -320,6 +320,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         exit; 
     }
 
+    if (isset($_GET['arraypublis'])) {
+        $usuario = $usuarioModelo->obtenerUsuarioNick($_SESSION['nick']);
+        $_SESSION['idspublis'] = (array) $usuario['favoritospubli'];
+        header('Location: ../Vista/Principal.php');
+        exit;
+    }
+
+    if (isset($_GET['arrayrecetas'])) {
+        $usuario = $usuarioModelo->obtenerUsuarioNick($_SESSION['nick']);
+        $_SESSION['idsrecetas'] = (array) $usuario['favoritosreceta'];
+        header('Location: ../Vista/Recetas.php');
+        exit;
+    }
+
     
 
 

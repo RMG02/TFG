@@ -11,9 +11,15 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
 
 $verseguidores = $_SESSION['verseguidores'] ?? "false";
 
+if (!isset($_SESSION['idspublis'])) {
+    header('Location: ../Controlador/Usuario_controlador.php?arraypublis=true');
+}
+
 if (!isset($_SESSION['publicaciones'])) {
     header('Location: ../Controlador/Publicacion_controlador.php?listarPublicaciones=true&verseguidores='.$verseguidores);
 }
+
+
 
 require_once __DIR__ . "/plantillas/respuestas.php";
 
@@ -42,7 +48,6 @@ if (isset($_SESSION['mensaje'])) {
 date_default_timezone_set('Europe/Madrid');
 
 
-$_SESSION['idspublis'] = (array) $_SESSION['idspublis'];
 $publicaciones = json_decode($_SESSION['publicaciones'], true);
 $tituloPagina = "Página Principal";
 $usuario = json_decode($_SESSION['usuariopropio'], true);
@@ -54,7 +59,7 @@ if (isset($_SESSION['publicaciones'])) {
 }
 
 
-
+var_dump($_SESSION['idspublis']);
 
 $contenidoPrincipal = <<<EOS
    <h1>Bienvenido {$_SESSION['nick']}</h1>
@@ -181,7 +186,11 @@ $contenidoPrincipal .= <<<EOS
                     <input type="hidden" name="nick_user" value="$nickuser">
             EOS;
 
-            if (isset($_SESSION['idspublis']) && in_array($id, $_SESSION['idspublis'])) {
+            $favoritos = isset($_SESSION['idspublis']) && is_array($_SESSION['idspublis']) 
+            ? $_SESSION['idspublis'] 
+            : [];
+            
+            if (in_array($id, $favoritos)) {
                 $contenidoPrincipal .= '<i class="fas fa-star"></i>';
             } else {
                 $contenidoPrincipal .= '<i class="far fa-star"></i>';

@@ -10,6 +10,10 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
 }
 $verseguidores = $_SESSION['verseguidoresreceta'] ?? "false";
 
+if (!isset($_SESSION['idsrecetas'])) {
+    header('Location: ../Controlador/Usuario_controlador.php?arrayrecetas=true');
+}
+
 if (!isset($_SESSION['recetas'])) {
    header('Location: ../Controlador/Receta_controlador.php?listarRecetas=true&verseguidores='.$verseguidores);
 }
@@ -45,7 +49,7 @@ $tituloPagina = "Página recetas";
 $usuario = json_decode($_SESSION['usuariopropio'], true);
 $siguiendo = $usuario['siguiendo'];
 
-$_SESSION['idsrecetas'] = (array) $_SESSION['idsrecetas'];
+var_dump($_SESSION['idsrecetas']);
 
 $contenidoPrincipal = <<<EOS
    <h1>Bienvenido {$_SESSION['nick']}</h1>
@@ -179,7 +183,11 @@ foreach ($recetas as $receta) {
                     <input type="hidden" name="nick_user" value="$nickuser">
             EOS;
 
-            if (isset($_SESSION['idsrecetas']) && in_array($id, $_SESSION['idsrecetas'])) {
+            $favoritos = isset($_SESSION['idsrecetas']) && is_array($_SESSION['idsrecetas']) 
+            ? $_SESSION['idsrecetas'] 
+            : [];
+            
+            if (in_array($id, $favoritos)) {
                 $contenidoPrincipal .= '<i class="fas fa-star"></i>';
             } else {
                 $contenidoPrincipal .= '<i class="far fa-star"></i>';
