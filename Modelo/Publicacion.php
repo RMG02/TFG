@@ -302,6 +302,38 @@ class Publicacion {
         return $this->collection->find(['email' => $email], ['sort' => ['created_at' => -1]]);
     }
 
+    public function ListaPublicacionfavoritos($lista) {
+        // Convertir el BSONArray en un array de PHP si es necesario
+        $lista = iterator_to_array($lista);
+    
+        // Verificar que $lista no esté vacío
+        if (empty($lista)) {
+            return [];
+        }
+    
+        try {
+            // Convertir los IDs en ObjectId de MongoDB
+            $listaObjectId = array_map(function ($id) {
+                return new MongoDB\BSON\ObjectId($id);
+            }, $lista);
+    
+            // Buscar publicaciones con _id en la lista
+            $publicaciones = $this->collection->find([
+                '_id' => ['$in' => $listaObjectId]
+            ]);
+    
+            // Convertir el resultado a un array de PHP
+            return iterator_to_array($publicaciones);
+        } catch (Exception $e) {
+            // Manejo de errores si ocurre una excepción
+            error_log("Error en ListaPublicacionfavoritos: " . $e->getMessage());
+            return [];
+        }
+    }
+    
+    
+    
+
         
     public function Likes($nick,$publi){
         $Id = new ObjectId($publi);

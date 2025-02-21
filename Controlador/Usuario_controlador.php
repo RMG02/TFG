@@ -35,6 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'password' => $_POST['password'],
             'seguidores' =>[],
             'siguiendo' =>[],
+            'favoritospubli' =>[],
+            'favoritosreceta' =>[],
             'admin' => false,
             'notilikes' => true,
             'notiseguidores' => true,
@@ -65,6 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['login'] = true;
             $_SESSION['admin'] = $usuario['admin'];
             $_SESSION['notilikes'] = $usuario['notilikes'];
+            $_SESSION['idsrecetas'] = $usuario['favoritosreceta'];
+            $_SESSION['idspublis'] = $usuario['favoritospubli'];
             $_SESSION['notiseguidores'] = $usuario['notiseguidores'];
             $_SESSION['noticomentarios'] = $usuario['noticomentarios'];
             $_SESSION['notimensajes'] = $usuario['notimensajes'];
@@ -183,6 +187,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         $_SESSION[$type] = $status;
         header('Location: ../Vista/Preferencias.php');
+        exit;
+    
+    }
+
+    if (isset($_POST["favoritos"])) {
+        $publicacion = $_POST["publi"];
+        $nick = $_POST["nick_user"];
+
+        if($_POST["tipo"]){
+            $resultado = $usuarioModelo->favoritospublicacion($publicacion,$nick);
+            if($resultado){
+                $_SESSION['mensaje'] = "Publicacion añadida a favoritos";
+            }else{
+                $_SESSION['error'] = "Usuario no encontrado";
+            }
+            header('Location: ../Vista/Principal.php');
+            exit;
+        }else{
+            $resultado = $usuarioModelo->favoritosreceta($publicacion,$nick);
+            if($resultado){
+                $_SESSION['mensaje'] = "Receta añadida a favoritos";
+            }else{
+                $_SESSION['error'] = "Usuario no encontrado";
+            }
+            header('Location: ../Vista/Recetas.php');
+            exit;
+        }
+
+        // Guardar en sesión (opcionalmente, podrías guardarlo en una BD)
+        header('Location: ../Vista/Principal.php');
         exit;
     
     }

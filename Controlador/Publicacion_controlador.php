@@ -3,6 +3,8 @@
 require_once '../Config/config.php';
 require_once '../Modelo/Publicacion.php';
 require_once '../Modelo/Notificacion.php';
+require_once '../Modelo/Receta.php';
+require_once '../Modelo/Usuario.php';
 
 
 if (session_status() == PHP_SESSION_NONE) {
@@ -11,6 +13,8 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $publicacionModelo = new Publicacion($db);
 $NotificacionModelo = new Notificacion($db);
+$recetaModelo = new Receta($db);
+$UsuarioModelo = new Usuario($db);
 $dir_archivos = '../Recursos/multimedia';
 
 
@@ -480,6 +484,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: ../Vista/Principal.php');
     }
 
+    if(isset($_POST["favoritosphp"])){
+        $_SESSION['verpublicaciones'] = $_POST["verpublicacionesphp"];
+        header('Location: ../Vista/favoritos.php');
+    }
+
     
 }
 
@@ -491,6 +500,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Location: ../Vista/Principal.php'); 
         exit; 
     } 
+
+    if(isset($_GET['listarPublicacionesfavoritos'])){
+        if($_GET['verpublicaciones'] == "true"){
+            $lista = $UsuarioModelo->listapublicacionfavoritos($_SESSION['nick']);
+            $publicaciones = $publicacionModelo->ListaPublicacionfavoritos($lista); 
+            $_SESSION['publicacionesfavoritos'] = json_encode($publicaciones);
+            $_SESSION['idspublis'] = $lista;
+        }else if($_GET['verpublicaciones'] == "false"){
+            $listas = $UsuarioModelo->listarecetafavoritos($_SESSION['nick']);
+            $recetas = $recetaModelo->ListaRecetafavoritos($listas); 
+            $_SESSION['publicacionesfavoritos'] = json_encode($recetas);
+            $_SESSION['idsrecetas'] = $listas;
+        }
+        $_SESSION['verpublicaciones'] = $_GET['verpublicaciones'];
+        header('Location: ../Vista/favoritos.php'); 
+        exit; 
+    }
 
     if(isset($_GET['PubliUsuario'])){
         $publicaciones = $publicacionModelo->ListaPublicacionUsuario($_SESSION['nick']);

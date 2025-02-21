@@ -39,6 +39,56 @@ class Usuario {
         return null;
     }
 
+    public function favoritospublicacion($publicacion,$nick){
+            // Buscar al usuario en la base de datos
+            $usuario = $this->collection->findOne(['nick' => $nick]);
+            if ($usuario) {
+                // Verificar si la publicación ya está en favoritos
+                $favoritos = isset($usuario['favoritospubli']) ? iterator_to_array($usuario['favoritospubli']) : [];
+                if (in_array($publicacion, $favoritos)) {
+                    // Si ya está en favoritos, eliminarla con $pull
+                    $this->collection->updateOne(
+                        ['nick' => $nick],
+                        ['$pull' => ['favoritospubli' => $publicacion]]
+                    );
+                    return true;
+                } else {
+                    $this->collection->updateOne(
+                        ['nick' => $nick],
+                        ['$addToSet' => ['favoritospubli' => $publicacion]]
+                    );
+                    return true;
+                }
+            } else {
+                return false;
+            }
+    }
+
+    public function favoritosreceta($publicacion,$nick){
+        // Buscar al usuario en la base de datos
+        $usuario = $this->collection->findOne(['nick' => $nick]);
+            if ($usuario) {
+                // Verificar si la publicación ya está en favoritos
+                $favoritos = isset($usuario['favoritosreceta']) ? iterator_to_array($usuario['favoritosreceta']) : [];
+                if (in_array($publicacion, $favoritos)) {
+                    // Si ya está en favoritos, eliminarla con $pull
+                    $this->collection->updateOne(
+                        ['nick' => $nick],
+                        ['$pull' => ['favoritosreceta' => $publicacion]]
+                    );
+                    return true;
+                } else {
+                    $this->collection->updateOne(
+                        ['nick' => $nick],
+                        ['$addToSet' => ['favoritosreceta' => $publicacion]]
+                    );
+                    return true;
+                }
+            } else {
+                return false;
+            }
+    }
+
     public function obtenerUsuarioNick($nick) {
         $usuario = $this->collection->findOne(['nick' => $nick]);
         if ($usuario) {
@@ -96,6 +146,16 @@ class Usuario {
         return $this->collection->find();
     }
 
+    public function listapublicacionfavoritos($nick){
+        $usuario = $this->collection->findOne(['nick' => $nick]);
+        return $usuario['favoritospubli'];
+    }
+
+    public function listarecetafavoritos($nick){
+        $usuario = $this->collection->findOne(['nick' => $nick]);
+        return $usuario['favoritosreceta'];
+    }
+
     public function noSeguir($nickPropio,$nickSeguir){
         $filter = ['nick' => $nickSeguir];
         $update =
@@ -123,6 +183,7 @@ class Usuario {
     
         return $this->collection->updateOne($filter, $update);
     }
+
 
     public function Seguir($nickPropio,$nickSeguir){
         $filter = ['nick' => $nickSeguir];

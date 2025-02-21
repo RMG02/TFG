@@ -23,6 +23,7 @@ $modalComId = 0;
 $error = "";
 $tipo_publicacion = "receta";
 $principal = true;
+$recetaxx = false;
 $recetat = true;
 $mensaje = "";
 if (isset($_SESSION['error'])) {
@@ -169,6 +170,14 @@ foreach ($recetas as $receta) {
                                     <input type="hidden" name="principal" value="$principal">
                                     <i class="fas fa-thumbs-down"></i> $numdislikes
                                 </button>
+                            </form>
+                            <form method="POST" action="../Controlador/Usuario_controlador.php">
+                                <button type="submit" name="favoritos" class="btn-like">
+                                    <input type="hidden" name="publi" value="$id">
+                                    <input type="hidden" name="tipo" value="$recetaxx">
+                                    <input type="hidden" name="nick_user" value="$nickuser">
+                                    <i class="fas fa-star"></i>
+                                </button> 
                             </form>
                     </div>
                 </div>

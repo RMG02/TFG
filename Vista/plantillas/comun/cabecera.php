@@ -26,6 +26,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 echo "<p><a href='/Vista/panel_admin.php' class='menu-icon' titulo='Panel Admin'><i class='fas fa-cogs'></i></a></p>";
             }
             echo "<p><a href='/Vista/Recetas.php' class='menu-icon' titulo='Recetas'><i class='fas fa-utensils'></i></a></p>";
+            echo "<p><a href='/Vista/favoritos.php' class='menu-icon' titulo='favoritos'><i class='fas fa-star'></i></a></p>";
             echo "<p><a href='/Vista/chats.php' class='menu-icon' titulo='chats'><i class='fas fa-envelope'></i></a></p>";
             echo "<p><a href='/Vista/perfil.php' class='menu-icon' titulo='Perfil'><i class='fas fa-user'></i></a></p>";
             echo "<p><a href='/Vista/Notificaciones.php' class='menu-icon' titulo='Notificaciones'><i class='fas fa-bell'></i></a></p>";

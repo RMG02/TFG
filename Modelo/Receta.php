@@ -364,6 +364,35 @@ class Receta {
         return $this->collection->updateOne($filter, $update);
     }
 
+    public function ListaRecetafavoritos($lista){
+        
+        $lista = iterator_to_array($lista);
+    
+        // Verificar que $lista no esté vacío
+        if (empty($lista)) {
+            return [];
+        }
+    
+        try {
+            // Convertir los IDs en ObjectId de MongoDB
+            $listaObjectId = array_map(function ($id) {
+                return new MongoDB\BSON\ObjectId($id);
+            }, $lista);
+    
+            // Buscar publicaciones con _id en la lista
+            $publicaciones = $this->collection->find([
+                '_id' => ['$in' => $listaObjectId]
+            ]);
+    
+            // Convertir el resultado a un array de PHP
+            return iterator_to_array($publicaciones);
+        } catch (Exception $e) {
+            // Manejo de errores si ocurre una excepción
+            error_log("Error en ListaPublicacionfavoritos: " . $e->getMessage());
+            return [];
+        }
+        
+    }
 }
 ?>
 

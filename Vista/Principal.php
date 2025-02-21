@@ -117,6 +117,7 @@ foreach ($publicaciones as $publicacion) {
         $dislikes_cadena = implode(",", $dislikes);
         $numlikes = count($likes ?? []);
         $numdislikes = count($dislikes ?? []);
+        
 
         $multi = '';
         if ($multimedia) {
@@ -166,6 +167,15 @@ $contenidoPrincipal .= <<<EOS
                             <input type="hidden" name="principal" value="$principal">
                             <i class="fas fa-thumbs-down"></i> $numdislikes
                         </button>
+                    </form>
+
+                    <form method="POST" action="../Controlador/Usuario_controlador.php">
+                        <button type="submit" name="favoritos" class="btn-like">
+                            <input type="hidden" name="publi" value="$id">
+                            <input type="hidden" name="tipo" value="$principal">
+                            <input type="hidden" name="nick_user" value="$nickuser">
+                            <i class="fas fa-star"></i>
+                        </button> 
                     </form>
                 </div>
             </div>
