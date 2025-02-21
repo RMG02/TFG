@@ -49,8 +49,6 @@ $tituloPagina = "Página recetas";
 $usuario = json_decode($_SESSION['usuariopropio'], true);
 $siguiendo = $usuario['siguiendo'];
 
-var_dump($_SESSION['idsrecetas']);
-
 $contenidoPrincipal = <<<EOS
    <h1>Bienvenido {$_SESSION['nick']}</h1>
    <h2>Página de recetas</h2>

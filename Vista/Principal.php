@@ -59,7 +59,6 @@ if (isset($_SESSION['publicaciones'])) {
 }
 
 
-var_dump($_SESSION['idspublis']);
 
 $contenidoPrincipal = <<<EOS
    <h1>Bienvenido {$_SESSION['nick']}</h1>
