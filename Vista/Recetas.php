@@ -197,9 +197,9 @@ foreach ($recetas as $receta) {
             </div>
             </div>
             <div id="$modalId" class="modal_publi">
-                <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
-                    <input type="hidden" name="prueba_id" value="true">
-                    <input type="hidden" name="idprueba" value="$id">
+                <form method="POST" action="../Controlador/Receta_controlador.php" class="formulario">
+                    <input type="hidden" name="pruebareceta_id" value="true">
+                    <input type="hidden" name="idpruebareceta" value="$id">
                     <button type="submit" class="botonPubli" name="Verpublicacion"></button>
                 </form>
             </div>

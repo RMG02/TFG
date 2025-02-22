@@ -195,35 +195,68 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST["favoritos"])) {
         $publicacion = $_POST["publi"];
         $nick = $_POST["nick_user"];
-        $urlfav = isset($_POST["urlfav"]) && $_POST["urlfav"] === "true"; // Convertir a booleano
-    
+        $urlfav = isset($_POST["urlfav"]) && $_POST["urlfav"] === "true";
+        $perfilpublico = isset($_POST["perfilPublico"]) && $_POST["perfilPublico"] === "true";  // Convertir a booleano
+        $perfil = isset($_POST["perfil"]) && $_POST["perfil"] === "true"; 
+        $verpubli = isset($_POST["verpublicacion"]) && $_POST["verpublicacion"] === "true"; 
+        $vereceta = isset($_POST["verreceta"]) && $_POST["verreceta"] === "true"; 
+
         if ($_POST["tipo"] === "true") { // Si es una publicación
             $resultado = $usuarioModelo->favoritospublicacion($publicacion, $nick);
-    
-            if ($resultado) {
-                $_SESSION['mensaje'] = "Publicación añadida a favoritos";
-            } else {
+            
+            if (!$resultado) {
                 $_SESSION['error'] = "Usuario no encontrado";
-            }
+            } 
+        
     
             $usuario = $usuarioModelo->obtenerUsuarioNick($nick);
             $_SESSION['idspublis'] = (array) $usuario['favoritospubli'];
-    
+            
+            if($perfilpublico){
+                header('Location: ../Vista/Perfilpublico.php');
+                exit;
+            }
+            if($perfil){
+                header('Location: ../Vista/perfil.php');
+                exit;
+            }
+            if($verpubli){
+                header('Location: ../Vista/Verpublicacion.php');
+                exit;
+            }
+            if($vereceta){
+                header('Location: ../Vista/Verreceta.php');
+                exit;
+            }
             // Redirigir a la URL correspondiente
             header('Location: ' . ($urlfav ? '../Vista/favoritos.php' : '../Vista/Principal.php'));
             exit;
         } else { // Si es una receta
             $resultado = $usuarioModelo->favoritosreceta($publicacion, $nick);
     
-            if ($resultado) {
-                $_SESSION['mensaje'] = "Receta añadida a favoritos";
-            } else {
+            if (!$resultado) {
                 $_SESSION['error'] = "Usuario no encontrado";
-            }
+            } 
     
             $usuario = $usuarioModelo->obtenerUsuarioNick($nick);
             $_SESSION['idsrecetas'] = (array) $usuario['favoritosreceta'];
-    
+            
+            if($perfilpublico){
+                header('Location: ../Vista/Perfilpublico.php');
+                exit;
+            }
+            if($perfil){
+                header('Location: ../Vista/perfil.php');
+                exit;
+            }
+            if($verpubli){
+                header('Location: ../Vista/Verpublicacion.php');
+                exit;
+            }
+            if($vereceta){
+                header('Location: ../Vista/Verreceta.php');
+                exit;
+            }
             // Redirigir a la URL correspondiente
             header('Location: ' . ($urlfav ? '../Vista/favoritos.php' : '../Vista/Recetas.php'));
             exit;
@@ -334,6 +367,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Location: ../Vista/Recetas.php');
         exit;
     }
+
+    if (isset($_GET['arraypublisperfilpublico'])) {
+        $usuario = $usuarioModelo->obtenerUsuarioNick($_SESSION['nick']);
+        $user = $_GET['user'];
+        if($_GET['verreceta'] == "true"){
+            $_SESSION['idsrecetas'] = (array) $usuario['favoritosreceta'];
+        }else{
+            $_SESSION['idspublis'] = (array) $usuario['favoritospubli'];
+        }
+        $_SESSION['nickUserpublico'] = $user;
+        header('Location: ../Vista/Perfilpublico.php');
+        exit;
+    }
+   
 
     
 

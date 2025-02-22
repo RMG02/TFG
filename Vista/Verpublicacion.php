@@ -149,11 +149,31 @@ if($_SESSION['publidisponible'] == false){
                         <i class="fa fa-thumbs-down"></i> $numdislikes
                     </button>
                 </form>
-            </div>
-            <div class="dropdown">
-                <button class="dropbtn">⋮</button>
-                <div class="dropdown-content">
-    EOS;
+
+                <form method="POST" action="../Controlador/Usuario_controlador.php">
+                <button type="submit" name="favoritos" class="btn-like">
+                    <input type="hidden" name="publi" value="$id">
+                    <input type="hidden" name="tipo" value="true">
+                    <input type="hidden" name="verpublicacion" value="true">
+                    <input type="hidden" name="nick_user" value="$nickuser">
+            EOS;
+
+            $favoritos = isset($_SESSION['idspublis']) && is_array($_SESSION['idspublis']) 
+            ? $_SESSION['idspublis'] 
+            : [];
+            
+            if (in_array($id, $favoritos)) {
+                $contenidoPrincipal .= '<i class="fas fa-star"></i>';
+            } else {
+                $contenidoPrincipal .= '<i class="far fa-star"></i>';
+            }
+            
+            $contenidoPrincipal .= <<<EOS
+              </div>
+                <div class="dropdown">
+                    <button class="dropbtn">⋮</button>
+                    <div class="dropdown-content">
+            EOS;
 
     if ($nick == $_SESSION['nick'] || $_SESSION['admin'] == true) {
         $contenidoPrincipal .= <<<EOS

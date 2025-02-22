@@ -20,14 +20,13 @@ if (!isset($_SESSION['publicacionesUsuario'])) {
  }
 
  
-
-
- 
  require_once __DIR__ . "/plantillas/respuestas.php";
  $principal = false;
  $verreceta = isset($_POST['verreceta']) ? filter_var($_POST['verreceta'], FILTER_VALIDATE_BOOLEAN) : false;
  $error = "";
  $mensaje = "";
+ $recetaxx = false;
+
  if (isset($_SESSION['error'])) {
      $error = $_SESSION['error'];
      unset($_SESSION['error']);
@@ -145,33 +144,67 @@ if($verreceta){
                         <i class="fas fa-comments"></i> $num_comentarios
                     </div>
                 </div>
-                <div class="reacciones-icon">
-                        <form method="POST" action="../Controlador/Receta_controlador.php">
-                            
-                            <button type="submit" name="darlike" class="btn-like">
-                                <input type="hidden" name="id_publi" value="$id">
-                                <input type="hidden" name="nick_user" value="$nick">
-                                <input type="hidden" name="principal" value="$principal">
-                                <i class="fas fa-thumbs-up"></i> $numlikes
-                            </button>
-                            <button type="submit" name="dardislike" class="btn-dislike">
-                                <input type="hidden" name="id_publi" value="$id">
-                                <input type="hidden" name="nick_user" value="$nick">
-                                <input type="hidden" name="principal" value="$principal">
-                                <i class="fas fa-thumbs-down"></i> $numdislikes
-                            </button>
-                        </form>
-                </div>
-            </div>
-            <div id="$modalId" class="modal_publi"> 
-               <form method="POST" action="../Controlador/Receta_controlador.php" class="formulario">
-                    <input type="hidden" name="pruebareceta_id" value="true">
-                    <input type="hidden" name="idpruebareceta" value="$id">
-                    <button type="submit" class="botonPubli" name="Verreceta"></button>
-                </form>
-            </div>
         EOS;
-        $modalId++;
+                if($nickuser == $nick){
+                    $contenidoPrincipal .= <<<EOS
+                        <form method="POST" action="../Controlador/Receta_controlador.php">
+                    EOS;
+                }
+                else{
+                    $contenidoPrincipal .= <<<EOS
+                        <form method="POST" action="../Controlador/Receta_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
+                    EOS;
+                }
+                $contenidoPrincipal .= <<<EOS
+                    <button type="submit" name="darlike" class="btn-like">
+                        <input type="hidden" name="id_publi" value="$id">
+                        <input type="hidden" name="nick_user" value="$nickuser">
+                        <input type="hidden" name="nick_perfil" value="$nick">
+                        <input type="hidden" name="principal" value="$principal">
+                        <i class="fas fa-thumbs-up"></i> $numlikes
+                    </button>
+                    <button type="submit" name="dardislike" class="btn-dislike">
+                        <input type="hidden" name="id_publi" value="$id">
+                        <input type="hidden" name="nick_user" value="$nickuser">
+                        <input type="hidden" name="nick_perfil" value="$nick">
+                        <input type="hidden" name="principal" value="$principal">
+                        <i class="fas fa-thumbs-down"></i> $numdislikes
+                    </button>
+                </form>
+
+                <form method="POST" action="../Controlador/Usuario_controlador.php">
+                    <button type="submit" name="favoritos" class="btn-like">
+                        <input type="hidden" name="publi" value="$id">
+                        <input type="hidden" name="tipo" value="$recetaxx">
+                        <input type="hidden" name="perfil" value="true">
+                        <input type="hidden" name="nick_perfil" value="$nick">
+                        <input type="hidden" name="nick_user" value="$nickuser">
+                EOS;
+                $favoritos = isset($_SESSION['idsrecetas']) && is_array($_SESSION['idsrecetas']) 
+                ? $_SESSION['idsrecetas'] 
+                : [];
+                
+                if (in_array($id, $favoritos)) {
+                    $contenidoPrincipal .= '<i class="fas fa-star"></i>';
+                } else {
+                    $contenidoPrincipal .= '<i class="far fa-star"></i>';
+                }
+
+                $contenidoPrincipal .= <<<EOS
+                    </button> 
+                </form>
+                </div>
+                </div>
+                <div id="$modalId" class="modal_publi">
+                    <form method="POST" action="../Controlador/Receta_controlador.php" class="formulario">
+                        <input type="hidden" name="pruebareceta_id" value="true">
+                        <input type="hidden" name="idpruebareceta" value="$id">
+                        <button type="submit" class="botonPubli" name="Verpublicacion"></button>
+                    </form>
+                </div>
+                EOS;
+
+            $modalId++;
      }
 }else{
     foreach ($publicaciones as $publicacion) {
@@ -213,33 +246,70 @@ if($verreceta){
                         <i class="fas fa-comments"></i> $num_comentarios
                     </div>
                 </div>
-                <div class="reacciones-icon">
-                        <form method="POST" action="../Controlador/Publicacion_controlador.php">
-                            
-                            <button type="submit" name="darlike" class="btn-like">
-                                <input type="hidden" name="id_publi" value="$id">
-                                <input type="hidden" name="nick_user" value="$nick">
-                                <input type="hidden" name="principal" value="$principal">
-                                <i class="fas fa-thumbs-up"></i> $numlikes
-                            </button>
-                            <button type="submit" name="dardislike" class="btn-dislike">
-                                <input type="hidden" name="id_publi" value="$id">
-                                <input type="hidden" name="nick_user" value="$nick">
-                                <input type="hidden" name="principal" value="$principal">
-                                <i class="fas fa-thumbs-down"></i> $numdislikes
-                            </button>
-                        </form>
-                </div>
-            </div>
-            <div id="$modalId" class="modal_publi"> 
-                <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
-                <input type="hidden" name="prueba_id" value="true">
-                <input type="hidden" name="idprueba" value="$id">
-                <button type="submit" class="botonPubli" name="Verpublicacion"></button>
+        EOS;
+
+                    if($nickuser == $nick){
+                        $contenidoPrincipal .= <<<EOS
+                            <form method="POST" action="../Controlador/Publicacion_controlador.php">
+                        EOS;
+                    }
+                    else{
+                        $contenidoPrincipal .= <<<EOS
+                            <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
+                        EOS;
+                    }
+                
+                $contenidoPrincipal .= <<<EOS
+                    <button type="submit" name="darlike" class="btn-like">
+                        <input type="hidden" name="id_publi" value="$id">
+                        <input type="hidden" name="nick_user" value="$nickuser">
+                         <input type="hidden" name="nick_perfil" value="$nick">
+                        <input type="hidden" name="principal" value="$principal">
+                        <i class="fas fa-thumbs-up"></i> $numlikes
+                    </button>
+                    <button type="submit" name="dardislike" class="btn-dislike">
+                        <input type="hidden" name="id_publi" value="$id">
+                        <input type="hidden" name="nick_user" value="$nickuser">
+                         <input type="hidden" name="nick_perfil" value="$nick">
+                        <input type="hidden" name="principal" value="$principal">
+                        <i class="fas fa-thumbs-down"></i> $numdislikes
+                    </button>
+                </form>
+
+                <form method="POST" action="../Controlador/Usuario_controlador.php">
+                    <button type="submit" name="favoritos" class="btn-like">
+                        <input type="hidden" name="publi" value="$id">
+                        <input type="hidden" name="tipo" value="true">
+                        <input type="hidden" name="nick_perfil" value="$nick">
+                        <input type="hidden" name="perfil" value="true">
+                        <input type="hidden" name="nick_user" value="$nickuser">
+                EOS;
+
+            $favoritos = isset($_SESSION['idspublis']) && is_array($_SESSION['idspublis']) 
+            ? $_SESSION['idspublis'] 
+            : [];
+            
+            if (in_array($id, $favoritos)) {
+                $contenidoPrincipal .= '<i class="fas fa-star"></i>';
+            } else {
+                $contenidoPrincipal .= '<i class="far fa-star"></i>';
+            }
+
+            $contenidoPrincipal .= <<<EOS
+                </button> 
             </form>
             </div>
-        EOS;
-        $modalId++;
+            </div>
+            <div id="$modalId" class="modal_publi">
+                <form method="POST" action="../Controlador/Publicacion_controlador.php" class="formulario">
+                    <input type="hidden" name="prueba_id" value="true">
+                    <input type="hidden" name="idprueba" value="$id">
+                    <button type="submit" class="botonPubli" name="Verpublicacion"></button>
+                </form>
+            </div>
+            EOS;
+
+            $modalId++;
     }
 }
 if ($error != "") {
