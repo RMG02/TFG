@@ -45,6 +45,8 @@ if($verreceta){
     $publicaciones = json_decode($_SESSION['publicacionesUsuario'], true);
 }
 
+
+
 $tituloPagina = "Página de Perfil";
 $modalId = 0;
 $modalComId = 0;
@@ -145,32 +147,22 @@ if($verreceta){
                     </div>
                 </div>
         EOS;
-                if($nickuser == $nick){
-                    $contenidoPrincipal .= <<<EOS
-                        <form method="POST" action="../Controlador/Receta_controlador.php">
-                    EOS;
-                }
-                else{
-                    $contenidoPrincipal .= <<<EOS
-                        <form method="POST" action="../Controlador/Receta_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
-                    EOS;
-                }
+                
                 $contenidoPrincipal .= <<<EOS
-                    <button type="submit" name="darlike" class="btn-like">
-                        <input type="hidden" name="id_publi" value="$id">
-                        <input type="hidden" name="nick_user" value="$nickuser">
-                        <input type="hidden" name="nick_perfil" value="$nick">
-                        <input type="hidden" name="principal" value="$principal">
-                        <i class="fas fa-thumbs-up"></i> $numlikes
-                    </button>
-                    <button type="submit" name="dardislike" class="btn-dislike">
-                        <input type="hidden" name="id_publi" value="$id">
-                        <input type="hidden" name="nick_user" value="$nickuser">
-                        <input type="hidden" name="nick_perfil" value="$nick">
-                        <input type="hidden" name="principal" value="$principal">
-                        <i class="fas fa-thumbs-down"></i> $numdislikes
-                    </button>
-                </form>
+                    <form method="POST" action="../Controlador/Receta_controlador.php">
+                        <button type="submit" name="darlike" class="btn-like">
+                            <input type="hidden" name="id_publi" value="$id">
+                            <input type="hidden" name="nick_user" value="$nick">
+                            <input type="hidden" name="principal" value="$principal">
+                            <i class="fas fa-thumbs-up"></i> $numlikes
+                        </button>
+                        <button type="submit" name="dardislike" class="btn-dislike">
+                            <input type="hidden" name="id_publi" value="$id">
+                            <input type="hidden" name="nick_user" value="$nick">
+                            <input type="hidden" name="principal" value="$principal">
+                            <i class="fas fa-thumbs-down"></i> $numdislikes
+                        </button>
+                    </form>
 
                 <form method="POST" action="../Controlador/Usuario_controlador.php">
                     <button type="submit" name="favoritos" class="btn-like">
