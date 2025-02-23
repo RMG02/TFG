@@ -246,6 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit;
             }
             if($perfil){
+                $_SESSION['verRecetasPerfil'] = true;
                 header('Location: ../Vista/perfil.php');
                 exit;
             }

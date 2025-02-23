@@ -178,14 +178,14 @@ if($_SESSION['recedisponible'] == false){
                             <i class="fa fa-thumbs-down"></i> $numdislikes
                         </button>
                     </form>
-                </div>
 
                 <form method="POST" action="../Controlador/Usuario_controlador.php">
-                <button type="submit" name="favoritos" class="btn-like">
-                    <input type="hidden" name="publi" value="$id">
-                    <input type="hidden" name="tipo" value="true">
-                    <input type="hidden" name="verreceta" value="true">
-                    <input type="hidden" name="nick_user" value="$nickuser">
+                    <button type="submit" name="favoritos" class="btn-like">
+                        <input type="hidden" name="publi" value="$id">
+                        <input type="hidden" name="tipo" value="true">
+                        <input type="hidden" name="verreceta" value="true">
+                        <input type="hidden" name="nick_user" value="$nickuser">
+                </form>
             EOS;
 
             $favoritos = isset($_SESSION['idspublis']) && is_array($_SESSION['idspublis']) 
@@ -199,6 +199,7 @@ if($_SESSION['recedisponible'] == false){
             }
 
             $contenidoPrincipal .= <<<EOS
+                </div>
                 <div class="dropdown">
                     <button class="dropbtn">⋮</button>
                     <div class="dropdown-content">

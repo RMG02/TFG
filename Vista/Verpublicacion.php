@@ -156,6 +156,7 @@ if($_SESSION['publidisponible'] == false){
                     <input type="hidden" name="tipo" value="true">
                     <input type="hidden" name="verpublicacion" value="true">
                     <input type="hidden" name="nick_user" value="$nickuser">
+                </form>
             EOS;
 
             $favoritos = isset($_SESSION['idspublis']) && is_array($_SESSION['idspublis']) 

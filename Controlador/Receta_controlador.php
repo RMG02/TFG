@@ -34,6 +34,10 @@ if (isset($_SESSION['id_publi'])) {
     unset($_SESSION['id_publi']);
 }
 
+if (isset($_SESSION['RecetasUsuario'])) {
+    unset($_SESSION['RecetasUsuario']);
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['crearReceta'])) {
@@ -215,8 +219,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location: ../Vista/Recetas.php');
                 exit;
             }
-            header('Location: ../Vista/perfil.php');
-            exit;
+            if(isset($_POST['verreceta'])){
+                $_SESSION['verRecetasPerfil'] = true;
+                header('Location: ../Vista/perfil.php');
+                exit;
+            }
+           
         }
 
         if(isset($_POST['perfilPublico'])){
@@ -290,8 +298,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location: ../Vista/Recetas.php');
                 exit;
             }
-            header('Location: ../Vista/perfil.php');
-            exit;
+            if(isset($_POST['verreceta'])){
+                $_SESSION['verRecetasPerfil'] = true;
+                header('Location: ../Vista/perfil.php');
+                exit;
+            }
         }
 
         if(isset($_POST['perfilPublico'])){

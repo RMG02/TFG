@@ -22,7 +22,7 @@ if (!isset($_SESSION['publicacionesUsuario'])) {
  
  require_once __DIR__ . "/plantillas/respuestas.php";
  $principal = false;
- $verreceta = isset($_POST['verreceta']) ? filter_var($_POST['verreceta'], FILTER_VALIDATE_BOOLEAN) : false;
+ //$verreceta = isset($_POST['verreceta']) ? filter_var($_POST['verreceta'], FILTER_VALIDATE_BOOLEAN) : false;
  $error = "";
  $mensaje = "";
  $recetaxx = false;
@@ -37,6 +37,24 @@ if (!isset($_SESSION['publicacionesUsuario'])) {
      unset($_SESSION['mensaje']);
  }
 
+ if(isset($_SESSION['verRecetasPerfil'])){
+    unset($_SESSION['verRecetasPerfil']);
+    $verreceta = true;
+ }
+ else if(isset($_POST['verreceta'])){
+    if($_POST['verreceta'] == "false"){
+        $verreceta = false;
+    }
+    else{
+        $verreceta = true;
+    }
+ }
+ else{
+    $verreceta = false;
+ }
+
+ 
+ 
 date_default_timezone_set('Europe/Madrid');
 
 if($verreceta){
@@ -145,7 +163,7 @@ if($verreceta){
                     <div class="comentarios-icon">
                         <i class="fas fa-comments"></i> $num_comentarios
                     </div>
-                </div>
+            </div>
         EOS;
                 
                 $contenidoPrincipal .= <<<EOS
@@ -154,23 +172,26 @@ if($verreceta){
                             <input type="hidden" name="id_publi" value="$id">
                             <input type="hidden" name="nick_user" value="$nick">
                             <input type="hidden" name="principal" value="$principal">
+                            <input type="hidden" name="verreceta" value='true'>
                             <i class="fas fa-thumbs-up"></i> $numlikes
                         </button>
                         <button type="submit" name="dardislike" class="btn-dislike">
                             <input type="hidden" name="id_publi" value="$id">
                             <input type="hidden" name="nick_user" value="$nick">
                             <input type="hidden" name="principal" value="$principal">
+                            <input type="hidden" name="verreceta" value='true'>
                             <i class="fas fa-thumbs-down"></i> $numdislikes
                         </button>
                     </form>
 
-                <form method="POST" action="../Controlador/Usuario_controlador.php">
-                    <button type="submit" name="favoritos" class="btn-like">
-                        <input type="hidden" name="publi" value="$id">
-                        <input type="hidden" name="tipo" value="$recetaxx">
-                        <input type="hidden" name="perfil" value="true">
-                        <input type="hidden" name="nick_perfil" value="$nick">
-                        <input type="hidden" name="nick_user" value="$nickuser">
+                    <form method="POST" action="../Controlador/Usuario_controlador.php">
+                        <button type="submit" name="favoritos" class="btn-like">
+                            <input type="hidden" name="publi" value="$id">
+                            <input type="hidden" name="tipo" value="$recetaxx">
+                            <input type="hidden" name="perfil" value="true">
+                            <input type="hidden" name="verreceta" value='true'>
+                            <input type="hidden" name="nick_perfil" value="$nick">
+                            <input type="hidden" name="nick_user" value="$nickuser">
                 EOS;
                 $favoritos = isset($_SESSION['idsrecetas']) && is_array($_SESSION['idsrecetas']) 
                 ? $_SESSION['idsrecetas'] 
@@ -239,19 +260,9 @@ if($verreceta){
                     </div>
                 </div>
         EOS;
-
-                    if($nickuser == $nick){
-                        $contenidoPrincipal .= <<<EOS
-                            <form method="POST" action="../Controlador/Publicacion_controlador.php">
-                        EOS;
-                    }
-                    else{
-                        $contenidoPrincipal .= <<<EOS
-                            <form method="POST" action="../Controlador/Publicacion_controlador.php" onsubmit="enviarDatos(event, '$nickuser','$nick', '$id', '$likes_cadena', '$dislikes_cadena', '$tipo_publicacion', '', '')">
-                        EOS;
-                    }
                 
                 $contenidoPrincipal .= <<<EOS
+                <form method="POST" action="../Controlador/Publicacion_controlador.php">
                     <button type="submit" name="darlike" class="btn-like">
                         <input type="hidden" name="id_publi" value="$id">
                         <input type="hidden" name="nick_user" value="$nickuser">
@@ -315,6 +326,8 @@ if ($mensaje != "") {
         <p class="mensaje">$mensaje</p>
     EOS;
 }
+
+
 
 require_once __DIR__."/plantillas/plantilla.php";
 ?>
