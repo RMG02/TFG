@@ -1006,8 +1006,89 @@ footer p {
     transform: scale(1.02); 
 }
 
-/* Pequeña sombra para mejorar visibilidad */
 .modal-compartir ul li button {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.buscador-contenedor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    position: relative;
+}
+
+#buscador {
+    padding: 10px;
+    width: 300px;
+    max-width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+#filtroBtn {
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#filtroBtn:hover {
+    background-color: #0056b3;
+}
+
+.menu-filtro {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    padding: 15px;
+    z-index: 100;
+}
+
+.menu-filtro button {
+    width: 100%;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 5px 0;
+    text-align: left;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.menu-filtro button:hover {
+    background-color: #007BFF;
+    color: white;
+}
+
+.menu-filtro button i {
+    margin-right: 10px;
+}
+
+hr {
+    margin: 15px 0;
+}
+
+.menu-filtro button.activo {
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
 }
 
