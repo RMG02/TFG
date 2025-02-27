@@ -9,7 +9,6 @@ function setBuscarPor(tipo) {
     document.getElementById('btnBuscarNick').classList.remove('activo');
     document.getElementById('btnBuscarTexto').classList.remove('activo');
 
-    // Ahora añadimos la clase 'active' al botón que se ha clickeado
     if (tipo === 'nick') {
         document.getElementById('btnBuscarNick').classList.add('activo');
     } else if (tipo === 'texto') {
@@ -150,4 +149,26 @@ function ordenarPublicaciones(criterio) {
     });
 }
 
+
+function mostrarSeccion(id) {
+    var contenido = document.getElementsByClassName('contenido-seccion');
+    for (var i = 0; i < contenido.length; i++) {
+        contenido[i].classList.remove('activo');   
+    }
+
+    document.getElementById(id).classList.add("activo");
+
+    var seccion = document.getElementsByClassName("seccion");
+    for (var i = 0; i < seccion.length; i++) {
+        seccion[i].classList.remove("activo");
+    }
+
+    var botones = document.getElementsByClassName("secciones").getElementsByTagName("button"); 
+    for (var i = 0; i < botones.length; i++) {
+        if (botones[i].getAttribute("onclick") === `mostrarSeccion('${id}')`) {
+            botones[i].classList.add("activo");
+            break;
+        }
+    }
+}
 

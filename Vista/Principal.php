@@ -97,12 +97,18 @@ $contenidoPrincipal = <<<EOS
     <button id="filtroBtn"><i class="fas fa-filter"></i>Filtros</button>
 
     <div id="menuFiltro" class="menu-filtro">
-        <p>Buscar por:</p>
-        <button onclick="setBuscarPor('nick')" id="btnBuscarNick"><i class="fas fa-search"></i> Buscar por Nick</button>
-        <button onclick="setBuscarPor('texto')" id="btnBuscarTexto" class="activo"><i class="fas fa-search"></i> Buscar por Texto</button>
+    <div class="secciones">
+        <button class="seccion activo" onclick="mostrarSeccion('buscar')">Buscar</button>
+        <button class="seccion" onclick="mostrarSeccion('ordenar')">Ordenar</button>
+    </div>
 
-        <hr>
-        
+    <div id="buscar" class="contenido-seccion activo">
+        <p>Buscar por:</p>
+        <button onclick="setBuscarPor('nick')" id="btnBuscarNick"><i class="fas fa-search"></i> Nick</button>
+        <button onclick="setBuscarPor('texto')" id="btnBuscarTexto" class="activo"><i class="fas fa-search"></i> Texto</button>
+    </div>
+
+    <div id="ordenar" class="contenido-seccion">
         <p>Ordenar por:</p>
         <button onclick="ordenarPublicaciones('btnOrdenarFechaDesc')" id="btnOrdenarFechaDesc" class="activo"><i class="fas fa-calendar-alt"></i> Más recientes</button>
         <button onclick="ordenarPublicaciones('btnOrdenarFechaAsc')" id="btnOrdenarFechaAsc"><i class="fas fa-calendar-alt"></i> Más antiguas</button>
@@ -110,8 +116,9 @@ $contenidoPrincipal = <<<EOS
         <button onclick="ordenarPublicaciones('btnOrdenarLikesAsc')" id="btnOrdenarLikesAsc"><i class="fas fa-thumbs-up"></i> Menos likes</button>
         <button onclick="ordenarPublicaciones('btnOrdenarDislikesDesc')" id="btnOrdenarDislikesDesc"><i class="fas fa-thumbs-down"></i> Más dislikes</button>
         <button onclick="ordenarPublicaciones('btnOrdenarDislikesAsc')" id="btnOrdenarDislikesAsc"><i class="fas fa-thumbs-down"></i> Menos dislikes</button>
-
     </div>
+</div>
+
 </div>
 
 
