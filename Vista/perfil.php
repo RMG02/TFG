@@ -208,7 +208,6 @@ if($verreceta){
                     </button> 
                 </form>
                 </div>
-                </div>
                 <div id="$modalId" class="modal_publi">
                     <form method="POST" action="../Controlador/Receta_controlador.php" class="formulario">
                         <input type="hidden" name="pruebareceta_id" value="true">
