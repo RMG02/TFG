@@ -216,6 +216,7 @@ if($_SESSION['usudisponible'] == false){
                 $nick = $receta['nick'];
                 $titulo = $receta['titulo'];
                 $id = $receta['_id']['$oid'];
+                $tipo = $receta['tipo'];
                 $Hora = date('d/m/Y H:i:s', strtotime($receta['created_at']));
                 $multimedia = $receta['multimedia'] ?? '';
                 $comentarios = $receta['comentarios'];
@@ -245,7 +246,7 @@ if($_SESSION['usudisponible'] == false){
                 
                 <div class="tweet" id="publistas">
                     <div class="tweet-header">
-                        <strong>$nick</strong> <span class="tweet-time">$Hora</span>
+                        <strong>$nick</strong><span class="tweet-time">$tipo</span><span class="tweet-time">$Hora</span>
                     </div>
                     <div class="tweet-content">
                             <p>$titulo</p>

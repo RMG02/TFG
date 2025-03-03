@@ -65,6 +65,7 @@ if($_SESSION['recedisponible'] == false){
         $tituloPagina = "Receta";
 
             $nickuser = $_SESSION['nick'];
+            $tipo = $receta['tipo'];
             $email = $receta['email'];
             $nick = $receta['nick'];
             $titulo = $receta['titulo'];
@@ -107,7 +108,7 @@ if($_SESSION['recedisponible'] == false){
 
         $contenidoPrincipal = <<<EOS
             <div class="tweet-header">
-                <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a>
+                <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a><strong>$tipo</strong></a>
                 <span class="tweet-time">$Hora</span>
             </div>
             <div class="recet-content">
@@ -268,7 +269,8 @@ if($_SESSION['recedisponible'] == false){
                         </div> 
                         <button id="download-btn" 
                             data-title="$titulo" 
-                            data-ingredients="$ingredientes" 
+                            data-ingredients="$ingredientes"
+                            data-tipo="$tipo" 
                             data-preparation="$preparacion" 
                             data-dificultad=$dificultad
                             data-tiempo=$tiempo
@@ -294,6 +296,12 @@ if($_SESSION['recedisponible'] == false){
                             <option value=3>3</option>
                             <option value=4>4</option>
                             <option value=5>5</option>  
+                            </select>
+                            <p>Tipo</p><select name="tiporeceta" required>
+                                <option value="Entrante">Entrante</option>
+                                <option value="Primer Plato">Primer Plato</option>
+                                <option value="Segundo Plato">Segundo Plato</option>
+                                <option value="Postre">Postre</option> 
                             </select>
                             <input type="file" name="nuevo_archivo"> 
                             <input type="hidden" name="id_publi" value="$id">

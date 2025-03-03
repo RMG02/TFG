@@ -33,11 +33,9 @@ if (isset($_SESSION['RecetasUsuarioPublico'])) {
 if (isset($_SESSION['id_publi'])) {
     unset($_SESSION['id_publi']);
 }
-
 if (isset($_SESSION['RecetasUsuario'])) {
     unset($_SESSION['RecetasUsuario']);
 }
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['crearReceta'])) {
@@ -65,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'titulo' => $_POST['titulo'],
             'ingredientes' => $_POST['ingredientes'],
             'preparacion' => $_POST['preparacion'],
+            'tipo' => $_POST['tiporeceta'],
             'dificultad' => (int) $_POST['dificultad'],
             'tiempo' => $_POST['tiempo'],
             'multimedia' => $archivo_subido,
@@ -219,12 +218,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location: ../Vista/Recetas.php');
                 exit;
             }
-            if(isset($_POST['verreceta'])){
-                $_SESSION['verRecetasPerfil'] = true;
-                header('Location: ../Vista/perfil.php');
-                exit;
-            }
-           
+            header('Location: ../Vista/perfil.php');
+            exit;
         }
 
         if(isset($_POST['perfilPublico'])){
@@ -233,9 +228,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
-        if(isset($_POST['favoritos'])){
-            $_SESSION['verpublicaciones']= "false";
-            header('Location: ../Vista/favoritos.php');
+        if(isset($_POST['perfilPublico'])){
+            $_SESSION['verreceta'] = true;
+            header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_perfil']);
             exit;
         }
 
@@ -298,11 +293,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location: ../Vista/Recetas.php');
                 exit;
             }
-            if(isset($_POST['verreceta'])){
-                $_SESSION['verRecetasPerfil'] = true;
-                header('Location: ../Vista/perfil.php');
-                exit;
-            }
+            header('Location: ../Vista/perfil.php');
+            exit;
         }
 
         if(isset($_POST['perfilPublico'])){
@@ -310,13 +302,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: ../Vista/unsetPerfilPublico.php?nick_user=' . $_POST['nick_perfil']);
             exit;
         }
-
-        if(isset($_POST['favoritos'])){
-            $_SESSION['verpublicaciones']= "false";
-            header('Location: ../Vista/favoritos.php');
-            exit;
-        }
-
 
         if (!preg_match('/^[a-f0-9]{24}$/i', $_POST['id_publi'])) { 
             $_SESSION['recedisponible'] = false;

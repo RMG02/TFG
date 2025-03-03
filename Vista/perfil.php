@@ -128,6 +128,7 @@ if($verreceta){
     foreach ($recetas as $receta) {
         $nickuser = $_SESSION['nick'];
         $nick = $receta['nick'];
+        $tipo = $receta['tipo'];
         $titulo = $receta['titulo'];
         $id = $receta['_id']['$oid'];
         $Hora = date('d/m/Y H:i:s', strtotime($receta['created_at']));
@@ -155,7 +156,7 @@ if($verreceta){
         
         <div class="tweet" id="publistas">
             <div class="tweet-header">
-                <strong>$nick</strong> <span class="tweet-time">$Hora</span>
+                <strong>$nick</strong><span class="tweet-time">$tipo</span><span class="tweet-time">$Hora</span>
             </div>
             <div class="tweet-content">
                     $multi

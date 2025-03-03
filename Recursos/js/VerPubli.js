@@ -158,6 +158,7 @@ document.getElementById('download-btn').addEventListener('click', function () {
     const nick = this.dataset.nick.replace(/\\n/g, '\n');
     const ingredients = this.dataset.ingredients.replace(/\\n/g, '\n');
     const preparation = this.dataset.preparation.replace(/\\n/g, '\n');
+    const tipo = this.dataset.tipo;
     const multimedia = this.dataset.multimedia;
     const extension = this.dataset.extension;
     var tiempo = parseInt(this.dataset.tiempo);
@@ -166,6 +167,8 @@ document.getElementById('download-btn').addEventListener('click', function () {
     // Agregar título
     doc.setFontSize(18);
     doc.text(title, 10, 10);
+    doc.setFontSize(14);
+    doc.text(tipo,10, 18);
 
     let textStartY = 30; // Posición inicial para el texto
 

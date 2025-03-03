@@ -81,8 +81,14 @@ $contenidoPrincipal = <<<EOS
             <option value=1>1</option>
             <option value=2>2</option>
             <option value=3>3</option>
-            <option value=4">4</option>
+            <option value=4>4</option>
             <option value=5>5</option>  
+            </select>
+            <p>Tipo</p><select name="tiporeceta" required>
+            <option value="Entrante">Entrante</option>
+            <option value="Primer Plato">Primer Plato</option>
+            <option value="Segundo Plato">Segundo Plato</option>
+            <option value="Postre">Postre</option> 
             </select>
             <input type="file" name="archivo" required> 
             <button type="submit" name="crearReceta">Publicar</button> 
@@ -139,6 +145,7 @@ foreach ($recetas as $receta) {
     if (($verseguidores == "false") || ($verseguidores == "true" && in_array($receta['nick'],$siguiendo, false))|| $receta['email'] == $_SESSION['email'] ) {
             $nickuser = $_SESSION['nick'];
             $email = $receta['email'];
+            $tipo = $receta['tipo'];
             $nick = $receta['nick'];
             $texto = $receta['titulo'];
             $id = $receta['_id']['$oid'];
@@ -166,7 +173,7 @@ foreach ($recetas as $receta) {
             <div class="contenedor-publicacion">
                 <div class="tweet" id="publistas">
                     <div class="tweet-header">
-                        <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a> <span class="tweet-time">$Hora</span>
+                        <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a><span class="tweet-tipo">$tipo</span><span class="tweet-time">$Hora</span>
                     </div>
                     <div class="tweet-content">
                         <strong>$texto</strong>
