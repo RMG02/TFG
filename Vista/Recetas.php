@@ -106,6 +106,7 @@ $contenidoPrincipal = <<<EOS
         <div class="secciones">
             <button class="seccion activo" onclick="mostrarSeccion('buscar')">Buscar</button>
             <button class="seccion" onclick="mostrarSeccion('ordenar')">Ordenar</button>
+            <button class="seccion" onclick="mostrarSeccion('filtrar')">Filtrar</button>
         </div>
 
         <div id="buscar" class="contenido-seccion activo">
@@ -123,6 +124,20 @@ $contenidoPrincipal = <<<EOS
             <button onclick="ordenarPublicaciones('btnOrdenarDislikesDesc')" id="btnOrdenarDislikesDesc"><i class="fas fa-thumbs-down"></i> Más dislikes</button>
             <button onclick="ordenarPublicaciones('btnOrdenarDislikesAsc')" id="btnOrdenarDislikesAsc"><i class="fas fa-thumbs-down"></i> Menos dislikes</button>
         </div>
+
+        <div id="filtrar" class="contenido-seccion">
+            <p>Filtrar por:</p>
+            <button onclick="mostrarTipos()" id="btnFiltrarTipo"><i class="fas fa-utensils"></i> Tipo de plato</button>
+            
+            <div id="opcionesFiltroTipo" class="opciones-filtro">
+                <button onclick="filtrarPorTipo('btnFiltrarTodos')" id="btnFiltrarTodos" class="activo">Todos</button>
+                <button onclick="filtrarPorTipo('btnFiltrarEntrante')" id="btnFiltrarEntrante">Entrante</button>
+                <button onclick="filtrarPorTipo('btnFiltrarPrimerPlato')" id="btnFiltrarPrimerPlato">Primer Plato</button>
+                <button onclick="filtrarPorTipo('btnFiltrarSegundoPlato')" id="btnFiltrarSegundoPlato">Segundo Plato</button>
+                <button onclick="filtrarPorTipo('btnFiltrarPostre')" id="btnFiltrarPostre">Postre</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -176,7 +191,7 @@ foreach ($recetas as $receta) {
                         <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a><span class="tweet-tipo">$tipo</span><span class="tweet-time">$Hora</span>
                     </div>
                     <div class="tweet-content">
-                        <strong>$texto</strong>
+                        <p><strong>$texto</strong></p>
                         $multi
                         <div class="comentarios-icon">
                             <i class="fas fa-comments"></i> $num_comentarios

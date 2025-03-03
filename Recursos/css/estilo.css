@@ -1121,3 +1121,16 @@ hr {
 .contenido-seccion.activo {
     display: block;
 }
+
+
+.opciones-filtro {
+    display: none;
+    margin-top: 5px;
+}
+
+.opciones-filtro button {
+    display: block;
+    width: 100%;
+    margin: 2px 0;
+}
+
