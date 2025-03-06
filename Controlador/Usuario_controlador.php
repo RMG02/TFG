@@ -176,7 +176,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: ../Vista/perfil.php');
         }
         
+    }
+
+    if(isset($_POST['verusuariooo'])){
+        $email= $_POST['email'];
+        header('Location: ../Vista/unsetPerfilPublico.php?email_user='.$email);
         
+    }
+
+    if(isset($_POST['buscarusuario'])){
+        $texto = $_POST['filtro'];
+        $usuarios = $usuarioModelo->buscarUsuario($texto);
+        if($usuarios){
+            $_SESSION['usuarioslista'] = json_encode(iterator_to_array($usuarios));
+        }else{
+            $_SESSION['usuarioslista'] = '';
+        }
+        
+        header('Location: ../Vista/Buscador.php');
     }
 
     if (isset($_POST["ischanged"])) {

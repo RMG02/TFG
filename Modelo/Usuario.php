@@ -89,6 +89,12 @@ class Usuario {
             }
     }
 
+    public function buscarusuario($nick) {
+        $filter = ['nombre' => ['$regex' => $nick, '$options' => 'i']];
+        $result = $this->collection->find($filter);
+        return $result;
+    }
+
     public function obtenerUsuarioNick($nick) {
         $usuario = $this->collection->findOne(['nick' => $nick]);
         if ($usuario) {
