@@ -128,8 +128,28 @@ function ordenarPublicaciones(criterio) {
 
     var contenedor = document.getElementById("publicaciones");
     publicaciones.forEach(publi => contenedor.appendChild(publi));
+
+    var opciones = document.getElementsByClassName("opciones_orden");
+    
+    for(var i = 0; i < opciones.length; i++){
+        opciones[i].style.display = "none";
+    }
 }
 
+function mostrarOrdenFechas() {
+    var opciones = document.getElementById("opcionesOrdenFechas");
+    opciones.style.display = opciones.style.display === "block" ? "none" : "block";
+}
+
+function mostrarOrdenLikes() {
+    var opciones = document.getElementById("opcionesOrdenLikes");
+    opciones.style.display = opciones.style.display === "block" ? "none" : "block";
+}
+
+function mostrarOrdenDislikes() {
+    var opciones = document.getElementById("opcionesOrdenDislikes");
+    opciones.style.display = opciones.style.display === "block" ? "none" : "block";
+}
 
 function mostrarSeccion(id) {
     var contenido = document.getElementsByClassName('contenido-seccion');

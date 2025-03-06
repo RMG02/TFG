@@ -110,12 +110,24 @@ $contenidoPrincipal = <<<EOS
 
         <div id="ordenar" class="contenido-seccion">
             <p>Ordenar por:</p>
-            <button onclick="ordenarPublicaciones('btnOrdenarFechaDesc')" id="btnOrdenarFechaDesc" class="activo"><i class="fas fa-calendar-alt"></i> Más recientes</button>
-            <button onclick="ordenarPublicaciones('btnOrdenarFechaAsc')" id="btnOrdenarFechaAsc"><i class="fas fa-calendar-alt"></i> Más antiguas</button>
-            <button onclick="ordenarPublicaciones('btnOrdenarLikesDesc')" id="btnOrdenarLikesDesc"><i class="fas fa-thumbs-up"></i> Más likes</button>
-            <button onclick="ordenarPublicaciones('btnOrdenarLikesAsc')" id="btnOrdenarLikesAsc"><i class="fas fa-thumbs-up"></i> Menos likes</button>
-            <button onclick="ordenarPublicaciones('btnOrdenarDislikesDesc')" id="btnOrdenarDislikesDesc"><i class="fas fa-thumbs-down"></i> Más dislikes</button>
-            <button onclick="ordenarPublicaciones('btnOrdenarDislikesAsc')" id="btnOrdenarDislikesAsc"><i class="fas fa-thumbs-down"></i> Menos dislikes</button>
+
+            <button onclick="mostrarOrdenFechas()" id="btnFiltrarTipo"><i class="fas fa-calendar-alt"></i> Fecha</button>
+            <div id="opcionesOrdenFechas" class="opciones-filtro opciones_orden">
+                <button onclick="ordenarPublicaciones('btnOrdenarFechaDesc')" id="btnOrdenarFechaDesc" class="activo">Más recientes</button>
+                <button onclick="ordenarPublicaciones('btnOrdenarFechaAsc')" id="btnOrdenarFechaAsc">Más antiguas</button>
+            </div>
+
+            <button onclick="mostrarOrdenLikes()" id="btnFiltrarTipo"><i class="fas fa-thumbs-up"></i> Likes</button>
+            <div id="opcionesOrdenLikes" class="opciones-filtro opciones_orden">
+                <button onclick="ordenarPublicaciones('btnOrdenarLikesDesc')" id="btnOrdenarLikesDesc">Más likes</button>
+                <button onclick="ordenarPublicaciones('btnOrdenarLikesAsc')" id="btnOrdenarLikesAsc">Menos likes</button>
+            </div>
+
+            <button onclick="mostrarOrdenDislikes()" id="btnFiltrarTipo"><i class="fas fa-thumbs-down"></i> Dislikes</button>
+            <div id="opcionesOrdenDislikes" class="opciones-filtro opciones_orden">
+                <button onclick="ordenarPublicaciones('btnOrdenarDislikesDesc')" id="btnOrdenarDislikesDesc">Más dislikes</button>
+                <button onclick="ordenarPublicaciones('btnOrdenarDislikesAsc')" id="btnOrdenarDislikesAsc">Menos dislikes</button>
+            </div>  
         </div>
     </div>
 </div>

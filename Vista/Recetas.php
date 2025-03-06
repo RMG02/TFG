@@ -117,25 +117,59 @@ $contenidoPrincipal = <<<EOS
 
         <div id="ordenar" class="contenido-seccion">
             <p>Ordenar por:</p>
-            <button onclick="ordenarPublicaciones('btnOrdenarFechaDesc')" id="btnOrdenarFechaDesc" class="activo"><i class="fas fa-calendar-alt"></i> Más recientes</button>
-            <button onclick="ordenarPublicaciones('btnOrdenarFechaAsc')" id="btnOrdenarFechaAsc"><i class="fas fa-calendar-alt"></i> Más antiguas</button>
-            <button onclick="ordenarPublicaciones('btnOrdenarLikesDesc')" id="btnOrdenarLikesDesc"><i class="fas fa-thumbs-up"></i> Más likes</button>
-            <button onclick="ordenarPublicaciones('btnOrdenarLikesAsc')" id="btnOrdenarLikesAsc"><i class="fas fa-thumbs-up"></i> Menos likes</button>
-            <button onclick="ordenarPublicaciones('btnOrdenarDislikesDesc')" id="btnOrdenarDislikesDesc"><i class="fas fa-thumbs-down"></i> Más dislikes</button>
-            <button onclick="ordenarPublicaciones('btnOrdenarDislikesAsc')" id="btnOrdenarDislikesAsc"><i class="fas fa-thumbs-down"></i> Menos dislikes</button>
+
+            <button onclick="mostrarOrdenFechas()" id="btnFiltrarTipo"><i class="fas fa-calendar-alt"></i> Fecha</button>
+            <div id="opcionesOrdenFechas" class="opciones-filtro opciones_orden">
+                <button onclick="ordenarPublicaciones('btnOrdenarFechaDesc')" id="btnOrdenarFechaDesc" class="activo">Más recientes</button>
+                <button onclick="ordenarPublicaciones('btnOrdenarFechaAsc')" id="btnOrdenarFechaAsc">Más antiguas</button>
+            </div>
+
+            <button onclick="mostrarOrdenLikes()" id="btnFiltrarTipo"><i class="fas fa-thumbs-up"></i> Likes</button>
+            <div id="opcionesOrdenLikes" class="opciones-filtro opciones_orden">
+                <button onclick="ordenarPublicaciones('btnOrdenarLikesDesc')" id="btnOrdenarLikesDesc">Más likes</button>
+                <button onclick="ordenarPublicaciones('btnOrdenarLikesAsc')" id="btnOrdenarLikesAsc">Menos likes</button>
+            </div>
+
+            <button onclick="mostrarOrdenDislikes()" id="btnFiltrarTipo"><i class="fas fa-thumbs-down"></i> Dislikes</button>
+            <div id="opcionesOrdenDislikes" class="opciones-filtro opciones_orden">
+                <button onclick="ordenarPublicaciones('btnOrdenarDislikesDesc')" id="btnOrdenarDislikesDesc">Más dislikes</button>
+                <button onclick="ordenarPublicaciones('btnOrdenarDislikesAsc')" id="btnOrdenarDislikesAsc">Menos dislikes</button>
+            </div>  
+            
+            <button onclick="mostrarOrdenTiempo()" id="btnFiltrarTipo"><i class="fa fa-clock"></i> Tiempo</button>
+            <div id="opcionesOrdenTiempo" class="opciones-filtro opciones_orden">
+                <button onclick="ordenarPublicaciones('btnOrdenarTiempoDesc')" id="btnOrdenarTiempoDesc">Más tiempo</button>
+                <button onclick="ordenarPublicaciones('btnOrdenarTiempoAsc')" id="btnOrdenarTiempoAsc">Menos tiempo</button>
+            </div> 
+            
+            <button onclick="mostrarOrdenDifi()" id="btnFiltrarTipo"><span class="iconify" data-icon="mdi:chef-hat" data-inline="false" style="margin-right: 10px;"></span> Dificultad</button>
+            <div id="opcionesOrdenDifi" class="opciones-filtro opciones_orden">
+                <button onclick="ordenarPublicaciones('btnOrdenarDifiDesc')" id="btnOrdenarDifiDesc">Más difícil</button>
+                <button onclick="ordenarPublicaciones('btnOrdenarDifiAsc')" id="btnOrdenarDifiAsc">Más fácil</button>
+            </div> 
         </div>
 
         <div id="filtrar" class="contenido-seccion">
             <p>Filtrar por:</p>
+
+            <button onclick="filtrarPorTipo('btnFiltrarTodos')" id="btnFiltrarTodos" class="activo opciones_sin_filtro">Sin filtros</button>
+
             <button onclick="mostrarTipos()" id="btnFiltrarTipo"><i class="fas fa-utensils"></i> Tipo de plato</button>
-            
-            <div id="opcionesFiltroTipo" class="opciones-filtro">
-                <button onclick="filtrarPorTipo('btnFiltrarTodos')" id="btnFiltrarTodos" class="activo">Todos</button>
-                <button onclick="filtrarPorTipo('btnFiltrarEntrante')" id="btnFiltrarEntrante">Entrante</button>
-                <button onclick="filtrarPorTipo('btnFiltrarPrimerPlato')" id="btnFiltrarPrimerPlato">Primer Plato</button>
-                <button onclick="filtrarPorTipo('btnFiltrarSegundoPlato')" id="btnFiltrarSegundoPlato">Segundo Plato</button>
-                <button onclick="filtrarPorTipo('btnFiltrarPostre')" id="btnFiltrarPostre">Postre</button>
+            <div id="opcionesFiltroTipo" class="opciones-filtro opciones_filtro_tipo">
+                <button onclick="filtrarPorTipo('Entrante')" id="btnFiltrarEntrante">Entrante</button>
+                <button onclick="filtrarPorTipo('PrimerPlato')" id="btnFiltrarPrimerPlato">Primer Plato</button>
+                <button onclick="filtrarPorTipo('SegundoPlato')" id="btnFiltrarSegundoPlato">Segundo Plato</button>
+                <button onclick="filtrarPorTipo('Postre')" id="btnFiltrarPostre">Postre</button>
             </div>
+
+            <button onclick="mostrarFiltroDifi()" id="btnFiltrarTipo"><span class="iconify" data-icon="mdi:chef-hat" data-inline="false" style="margin-right: 10px;"></span> Dificultad</button>
+            <div id="opcionesFiltroDifi" class="opciones-filtro opciones_filtro_difi">
+                <button onclick="filtrarPorTipo(1)" id="btnFiltrar1" class="filtroDifi"><span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span></button>
+                <button onclick="filtrarPorTipo(2)" id="btnFiltrar2" class="filtroDifi"><span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span> <span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span></button>
+                <button onclick="filtrarPorTipo(3)" id="btnFiltrar3" class="filtroDifi"><span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span> <span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span> <span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span></button>
+                <button onclick="filtrarPorTipo(4)" id="btnFiltrar4" class="filtroDifi"><span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span> <span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span> <span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span> <span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span></button>
+                <button onclick="filtrarPorTipo(5)" id="btnFiltrar5" class="filtroDifi"><span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span> <span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span> <span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span> <span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span> <span class="iconify" data-icon="mdi:chef-hat" data-inline="false"></span></button>
+            </div> 
         </div>
 
     </div>
@@ -170,6 +204,8 @@ foreach ($recetas as $receta) {
             $num_comentarios = count($comentarios);
             $likes = $receta['likes'];
             $dislikes = $receta['dislikes'];
+            $tiempoReceta = $receta['tiempo'];
+            $dificultad = (int) $receta['dificultad'];
             $likes_cadena = implode(",", $likes);
             $dislikes_cadena = implode(",", $dislikes);
             $numlikes = count($likes ?? []);
@@ -187,6 +223,10 @@ foreach ($recetas as $receta) {
             $contenidoPrincipal .= <<<EOS
             <div class="contenedor-publicacion">
                 <div class="tweet" id="publistas">
+                    <div style="display: none;">
+                        <span class="tiempo_receta">$tiempoReceta</span>
+                        <span class="dificultad_receta">$dificultad</span>
+                    </div>
                     <div class="tweet-header">
                         <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a><span class="tweet-tipo">$tipo</span><span class="tweet-time">$Hora</span>
                     </div>

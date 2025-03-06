@@ -1,10 +1,13 @@
+var buscarPor = 'texto'; // Por defecto buscar por texto
+var tipoFiltroActual = "btnFiltrarTodos"; // Por defecto, sin filtros
+var DifiActual = null;
+var contFiltrosTipo = 0;
+var contFiltroDifi = 0;
+
 document.getElementById("filtroBtn").addEventListener("click", function() {
     var menu = document.getElementById("menuFiltro");
     menu.style.display = menu.style.display === "block" ? "none" : "block";
 });
-
-var buscarPor = 'texto'; // Por defecto buscar por texto
-var tipoFiltroActual = "btnFiltrarTodos"; // Por defecto, mostrar todos
 
 
 function setBuscarPor(tipo) {
@@ -31,12 +34,15 @@ function filtrarPublicaciones() {
         nick = publicaciones[i].getElementsByTagName("strong")[0].textContent.toLowerCase();
         texto = publicaciones[i].getElementsByTagName("p")[0].getElementsByTagName("strong")[0].textContent.toLowerCase();
         tipo_receta = publicaciones[i].getElementsByClassName("tweet-tipo")[0].textContent;
+        difi_receta = parseInt(publicaciones[i].getElementsByClassName("dificultad_receta")[0].textContent);
 
         var cumpleBusqueda = (buscarPor === "nick" && nick.startsWith(busqueda)) || (buscarPor === "texto" && texto.includes(busqueda));
 
-        var cumpleTipo = (tipoFiltroActual === "btnFiltrarTodos") || (tipoFiltroActual === "btnFiltrarEntrante" && tipo_receta === "Entrante") || (tipoFiltroActual === "btnFiltrarPrimerPlato" && tipo_receta === "Primer Plato") || (tipoFiltroActual === "btnFiltrarSegundoPlato" && tipo_receta === "Segundo Plato") || (tipoFiltroActual === "btnFiltrarPostre" && tipo_receta === "Postre");
+        var cumpleTipo = (contFiltrosTipo === 0 || (tipoFiltroActual === tipo_receta));
 
-        publicaciones[i].style.display = (cumpleBusqueda && cumpleTipo) ? "" : "none";
+        var cumpleDifi = (contFiltroDifi === 0 || (DifiActual === difi_receta));
+
+        publicaciones[i].style.display = (cumpleBusqueda && cumpleTipo && cumpleDifi) ? "" : "none";
     }
 }
 
@@ -83,7 +89,6 @@ function ordenarPublicaciones(criterio) {
                     var fechaTextoA = a.getElementsByClassName("tweet-time")[0].textContent.trim();
                     var fechaTextoB = b.getElementsByClassName("tweet-time")[0].textContent.trim();
 
-
                     var fechaA = convertirFecha(fechaTextoA);
                     var fechaB = convertirFecha(fechaTextoB);
 
@@ -93,7 +98,6 @@ function ordenarPublicaciones(criterio) {
                     var fechaTextoA = a.getElementsByClassName("tweet-time")[0].textContent.trim();
                     var fechaTextoB = b.getElementsByClassName("tweet-time")[0].textContent.trim();
 
-
                     var fechaA = convertirFecha(fechaTextoA);
                     var fechaB = convertirFecha(fechaTextoB);
 
@@ -101,31 +105,56 @@ function ordenarPublicaciones(criterio) {
             case 'btnOrdenarLikesDesc':
                     var likesA = parseInt(a.getElementsByClassName("btn-like")[0].textContent.trim());
                     var likesB = parseInt(b.getElementsByClassName("btn-like")[0].textContent.trim());
-                
+
                     return likesB - likesA; 
             case 'btnOrdenarLikesAsc':
                 
                     var likesA = parseInt(a.getElementsByClassName("btn-like")[0].textContent.trim());
                     var likesB = parseInt(b.getElementsByClassName("btn-like")[0].textContent.trim());
-                
+
                     return likesA - likesB; 
               
             case 'btnOrdenarDislikesDesc':
                     var dislikesA = parseInt(a.getElementsByClassName("btn-dislike")[0].textContent.trim());
                     var dislikesB = parseInt(b.getElementsByClassName("btn-dislike")[0].textContent.trim());
-                
+
                     return dislikesB - dislikesA; 
             case 'btnOrdenarDislikesAsc':
                     var dislikesA = parseInt(a.getElementsByClassName("btn-dislike")[0].textContent.trim());
                     var dislikesB = parseInt(b.getElementsByClassName("btn-dislike")[0].textContent.trim());
-                
+
                     return dislikesA - dislikesB;
+            case 'btnOrdenarTiempoDesc':
+                    var tiempoA = parseInt(a.getElementsByClassName("tiempo_receta")[0].textContent.trim());
+                    var tiempoB = parseInt(b.getElementsByClassName("tiempo_receta")[0].textContent.trim());
+
+                    return tiempoB - tiempoA;
+            case 'btnOrdenarTiempoAsc':
+                    var tiempoA = parseInt(a.getElementsByClassName("tiempo_receta")[0].textContent.trim());
+                    var tiempoB = parseInt(b.getElementsByClassName("tiempo_receta")[0].textContent.trim());
+
+                    return tiempoA - tiempoB;
+            case 'btnOrdenarDifiDesc':
+                    var dificultadA = a.getElementsByClassName("dificultad_receta")[0].textContent.trim();
+                    var dificultadB = b.getElementsByClassName("dificultad_receta")[0].textContent.trim();
+
+                    return dificultadB - dificultadA;
+            case 'btnOrdenarDifiAsc':
+                    var dificultadA = a.getElementsByClassName("dificultad_receta")[0].textContent.trim();
+                    var dificultadB = b.getElementsByClassName("dificultad_receta")[0].textContent.trim();
+
+                    return dificultadA - dificultadB;
         }
     });
 
-
     var contenedor = document.getElementById("publicaciones");
     publicaciones.forEach(publi => contenedor.appendChild(publi));
+
+    var opciones = document.getElementsByClassName("opciones_orden");
+
+    for(var i = 0; i < opciones.length; i++){
+        opciones[i].style.display = "none";
+    }
 }
 
 
@@ -156,40 +185,169 @@ function mostrarTipos() {
     opciones.style.display = opciones.style.display === "block" ? "none" : "block";
 }
 
+function mostrarOrdenFechas() {
+    var opciones = document.getElementById("opcionesOrdenFechas");
+    opciones.style.display = opciones.style.display === "block" ? "none" : "block";
+}
+
+function mostrarOrdenLikes() {
+    var opciones = document.getElementById("opcionesOrdenLikes");
+    opciones.style.display = opciones.style.display === "block" ? "none" : "block";
+}
+
+function mostrarOrdenDislikes() {
+    var opciones = document.getElementById("opcionesOrdenDislikes");
+    opciones.style.display = opciones.style.display === "block" ? "none" : "block";
+}
+
+function mostrarOrdenTiempo() {
+    var opciones = document.getElementById("opcionesOrdenTiempo");
+    opciones.style.display = opciones.style.display === "block" ? "none" : "block";
+}
+
+function mostrarOrdenDifi() {
+    var opciones = document.getElementById("opcionesOrdenDifi");
+    opciones.style.display = opciones.style.display === "block" ? "none" : "block";
+}
+
+function mostrarFiltroDifi() {
+    var opciones = document.getElementById("opcionesFiltroDifi");
+    opciones.style.display = opciones.style.display === "block" ? "none" : "block";
+}
+
 function filtrarPorTipo(tipo) {
-    tipoFiltroActual = tipo; 
-
-    var botonesFiltro = document.getElementById('opcionesFiltroTipo').getElementsByTagName('button');
-    
-    for (var i = 0; i < botonesFiltro.length; i++) {
-        botonesFiltro[i].classList.remove('activo');
-    }
-    
-    document.getElementById(tipo).classList.add('activo');
-
-
-    var publicaciones, i;
+    var id = "btnFiltrar" + tipo
+    var botonSinFiltros = document.getElementById('btnFiltrarTodos');
+    var botonesFiltroTipos = document.getElementById('opcionesFiltroTipo').getElementsByTagName('button');
+    var botonesFiltroDifi = document.getElementById('opcionesFiltroDifi').getElementsByTagName('button');
+    var publicaciones;
     
     publicaciones = document.getElementsByClassName("tweet");
 
-    for (i = 0; i < publicaciones.length; i++) {
-        tipo_receta = publicaciones[i].getElementsByClassName("tweet-tipo")[0].textContent;
-        if(tipo === "btnFiltrarTodos"){
-            publicaciones[i].style.display = ""; 
+    if(tipoFiltroActual === "btnFiltrarTodostipo" || tipo === "btnFiltrarTodos"){
+        tipoFiltroActual = tipo;
+        botonSinFiltros.classList.add('activo');
+
+        for(var i = 0; i < botonesFiltroTipos.length; i++){
+            botonesFiltroTipos[i].classList.remove('activo');
         }
-        else if (tipo === "btnFiltrarEntrante" && tipo_receta === "Entrante") {
-            publicaciones[i].style.display = ""; 
-        } else if (tipo === "btnFiltrarPrimerPlato" && tipo_receta ==="Primer Plato") {
-            publicaciones[i].style.display = ""; 
-        } else if(tipo === "btnFiltrarSegundoPlato" && tipo_receta === "Segundo Plato"){
-            publicaciones[i].style.display = ""; 
-        } else if(tipo === "btnFiltrarPostre" && tipo_receta === "Postre"){
-            publicaciones[i].style.display = ""; 
-        } else {
-            publicaciones[i].style.display = "none"; 
+
+        for(var i = 0; i < botonesFiltroDifi.length; i++){
+            botonesFiltroDifi[i].classList.remove('activo');
         }
+
+        for (var i = 0; i < publicaciones.length; i++) {
+            publicaciones[i].style.display = "";  
+        }
+
+        contFiltrosTipo = 0;
+        contFiltroDifi = 0;
+    }
+    else {
+        botonSinFiltros.classList.remove('activo');
+        if(document.getElementById(id).classList.contains('activo')){
+            document.getElementById(id).classList.remove('activo');
+
+            if(!Number.isInteger(tipo)){
+                contFiltrosTipo -= 1;
+            }
+            else{
+                contFiltroDifi -= 1;
+            }
+        }
+        else{
+            document.getElementById(id).classList.add('activo');
+            if(!Number.isInteger(tipo)){
+                tipoFiltroActual = tipo;
+                contFiltrosTipo += 1;
+
+                if(contFiltrosTipo === 2){
+                    for(var i = 0; i < botonesFiltroTipos.length; i++){
+                        if( botonesFiltroTipos[i].id === id){
+                            continue;
+                        }
+                        if(botonesFiltroTipos[i].classList.contains('activo')){
+                            botonesFiltroTipos[i].classList.remove('activo');
+                            contFiltrosTipo -= 1;
+                        }
+                    }
+                }
+
+                
+            }
+            else{
+                DifiActual = tipo;
+                contFiltroDifi += 1;
+                if(contFiltroDifi === 2){
+                    for(var i = 0; i < botonesFiltroDifi.length; i++){
+                        if( botonesFiltroDifi[i].id === id){
+                            continue;
+                        }
+                        if(botonesFiltroDifi[i].classList.contains('activo')){
+                            botonesFiltroDifi[i].classList.remove('activo');
+                            contFiltroDifi -= 1;
+                        }
+                    }
+                }
+                
+            }
+        }
+
+        for (i = 0; i < publicaciones.length; i++) {
+            if(contFiltroDifi === 1){
+                difi_receta = parseInt(publicaciones[i].getElementsByClassName("dificultad_receta")[0].textContent);
+            }
+            else{
+                difi_receta = null;
+            }
+
+            if(contFiltrosTipo === 1){
+                tipo_receta = publicaciones[i].getElementsByClassName("tweet-tipo")[0].textContent;
+            }
+            else{
+                tipo_receta = null;
+            }
+
+            if(tipo_receta !== null && difi_receta !== null){
+                if ((tipoFiltroActual === tipo_receta) && (difi_receta === DifiActual)){
+                    publicaciones[i].style.display = ""; 
+                }
+                else{
+                    publicaciones[i].style.display = "none"; 
+                }
+            }
+            else if(tipo_receta !== null && difi_receta === null){
+                if (tipoFiltroActual === tipo_receta){
+                    publicaciones[i].style.display = ""; 
+                }
+                else{
+                    publicaciones[i].style.display = "none"; 
+                }
+            }
+            else{
+                if (difi_receta === DifiActual){
+                    publicaciones[i].style.display = ""; 
+                }
+                else{
+                    publicaciones[i].style.display = "none"; 
+                }
+            }
+
+        }
+
     }
 
-    var opciones = document.getElementById("opcionesFiltroTipo");
-    opciones.style.display = "none";
+    
+    var opciones = document.getElementsByClassName("opciones_filtro_difi");
+
+    for(var i = 0; i < opciones.length; i++){
+        opciones[i].style.display = "none";
+    }
+
+    var opciones = document.getElementsByClassName("opciones_filtro_tipo");
+
+    for(var i = 0; i < opciones.length; i++){
+        opciones[i].style.display = "none";
+    }
+
 }

@@ -1129,8 +1129,16 @@ hr {
 }
 
 .opciones-filtro button {
-    display: block;
+    display: flex;
     width: 100%;
     margin: 2px 0;
 }
 
+.filtroDifi {
+    display: flex;
+    align-items: center;  
+    justify-content: center; 
+    padding: 10px 20px;  
+    width: auto;  
+    height: auto; 
+}
