@@ -382,6 +382,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['arrayrecetas'])) {
         $usuario = $usuarioModelo->obtenerUsuarioNick($_SESSION['nick']);
         $_SESSION['idsrecetas'] = (array) $usuario['favoritosreceta'];
+        $_SESSION['paginarecetas'] = $_GET['paginarecetas'];
         header('Location: ../Vista/Recetas.php');
         exit;
     }

@@ -1142,3 +1142,44 @@ hr {
     width: auto;  
     height: auto; 
 }
+
+/* Estilos para la paginación */
+.paginacion {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.paginacion a {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 10px 15px;
+    background-color: #f1f1f1;
+    color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.paginacion a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.paginacion a:disabled {
+    background-color: #e0e0e0;
+    color: #888;
+    cursor: not-allowed;
+}
+
+.paginacion a:focus {
+    outline: none;
+}
+
+.paginacion a:first-child {
+    margin-left: 0;
+}
+
+.paginacion a:last-child {
+    margin-right: 0;
+}
