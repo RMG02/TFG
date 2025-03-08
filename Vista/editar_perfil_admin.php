@@ -35,7 +35,7 @@ $rolAdmin = ($_SESSION['usuario_admin'] == true) ? 'selected' : '';
 
 $contenidoPrincipal = <<<EOS
     <div class="contenedor">
-        <form method="POST" id="modificarUsuario" class="formulario" action="../Controlador/Admin_controlador.php">
+        <form method="POST" id="modificarUsuario" class="formulario" action="../Controlador/Admin_controlador.php" onsubmit="enviarCambioNickAdmin(event, '{$_SESSION['usuario_nick']}')">
                 <label for="nombre"> Nombre </label>
                 <input id='nombre_nuevo' type='text' name='nombre_nuevo'  placeholder={$_SESSION['usuario_nombre']}> 
 

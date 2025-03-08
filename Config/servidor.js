@@ -39,6 +39,17 @@ io.on("connection", (socket) => {
     });
 
 
+    socket.on('cambioNick', (data) => {
+        var datos = { 
+            nick_act: data.nick_act, 
+            nuevoNick: data.nuevoNick,
+            admin:data.admin
+        };
+
+        io.emit("actualizar-cambioNick", datos);
+
+    });
+
     socket.on("decrementar-reaccion", (data) => {
         var socketID = usuarios_conectados[data.usuario];
         if (socketID) {

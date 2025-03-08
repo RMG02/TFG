@@ -91,6 +91,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
     }
 
+    if(isset($_POST['cambioNick'])){
+        $resultado = $usuarioModelo->obtenerUsuario($_SESSION['email']);
+        $usuario_json = json_encode(iterator_to_array($resultado));
+        $usuario = json_decode($usuario_json, true);
+        $cambiarSeguidores = false;
+        $cambiarSiguiendo = false;
+
+        if (in_array($_POST['nick_pasado'], $usuario['seguidores'])) {
+            $cambiarSeguidores = true;
+        }
+    
+        if (in_array($_POST['nick_pasado'], $usuario['siguiendo'])) {
+            $cambiarSiguiendo = true;
+        }
+        
+        $usuarioModelo->actualizarNick($_POST['nick_pasado'], $_POST['nuevoNick'], $_SESSION['email'], $cambiarSeguidores, $cambiarSiguiendo);
+
+        if($_POST['admin'] && ($_SESSION['nick'] == $_POST['nick_pasado'])){
+            $_SESSION['nick'] = $_POST['nuevoNick'];
+            $publicacionModelo->cambiarnickpublicacion($_POST['nick_pasado'],$_POST['nuevoNick']);
+            $recetaModelo->cambiarnickpublicacion($_POST['nick_pasado'],$_POST['nuevoNick']);
+        }
+
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
+
     if (isset($_POST['Seguir'])) {
         
         $usuarioseguir = $usuarioModelo->obtenerUsuarioNick($_POST['nickSeguir']);

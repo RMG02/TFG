@@ -111,6 +111,36 @@ class Usuario {
         return true;
     }
 
+    public function actualizarNick($nick_pasado, $nick_nuevo, $usuario_email, $cambiarSeguidores, $cambiarSiguiendo) {
+        
+        if ($cambiarSeguidores) {
+            $this->collection->updateOne(
+                ['email' => $usuario_email], 
+                ['$pull' => ['seguidores' => $nick_pasado]]
+            );
+    
+            $this->collection->updateOne(
+                ['email' => $usuario_email], 
+                ['$push' => ['seguidores' => $nick_nuevo]]
+            );
+        }
+    
+        if ($cambiarSiguiendo) {
+            $this->collection->updateOne(
+                ['email' => $usuario_email], 
+                ['$pull' => ['siguiendo' => $nick_pasado]]
+            );
+    
+            $this->collection->updateOne(
+                ['email' => $usuario_email], 
+                ['$push' => ['siguiendo' => $nick_nuevo]]
+            );
+        }
+        
+    
+        return true;
+    }
+    
     
 
     public function editarUsuario($email, $datos, $nick) {

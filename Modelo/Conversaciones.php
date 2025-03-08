@@ -68,6 +68,51 @@ class Conversacion {
 
     }
 
+    public function actualizarNick($nick_pasado, $nick_nuevo, $id_conver, $estaEliminada, $mensajes) { 
+        $id = new ObjectId($id_conver);
+
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$pull' => ['usuarios' => $nick_pasado]]
+        );
+    
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$push' => ['usuarios' => $nick_nuevo]]
+        );
+        
+        if($estaEliminada){
+            $this->collection->updateOne(
+                ['_id' => $id], 
+                ['$pull' => ['eliminada' => $nick_pasado]]
+
+            );
+        
+            $this->collection->updateOne(
+                ['_id' => $id], 
+                ['$push' => ['eliminada' => $nick_nuevo]]
+
+            );
+        }
+        
+        $this->collection->updateMany(
+            ['_id' => $id], 
+            ['$set' => ['mensajes.$[msg].usuario_emisor' => $nick_nuevo]],
+            ['arrayFilters' => [['msg.usuario_emisor' => $nick_pasado]]]
+        );
+
+        $this->collection->updateMany(
+            ['_id' => $id], 
+            ['$set' => ['mensajes.$[msg].usuario_receptor' => $nick_nuevo]],
+            ['arrayFilters' => [['msg.usuario_receptor' => $nick_pasado]]]
+        );
+    
+        return true;
+    }
+    
+    
+    
+
     // Obtener mensajes de una conversación
     public function obtenerConversacionId($conversacionId) {
         $id = new ObjectId($conversacionId);

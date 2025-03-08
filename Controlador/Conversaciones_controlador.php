@@ -17,7 +17,7 @@ $NotificacionModelo = new Notificacion($db);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['abrirConversacion'])) {
         $resultado = $conversacionesModelo->obtenerConversacion($_POST['usuario1'], $_POST['usuario2']);
-        $conversacion = json_decode($resultado, true);
+        $conversacion = json_decode($resultado, associative: true);
         if(empty($conversacion)){
             $conversacion = $conversacionesModelo->crearConversacion($_POST['usuario1'], $_POST['usuario2']);
             $id = $conversacion->getInsertedId()->__toString();
@@ -34,6 +34,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit; 
     }
 
+    if(isset($_POST['cambioNick'])){
+
+        $resultado = $conversacionesModelo->obtenerConversaciones($_POST['nick_pasado']);
+        $conversaciones_json = json_encode(iterator_to_array($resultado));
+        $conversaciones = json_decode($conversaciones_json, true);
+        $estaEliminada = false;
+
+        if(!empty($conversaciones)){
+            foreach ($conversaciones as $conversacion) {
+                if (in_array($_POST['nick_pasado'], $conversacion['eliminada'])) {
+                    $estaEliminada = true;
+                }
+                $conversacionesModelo->actualizarNick($_POST['nick_pasado'], $_POST['nuevoNick'], $conversacion['_id']['$oid'], $estaEliminada, $conversacion['mensajes']);
+            }
+        }
+        unset($_SESSION['conversaciones_abiertas']);
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
     if (isset($_POST['eliminarConversacion'])) {
         if (isset($_SESSION['notificaciones_usuario'])) {
             unset($_SESSION['notificaciones_usuario']);            

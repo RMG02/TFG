@@ -15,7 +15,7 @@ $tituloPagina = "Página de Edicion";
 
 $contenidoPrincipal = <<<EOS
     <div class="contenedor">
-        <form method="POST" class="formulario" action="../Controlador/Usuario_controlador.php">      
+        <form method="POST" class="formulario" action="../Controlador/Usuario_controlador.php" onsubmit="enviarCambioNick(event, '{$_SESSION['nick']}')">      
                 <label for="nombre"> Nombre </label>
                 <input id='nombre' type='text' name='nombre'  placeholder='{$_SESSION['nombre']}'> 
                 

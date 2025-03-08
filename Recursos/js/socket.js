@@ -17,6 +17,49 @@ socket.on("actualizar-contador", (data) => {
 });
 
 
+socket.on("actualizar-cambioNick", function(data) {
+    fetch('../../Controlador/Usuario_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'cambioNick': true,
+            'nuevoNick' : data.nuevoNick,
+            'nick_pasado' : data.nick_act,
+            'admin' : data.admin
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+    fetch('../../Controlador/Conversaciones_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'cambioNick': true,
+            'nuevoNick' : data.nuevoNick,
+            'nick_pasado' : data.nick_act,
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+});
 
 socket.on("notificacion", function(data) {
 
@@ -328,6 +371,42 @@ function enviarDatos(event, usuario, usuario_des, id_publi, likes, dislikes, tip
         } else if(event.submitter.name === 'agregarComentario'){
             socket.emit("nuevo-comentario", { usuario: usuario, usuario_des: usuario_des, id_publi: id_publi, tipo: "nuevo comentario", tipo_publicacion: tipo_publicacion, id_com: id_com, respuesta:respuesta });
         }
+          
+      }).catch(error => {
+          console.error('Error al enviar datos:', error);
+      });
+}
+
+function enviarCambioNick(event, nick_act) {
+    fetch('../../Controlador/Usuario_controlador.php', {
+    }).then(response => response.text())
+      .then(result => {
+
+        var nuevoNick = document.getElementById('nick').value;
+        if(nuevoNick !== ""){
+            if(nuevoNick !== nick_act){
+                socket.emit("cambioNick", { nick_act: nick_act, nuevoNick: nuevoNick, admin:false});
+            }
+        }
+        
+          
+      }).catch(error => {
+          console.error('Error al enviar datos:', error);
+      });
+}
+
+function enviarCambioNickAdmin(event, nick_act) {
+    fetch('../../Controlador/Admin_controlador.php', {
+    }).then(response => response.text())
+      .then(result => {
+
+        var nuevoNick = document.getElementById('nick_nuevo').value;
+        if(nuevoNick !== ""){
+            if(nuevoNick !== nick_act){
+                socket.emit("cambioNick", { nick_act: nick_act, nuevoNick: nuevoNick, admin:true});
+            }
+        }
+        
           
       }).catch(error => {
           console.error('Error al enviar datos:', error);
