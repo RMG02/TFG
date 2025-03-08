@@ -50,6 +50,7 @@ $usuario = json_decode($_SESSION['usuariopropio'], true);
 $siguiendo = $usuario['siguiendo'];
 
 $contenidoPrincipal = <<<EOS
+    <div id="contenedorrecetas">
    <h1>Bienvenido {$_SESSION['nick']}</h1>
    <h2>Página de recetas</h2>
    <div class="dropdown">
@@ -222,15 +223,15 @@ foreach ($recetas as $receta) {
 
             $contenidoPrincipal .= <<<EOS
             <div class="contenedor-publicacion">
-                <div class="tweet" id="publistas">
+                <div class="tweetrecetas" id="publistas">
                     <div style="display: none;">
                         <span class="tiempo_receta">$tiempoReceta</span>
                         <span class="dificultad_receta">$dificultad</span>
                     </div>
-                    <div class="tweet-header">
-                        <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a><span class="tweet-tipo">$tipo</span><span class="tweet-time">$Hora</span>
+                    <div class="tweetrecetas-header">
+                        <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a><span class="tweet-tipo">$tipo</span><span class="tweetrecetas-time">$Hora</span>
                     </div>
-                    <div class="tweet-content">
+                    <div class="tweetrecetas-content">
                         <p><strong>$texto</strong></p>
                         $multi
                         <div class="comentarios-icon">
@@ -312,7 +313,9 @@ if ($mensaje != "") {
         <p class="mensaje">$mensaje</p>
 EOS;
 }
-
+$contenidoPrincipal .= <<<EOS
+    </div>
+EOS;
 require_once __DIR__ . "/plantillas/plantilla.php";
 ?>
 

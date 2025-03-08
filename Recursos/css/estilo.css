@@ -12,7 +12,7 @@ body {
     align-items: center;
     margin: 0;
     padding: 0;
-    height: 100vh;
+    min-height: 100vh;
     overflow-x: hidden;
 }
 
@@ -37,6 +37,7 @@ header .menu {
     gap: 20px;
     padding-right: 20px;
 }
+
 
 header .menu p {
     margin: 0;
@@ -91,6 +92,15 @@ header .menu p {
     text-align: center;
     box-sizing: border-box; 
 }
+
+#contenedorrecetas{
+    width: 100%;
+    height: 100%;
+    background-color: #B2F2BB;
+    text-align: center;
+    box-sizing: border-box; 
+}
+
 
 .contenidoLogin, .contenidoRegistro {
     background-color: white;
@@ -305,7 +315,36 @@ footer p {
     max-width: 600px;
     margin: auto;
 }
+.tweetrecetas {
+    border: 1px solid #e1e8ed;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    background-color: black;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
+.tweetrecetas:hover {
+    background-color: gray;
+}
+
+.tweetrecetas-header {
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #657786;
+}
+.tweetrecetas-header strong {
+    color: white;
+}
+
+.tweetrecetas-content {
+    font-size: 15px;
+    color: white;
+    margin-top: 5px;
+}
 .tweet {
     border: 1px solid #e1e8ed;
     padding: 15px;
@@ -438,6 +477,20 @@ footer p {
     margin: 10px auto;
 }
 
+.tweetrecetas-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+}
+
+.tweetrecetas-content video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+}
+
 .comentarios {
     border-top: 1px solid #e1e8ed;
     padding-top: 10px;
@@ -477,6 +530,14 @@ footer p {
 }
 
 .tweet-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    position: relative;
+}
+
+.tweetrecetas-footer {
     display: flex;
     align-items: center;
     justify-content: center;
