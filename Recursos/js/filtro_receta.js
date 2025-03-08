@@ -28,8 +28,8 @@ function filtrarPublicaciones() {
     var busqueda, publicaciones, i, nick, texto;
     
     busqueda = document.getElementById('buscador').value.toLowerCase();
-    publicaciones = document.getElementsByClassName("tweet");
-
+    publicaciones = document.getElementsByClassName("tweetrecetas");
+    
     for (i = 0; i < publicaciones.length; i++) {
         nick = publicaciones[i].getElementsByTagName("strong")[0].textContent.toLowerCase();
         texto = publicaciones[i].getElementsByTagName("p")[0].getElementsByTagName("strong")[0].textContent.toLowerCase();
@@ -86,8 +86,8 @@ function ordenarPublicaciones(criterio) {
     publicaciones.sort((a, b) => {
         switch(criterio) {
             case 'btnOrdenarFechaDesc':
-                    var fechaTextoA = a.getElementsByClassName("tweet-time")[0].textContent.trim();
-                    var fechaTextoB = b.getElementsByClassName("tweet-time")[0].textContent.trim();
+                    var fechaTextoA = a.getElementsByClassName("tweetrecetas-time")[0].textContent.trim();
+                    var fechaTextoB = b.getElementsByClassName("tweetrecetas-time")[0].textContent.trim();
 
                     var fechaA = convertirFecha(fechaTextoA);
                     var fechaB = convertirFecha(fechaTextoB);
@@ -95,8 +95,8 @@ function ordenarPublicaciones(criterio) {
                     return fechaB - fechaA; 
 
             case 'btnOrdenarFechaAsc':
-                    var fechaTextoA = a.getElementsByClassName("tweet-time")[0].textContent.trim();
-                    var fechaTextoB = b.getElementsByClassName("tweet-time")[0].textContent.trim();
+                    var fechaTextoA = a.getElementsByClassName("tweetrecetas-time")[0].textContent.trim();
+                    var fechaTextoB = b.getElementsByClassName("tweetrecetas-time")[0].textContent.trim();
 
                     var fechaA = convertirFecha(fechaTextoA);
                     var fechaB = convertirFecha(fechaTextoB);
@@ -222,7 +222,7 @@ function filtrarPorTipo(tipo) {
     var botonesFiltroDifi = document.getElementById('opcionesFiltroDifi').getElementsByTagName('button');
     var publicaciones;
     
-    publicaciones = document.getElementsByClassName("tweet");
+    publicaciones = document.getElementsByClassName("tweetrecetas");
 
     if(tipoFiltroActual === "btnFiltrarTodostipo" || tipo === "btnFiltrarTodos"){
         tipoFiltroActual = tipo;
