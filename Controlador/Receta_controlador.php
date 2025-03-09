@@ -253,6 +253,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
     }
     
+    if(isset($_POST['cambioNick'])){
+        
+
+        $resultado = $recetaModelo->obtenerRecetasLikes($_POST['nick_pasado']);
+        $recetas_likes_json = json_encode(iterator_to_array($resultado));
+        $recetas_likes = json_decode($recetas_likes_json, true);
+
+        $resultado = $recetaModelo->obtenerRecetasDislikes($_POST['nick_pasado']);
+        $recetas_dislikes_json = json_encode(iterator_to_array($resultado));
+        $recetas_dislikes = json_decode($recetas_dislikes_json, true);
+
+        if(!empty($recetas_likes)){
+            foreach ($recetas_likes as $receta) {
+                $recetaModelo->actualizarNickLikes($_POST['nick_pasado'], $_POST['nuevoNick'], $receta['_id']['$oid']);
+            }
+        }
+
+        if(!empty($recetas_dislikes)){
+            foreach ($recetas_dislikes as $receta) {
+                $recetaModelo->actualizarNickDislikes($_POST['nick_pasado'], $_POST['nuevoNick'], $receta['_id']['$oid']);
+            }
+        }
+
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
+
     if (isset($_POST['dardislike'])) {
 
         $resultado = $recetaModelo->obtenerReceta($_POST['id_publi']);

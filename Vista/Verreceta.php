@@ -40,6 +40,9 @@ if(!isset($_SESSION['conversaciones_abiertas'])){
 $conversaciones = json_decode($_SESSION['conversaciones_abiertas'], true);
 unset($_SESSION['conversaciones_abiertas']);*/
 
+if($_SESSION['seguidores'] === null || $_SESSION['siguiendo'] === null){
+    header('Location: ../Controlador/Usuario_controlador.php?seguidores=true');
+}
 
 if($_SESSION['recedisponible'] == false){
     $tituloPagina = "Receta";

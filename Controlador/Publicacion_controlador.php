@@ -185,7 +185,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
    
-    
+    if(isset($_POST['cambioNick'])){
+        
+
+        $resultado = $publicacionModelo->obtenerPublicacionesLikes($_POST['nick_pasado']);
+        $publi_likes_json = json_encode(iterator_to_array($resultado));
+        $publi_likes = json_decode($publi_likes_json, true);
+
+        $resultado = $publicacionModelo->obtenerPublicacionesDislikes($_POST['nick_pasado']);
+        $publi_dislikes_json = json_encode(iterator_to_array($resultado));
+        $publi_dislikes = json_decode($publi_dislikes_json, true);
+
+        if(!empty($publi_likes)){
+            foreach ($publi_likes as $publi) {
+                $publicacionModelo->actualizarNickLikes($_POST['nick_pasado'], $_POST['nuevoNick'], $publi['_id']['$oid']);
+            }
+        }
+
+        if(!empty($publi_dislikes)){
+            foreach ($publi_dislikes as $publi) {
+                $publicacionModelo->actualizarNickDislikes($_POST['nick_pasado'], $_POST['nuevoNick'], $publi['_id']['$oid']);
+            }
+        }
+
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
 
     if (isset($_POST['darlike'])) {
         

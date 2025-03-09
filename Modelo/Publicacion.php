@@ -233,7 +233,49 @@ class Publicacion {
         }
     }
     
+
+    public function actualizarNickLikes($nick_pasado, $nick_nuevo, $id_publi) { 
+        $id = new ObjectId($id_publi);
+
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$pull' => ['likes' => $nick_pasado]]
+        );
+    
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$push' => ['likes' => $nick_nuevo]]
+        );
         
+        return true;
+    }
+
+    public function actualizarNickDislikes($nick_pasado, $nick_nuevo, $id_publi) { 
+        $id = new ObjectId($id_publi);
+
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$pull' => ['dislikes' => $nick_pasado]]
+        );
+    
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$push' => ['dislikes' => $nick_nuevo]]
+        );
+        
+        return true;
+    }
+    
+    public function obtenerPublicacionesLikes($usuario) {
+        $publicaciones = $this->collection->find(['likes' => $usuario]);
+        return $publicaciones;
+    }
+    
+
+    public function obtenerPublicacionesDislikes($usuario) {
+        $publicaciones = $this->collection->find(['dislikes' => $usuario]);
+        return $publicaciones;
+    }
     
     public function editarComentario($id_publi, $id_com, $texto, $media, $esRespuesta) {
         $id = new ObjectId($id_publi);

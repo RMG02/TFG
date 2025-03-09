@@ -59,6 +59,47 @@ socket.on("actualizar-cambioNick", function(data) {
         console.error('Error en la solicitud:', error);
     });
 
+    fetch('../../Controlador/Publicacion_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'cambioNick': true,
+            'nuevoNick' : data.nuevoNick,
+            'nick_pasado' : data.nick_act,
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+    fetch('../../Controlador/Receta_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'cambioNick': true,
+            'nuevoNick' : data.nuevoNick,
+            'nick_pasado' : data.nick_act,
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+
 });
 
 socket.on("notificacion", function(data) {

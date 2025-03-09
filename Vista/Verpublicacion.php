@@ -32,6 +32,10 @@ if(!isset($_SESSION['conversaciones_abiertas'])){
     header('Location: ../Controlador/Conversaciones_controlador.php?listarConversacionesAbiertas=true&nick_Usur=' . $_SESSION['nick']);
 }
 
+if($_SESSION['seguidores'] === null || $_SESSION['siguiendo'] === null){
+    header('Location: ../Controlador/Usuario_controlador.php?seguidores=true');
+}
+
 
 $conversaciones = json_decode($_SESSION['conversaciones_abiertas'], true);
 unset($_SESSION['conversaciones_abiertas']);

@@ -191,20 +191,17 @@ class Receta {
         foreach ($recetas as $receta) {
             $actualizado = false;
     
-            // Cambiar el nick en la publicación principal
             if (isset($receta['nick']) && $receta['nick'] === $antiguonick) {
                 $receta['nick'] = $nuevonick;
                 $actualizado = true;
             }
     
-            // Cambiar el nick en los comentarios y respuestas
             if (isset($receta['comentarios'])) {
                 $comentarios = $receta['comentarios'];
                 $this->actualizarNickEnComentarios($comentarios, $antiguonick, $nuevonick, $actualizado);
                 $receta['comentarios'] = $comentarios; // Actualizar en la publicación
             }
     
-            // Si hubo cambios, guardar la publicación actualizada
             if ($actualizado) {
                 $this->collection->replaceOne(
                     ['_id' => $receta['_id']],
@@ -229,6 +226,48 @@ class Receta {
         }
     }
     
+    public function actualizarNickLikes($nick_pasado, $nick_nuevo, $id_receta) { 
+        $id = new ObjectId($id_receta);
+
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$pull' => ['likes' => $nick_pasado]]
+        );
+    
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$push' => ['likes' => $nick_nuevo]]
+        );
+        
+        return true;
+    }
+
+    public function actualizarNickDislikes($nick_pasado, $nick_nuevo, $id_receta) { 
+        $id = new ObjectId($id_receta);
+
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$pull' => ['dislikes' => $nick_pasado]]
+        );
+    
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$push' => ['dislikes' => $nick_nuevo]]
+        );
+        
+        return true;
+    }
+    
+    public function obtenerRecetasLikes($usuario) {
+        $publicaciones = $this->collection->find(['likes' => $usuario]);
+        return $publicaciones;
+    }
+
+    public function obtenerRecetasDislikes($usuario) {
+        $publicaciones = $this->collection->find(['dislikes' => $usuario]);
+        return $publicaciones;
+    }
+
     public function editarComentario($id_publi, $id_com, $texto, $media, $esRespuesta) {
         $id = new ObjectId($id_publi);
         $comentarioId = new ObjectId($id_com);

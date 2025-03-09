@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $conversacionesModelo->actualizarNick($_POST['nick_pasado'], $_POST['nuevoNick'], $conversacion['_id']['$oid'], $estaEliminada, $conversacion['mensajes']);
             }
         }
-        unset($_SESSION['conversaciones_abiertas']);
+        
         header('Location: ' . $_SESSION['url_anterior']);
         exit;  
     }

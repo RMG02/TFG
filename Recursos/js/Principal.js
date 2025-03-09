@@ -2,6 +2,7 @@ function Perfil() {
     var boton = document.getElementById("botonInit");
     var spans = document.getElementsByClassName("close");
     var publicaciones = document.getElementsByClassName("tweet");
+    var recetas = document.getElementsByClassName("tweetrecetas");
     
 
     if (boton) {
@@ -20,6 +21,16 @@ function Perfil() {
 
     for (let i = 0; i < publicaciones.length; i++) {
         publicaciones[i].onclick = function() {
+            var modal = document.getElementById(i);
+            var form = modal.querySelector('form'); 
+            if (form) { 
+                form.submit();
+            }
+        };
+    }
+
+    for (let i = 0; i < recetas.length; i++) {
+        recetas[i].onclick = function() {
             var modal = document.getElementById(i);
             var form = modal.querySelector('form'); 
             if (form) { 

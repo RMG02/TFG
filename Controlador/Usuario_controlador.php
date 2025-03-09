@@ -97,9 +97,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $usuario = json_decode($usuario_json, true);
         $cambiarSeguidores = false;
         $cambiarSiguiendo = false;
+        $_SESSION['seguidores'] = $usuario_resultado['seguidores'];
+        $_SESSION['siguiendo'] = $usuario_resultado['siguiendo'];
 
         if (in_array($_POST['nick_pasado'], $usuario['seguidores'])) {
             $cambiarSeguidores = true;
+            
         }
     
         if (in_array($_POST['nick_pasado'], $usuario['siguiendo'])) {
@@ -107,6 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         $usuarioModelo->actualizarNick($_POST['nick_pasado'], $_POST['nuevoNick'], $_SESSION['email'], $cambiarSeguidores, $cambiarSiguiendo);
+
+        if($cambiarSeguidores || $cambiarSiguiendo){
+            $resultado = $usuarioModelo->obtenerUsuario($_SESSION['email']);
+            $usuario_json = json_encode(iterator_to_array($resultado));
+            $usuario = json_decode($usuario_json, true);
+            $_SESSION['seguidores'] = $usuario['seguidores'];
+            $_SESSION['siguiendo'] = $usuario['siguiendo'];
+        }
 
         if($_POST['admin'] && ($_SESSION['nick'] == $_POST['nick_pasado'])){
             $_SESSION['nick'] = $_POST['nuevoNick'];
@@ -173,6 +184,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: ../Vista/Editarperfil.php');
         }
         else{
+            $resultado = $usuarioModelo->obtenerUsuario($_SESSION['email']);
+            $usuario_resultado = json_decode(json_encode(iterator_to_array($resultado)), true);
+            $_SESSION['seguidores'] = $usuario_resultado['seguidores'];
+            $_SESSION['siguiendo'] = $usuario_resultado['siguiendo'];
+
             $antiguonick = $_SESSION['nick'];
             $nuevonick = $DatosUsuario['nick'];
             $_SESSION['email'] = $DatosUsuario['email'];
@@ -355,7 +371,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
         exit; 
     }
+    
+    if (isset($_GET['seguidores'])) {
+        $resultado = $usuarioModelo->obtenerUsuario($_SESSION['email']);
+        $usuario_resultado = json_decode(json_encode(iterator_to_array($resultado)), true);
+        $_SESSION['seguidores'] = $usuario_resultado['seguidores'];
+        $_SESSION['siguiendo'] = $usuario_resultado['siguiendo'];
 
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
 
     if (isset($_GET['publiconick'])) {
         $nick = $_GET['nick_Usur'] ?? '';
