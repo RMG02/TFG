@@ -89,7 +89,7 @@ header .menu p {
 
 #contenedor {
     width: 100%;
-    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    background: linear-gradient(to right, #fceabb, #f8d49b); /* Dorado pastel a crema */
     text-align: center;
     box-sizing: border-box;
 }
