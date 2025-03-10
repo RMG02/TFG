@@ -50,7 +50,6 @@ $usuario = json_decode($_SESSION['usuariopropio'], true);
 $siguiendo = $usuario['siguiendo'];
 
 $contenidoPrincipal = <<<EOS
-    <div id="contenedorrecetas">
    <h1>Bienvenido {$_SESSION['nick']}</h1>
    <h2>Página de recetas</h2>
    <div class="dropdown">
