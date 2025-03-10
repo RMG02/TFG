@@ -183,8 +183,8 @@ class Receta {
         $recetas = $this->collection->find([
             '$or' => [
                 ['nick' => $antiguonick],
-                ['comentarios.nick' => $antiguonick],
-                ['comentarios.respuestas.nick' => $antiguonick]
+                ['comentarios.usuario' => $antiguonick],
+                ['comentarios.respuestas.usuario' => $antiguonick]
             ]
         ]);
     
