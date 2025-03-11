@@ -1,4 +1,3 @@
-/* Fuente de letra que se va a utilizar en toda la página */
 @font-face {
     font-family: themillion;
     src: url(HelveticaNowText-Light.ttf);
@@ -56,7 +55,7 @@ header .menu p {
 .menu-icon::after {
     content: attr(titulo);
     position: absolute;
-    top: 80px; /* Ajustar para la distancia desde el icono */
+    top: 80px; 
     left: 90%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.75);
@@ -67,7 +66,7 @@ header .menu p {
     transition: opacity 0.3s;
     white-space: nowrap;
     font-size: 14px;
-    pointer-events: none; /* Asegurarse de que el texto no interfiera con el ratón */
+    pointer-events: none; 
 }
 
 
@@ -359,7 +358,7 @@ footer p {
 }
 
 .tweet {
-    background: #fafafa;  /* Fondo blanco roto muy suave */
+    background: #fafafa;  
     border-radius: 10px;
     padding: 20px;
     transition: background-color 0.3s, box-shadow 0.3s;
@@ -369,7 +368,7 @@ footer p {
 
 .tweet:hover {
     
-    background: #e3e3e3;  /* Cambio a un fondo ligeramente más oscuro al hacer hover */
+    background: #e3e3e3;  
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
     cursor: pointer; 
 }
@@ -585,7 +584,8 @@ footer p {
 }
 
 .btn-like:hover, .btn-dislike:hover {
-    color: #333;  
+    transform: translateY(-5px); 
+    background-color: #e3e3e3;
 }
 
 .btn-like i, .btn-dislike i {
@@ -632,14 +632,14 @@ footer p {
     text-align: left;
     width: 100%;
     cursor: pointer;
-    font-size: 14px; /* Ajuste del tamaño de fuente para estandarizar */
+    font-size: 14px; 
 }
 
 .dropdown-content form button {
-    width: 100%; /* Asegura que el botón en el formulario tenga la misma anchura */
-    box-sizing: border-box; /* Incluye padding y border en el ancho total */
-    padding: 12px 16px; /* Ajuste de padding para estandarizar */
-    font-size: 14px; /* Ajuste del tamaño de fuente para estandarizar */
+    width: 100%; 
+    box-sizing: border-box;
+    padding: 12px 16px;
+    font-size: 14px; 
 }
 
 
@@ -648,23 +648,23 @@ footer p {
 }
 
 .imagen-vista {
-    width: 600px; /* Ajusta el ancho a 150 píxeles */
-    height: auto; /* Mantiene la proporción de la imagen */
+    width: 600px; 
+    height: auto; 
 }
 
 .imagen-respuesta {
-    width: 600px; /* Ajusta el ancho a 150 píxeles */
-    height: auto; /* Mantiene la proporción de la imagen */
+    width: 600px; 
+    height: auto;
 }
 
 .imagen-respuesta_rec {
-    width: 580px; /* Ajusta el ancho a 150 píxeles */
-    height: auto; /* Mantiene la proporción de la imagen */
+    width: 580px; 
+    height: auto;
 }
 
 .imagen-editar {
-    width: 300px; /* Ajusta el ancho a 150 píxeles */
-    height: auto; /* Mantiene la proporción de la imagen */
+    width: 300px; 
+    height: auto; 
 }
 
 #notificaciones {
@@ -715,7 +715,7 @@ footer p {
 
 .dificultad-receta {
     margin-top: 10px;
-    font-size: 1em; /* Color del gorro de chef */
+    font-size: 1em; 
 }
 
 .dificultad-receta i {
@@ -724,8 +724,8 @@ footer p {
 }
 
 .nick-link:hover {
-    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Añade una sombra sutil */
+    transform: scale(1.05); 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
 }
 
 
@@ -775,7 +775,7 @@ footer p {
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
-    background: linear-gradient(135deg, #1e293b, #334155); /* Azul grisáceo oscuro */
+    background: linear-gradient(135deg, #1e293b, #334155); 
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -790,7 +790,6 @@ footer p {
 
 
 
-/* Estilo para los mensajes enviados */
 .mensaje_enviado {
     background-color: #e6f7ff;
     cursor: pointer;
@@ -802,7 +801,6 @@ footer p {
     max-width: 75%;
 }
 
-/* Estilo para los mensajes recibidos */
 .mensaje_recibido {
     background-color: #f9f9f9;
     border-radius: 10px;
@@ -813,34 +811,29 @@ footer p {
     max-width: 75%;
 }
 
-/* Efecto hover para los mensajes */
 .mensaje_enviado:hover,
 .mensaje_recibido:hover {
     background-color: #f0f0f0;
 }
 
-/* Estilo para el texto dentro de los mensajes */
 .mensaje_enviado p,
 .mensaje_recibido p {
     margin: 0;
     color: #333;
 }
 
-/* Estilo para el emisor */
 .mensaje_enviado p strong,
 .mensaje_recibido p strong {
     font-weight: bold;
     color: #007bff;
 }
 
-/* Estilo para la hora */
 .mensaje_enviado p small,
 .mensaje_recibido p small {
     font-size: 0.8em;
     color: #aaa;
 }
 
-/* Espaciado entre la fecha/hora y el contenido */
 .mensaje_enviado p:last-child,
 .mensaje_recibido p:last-child {
     margin-top: 8px;
@@ -848,7 +841,6 @@ footer p {
     color: #444;
 }
 
-/* Estilo del formulario */
 .form-mensaje {
     display: flex;
     justify-content: space-between;
@@ -902,8 +894,8 @@ footer p {
 
 .switch-button .switch-button__label {
     background-color: var(--color-red);
-    width: 3rem;  /* Reducido de 5rem a 3rem */
-    height: 1.5rem;  /* Reducido de 3rem a 1.5rem */
+    width: 3rem;  
+    height: 1.5rem; 
     border-radius: 1.5rem;  
     display: inline-block;
     position: relative;
@@ -913,8 +905,8 @@ footer p {
     transition: .2s;
     display: block;
     position: absolute;
-    width: 1.5rem;  /* Reducido de 3rem a 1.5rem */
-    height: 1.5rem;  /* Reducido de 3rem a 1.5rem */
+    width: 1.5rem; 
+    height: 1.5rem; 
     background-color: var(--color-button);
     content: '';
     border-radius: 50%;
@@ -926,7 +918,7 @@ footer p {
 }
 
 .switch-button .switch-button__checkbox:checked + .switch-button__label:before {
-    transform: translateX(1.5rem);  /* Ajustado proporcionalmente */
+    transform: translateX(1.5rem);  
 }
 
 
@@ -940,7 +932,7 @@ footer p {
     width: 100%; 
     height: 100%; 
     background-color: rgba(0, 0, 0, 0.5); 
-    backdrop-filter: blur(5px); /* Efecto desenfoque */
+    backdrop-filter: blur(5px); 
     align-items: center;
     justify-content: center;
 }
@@ -990,15 +982,14 @@ footer p {
     color: white;
 }
 
-/* Efecto cuando el botón es presionado */
 .mod-men:active {
     transform: scale(0.95);
 }
 
 .nombre-usuario {
-    text-align: left;  /* Alinea "Tú:" a la izquierda */
+    text-align: left;  
     margin: 0;
-    font-weight: bold; /* Para mantener "Tú:" en negrita */
+    font-weight: bold; 
 }
 
 .eliminar-conver{
@@ -1035,24 +1026,22 @@ footer p {
 }
 
 
-/* Estilos generales del modal */
 .modal-compartir {
-    display: none; /* Oculto por defecto */
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro con transparencia */
+    background: rgba(0, 0, 0, 0.5); 
     backdrop-filter: blur(6px);
     justify-content: center;
     align-items: center;
 }
 
-/* Contenido del modal */
 .modal-compartir-content {
-    background: linear-gradient(135deg, #3A3D98, #6D69C3); /* Degradado azul/morado */
+    background: linear-gradient(135deg, #3A3D98, #6D69C3); 
     color: white;
     padding: 20px;
     border-radius: 12px;
@@ -1065,7 +1054,6 @@ footer p {
 }
 
 
-/* Lista de usuarios */
 .modal-compartir ul {
     list-style: none;
     padding: 0;
@@ -1076,7 +1064,6 @@ footer p {
     margin: 10px 0;
 }
 
-/* Botón de cerrar */
 .close_compartir {
     position: absolute;
     top: 10px;
@@ -1088,7 +1075,7 @@ footer p {
 }
 
 .close_compartir:hover {
-    color: #FFD700; /* Dorado al pasar el mouse */
+    color: #FFD700; 
 
 }
 
@@ -1100,7 +1087,7 @@ footer p {
 }
 
 .modal-compartir ul li button {
-    color: #f1f0f0; /* Blanco suave para mejor contraste */
+    color: #f1f0f0;
     font-weight: bold;
     font-size: 16px;
     text-transform: capitalize;
@@ -1249,7 +1236,6 @@ hr {
     height: auto; 
 }
 
-/* Estilos para la paginación */
 .paginacion {
     text-align: center;
     margin-top: 20px;
