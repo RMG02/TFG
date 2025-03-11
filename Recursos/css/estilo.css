@@ -369,8 +369,9 @@ footer p {
 
 .tweet:hover {
     
-    background: #f1f1f1;  /* Cambio a un fondo ligeramente más oscuro al hacer hover */
+    background: #e3e3e3;  /* Cambio a un fondo ligeramente más oscuro al hacer hover */
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    cursor: pointer; 
 }
 
 
