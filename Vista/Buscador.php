@@ -86,15 +86,15 @@ if(!$ver){
 
             
                 $contenidoPrincipal .= <<<EOS
-                    <div class="contenedor-publicacion">
-                        <div class="tweet" id="publistas">
-                            <div class="tweet-header">
+                    <div class="contenedor-buscadorrr">
+                        <div class="tweetbuscador" id="publistas">
+                            <div class="tweetbuscador-header">
                                 <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link">
                                     <strong>$nick</strong>
                                 </a>
                                 
                             </div>
-                            <div class="tweet-content">   
+                            <div class="tweetbuscador-content">   
                                     <p>Nombre: $nombre</p><br>
                                     <p>Seguidores: $numseguidores</p><br>
                                     <p>Siguiendo: $numsiguiendo</p><br>
