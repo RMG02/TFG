@@ -26,7 +26,6 @@ if (isset($_SESSION['mensaje'])) {
 
 
 $publicacion = "";
-//$idPublicacion = $_GET['id'] ?? null;
 
 if(!isset($_SESSION['conversaciones_abiertas'])){
     header('Location: ../Controlador/Conversaciones_controlador.php?listarConversacionesAbiertas=true&nick_Usur=' . $_SESSION['nick']);
@@ -40,12 +39,6 @@ if($_SESSION['seguidores'] === null || $_SESSION['siguiendo'] === null){
 $conversaciones = json_decode($_SESSION['conversaciones_abiertas'], true);
 unset($_SESSION['conversaciones_abiertas']);
 
-
-
-//if (!isset($_SESSION['id_publi'])) {
-   // header('Location: ../Controlador/Publicacion_controlador.php?publi_id=true&id='.$idPublicacion);
-  //  exit;
-//}
 
 if($_SESSION['publidisponible'] == false){
     $tituloPagina = "Tweet";
@@ -93,6 +86,7 @@ if($_SESSION['publidisponible'] == false){
         
 
     $contenidoPrincipal = <<<EOS
+    <div class="tweet-publicacion">
         <div class="tweet-header">
             <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a>
             <span class="tweet-time">$Hora</span>
@@ -258,7 +252,7 @@ if($_SESSION['publidisponible'] == false){
                 </div>
             </div>
         </div>
-        <hr>
+    </div>
     EOS;
         
 

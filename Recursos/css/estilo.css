@@ -1236,42 +1236,18 @@ hr {
     height: auto; 
 }
 
-.paginacion {
-    text-align: center;
-    margin-top: 20px;
+
+.tweet-publicacion .btn-like:hover,
+.tweet-publicacion .btn-dislike:hover {
+    transform: translateY(-5px); 
+    background: none;
 }
 
-.paginacion a {
-    display: inline-block;
-    margin: 0 10px;
-    padding: 10px 15px;
-    background-color: #f1f1f1;
-    color: #007bff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
 
-.paginacion a:hover {
-    background-color: #007bff;
-    color: white;
-}
-
-.paginacion a:disabled {
-    background-color: #e0e0e0;
-    color: #888;
-    cursor: not-allowed;
-}
-
-.paginacion a:focus {
-    outline: none;
-}
-
-.paginacion a:first-child {
-    margin-left: 0;
-}
-
-.paginacion a:last-child {
-    margin-right: 0;
+h3 {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #4b4b4b;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+    margin: 20px 0;
 }
