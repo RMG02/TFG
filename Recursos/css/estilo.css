@@ -1309,3 +1309,14 @@ h3 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
     margin: 20px 0;
 }
+
+.olvidoCon a{
+    font-size: 0.9em;
+    color: #6e6e6e;  
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.olvidoCon a:hover{
+    text-decoration: underline;
+}

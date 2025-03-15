@@ -7,6 +7,12 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $error = "";
+$mensaje = "";
+
+if (isset($_SESSION['mensaje'])) {
+    $mensaje = $_SESSION['mensaje'];
+    unset($_SESSION['mensaje']);
+}
 
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
@@ -21,12 +27,19 @@ $contenidoPrincipal = <<<EOS
         <input type="password" name="password" placeholder="contraseña" required>
         <button type="submit" name="login">Iniciar Sesión</button>
     </form>
+    <p class="olvidoCon"><a href="recuperar_contraseña.php">¿Has olvidado tu contraseña?</a></p>
 EOS;
 
 if ($error != "") {
     $contenidoPrincipal .= <<<EOS
         <p class="error">$error</p>
     EOS;
+}
+
+if ($mensaje != "") {
+    $contenidoPrincipal .= <<<EOS
+        <p class="mensaje">$mensaje</p>
+EOS;
 }
 
 

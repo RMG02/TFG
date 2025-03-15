@@ -1,4 +1,8 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 class Usuario {
     private $collection;
 
@@ -25,6 +29,88 @@ class Usuario {
             return $usuario;
         }
         return null;
+    }
+
+    public function obtenerUsuarioToken($token) {
+        $usuario = $this->collection->findOne(['recuperacion_token' => $token]);
+        if ($usuario['token_tiempo'] < time()) {
+            return null;
+        }
+        return $usuario;
+    }
+
+    public function cambiarContraseña($email, $con1, $con2) {
+        $filter = ['email' => $email];
+        
+        if ($con1 == $con2) {
+            $contraseña = password_hash($con1, PASSWORD_DEFAULT);
+            $update = [
+                '$set' => [
+                    'password' => $contraseña
+                ]
+            ];
+        
+            $this->collection->updateOne($filter, $update);
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+    
+    
+
+    public function enviarEnlace($email) {
+        $token = bin2hex(random_bytes(32)); // Genera un token de 64 caracteres hexadecimales
+        $tiempo = time() + 1200; // Expira en 20 minutos
+
+        $this->collection->updateOne(
+            ['email' => $email],
+            ['$set' => ['recuperacion_token' => $token, 'token_tiempo' => $tiempo]]
+        );
+
+        $enlace = "http://localhost:8000/Vista/nueva_contraseña.php?token=$token"; 
+
+        $mail = new PHPMailer(true);
+
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'gastrored2@gmail.com'; 
+            $mail->Password = 'uwmg kdcj gmjc tjqe';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+    
+            $mail->setFrom('no-reply@gastrored2.com', 'GastroRed');
+            $mail->addAddress($email); 
+    
+            $mail->isHTML(true);
+            $mail->CharSet = 'UTF-8';
+            $mail->Subject = 'Recuperación de contraseña - GastroRed';
+            $mail->Body = "
+                <div style='font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4;'>
+                    <div style='max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);'>
+                        <h2 style='color: #333;'>Recuperación de contraseña</h2>
+                        <p style='color: #555; font-size: 16px;'>Has solicitado restablecer tu contraseña. Para restablecerla haz clic en el botón de abajo:</p>
+                        <a href='$enlace' 
+                                style='display: inline-block; padding: 12px 20px; margin-top: 10px; font-size: 16px; 
+                                color: white; background-color: #007bff; text-decoration: none; 
+                                border-radius: 5px; font-weight: bold;'>
+                                Restablecer contraseña
+                        </a>
+                        <p style='margin-top: 20px; font-size: 14px; color: #999;'>Si no solicitaste este cambio, ignora este correo.</p>
+                    </div>
+                </div>
+            ";
+    
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            $sos = $mail->ErrorInfo;
+            error_log("Error al enviar correo a: $email. Error: {$mail->ErrorInfo}");
+            return false;
+        }
     }
 
     public function darBajaUsuario($email) {

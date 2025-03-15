@@ -91,6 +91,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
     }
 
+    if(isset($_POST['NuevaCon'])){
+        $usuario = $usuarioModelo->obtenerUsuarioToken($_POST['token']);
+
+        if($usuario == null){
+            $_SESSION['error'] = "El enlace de recuperación ha expirado.";
+            header('Location: ../Vista/login.php');
+            exit;  
+        }
+        else{
+            if($usuarioModelo->cambiarContraseña($usuario['email'], $_POST['contraseña'], $_POST['contraseña2'])){
+                $_SESSION['mensaje'] = "Contraseña cambiada correctamente";
+                header('Location: ../Vista/Login.php');
+                exit;  
+            }
+            else{
+                $_SESSION['error'] = "Las contraseñas no coinciden, vuelve a introducirlas";
+                header('Location: ../Vista/nueva_contraseña.php?token=' . $_POST['token']);
+                exit;
+            }
+
+        }
+         
+        
+    }
+
+    if(isset($_POST['RecuperarCon'])){
+        $usuario = $usuarioModelo->obtenerUsuario($_POST['email']);
+
+        if($usuario == null){
+            $_SESSION['error'] = "El email introducido no tiene cuenta asiganda";
+
+            header('Location: ../Vista/recuperar_contraseña.php');
+            exit;  
+        }
+        else{
+            if($usuarioModelo->enviarEnlace($_POST['email'])){
+                $_SESSION['mensaje'] = "Enlace de recuperación enviado, revisa tu correo";
+                header('Location: ../Vista/Login.php');
+                exit;  
+            }
+            else{
+                $_SESSION['error'] = "No se ha podido enviar el enlace de recuperación, vuelve a intentarlo";
+                header('Location: ../Vista/recuperar_contraseña.php');
+                exit;
+            }
+
+        }
+         
+        
+    }
+
     if(isset($_POST['cambioNick'])){
         $resultado = $usuarioModelo->obtenerUsuario($_SESSION['email']);
         $usuario_json = json_encode(iterator_to_array($resultado));
@@ -384,10 +435,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if (isset($_GET['publiconick'])) {
         $nick = $_GET['nick_Usur'] ?? '';
-
-        /*if(isset($_SESSION['emailUserpublico'])){
-            unset($_SESSION['emailUserpublico']);
-        }*/
 
         if (empty($nick)) { 
             $_SESSION['usudisponible'] = false;

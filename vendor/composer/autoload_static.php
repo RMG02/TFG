@@ -16,6 +16,10 @@ class ComposerStaticInit0126197119d90b1cdd4c083661f9b8e8
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
         ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'M' => 
         array (
             'MongoDB\\' => 8,
@@ -30,6 +34,10 @@ class ComposerStaticInit0126197119d90b1cdd4c083661f9b8e8
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'MongoDB\\' => 
         array (
