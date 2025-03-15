@@ -26,7 +26,6 @@ unset($_SESSION['conversaciones']);
 
 $contenidoPrincipal = <<<EOS
    <h1>Tus Conversaciones</h1>
-   <div id="lista-conversaciones">
 EOS;
 
 if(empty($conversaciones)){
@@ -62,9 +61,6 @@ foreach ($conversaciones as $conv) {
 EOS;
 }
 
-$contenidoPrincipal .= <<<EOS
-   </div>
-EOS;
 
 require_once __DIR__ . "/plantillas/plantilla.php";
 ?>

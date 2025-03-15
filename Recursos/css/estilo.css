@@ -15,6 +15,11 @@ body {
     overflow-x: hidden;
 }
 
+body a:hover {
+    color :#eeeff0;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); 
+}
+
 p {
     font-size: 1.2em;
     color: #6e6e6e;  
@@ -735,11 +740,27 @@ footer p {
 
 .notificacion {
     position: relative;
-    background-color: #e6f7e6; 
+    background-image: linear-gradient(to right, #8fdeea, #4db8d8);
     padding: 10px;
     margin-bottom: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, opacity 0.3s;
+    border-radius: 10px; 
+}
+
+.notificacion p{
+    color: #0e0d0d;  
+
+}
+
+.notificacion a{
+    color: #0e0d0d;  
+
+}
+
+.notificacion a:hover{
+    text-decoration: underline;
+
 }
 
 .notificacion.hidden {
@@ -787,23 +808,16 @@ footer p {
 }
 
 
-#lista-conversaciones {
-    background: #fafafa;  
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
 
 .conversacion {
     position: relative; 
-    background: #e7e7e7;
+    background: #fafafa;  
     padding: 12px;
-    margin: 10px 0;
+    margin: 10px auto;
     border-radius: 8px;
     transition: transform 0.3s ease;
+    width: 45%;    
+
 }
 
 .enlace-conversacion {
@@ -1318,5 +1332,6 @@ h3 {
 }
 
 .olvidoCon a:hover{
+    color: #a1a1a1;  
     text-decoration: underline;
 }
