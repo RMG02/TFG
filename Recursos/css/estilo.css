@@ -788,10 +788,10 @@ footer p {
 
 
 #lista-conversaciones {
+    background: #fafafa;  
     max-width: 600px;
     margin: 0 auto;
     padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -799,7 +799,7 @@ footer p {
 
 .conversacion {
     position: relative; 
-    background: rgba(255, 255, 255, 0.1);
+    background: #e7e7e7;
     padding: 12px;
     margin: 10px 0;
     border-radius: 8px;
