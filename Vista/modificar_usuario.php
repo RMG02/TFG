@@ -29,7 +29,7 @@ $modalId = -1;
 
 // Construcción del contenido principal de forma dinámica
 $contenidoPrincipal = <<<EOS
-<input type="text" id="buscador" onkeyup="filtrarUsuarios()" placeholder="Buscar por email...">
+<input type="text" id="buscador" onkeyup="filtrarUsuarios()" placeholder="Buscar por nick...">
 <table id="userList">
     <thead>
         <tr>

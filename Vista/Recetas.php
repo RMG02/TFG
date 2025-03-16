@@ -51,7 +51,7 @@ $siguiendo = $usuario['siguiendo'];
 
 $contenidoPrincipal = <<<EOS
    <h1>Bienvenido {$_SESSION['nick']}</h1>
-   <h2>Página de recetas</h2>
+   <h2 class="h2_pag_rec">Página de recetas</h2>
    <div class="dropdown">
                 <button class="dropbtn">⋮</button>
                 <div class="dropdown-content">
@@ -233,11 +233,11 @@ foreach ($recetas as $receta) {
                     <div class="tweetrecetas-content">
                         <p><strong>$texto</strong></p>
                         $multi
-                        <div class="comentarios-icon">
+                        <div class="comentarios-icon-recetas">
                             <i class="fas fa-comments"></i> $num_comentarios
                         </div>
                     </div>
-                    <div class="reacciones-icon">
+                    <div class="reacciones-icon-recetas">
                             
             EOS;
             if($nickuser == $nick){

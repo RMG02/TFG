@@ -27,6 +27,15 @@ p {
     margin-bottom: 20px;
 }
 
+
+.h2_pag_rec{
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #6e6e6e;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+    margin: 20px 0;
+}
+
 header {
     display: flex;
     justify-content: space-between;
@@ -355,7 +364,7 @@ footer p {
 }
 
 .tweetrecetas:hover {
-    background-color: gray;
+    background-color: rgb(40, 40, 40);
 }
 
 .tweetrecetas-header {
@@ -369,10 +378,76 @@ footer p {
     color: white;
 }
 
+.tweetrecetas-header .tweet-tipo {
+    color: white;
+}
+
+
+
+.comentarios-icon-recetas {
+    font-size: 1.1em;
+    color: white;  
+}
+
+
+.tweetrecetas-header .tweetrecetas-time {
+    color: white;
+    font-size: 0.8em;
+    margin-left: 10px;
+}
+
 .tweetrecetas-content {
     font-size: 15px;
     color: white;
     margin-top: 5px;
+}
+
+.tweetrecetas-content p{
+    color: white;
+    font-size: 1.3em;
+    margin-left: 10px;
+}
+
+.reacciones-icon-recetas {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    text-align: center;
+    
+}
+
+.reacciones-icon-recetas .btn-like{
+    background: transparent;
+    border: none;
+    color: white; 
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+.reacciones-icon-recetas .btn-dislike{
+    background: transparent;
+    border: none;
+    color: white; 
+    font-size: 1.1em;
+    cursor: pointer;    
+}
+
+.reacciones-icon-recetas .btn-like:hover {
+    transform: translateY(-5px); 
+    background-color: rgb(40, 40, 40);
+}
+
+.reacciones-icon-recetas .btn-dislike:hover {
+    transform: translateY(-5px); 
+    background-color: rgb(40, 40, 40);
+}
+
+.reacciones-icon-recetas .btn-like i {
+    margin-right: 5px;
+}
+
+.reacciones-icon-recetas .btn-dislike i {
+    margin-right: 5px;
 }
 
 .tweetbuscador {
