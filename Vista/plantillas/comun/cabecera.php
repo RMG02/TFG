@@ -17,6 +17,7 @@ if (session_status() == PHP_SESSION_NONE) {
     } else {
         echo "<img src='$logo' class='logo'>";
     }
+    echo "<h1 class='site-name'>GastroRed</h1>";
     ?>
     <div class="menu">
         <?php
