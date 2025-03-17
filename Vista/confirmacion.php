@@ -8,7 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $error = "";
 
-$token = $_GET['token'];
+$token = $_GET['tokenconf'];
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
     unset($_SESSION['error']);
@@ -19,7 +19,7 @@ $tituloPagina = "Confirmar cuenta";
 $contenidoPrincipal = <<<EOS
     <p><strong>Pulsa el boton para confirmar</strong></p>
     <form method="POST" class="formulario" action="../Controlador/Usuario_controlador.php">
-        <input type="hidden" name="token" value="$token">
+        <input type="hidden" name="tokenconfi" value="$token">
         <button type="submit" name="Nuevaconfirmacion">Confirmar cuenta</button>
     </form>
 EOS;

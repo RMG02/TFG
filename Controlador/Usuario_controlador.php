@@ -151,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
     }
     if (isset($POST['Nuevaconfirmacion'])){
-        $usuario = $usuarioModelo->obtenerUsuarioTokenconfirmacion($_POST['token']);
+        $usuario = $usuarioModelo->obtenerUsuarioTokenconfirmacion($_POST['tokenconfi']);
 
         if($usuario == null){
             $_SESSION['error'] = "El enlace de confirmacion ha expirado.";

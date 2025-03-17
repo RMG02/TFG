@@ -130,7 +130,7 @@ class Usuario {
             ['$set' => ['confirmacion_token' => $token, 'tokenconfirmacion_tiempo' => $tiempo]]
         );
 
-        $enlace = "http://localhost:8000/Vista/confirmacion.php?token=$token"; 
+        $enlace = "http://localhost:8000/Vista/confirmacion.php?tokenconf=$token"; 
 
         $mail = new PHPMailer(true);
 
