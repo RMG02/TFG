@@ -85,6 +85,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    if(isset($_POST['eliminarNotificacionNick'])){
+        if($_POST['nick'] == $_SESSION['nick']){
+            $resultado = $NotificacionModelo->borrarTodasNotificaciones($_SESSION['notificaciones_usuario']);
+
+            if ($resultado) {
+                $_SESSION['mensaje'] = "Notificación eliminada";
+            } else {
+                $_SESSION['error'] = "Error al eliminar la notificación.";
+            }
+    
+            header('Location: ./logout.php');
+            exit;
+        }
+        else{
+            header('Location: ' . $_SESSION['url_anterior']);
+            exit;  
+        }
+
+        
+    }
+
     if(isset($_POST['eliminarTodas'])){
     
         $resultado = $NotificacionModelo->borrarTodasNotificaciones($_SESSION['notificaciones_usuario']);

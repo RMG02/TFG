@@ -242,6 +242,17 @@ class Receta {
         return true;
     }
 
+    public function eliminarNickLikes($nick, $id_receta) { 
+        $id = new ObjectId($id_receta);
+
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$pull' => ['likes' => $nick]]
+        );
+        
+        return true;
+    }
+
     public function actualizarNickDislikes($nick_pasado, $nick_nuevo, $id_receta) { 
         $id = new ObjectId($id_receta);
 
@@ -253,6 +264,17 @@ class Receta {
         $this->collection->updateOne(
             ['_id' => $id], 
             ['$push' => ['dislikes' => $nick_nuevo]]
+        );
+        
+        return true;
+    }
+
+    public function eliminarNickDislikes($nick, $id_receta) { 
+        $id = new ObjectId($id_receta);
+
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$pull' => ['dislikes' => $nick]]
         );
         
         return true;

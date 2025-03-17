@@ -93,8 +93,9 @@ $contenidoPrincipal = <<<EOS
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Introduce tu contraseña</h2>
-            <form method="POST" action="../Controlador/Usuario_controlador.php">
+            <form method="POST" action="../Controlador/Usuario_controlador.php" onsubmit="eliminarCuenta(event)" >
                 <input type="hidden" name="email" value={$_SESSION['email']}>
+                <input type="hidden" id="nick_borrado" name="nick" value={$_SESSION['nick']}>
                 <input type="password" name="password" required placeholder="Contraseña"><br><br>
                 <button type="submit" class="boton_lista" name="cerrarCuenta">Confirmar</button>
             </form>

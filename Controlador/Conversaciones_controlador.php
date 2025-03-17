@@ -34,6 +34,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit; 
     }
 
+
+    if(isset($_POST['EliminarNick'])){
+
+        $resultado = $conversacionesModelo->obtenerConversaciones($_POST['nick']);
+        $conversaciones_json = json_encode(iterator_to_array($resultado));
+        $conversaciones = json_decode($conversaciones_json, true);
+        
+
+        if(!empty($conversaciones)){
+            foreach ($conversaciones as $conversacion) {
+                $conversacionesModelo->eliminarConversacionNick($conversacion['_id']['$oid']);
+            }
+        }
+        
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
+
     if(isset($_POST['cambioNick'])){
 
         $resultado = $conversacionesModelo->obtenerConversaciones($_POST['nick_pasado']);
@@ -53,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: ' . $_SESSION['url_anterior']);
         exit;  
     }
+
     if (isset($_POST['eliminarConversacion'])) {
         if (isset($_SESSION['notificaciones_usuario'])) {
             unset($_SESSION['notificaciones_usuario']);            

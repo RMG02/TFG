@@ -17,6 +17,110 @@ socket.on("actualizar-contador", (data) => {
 });
 
 
+
+
+socket.on("Eliminar-nick", function(data) {
+    fetch('../../Controlador/Usuario_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'EliminarNick': true,
+            'nick' : data.nick,
+            'admin' : data.admin
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+    fetch('../../Controlador/Conversaciones_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'EliminarNick': true,
+            'nick' : data.nick,
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+    fetch('../../Controlador/Publicacion_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'EliminarNick': true,
+            'nick' : data.nick,
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+    fetch('../../Controlador/Receta_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'EliminarNick': true,
+            'nick' : data.nick,
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+    fetch('../../Controlador/Notificacion_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'eliminarNotificacionNick': true,
+            'nick' : data.nick,
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+
+
+});
+
+
 socket.on("actualizar-cambioNick", function(data) {
     fetch('../../Controlador/Usuario_controlador.php', {
         method: 'POST',
@@ -453,6 +557,35 @@ function enviarCambioNickAdmin(event, nick_act) {
           console.error('Error al enviar datos:', error);
       });
 }
+
+function eliminarCuenta(event) {
+    fetch('../../Controlador/Usuario_controlador.php', {
+    }).then(response => response.text())
+      .then(result => {
+
+        var nick = document.getElementById('nick_borrado').value;
+        
+        socket.emit("EliminarNick", { nick: nick, admin:false});
+          
+      }).catch(error => {
+          console.error('Error al enviar datos:', error);
+      });
+}
+
+function eliminarCuentaAdmin(event) {
+    fetch('../../Controlador/Admin_controlador.php', {
+    }).then(response => response.text())
+      .then(result => {
+
+        var nick = document.getElementById('nick_borrado').value;
+        
+        socket.emit("EliminarNick", { nick: nick, admin:true});
+      
+      }).catch(error => {
+          console.error('Error al enviar datos:', error);
+      });
+}
+
 
 function enviarSeguidor(usuario_actual, usuario_dest, tipo) {
     if(tipo == "Seguir"){

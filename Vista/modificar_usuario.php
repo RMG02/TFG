@@ -83,8 +83,10 @@ foreach ($usuarios as $index => $usuario) {
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <h2>Introduce tu contraseña</h2>
-                    <form method="POST" action="../Controlador/Admin_controlador.php">
+                    <form method="POST" action="../Controlador/Admin_controlador.php" onsubmit="eliminarCuentaAdmin(event)">
                         <input type="hidden" name="email" value=$email>
+                        <input type="hidden" id="nick_borrado" name="nick" value="$nick">
+                        <input type="hidden" id="siguiendo" name="nick" value="$nick">
                         <input type="password" name="password" required placeholder="Contraseña"><br><br>
                         <button type="submit" class="boton_lista" name="eliminarUsuario">Confirmar</button>
                     </form>

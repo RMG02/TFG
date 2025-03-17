@@ -168,6 +168,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
+
+    if(isset($_POST['EliminarNick'])){
+        $resultado = $usuarioModelo->obtenerUsuario($_SESSION['email']);
+        $usuario_json = json_encode(iterator_to_array($resultado));
+        $usuario = json_decode($usuario_json, true);
+        $cambiarSeguidores = false;
+        $cambiarSiguiendo = false;
+        $_SESSION['seguidores'] = $usuario_resultado['seguidores'];
+        $_SESSION['siguiendo'] = $usuario_resultado['siguiendo'];
+
+        if (in_array($_POST['nick'], $usuario['seguidores'])) {
+            $cambiarSeguidores = true;
+            
+        }
+    
+        if (in_array($_POST['nick'], $usuario['siguiendo'])) {
+            $cambiarSiguiendo = true;
+        }
+        
+        $usuarioModelo->eliminarNick($_POST['nick'], $_SESSION['email'], $cambiarSeguidores, $cambiarSiguiendo);
+
+        if($cambiarSeguidores || $cambiarSiguiendo){
+            $resultado = $usuarioModelo->obtenerUsuario($_SESSION['email']);
+            $usuario_json = json_encode(iterator_to_array($resultado));
+            $usuario = json_decode($usuario_json, true);
+            $_SESSION['seguidores'] = $usuario['seguidores'];
+            $_SESSION['siguiendo'] = $usuario['siguiendo'];
+        }
+
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
+
     if(isset($_POST['cambioNick'])){
         $resultado = $usuarioModelo->obtenerUsuario($_SESSION['email']);
         $usuario_json = json_encode(iterator_to_array($resultado));

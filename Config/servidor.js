@@ -38,10 +38,19 @@ io.on("connection", (socket) => {
 
     });
 
+    socket.on('EliminarNick', (data) => {
+        var datos = { 
+            nick: data.nick, 
+            admin: data.admin
+        };
 
+        io.emit("Eliminar-nick", datos);
+
+    });
+    
     socket.on('cambioNick', (data) => {
         var datos = { 
-            nick_act: data.nick_act, 
+            nick: data.nick, 
             nuevoNick: data.nuevoNick,
             admin:data.admin
         };

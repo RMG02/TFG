@@ -184,6 +184,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     
+    if(isset($_POST['EliminarNick'])){
+        
+
+        $resultado = $publicacionModelo->obtenerPublicacionesLikes($_POST['nick']);
+        $publi_likes_json = json_encode(iterator_to_array($resultado));
+        $publi_likes = json_decode($publi_likes_json, true);
+
+        $resultado = $publicacionModelo->obtenerPublicacionesDislikes($_POST['nick']);
+        $publi_dislikes_json = json_encode(iterator_to_array($resultado));
+        $publi_dislikes = json_decode($publi_dislikes_json, true);
+
+        if(!empty($publi_likes)){
+            foreach ($publi_likes as $publi) {
+                $publicacionModelo->eliminarNickLikes($_POST['nick'], $publi['_id']['$oid']);
+            }
+        }
+
+        if(!empty($publi_dislikes)){
+            foreach ($publi_dislikes as $publi) {
+                $publicacionModelo->eliminarNickDisLikes($_POST['nick'], $publi['_id']['$oid']);
+            }
+        }
+
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
    
     if(isset($_POST['cambioNick'])){
         

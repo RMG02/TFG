@@ -36,6 +36,12 @@ class Conversacion {
         );
     }
 
+    public function eliminarConversacionNick($id){
+        $Id = new ObjectId($id);
+        return $this->collection->deleteOne(['_id' => $Id]);
+        
+    }
+
     // Agregar un mensaje a una conversación
     public function agregarMensaje($conversacionId, $emisor, $contenido, $receptor, $hora) {
         $mensaje = [

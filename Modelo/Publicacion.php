@@ -250,6 +250,17 @@ class Publicacion {
         return true;
     }
 
+    public function eliminarNickLikes($nick, $id_publi) { 
+        $id = new ObjectId($id_publi);
+
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$pull' => ['likes' => $nick]]
+        );
+        
+        return true;
+    }
+
     public function actualizarNickDislikes($nick_pasado, $nick_nuevo, $id_publi) { 
         $id = new ObjectId($id_publi);
 
@@ -261,6 +272,17 @@ class Publicacion {
         $this->collection->updateOne(
             ['_id' => $id], 
             ['$push' => ['dislikes' => $nick_nuevo]]
+        );
+        
+        return true;
+    }
+
+    public function eliminarNickDisLikes($nick, $id_publi) { 
+        $id = new ObjectId($id_publi);
+
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$pull' => ['dislikes' => $nick]]
         );
         
         return true;

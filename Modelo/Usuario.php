@@ -304,6 +304,28 @@ class Usuario {
     
         return true;
     }
+
+    public function eliminarNick($nick, $usuario_email, $cambiarSeguidores, $cambiarSiguiendo) {
+        
+        if ($cambiarSeguidores) {
+            $this->collection->updateOne(
+                ['email' => $usuario_email], 
+                ['$pull' => ['seguidores' => $nick]]
+            );
+    
+        }
+    
+        if ($cambiarSiguiendo) {
+            $this->collection->updateOne(
+                ['email' => $usuario_email], 
+                ['$pull' => ['siguiendo' => $nick]]
+            );
+    
+        }
+        
+    
+        return true;
+    }
     
     
 
