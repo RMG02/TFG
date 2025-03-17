@@ -50,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             'notilikes' => true,
             'notiseguidores' => true,
             'noticomentarios' => true,
-            'notimensajes' => true
+            'notimensajes' => true,
+            'confirmado' => true
 
         ];
 

@@ -41,7 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'notilikes' => true,
             'notiseguidores' => true,
             'noticomentarios' => true,
-            'notimensajes' => true
+            'notimensajes' => true,
+            'confirmado' => false
 
         ];
         $resultado = $usuarioModelo->registro($DatosUsuario);
@@ -49,6 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['error'] = $resultado;
             header('Location: ../Vista/Registro.php');
         } else{
+            $_SESSION['mensaje'] = "Usuario registrado correctamente, revisa tu correo para confirmar";
+            $resultado2 = $usuarioModelo->enviarEnlaceConfirmacion($DatosUsuario['email']);
             header('Location: ../Vista/Login.php');
         }
     }
@@ -57,22 +60,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $usuario = $usuarioModelo->login( $_POST['email'], password: $_POST['password']);
         if ($usuario) {
             $usuario_resultado = json_decode(json_encode(iterator_to_array($usuario)), true);
-
-            $_SESSION['email'] = $usuario['email'];
-            $_SESSION['nick'] = $usuario['nick'];
-            $_SESSION['nombre'] = $usuario['nombre'];
-            $_SESSION['password'] = $usuario['password'];
-            $_SESSION['seguidores'] = $usuario_resultado['seguidores'];
-            $_SESSION['siguiendo'] = $usuario_resultado['siguiendo'];
-            $_SESSION['usuariopropio'] = json_encode($usuario);
-            $_SESSION['login'] = true;
-            $_SESSION['admin'] = $usuario['admin'];
-            $_SESSION['notilikes'] = $usuario['notilikes'];
-            $_SESSION['idsrecetas'] = (array) $usuario['favoritosreceta'];
-            $_SESSION['idspublis'] = (array) $usuario['favoritospubli'];
-            $_SESSION['notiseguidores'] = $usuario['notiseguidores'];
-            $_SESSION['noticomentarios'] = $usuario['noticomentarios'];
-            $_SESSION['notimensajes'] = $usuario['notimensajes'];
+            if($usuario_resultado['confirmado'] == false){
+                $_SESSION['error'] = "Usuario no confirmado, revisa tu correo";
+                header('Location: ../Vista/Login.php');
+                exit;
+            }else{
+                $_SESSION['email'] = $usuario['email'];
+                $_SESSION['nick'] = $usuario['nick'];
+                $_SESSION['nombre'] = $usuario['nombre'];
+                $_SESSION['password'] = $usuario['password'];
+                $_SESSION['seguidores'] = $usuario_resultado['seguidores'];
+                $_SESSION['siguiendo'] = $usuario_resultado['siguiendo'];
+                $_SESSION['usuariopropio'] = json_encode($usuario);
+                $_SESSION['login'] = true;
+                $_SESSION['admin'] = $usuario['admin'];
+                $_SESSION['notilikes'] = $usuario['notilikes'];
+                $_SESSION['idsrecetas'] = (array) $usuario['favoritosreceta'];
+                $_SESSION['idspublis'] = (array) $usuario['favoritospubli'];
+                $_SESSION['notiseguidores'] = $usuario['notiseguidores'];
+                $_SESSION['noticomentarios'] = $usuario['noticomentarios'];
+                $_SESSION['notimensajes'] = $usuario['notimensajes'];
+            }
+            
 
             header('Location: ../Vista/Principal.php');
         } else {
@@ -140,6 +149,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
          
         
+    }
+    if (isset($POST['Nuevaconfirmacion'])){
+        $usuario = $usuarioModelo->obtenerUsuarioTokenconfirmacion($_POST['token']);
+
+        if($usuario == null){
+            $_SESSION['error'] = "El enlace de confirmacion ha expirado.";
+            header('Location: ../Vista/login.php');
+            exit;  
+        }
+        else{
+            if($usuarioModelo->cambiarconfirmacion($usuario['email'])){
+                $_SESSION['mensaje'] = "Cuenta cofirmada correctamente";
+                header('Location: ../Vista/Login.php');
+                exit;  
+            }
+
+        }
     }
 
     if(isset($_POST['cambioNick'])){
