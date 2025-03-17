@@ -58,6 +58,8 @@ header .logo {
     color: #30c4b5;  
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
     margin: 10px 0;
+    position: relative;
+    left: -288px;
 }
 
 header .menu {

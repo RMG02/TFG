@@ -37,6 +37,7 @@ $contenidoPrincipal = <<<EOS
             <th>Email</th>
             <th>Nick</th>
             <th>Rol</th>
+            <th>Cuenta confirmada</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -52,6 +53,14 @@ foreach ($usuarios as $index => $usuario) {
     $nick = $usuario['nick'];
     $rol = $usuario['admin'] ? "Admin" : "Usuario";
     $pass = $usuario['password'];
+    
+    if($usuario['confirmado']){
+        $confirmado = "SI";
+    }
+    else{
+        $confirmado = "NO";
+    }
+    
     $modalId++;
     $contenidoPrincipal .= <<<EOS
     <tr>
@@ -59,6 +68,7 @@ foreach ($usuarios as $index => $usuario) {
         <td>$email</td>
         <td>$nick</td>
         <td>$rol</td>
+        <td>$confirmado</td>
         <td>
             <form method="POST" class="boton_lista" action="editar_perfil_admin.php">
                 <input type="hidden" name="email" value=$email>

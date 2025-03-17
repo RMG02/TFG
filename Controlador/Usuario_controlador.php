@@ -150,20 +150,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
          
         
     }
-    if (isset($POST['Nuevaconfirmacion'])){
+    if (isset($_POST['Nuevaconfirmacion'])){
         $usuario = $usuarioModelo->obtenerUsuarioTokenconfirmacion($_POST['tokenconfi']);
 
         if($usuario == null){
             $_SESSION['error'] = "El enlace de confirmacion ha expirado.";
-            header('Location: ../Vista/login.php');
+            header('Location: ../Vista/Login.php');
             exit;  
         }
         else{
-            if($usuarioModelo->cambiarconfirmacion($usuario['email'])){
+                $usuarioModelo->cambiarconfirmacion($usuario['email']);
                 $_SESSION['mensaje'] = "Cuenta cofirmada correctamente";
                 header('Location: ../Vista/Login.php');
                 exit;  
-            }
+            
 
         }
     }

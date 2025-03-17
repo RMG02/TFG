@@ -13,7 +13,12 @@ class Usuario {
     public function registro($DatosUsuario) {
         $UsuarioExiste = $this->collection->findOne(['email' => $DatosUsuario['email']]);
         if ($UsuarioExiste) {
-            return "Email ya registrado";
+            if($UsuarioExiste['confirmado'] == true){
+                return "Email ya registrado";
+            }
+            else{
+                $this->collection->deleteOne(['email' => $DatosUsuario['email']]);
+            }
         }
         $UsuarioExiste = $this->collection->findOne(['nick' => $DatosUsuario['nick']]);
         if ($UsuarioExiste) {
@@ -148,18 +153,19 @@ class Usuario {
     
             $mail->isHTML(true);
             $mail->CharSet = 'UTF-8';
-            $mail->Subject = 'Recuperación de contraseña - GastroRed';
+            $mail->Subject = 'Confirmación de cuenta - GastroRed';
             $mail->Body = "
                 <div style='font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4;'>
                     <div style='max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);'>
-                        <h2 style='color: #333;'>Confirmación de cuenta</h2>
-                        <p style='color: #555; font-size: 16px;'>Para confirmar tu cuenta haz clic en el botón de abajo:</p>
+                        <h2 style='color: #333;'>Nueva cuenta</h2>
+                        <p style='color: #555; font-size: 16px;'>Has creado una cuenta en GastroRed. Para confirmarla haz clic en el botón de abajo:</p>
                         <a href='$enlace' 
                                 style='display: inline-block; padding: 12px 20px; margin-top: 10px; font-size: 16px; 
                                 color: white; background-color: #007bff; text-decoration: none; 
                                 border-radius: 5px; font-weight: bold;'>
                                 Confirmar cuenta
                         </a>
+                        <p style='margin-top: 20px; font-size: 14px; color: #999;'>Si no has creado ninguna cuenta, ignora este correo.</p>
                     </div>
                 </div>
             ";
