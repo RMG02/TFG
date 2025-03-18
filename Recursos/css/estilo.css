@@ -28,13 +28,14 @@ p {
 }
 
 
-.h2_pag_rec{
+.h2_pag_rec {
     font-size: 1.5em;
     font-weight: bold;
     color: #6e6e6e;  
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
     margin: 20px 0;
 }
+
 
 header {
     display: flex;
@@ -115,6 +116,14 @@ header .menu p {
 
 
 h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #4b4b4b;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+    margin: 20px 0;
+}
+
+.titulo-receta{
     font-size: 2.5em;
     font-weight: bold;
     color: #4b4b4b;  
@@ -415,6 +424,9 @@ footer p {
     color: white;
     font-size: 1.3em;
     margin-left: 10px;
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    white-space: normal;
 }
 
 .reacciones-icon-recetas {
@@ -543,12 +555,25 @@ footer p {
 .tweet-content p {
     color: #333;  
     font-size: 1.1em;
+    word-wrap: break-word;
+    overflow-wrap: break-word; 
+    white-space: normal;
 }
 
 .tweet-content {
     font-size: 15px;
     color: #14171a;
     margin-top: 5px;
+}
+
+.info-receta {
+    max-width: 700px;
+    background: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center; 
 }
 
 .recet-content p {
@@ -790,6 +815,44 @@ footer p {
 }
 
 
+.info-receta h3 {
+    margin-top: 40px; 
+    font-size: 1.4em;
+}
+
+.info-receta p {
+    margin-bottom: 20px;
+    font-size: 1.1em; 
+    padding: 8px 30px;
+    line-height: 1.3; 
+    word-wrap: break-word;
+    overflow-wrap: break-word; 
+    white-space: normal;
+}
+
+.dificultad-receta span {
+    display: flex;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 10px 0;
+    margin-top: 40px; 
+
+}
+
+.dificultad-receta .iconify {
+    font-size: 24px; 
+    padding: 8px 30px;
+
+}
+
+
+.tiempo-receta {
+    margin-top: 40px; 
+    padding: 1px 30px;
+}
+
+
+
 .dropdown:hover .dropdown-content {
     display: block;
 }
@@ -797,6 +860,7 @@ footer p {
 .imagen-vista {
     width: 600px; 
     height: auto; 
+    border-radius: 10px;
 }
 
 .imagen-respuesta {
@@ -876,15 +940,7 @@ footer p {
 }
 
 
-.dificultad-receta {
-    margin-top: 10px;
-    font-size: 1em; 
-}
 
-.dificultad-receta i {
-    margin-right: 5px;
-    color:#dc1818;
-}
 
 .nick-link:hover {
     transform: scale(1.05); 
@@ -1395,6 +1451,12 @@ hr {
 
 .tweet-publicacion .btn-like:hover,
 .tweet-publicacion .btn-dislike:hover {
+    transform: translateY(-5px); 
+    background: none;
+}
+
+.tweet-footer .btn-like:hover,
+.tweet-footer .btn-dislike:hover {
     transform: translateY(-5px); 
     background: none;
 }

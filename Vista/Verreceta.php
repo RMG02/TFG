@@ -25,21 +25,6 @@ if (isset($_SESSION['mensaje'])) {
 }
 $receta = "";
 
-/*$idreceta = $_GET['id'] ?? null;
-
-if (!isset($_SESSION['id_publi'])) {
-    header('Location: ../Controlador/Receta_controlador.php?publi_id=true&id='.$idreceta);
-    exit;
-}
-
-if(!isset($_SESSION['conversaciones_abiertas'])){
-    header('Location: ../Controlador/Conversaciones_controlador.php?listarConversacionesAbiertas=true&nick_Usur=' . $_SESSION['nick'] . '&id=' . $idreceta . '&receta=true');
-}
-
-
-$conversaciones = json_decode($_SESSION['conversaciones_abiertas'], true);
-unset($_SESSION['conversaciones_abiertas']);*/
-
 if($_SESSION['seguidores'] === null || $_SESSION['siguiendo'] === null){
     header('Location: ../Controlador/Usuario_controlador.php?seguidores=true');
 }
@@ -55,7 +40,6 @@ if($_SESSION['recedisponible'] == false){
 }else{
 
         $receta = json_decode($_SESSION['id_publi'], true);
-        //unset($_SESSION['id_publi']);
         date_default_timezone_set('Europe/Madrid');
         if(!isset($_SESSION['conversaciones_abiertas'])){
             header('Location: ../Controlador/Conversaciones_controlador.php?listarConversacionesAbiertas=true&nick_Usur=' . $_SESSION['nick'] . '&receta=true');
@@ -115,21 +99,23 @@ if($_SESSION['recedisponible'] == false){
                 <span class="tweet-time">$Hora</span>
             </div>
             <div class="recet-content">
-                <h2>$titulo</h2>
-                $multi
-                <h3>Tiempo<h3>
-                <div class="tiempo-receta">
-                    <i class="fa fa-clock"></i> <span>$tiempo min</span>
-                </div></p>
-                <div class="dificultad-receta">
-                    <span>Dificultad: </span>
-                    $dificultadHTML
+                <div class="info-receta">
+                    <h2 class="titulo-receta">$titulo</h2>
+                    $multi
+                    <h3>Ingredientes:</h3>
+                    <p>$ingredientesx</p>
+                    <h3>Preparacion:</h3>
+                    <p>$preparacionx</p>
+                    <h3>Tiempo<h3>
+                    <div class="tiempo-receta">
+                        <i class="fa fa-clock"></i> <span>$tiempo min</span>
+                    </div>
+                    <div class="dificultad-receta">
+                        <span>Dificultad</span>
+                        $dificultadHTML
+                    </div>
                 </div>
-                <h3>Ingredientes:</h3>
-                <p>$ingredientesx</p>
-                <h3>Preparacion:</h3>
-                <p>$preparacionx</p>
-                
+                          
         EOS;
         if($nickuser != $nick){
             
