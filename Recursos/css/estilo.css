@@ -505,12 +505,20 @@ footer p {
 }
 
 
-.tweetbuscador-content p {
+.tweetbuscador-content h3 {
     color: #333;  
     font-size: 1.1em;
+    margin-right: 20px; 
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #4b4b4b;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
 }
 
+
 .tweetbuscador-content {
+    display: flex;
+    align-items: center;
     font-size: 1.1em;
     color: #14171a;
     margin-top: 2px;
@@ -1388,6 +1396,11 @@ footer p {
 }
 
 hr {
+    border: none; /* Elimina el borde predeterminado */
+    height: 1px; /* Grosor de la línea */
+    background: linear-gradient(to right, #333, #000); 
+    opacity: 0.8; /* Ligera transparencia para un efecto moderno */
+    border-radius: 2px; /* Bordes redondeados para suavizar */
     margin: 15px 0;
 }
 
@@ -1480,4 +1493,92 @@ h3 {
 .olvidoCon a:hover{
     color: #a1a1a1;  
     text-decoration: underline;
+}
+
+
+.botones-vista-perfil{
+    display: flex;
+    justify-content: center;
+    gap: 10px; 
+    margin-top: 10px;
+}
+
+.vista-perfil {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center;
+    padding: 20px;
+}
+
+.vista-perfil h2{
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #4b4b4b;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+    margin: 20px 0;
+}
+
+.vista-perfil h3 {
+    
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #4b4b4b;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+    margin: 20px 0;
+}
+
+.vista-perfil h3,
+.vista-perfil p {
+    margin-right: 10px;
+}
+
+.vista-perfil-privado {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center;
+    padding: 20px;
+}
+
+.vista-perfil-privado h2{
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #4b4b4b;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+    margin: 20px 0;
+}
+
+.vista-perfil-privado h3{
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #4b4b4b;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+    display: inline-block;
+    margin-right: 10px; 
+}
+
+
+.vista-perfil-privado p {
+    display: inline-block;
+}
+
+.info-perfil {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 10px;
+}
+
+.titulo-perfil-privado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.titulo-perfil-privado h2,
+.titulo-perfil-privado a {
+    margin-right: 10px;
 }

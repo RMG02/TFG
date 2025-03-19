@@ -53,6 +53,15 @@ class Conversacion {
         ];
         $id = new ObjectId($conversacionId);
         $resultado = $this->collection->findOne(['_id' => $id]);
+
+        if(in_array($emisor, (array) $resultado['eliminada'])){
+            $this->collection->updateOne(
+                ['_id' => $id],
+                [
+                    '$pull' => ['eliminada' => $emisor]
+                ]
+            );
+        }
         
         if(in_array($receptor, (array) $resultado['eliminada'])){
             $this->collection->updateOne(

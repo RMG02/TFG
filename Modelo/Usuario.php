@@ -254,7 +254,7 @@ class Usuario {
     }
 
     public function buscarusuario($nick) {
-        $filter = ['nombre' => ['$regex' => $nick, '$options' => 'i']];
+        $filter = ['nick' => ['$regex' => $nick, '$options' => 'i']];
         $result = $this->collection->find($filter);
         return $result;
     }

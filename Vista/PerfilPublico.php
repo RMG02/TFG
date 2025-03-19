@@ -141,29 +141,38 @@ if($_SESSION['usudisponible'] == false){
 
         // Determinar el texto del botón
         $textoBoton = $esSeguidor ? "Dejar de Seguir" : "Seguir";
+        $textoVista = $esSeguidor ? '<i class="fas fa-user-minus"></i>'  : '<i class="fas fa-user-plus"></i>';
 
         // Cambiar la acción del formulario dependiendo del estado
         $accionFormulario = $esSeguidor ? "DejarSeguir" : "Seguir";
         $contenidoPrincipal = <<<EOS
 
-            <div class="tweet-content">
+            <div class="vista-perfil">
 
-                <p><strong>{$nick}</strong></p>
-                <p>Seguidores: {$numseguidores}</p>
-                <p>Siguiendo: {$numsiguiendo}</p>
-                <form method="POST" action="../Controlador/Usuario_controlador.php" onsubmit="enviarSeguidor('$nickSesion', '$nick', '$textoBoton')">
-                        <input type="hidden" name="nickPropio" value="{$nickSesion}">
-                        <input type="hidden" name="nickSeguir" value="{$nick}">
-                        <button type="submit" class="boton_lista" name="Seguir">{$textoBoton}</button>
-                </form>
+                <h2>{$nick}</h2>
+                <div class="info-perfil">
+                    <h3>Seguidores: </h3> <p>{$numseguidores}</p>
+                </div>
 
+                <div class="info-perfil">
+                    <h3>Siguiendo: </h3> <p>{$numsiguiendo}</p>
+                </div>
+                
+                <div class="botones-vista-perfil">
+                    <form method="POST" action="../Controlador/Usuario_controlador.php" onsubmit="enviarSeguidor('$nickSesion', '$nick', '$textoBoton')">
+                            <input type="hidden" name="nickPropio" value="{$nickSesion}">
+                            <input type="hidden" name="nickSeguir" value="{$nick}">
+                            <button type="submit" class="boton_lista" name="Seguir">{$textoVista}</button>
+                    </form>
+
+                    <form method="POST" action="../Controlador/Conversaciones_controlador.php">
+                        <input type="hidden" name="usuario1" value="{$nickSesion}">
+                        <input type="hidden" name="usuario2" value="{$nick}">
+                        <button type="submit" class="boton_lista" name="abrirConversacion"><i class='fas fa-envelope'></i></button>
+                    </form>
+                </div>
             </div> 
 
-            <form method="POST" action="../Controlador/Conversaciones_controlador.php">
-                <input type="hidden" name="usuario1" value="{$nickSesion}">
-                <input type="hidden" name="usuario2" value="{$nick}">
-                <button type="submit" class="boton_lista" name="abrirConversacion">Enviar mensaje</button>
-            </form>
             <hr>
 
 

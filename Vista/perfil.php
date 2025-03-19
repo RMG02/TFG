@@ -81,14 +81,36 @@ $numseguidores = is_array($seguidores) ? count($seguidores) : 0;
 $numsiguiendo = is_array($siguiendo) ? count($siguiendo) : 0;
 
 $contenidoPrincipal = <<<EOS
-    <h3>Datos usuario:</h3>
-    <p>Nick: {$_SESSION['nick']}</p>
-    <p>Nombre: {$_SESSION['nombre']} </p> 
-    <p>Email: {$_SESSION['email']} </p> 
-    <p>Seguidores: {$numseguidores} </p> 
-    <p>Siguiendo: {$numsiguiendo} </p>
-    <p><a href='/Vista/Editarperfil.php'>Editar perfil</a></p>
-    <button type="button" class="botonInit" id="botonInit">Eliminar cuenta</button>
+    <div class="vista-perfil-privado">
+        <div class="titulo-perfil-privado">
+            <h2>Información usuario</h2> 
+            <a href='/Vista/Editarperfil.php' title="Editar información"><i class="fas fa-edit"></i></a>
+        </div>
+
+        <div class="info-perfil">
+            <h3>Nick: </h3> <p>{$_SESSION['nick']}</p>
+        </div>
+
+        <div class="info-perfil">
+            <h3>Nombre: </h3> <p>{$_SESSION['nombre']}</p>
+        </div>
+
+        <div class="info-perfil">
+            <h3>Email: </h3> <p>{$_SESSION['email']}</p>
+        </div>
+
+        <div class="info-perfil">
+            <h3>Seguidores: </h3> <p>{$numseguidores}</p>
+        </div>
+
+        <div class="info-perfil">
+            <h3>Siguiendo: </h3> <p>{$numsiguiendo}</p>
+        </div>
+        
+            
+        <button type="button" class="botonInit" id="botonInit">Eliminar cuenta</button>
+        
+    </div>
     <div id="eliminar"class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>

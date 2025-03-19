@@ -253,6 +253,7 @@ if($_SESSION['publidisponible'] == false){
             </div>
         </div>
     </div>
+    <hr>
     EOS;
         
 

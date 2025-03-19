@@ -95,9 +95,8 @@ if(!$ver){
                                 
                             </div>
                             <div class="tweetbuscador-content">   
-                                    <p>Nombre: $nombre</p><br>
-                                    <p>Seguidores: $numseguidores</p><br>
-                                    <p>Siguiendo: $numsiguiendo</p><br>
+                                    <h3>Seguidores: $numseguidores</h3><br>
+                                    <h3>Siguiendo: $numsiguiendo</h3><br>
                             </div> 
                             <div id="$modalId" class="modal_publi">
                                 <form method="POST" action="../Controlador/Usuario_controlador.php" class="formulario">
