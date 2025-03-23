@@ -135,7 +135,7 @@ class Conversacion {
         if ($resultado !== null) {
             $conver = json_encode(iterator_to_array($resultado));
         } else {
-            $conver = null;  // O puedes devolver '{}' si prefieres un objeto vacío
+            $conver = null;  
         }
         return $conver;
     }
