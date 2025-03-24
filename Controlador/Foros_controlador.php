@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['CrearForo'])) {
         $DatosForo = [
             'titulo' => $_POST['titulo'],
+            'descripcion' => $_POST['descripcion'],
             'creador' => $_SESSION['nick'],
             'suscriptores' =>[$_SESSION['nick']],
             'mensajes' => []
@@ -34,6 +35,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         exit; 
     }
+
+    if (isset($_POST['eliminarForo'])) {
+        $resultado = $forosModelo->eliminarForo($_POST['id']);
+        if($resultado == null){
+            $_SESSION['error'] = "Error al eliminar el foro";
+            header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
+        }
+        else{
+            $_SESSION['mensaje'] = "Foro eliminado";
+            header('Location: ../Vista/Foros.php'); 
+        }
+        
+        exit; 
+    }
+
 
 
     

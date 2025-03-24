@@ -32,17 +32,22 @@ if ($foroId == null) {
     unset($_SESSION['foro']);
 
     $tituloForo = $foro['titulo'];
+    $descripcionForo = $foro['descripcion'];
     $creadorForo = $foro['creador']; 
     $suscrito = in_array($_SESSION['nick'], $foro['suscriptores']);
 
     $contenidoPrincipal = <<<EOS
         <h1>$tituloForo</h1>
+        <h3>$descripcionForo</h3>
         <div class="foro-acciones">
     EOS;
 
     if($_SESSION['nick'] === $creadorForo){
         $contenidoPrincipal .= <<<EOS
-            <button class="btn-eliminar">Eliminar foro</button>
+        <form method="POST" action="../Controlador/Foros_controlador.php">
+            <input type="hidden" name="id" value="$foroId">
+            <button type="submit" class="boton_lista" name="eliminarForo">Eliminar foro</button>
+        </form>
         EOS;
     }
 

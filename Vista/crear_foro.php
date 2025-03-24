@@ -20,9 +20,12 @@ if (isset($_SESSION['error'])) {
 
 $contenidoPrincipal = <<<EOS
 	<form method="POST" class="formulario" action="../Controlador/Foros_controlador.php">
-    
         <label for="titulo">Título del foro:</label>
         <input type="text" name="titulo" required>
+
+        <label for="titulo">Descripción del foro:</label>
+        <textarea name="descripcion"required></textarea>
+
         <button type="submit" class="botonInit" name="CrearForo">Crear foro</button>
     </form>
 

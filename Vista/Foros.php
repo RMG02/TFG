@@ -12,6 +12,20 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
 
 $tituloPagina = "Lista de Foros";
 
+$error = "";
+$mensaje = "";
+$recetaxx = false;
+
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+    unset($_SESSION['error']);
+}
+ 
+if (isset($_SESSION['mensaje'])) {
+    $mensaje = $_SESSION['mensaje'];
+    unset($_SESSION['mensaje']);
+}
+
 if (!isset($_SESSION['foros'])) {
     header('Location: ../Controlador/Foros_controlador.php?ObtenerListaForos=true');
     exit;
@@ -75,6 +89,18 @@ if (empty($foros)) {
             </div>
         EOS;
     }
+}
+
+if ($error != "") {
+    $contenidoPrincipal .= <<<EOS
+        <p class="error">$error</p>
+    EOS;
+}
+
+if ($mensaje != "") {
+    $contenidoPrincipal .= <<<EOS
+        <p class="mensaje">$mensaje</p>
+    EOS;
 }
 
 require_once __DIR__ . "/plantillas/plantilla.php";

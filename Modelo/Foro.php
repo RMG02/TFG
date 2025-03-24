@@ -39,4 +39,11 @@ class Foro {
         return $conver;
     }
 
+    public function eliminarForo($foroId) {
+        $id = new ObjectId($foroId);
+        
+        return $this->collection->deleteOne(['_id' => $id]);
+
+    }
+
 }
