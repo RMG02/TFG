@@ -53,12 +53,19 @@ if ($foroId == null) {
 
     if($suscrito){
         $contenidoPrincipal .= <<<EOS
-            <button class="btn-suscripcion">Desuscribirse</button>
+            <form method="POST" action="../Controlador/Foros_controlador.php">
+                <input type="hidden" name="id" value="$foroId">
+                <button type="submit" class="btn-suscripcion" name="Desuscribirforo">Desuscribirse</button>
+            </form>
+            
         EOS;
     }
     else{
         $contenidoPrincipal .= <<<EOS
-            <button class="btn-suscripcion">Suscribirse</button>
+            <form method="POST" action="../Controlador/Foros_controlador.php">
+                <input type="hidden" name="id" value="$foroId">
+                <button type="submit" class="btn-suscripcion" name="Suscribirforo">Suscribirse</button>
+            </form>
         EOS;
     }
 

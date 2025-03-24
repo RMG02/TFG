@@ -46,4 +46,16 @@ class Foro {
 
     }
 
+    public function desuscribirForo($foroId, $nick) {
+        $id = new ObjectId($foroId);
+        $resultado = $this->collection->updateOne(['_id' => $id], ['$pull' => ['suscriptores' => $nick]]);
+        return $resultado;
+    }
+
+    public function suscribirForo($foroId, $nick) {
+        $id = new ObjectId($foroId);
+        $resultado = $this->collection->updateOne(['_id' => $id], ['$push' => ['suscriptores' => $nick]]);
+        return $resultado;
+    }
+
 }

@@ -35,6 +35,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         exit; 
     }
+    
+    if(isset($_POST['Desuscribirforo'])){
+        $resultado = $forosModelo->desuscribirForo($_POST['id'], $_SESSION['nick']);
+        if($resultado == null){
+            $_SESSION['error'] = "Error al desuscribirse del foro";
+            header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
+        }
+        else{
+            $_SESSION['mensaje'] = "Desuscripción correcta";
+            header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
+        }
+        
+        exit;
+    }
+    if(isset($_POST['Suscribirforo'])){
+        $resultado = $forosModelo->suscribirForo($_POST['id'], $_SESSION['nick']);
+        if($resultado == null){
+            $_SESSION['error'] = "Error al suscribirse del foro";
+            header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
+        }
+        else{
+            $_SESSION['mensaje'] = "suscripción correcta";
+            header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
+        }
+        
+        exit;
+    }
 
     if (isset($_POST['eliminarForo'])) {
         $resultado = $forosModelo->eliminarForo($_POST['id']);
