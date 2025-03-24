@@ -59,9 +59,9 @@ usort($foros, function ($a, $b) {
 EOS;*/
 
 $contenidoPrincipal = <<<EOS
-    <h1>Foros</h1>
     <div class="crear-foro">
-        <a href="crear_foro.php" class="btn-crear">Crear Foro</a>
+        <h1>Foros</h1>
+        <a href="crear_foro.php" class="btn-crear" title="Crear foro"><i class="fas fa-plus-circle"></i></a>
     </div>
 EOS;
 
@@ -82,11 +82,11 @@ if (empty($foros)) {
             </div>
         EOS;*/
         $contenidoPrincipal .= <<<EOS
-            <div class="foro_div">
-                <a href="foro.php?foroId=$id" class="foro-link">
+            <a href="foro.php?foroId=$id" class="foro-link">
+                <div class="foro_div">
                     <h3>$titulo</h3>
-                </a>
-            </div>
+                </div>
+            </a>
         EOS;
     }
 }

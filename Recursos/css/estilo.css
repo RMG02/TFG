@@ -1582,3 +1582,42 @@ h3 {
 .titulo-perfil-privado a {
     margin-right: 10px;
 }
+
+
+.foro_div {
+    background-color: white; 
+    padding: 15px; 
+    margin: 10px auto; 
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    width: 40%; 
+    max-width: 800px; 
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+}
+
+.foro_div:hover {
+    transform: scale(1.02); 
+}
+
+.foro-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.foro_div h3 {
+    margin: 0;
+    font-size: 1.2em;
+    text-align: center; 
+}
+
+
+.crear-foro {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
