@@ -115,22 +115,28 @@ if ($foroId == null) {
         }*/
         
     }
-
-    if (empty($foro['mensajes'])) {
+    if($suscrito){
+        if (empty($foro['mensajes'])) {
+            $contenidoPrincipal .= <<<EOS
+                <h2 id="mensajeVacio">No hay mensajes</h2>
+            EOS;    
+        }
+    
         $contenidoPrincipal .= <<<EOS
-            <h2 id="mensajeVacio">No hay mensajes</h2>
-        EOS;    
+            </div>
+            <form id="form-mensaje" class="form-foro" onsubmit="return false;">
+                <input type="hidden" id="foroId" value="$foroId">
+                <input type="hidden" id="usuario_emisor" value="{$_SESSION['nick']}">
+                <input type="text" id="contenido" placeholder="Escribe tu mensaje..." class="input-mensaje">
+                <button type="button" class="btn-enviar" onclick="enviarMensajeForo('{$_SESSION['nick']}', '$foroId', document.getElementById('contenido').value)">Enviar</button>
+            </form>
+        EOS;
+    }else{
+        $contenidoPrincipal .= <<<EOS
+                <h2 id="mensajeVacio">Debes suscribirte para ver el contenido</h2>
+        EOS;  
     }
-
-    $contenidoPrincipal .= <<<EOS
-        </div>
-        <form id="form-mensaje" class="form-foro" onsubmit="return false;">
-            <input type="hidden" id="foroId" value="$foroId">
-            <input type="hidden" id="usuario_emisor" value="{$_SESSION['nick']}">
-            <input type="text" id="contenido" placeholder="Escribe tu mensaje..." class="input-mensaje">
-            <button type="button" class="btn-enviar" onclick="enviarMensajeForo('{$_SESSION['nick']}', '$foroId', document.getElementById('contenido').value)">Enviar</button>
-        </form>
-    EOS;
+    
 }
 
 require_once __DIR__ . "/plantillas/plantilla.php";
