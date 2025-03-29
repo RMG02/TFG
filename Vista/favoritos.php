@@ -110,6 +110,7 @@ if($verpublicaciones == "true"){
         }
 
         $contenidoPrincipal .= <<<EOS
+        <div class="contenedor-publicacion">
             <div class="tweet" id="publistas">
                 <div class="tweet-header">
                     <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a> <span class="tweet-time">$Hora</span>
@@ -167,6 +168,7 @@ if($verpublicaciones == "true"){
                         <button type="submit" class="botonPubli" name="Verpublicacion"></button>
                     </form>
                 </div>
+                </div>
                 EOS;
         }    $modalId++;
         
@@ -176,7 +178,7 @@ if($verpublicaciones == "true"){
     EOS;
 
     foreach ($publicaciones as $receta) {
-
+                $tipo = $receta['tipo'];
                 $nickuser = $_SESSION['nick'];
                 $email = $receta['email'];
                 $nick = $receta['nick'];
@@ -203,18 +205,19 @@ if($verpublicaciones == "true"){
                 }
     
                 $contenidoPrincipal .= <<<EOS
-                    <div class="tweet" id="publistas">
-                        <div class="tweet-header">
-                            <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a> <span class="tweet-time">$Hora</span>
-                        </div>
-                        <div class="tweet-content">
-                            <strong>$texto</strong>
-                            $multi
-                            <div class="comentarios-icon">
-                                <i class="fas fa-comments"></i> $num_comentarios
+                    <div class="contenedor-publicacion">
+                        <div class="tweetrecetas" id="publistas">
+                            <div class="tweetrecetas-header">
+                                <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a><span class="tweet-tipo">$tipo</span><span class="tweetrecetas-time">$Hora</span>
                             </div>
-                        </div>
-                        <div class="reacciones-icon">
+                            <div class="tweetrecetas-content">
+                                <p><strong>$texto</strong></p>
+                                $multi
+                                <div class="comentarios-icon-recetas">
+                                    <i class="fas fa-comments"></i> $num_comentarios
+                                </div>
+                            </div>
+                            <div class="reacciones-icon-recetas">
                                 
                 EOS;
                 if($nickuser == $nick){
@@ -259,6 +262,7 @@ if($verpublicaciones == "true"){
                             <button type="submit" class="botonPubli" name="Verreceta"></button>
                         </form>
                     </div>
+                </div>
                 EOS;
                 $modalId++;
     }

@@ -83,30 +83,29 @@ if(!$ver){
             if($nick == $_SESSION['nick']){
                 continue;
             }else{
-
             
                 $contenidoPrincipal .= <<<EOS
-                    <div class="contenedor-buscadorrr">
-                        <div class="tweetbuscador" id="publistas">
-                            <div class="tweetbuscador-header">
-                                <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link">
-                                    <strong>$nick</strong>
-                                </a>
-                                
-                            </div>
-                            <div class="tweetbuscador-content">   
-                                    <h3>Seguidores: $numseguidores</h3><br>
-                                    <h3>Siguiendo: $numsiguiendo</h3><br>
-                            </div> 
-                            <div id="$modalId" class="modal_publi">
-                                <form method="POST" action="../Controlador/Usuario_controlador.php" class="formulario">
-                                    <input type="hidden" name="email" value="$email">
-                                    <input type="hidden" name="verusuariooo" value="true">
-                                    <button type="submit" class="botonPubli" name="VerUsuario"></button>
-                                </form>
+                    <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="foro-link">
+                        <div class="contenedor-buscadorrr">
+                            <div class="tweetbuscador" id="publistas">
+                                <div class="tweetbuscador-header">
+                                        <strong>$nick</strong>
+                                </div>
+                                <div class="tweetbuscador-content">   
+                                        <h3>Seguidores: $numseguidores</h3><br>
+                                        <h3>Siguiendo: $numsiguiendo</h3><br>
+                                </div> 
+                                <div id="$modalId" class="modal_publi">
+                                    <form method="POST" action="../Controlador/Usuario_controlador.php" class="formulario">
+                                        <input type="hidden" name="email" value="$email">
+                                        <input type="hidden" name="verusuariooo" value="true">
+                                        <button type="submit" class="botonPubli" name="VerUsuario"></button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
+                    
                 EOS;
             
             $modalId++;

@@ -51,7 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             'notiseguidores' => true,
             'noticomentarios' => true,
             'notimensajes' => true,
-            'confirmado' => true
+            'confirmado' => true,
+            'forosCreados' => 0
 
         ];
 

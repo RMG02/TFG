@@ -76,11 +76,16 @@ header .menu p {
 }
 
 
+.menu-icon {
+    position: relative;
+    display: inline-block;
+}
+
 .menu-icon::after {
     content: attr(titulo);
     position: absolute;
-    top: 80px; 
-    left: 90%;
+    top: 100%; 
+    left: 50%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.75);
     color: #fff;
@@ -90,13 +95,13 @@ header .menu p {
     transition: opacity 0.3s;
     white-space: nowrap;
     font-size: 14px;
-    pointer-events: none; 
+    pointer-events: none;
 }
-
 
 .menu-icon:hover::after {
     opacity: 1;
 }
+
 
 
 #notification-counter {

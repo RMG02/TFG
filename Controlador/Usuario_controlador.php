@@ -42,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'notiseguidores' => true,
             'noticomentarios' => true,
             'notimensajes' => true,
-            'confirmado' => false
+            'confirmado' => false,
+            'forosCreados' => 0
 
         ];
         $resultado = $usuarioModelo->registro($DatosUsuario);
@@ -80,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['notiseguidores'] = $usuario['notiseguidores'];
                 $_SESSION['noticomentarios'] = $usuario['noticomentarios'];
                 $_SESSION['notimensajes'] = $usuario['notimensajes'];
+                $_SESSION['forosCreados'] = $usuario['forosCreados'];
             }
             
 

@@ -2,7 +2,7 @@
 
 require_once '../Config/config.php';
 require_once '../Modelo/Foro.php';
-require_once '../Modelo/Notificacion.php';
+require_once '../Modelo/Usuario.php';
 
 
 if (session_status() == PHP_SESSION_NONE) {
@@ -10,7 +10,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $forosModelo = new Foro($db);
-$NotificacionModelo = new Notificacion($db);
+$UsuarioModelo = new Usuario($db);
 
 
 
@@ -23,18 +23,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'suscriptores' =>[$_SESSION['nick']],
             'mensajes' => []
         ];
-        $resultado = $forosModelo->crearForo($DatosForo);
-        if($resultado == "Título de foro ya registrado"){
-            $_SESSION['error'] = "Título de foro ya registrado";
-            header('Location: ../Vista/crear_foro.php'); 
+        
+        if($_SESSION['forosCreados'] < 5){
+            $resultado = $forosModelo->crearForo($DatosForo);
+            if($resultado == "Título de foro ya registrado"){
+                $_SESSION['error'] = "Título de foro ya registrado";
+                header('Location: ../Vista/crear_foro.php'); 
+                exit; 
+            }
+            else{
+                $_SESSION['forosCreados'] += 1;
+                $UsuarioModelo->sumaForo($_SESSION['nick']);
+                $id = $resultado->getInsertedId()->__toString();
+                header('Location: ../Vista/foro.php?foroId=' . $id);
+                exit;  
+            }
         }
         else{
-            $id = $resultado->getInsertedId()->__toString();
-            header('Location: ../Vista/foro.php?foroId=' . $id); 
+            $_SESSION['error'] = "Has alcanzado el límite de foros creados (5)";
+            header('Location: ../Vista/crear_foro.php'); 
+            exit; 
         }
+
         
-        exit; 
     }
+
+    
     
     if(isset($_POST['Desuscribirforo'])){
         $resultado = $forosModelo->desuscribirForo($_POST['id'], $_SESSION['nick']);
@@ -71,6 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         else{
             $_SESSION['mensaje'] = "Foro eliminado";
+            $_SESSION['forosCreados'] -= 1;
+            $UsuarioModelo->restaForo($_SESSION['nick']);
             header('Location: ../Vista/Foros.php'); 
         }
         

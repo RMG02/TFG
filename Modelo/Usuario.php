@@ -203,6 +203,37 @@ class Usuario {
 
     }
 
+    public function sumaForo($nick){
+        $usuario = $this->collection->findOne(['nick' => $nick]);
+        if ($usuario) {
+            
+            $this->collection->updateOne(
+                ['nick' => $nick],
+                ['$inc' => ['forosCreados' => 1]]
+            );
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function restaForo($nick){
+        $usuario = $this->collection->findOne(['nick' => $nick]);
+        if ($usuario) {
+            
+            $this->collection->updateOne(
+                ['nick' => $nick],
+                ['$inc' => ['forosCreados' => -1]]
+            );
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     public function favoritospublicacion($publicacion,$nick){
             // Buscar al usuario en la base de datos
             $usuario = $this->collection->findOne(['nick' => $nick]);

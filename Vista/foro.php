@@ -74,12 +74,12 @@ if ($foroId == null) {
         </div>
         <div id="foro-contenedor">
     EOS;
-    if($suscrito){
-        foreach ($foro['mensajes'] as $mensaje) {
-            $contenido = strip_tags($mensaje['contenido'], '<a>');
-            $emisor = htmlspecialchars($mensaje['usuario_emisor'], ENT_QUOTES);
-            $hora = date('d/m/Y H:i:s', strtotime($mensaje['hora']));
-            $id = $mensaje['mensaje_id']['$oid'];
+    //if($suscrito){
+    foreach ($foro['mensajes'] as $mensaje) {
+        $contenido = strip_tags($mensaje['contenido'], '<a>');
+        $emisor = htmlspecialchars($mensaje['usuario_emisor'], ENT_QUOTES);
+        $hora = date('d/m/Y H:i:s', strtotime($mensaje['hora']));
+        $id = $mensaje['mensaje_id']['$oid'];
 
             /*if($mensaje['usuario_emisor'] == $_SESSION['nick']){
                 $contenidoPrincipal .= <<<EOS
@@ -115,28 +115,28 @@ if ($foroId == null) {
                 EOS;
             }*/
             
-        }
+    }
     
-        if (empty($foro['mensajes'])) {
-            $contenidoPrincipal .= <<<EOS
-                <h2 id="mensajeVacio">No hay mensajes</h2>
-            EOS;    
-        }
-    
+    if (empty($foro['mensajes'])) {
         $contenidoPrincipal .= <<<EOS
-            </div>
-            <form id="form-mensaje" class="form-foro" onsubmit="return false;">
-                <input type="hidden" id="foroId" value="$foroId">
-                <input type="hidden" id="usuario_emisor" value="{$_SESSION['nick']}">
-                <input type="text" id="contenido" placeholder="Escribe tu mensaje..." class="input-mensaje">
-                <button type="button" class="btn-enviar" onclick="enviarMensajeForo('{$_SESSION['nick']}', '$foroId', document.getElementById('contenido').value)">Enviar</button>
-            </form>
-        EOS;
-    }else{
+            <h2 id="mensajeVacio">No hay mensajes</h2>
+        EOS;    
+    }
+    
+    $contenidoPrincipal .= <<<EOS
+        </div>
+        <form id="form-mensaje" class="form-foro" onsubmit="return false;">
+            <input type="hidden" id="foroId" value="$foroId">
+            <input type="hidden" id="usuario_emisor" value="{$_SESSION['nick']}">
+            <input type="text" id="contenido" placeholder="Escribe tu mensaje..." class="input-mensaje">
+            <button type="button" class="btn-enviar" onclick="enviarMensajeForo('{$_SESSION['nick']}', '$foroId', document.getElementById('contenido').value)">Enviar</button>
+        </form>
+    EOS;
+    /*}else{
         $contenidoPrincipal .= <<<EOS
                 <h2 id="mensajeVacio">Debes suscribirte para ver el contenido</h2>
         EOS;  
-    }
+    }*/
     
 }
 
