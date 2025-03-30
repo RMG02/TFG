@@ -11,6 +11,8 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $forosModelo = new Foro($db);
 $UsuarioModelo = new Usuario($db);
+$dir_archivos = '../Recursos/multimedia';
+
 
 
 
@@ -48,6 +50,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
     }
 
+    if(isset($_POST['CrearMensaje'])){
+
+        $archivo = $_FILES['archivo'];
+        $archivo_subido = '';
+    
+        if ($archivo && $archivo['error'] == 0) {
+            $tmp_name = $archivo['tmp_name'];
+            $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
+            // Verificar si la extensión es una imagen
+            $permitidas = array('jpg', 'jpeg', 'png');
+            if (!in_array($extension, $permitidas)) {
+                $_SESSION['error'] = "Error al crear la publicación, solo se permiten imágenes.";
+                header('Location: ../Vista/Principal.php?id_foro=' . $_POST['id_foro']);
+                exit;
+            }
+            $nombre = uniqid() . '.' . $extension;
+            move_uploaded_file($tmp_name, "$dir_archivos/$nombre");
+            $archivo_subido = $nombre;
+        }
+
+        $Mensaje = [
+            'multimedia' => $archivo_subido,
+            'email' => $_SESSION['email'],
+            'contenido' => $_POST['contenido'],
+            'nick' => $_SESSION['nick']
+        ]; 
+        $resultado = $forosModelo->crearMensaje($Mensaje, $_POST['id_foro']);
+        if($resultado){
+            header('Location: ../Vista/foro.php?foroId=' . $_POST['id_foro']); 
+        }
+        else{
+            $_SESSION['error'] = "Error al publicar el mensaje";
+            header('Location: ../Vista/crear_mensaje_foro.php?id_foro=' . $_POST['id_foro'] . '&suscrito=' . $_POST['suscrito']); 
+        }
+        
+        exit;
+    }
     
     
     if(isset($_POST['Desuscribirforo'])){
@@ -63,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         exit;
     }
+
     if(isset($_POST['Suscribirforo'])){
         $resultado = $forosModelo->suscribirForo($_POST['id'], $_SESSION['nick']);
         if($resultado == null){

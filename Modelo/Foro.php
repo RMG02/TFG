@@ -28,6 +28,14 @@ class Foro {
         return $foro;
     }
 
+    public function crearMensaje($Mensaje, $id) {
+        $Mensaje['hora'] = date(DATE_ISO8601);
+        $Mensaje['mensaje_id'] = new ObjectId();
+        $Id = new ObjectId($id);
+
+        return $this->collection->updateOne(['_id' => $Id], ['$push' => ['mensajes' => $Mensaje]]);
+    }
+
     public function obtenerForoId($foroId) {
         $id = new ObjectId($foroId);
         $resultado = $this->collection->findOne(['_id' => $id]);

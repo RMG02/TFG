@@ -37,7 +37,10 @@ if ($foroId == null) {
     $suscrito = in_array($_SESSION['nick'], $foro['suscriptores']);
 
     $contenidoPrincipal = <<<EOS
-        <h1>$tituloForo</h1>
+        <div class="crear-foro">
+            <h1>$tituloForo</h1>
+            <a href="crear_mensaje_foro.php?id_foro=$foroId&suscrito=$suscrito" class="btn-crear" title="Publicar mensaje"><i class="fas fa-plus-circle"></i></a>
+        </div>
         <h3>$descripcionForo</h3>
         <div class="foro-acciones">
     EOS;
@@ -72,71 +75,48 @@ if ($foroId == null) {
 
     $contenidoPrincipal .= <<<EOS
         </div>
-        <div id="foro-contenedor">
     EOS;
-    //if($suscrito){
     foreach ($foro['mensajes'] as $mensaje) {
-        $contenido = strip_tags($mensaje['contenido'], '<a>');
-        $emisor = htmlspecialchars($mensaje['usuario_emisor'], ENT_QUOTES);
+        $multimedia = $mensaje['multimedia'] ?? '';
         $hora = date('d/m/Y H:i:s', strtotime($mensaje['hora']));
-        $id = $mensaje['mensaje_id']['$oid'];
+        $email = $mensaje['email'];
+        $nick = $mensaje['nick'];
+        $contenido = strip_tags($mensaje['contenido'], '<a>');
+        $multi = '';
 
-            /*if($mensaje['usuario_emisor'] == $_SESSION['nick']){
-                $contenidoPrincipal .= <<<EOS
-                    <div class="mensaje_enviado" id="mensajeEnviado-$id" onclick="mostrarOpciones('$id')">
-                        <p class="nombre-usuario"><strong>Tú</strong></p>
-                        <p id="contenido-$id">$contenido</p>
-                        <p><small>$hora</small></p>
-                    </div>
-                    <div id="mensaje-$id" class="modal_men">
-                        <div class="modal_men-content">
-                            <span class="close_men" onclick="cerrarModal('mensaje-$id')">&times;</span>  
-                            <button type="button" class="mod-men" onclick="eliminarMensaje('$id', '$otroUsuario')">Eliminar mensaje</button>
-                            <button type="button" class="mod-men" onclick="mostrarEditar('$id')">Editar mensaje</button>
-                            <div id="edit-$id" class="modal_men">
-                                <div class="modal_men-content">
-                                    <span class="close_men" onclick="cerrarModal('edit-$id')">&times;</span>
-                                    <p>Modifica tu mensaje</p>
-                                    <input type="text" id="nuevoContenido-$id" value="$contenido" class="input-mensaje"> 
-                                    <button type="button" class="mod-men" onclick="editarMensaje('$id', '$otroUsuario', document.getElementById('nuevoContenido-$id').value); cerrarModal('edit-$id'); cerrarModal('mensaje-$id')">Editar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                EOS;
+        if ($multimedia) {
+            $extension = pathinfo($multimedia, PATHINFO_EXTENSION);
+            if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+                $multi = "<img src='../Recursos/multimedia/$multimedia' alt='Imagen de la publicación'>";
+            } elseif (in_array($extension, ['mp4', 'webm'])) {
+                $multi = "<video controls><source src='../Recursos/multimedia/$multimedia' type='video/$extension'></video>";
             }
-            else{
-                $contenidoPrincipal .= <<<EOS
-                    <div class="mensaje_recibido" id="mensajeRecibido-$id">
-                        <p class="nombre-usuario"><strong>$emisor</strong></p>
-                        <p id="contenido-$id">$contenido</p>
-                        <p><small>$hora</small></p>
-                    </div>
-                EOS;
-            }*/
-            
+        }
+
+        if($nick == $_SESSION['nick']){
+            $nick = "Tú";
+        }
+        $contenidoPrincipal .= <<<EOS
+        <div class="contenedor-publicacion">
+
+            <div class="tweet" id="publistas">
+                <div class="tweet-header">
+                    <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a> <span class="tweet-time">$hora</span>
+                </div>
+                <div class="tweet-content">
+                    $multi
+                    <p>$contenido</p>
+                </div>
+            </div>
+        </div>
+        EOS;
     }
     
     if (empty($foro['mensajes'])) {
         $contenidoPrincipal .= <<<EOS
-            <h2 id="mensajeVacio">No hay mensajes</h2>
+            <h2 id="mensajeVacio">No hay publicaciones</h2>
         EOS;    
     }
-    
-    $contenidoPrincipal .= <<<EOS
-        </div>
-        <form id="form-mensaje" class="form-foro" onsubmit="return false;">
-            <input type="hidden" id="foroId" value="$foroId">
-            <input type="hidden" id="usuario_emisor" value="{$_SESSION['nick']}">
-            <input type="text" id="contenido" placeholder="Escribe tu mensaje..." class="input-mensaje">
-            <button type="button" class="btn-enviar" onclick="enviarMensajeForo('{$_SESSION['nick']}', '$foroId', document.getElementById('contenido').value)">Enviar</button>
-        </form>
-    EOS;
-    /*}else{
-        $contenidoPrincipal .= <<<EOS
-                <h2 id="mensajeVacio">Debes suscribirte para ver el contenido</h2>
-        EOS;  
-    }*/
     
 }
 
