@@ -47,6 +47,36 @@ class Foro {
         return $conver;
     }
 
+    public function editarPubli($texto, $id_foro, $id_mensaje, $media) {
+        $foro_id = new ObjectId($id_foro);
+        $mensaje_id = new ObjectId($id_mensaje);
+    
+        $filter = [
+            '_id' => $foro_id,
+            'mensajes.mensaje_id' => $mensaje_id 
+        ];
+    
+        $update = [
+            '$set' => [
+                'mensajes.$.multimedia' => $media, 
+                'mensajes.$.contenido' => $texto, 
+                'mensajes.$.hora' => date(DATE_ISO8601)
+            ]
+        ];
+    
+        return $this->collection->updateOne($filter, $update);
+    }
+    
+
+
+    public function eliminarPubli($foroId, $mensajeId) {
+        $foro_id = new ObjectId($foroId);
+        $mensaje_id = new ObjectId($mensajeId);
+       
+        $resultado = $this->collection->updateOne(['_id' => $foro_id], ['$pull' => ['mensajes' => ['mensaje_id' => $mensaje_id]]]);
+        return $resultado;
+    }
+
     public function eliminarForo($foroId) {
         $id = new ObjectId($foroId);
         

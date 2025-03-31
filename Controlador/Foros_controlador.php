@@ -88,6 +88,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
     
+
+    if(isset($_POST['EliminarPubli'])){
+        $resultado = $forosModelo->eliminarPubli($_POST['Foro-id'], $_POST['Mensaje-id']);
+        if($resultado == null){
+            $_SESSION['error'] = "Error al eliminar el mensaje";
+        }
+        else{
+            $_SESSION['mensaje'] = "Mensaje eliminado";
+        }
+        header('Location: ../Vista/foro.php?foroId=' . $_POST['Foro-id']); 
+        exit;
+    }
     
     if(isset($_POST['Desuscribirforo'])){
         $resultado = $forosModelo->desuscribirForo($_POST['id'], $_SESSION['nick']);
@@ -102,6 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         exit;
     }
+    
 
     if(isset($_POST['Suscribirforo'])){
         $resultado = $forosModelo->suscribirForo($_POST['id'], $_SESSION['nick']);
@@ -133,6 +146,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit; 
     }
 
+    if(isset($_POST['EditarPubli'])){
+        $archivo = $_FILES['nuevo_archivo'];
+        $archivo_subido = $_POST['archivo_origen'];
+        $id_foro = $_POST['id_foro'];
+        $id_mensaje = $_POST['id_mensaje'];  
+  
+
+        if ($archivo && $archivo['error'] == 0) {
+            $anterior = "../Recursos/multimedia/$archivo_subido";
+            unlink($anterior);
+            $tmp_name = $archivo['tmp_name'];
+            $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
+            // Verificar si la extensión es una imagen
+            $permitidas = array('jpg', 'jpeg', 'png');
+            if (!in_array($extension, $permitidas)) {
+                $_SESSION['error'] = "Error al modificar la publicación, solo se permiten imágenes."; 
+                header('Location: ../Vista/foro.php?foroId=' . $id_foro); 
+                exit;
+            }
+            $nombre = uniqid() . '.' . $extension;
+            move_uploaded_file($tmp_name, "$dir_archivos/$nombre");
+            $archivo_subido = $nombre;
+        }
+
+        $resultado = $forosModelo->editarPubli($_POST['contenido'], $id_foro, $id_mensaje, $archivo_subido);
+        if ($resultado) {
+            $_SESSION['mensaje'] = "Publicación editada";
+            
+        }
+        else{
+            $_SESSION['error'] = "Error al editar la publicación.";
+        } 
+        header('Location: ../Vista/foro.php?foroId=' . $id_foro); 
+        exit;
+        
+    }
+
 
 
     
@@ -152,6 +202,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $resultado = $forosModelo->obtenerForoId($_GET['foroId']);
         if($resultado != null){
             $foro = json_decode($resultado, true);
+            usort($foro["mensajes"], function($a, $b) {
+                return strtotime($b["hora"]) - strtotime($a["hora"]);
+            });
             $_SESSION['foro'] = $foro;
         }
         else{

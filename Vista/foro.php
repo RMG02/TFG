@@ -15,6 +15,8 @@ $tituloPagina = "Foro";
 
 $foroId = $_GET['foroId'] ?? null;
 
+$id_div = 0;
+
 if ($foroId == null) {
     $contenidoPrincipal = <<<EOS
         <div>
@@ -82,6 +84,8 @@ if ($foroId == null) {
         $email = $mensaje['email'];
         $nick = $mensaje['nick'];
         $contenido = strip_tags($mensaje['contenido'], '<a>');
+        $id = $mensaje['mensaje_id']['$oid'];
+
         $multi = '';
 
         if ($multimedia) {
@@ -97,7 +101,7 @@ if ($foroId == null) {
             $nick = "Tú";
         }
         $contenidoPrincipal .= <<<EOS
-        <div class="contenedor-publicacion">
+        <div class="contenedor-publicacion" onclick="abrirModal('mensaje-$id_div', '{$mensaje['nick']}', '{$_SESSION['nick']}')">
 
             <div class="tweet" id="publistas">
                 <div class="tweet-header">
@@ -109,7 +113,35 @@ if ($foroId == null) {
                 </div>
             </div>
         </div>
+        
+        <div id="mensaje-$id_div" class="modal_men">
+            <div class="modal_men-content">
+                <span class="close_men" onclick="cerrarModal('mensaje-$id_div')">&times;</span>  
+                <form method="POST" action="../Controlador/Foros_controlador.php">
+                    <input type="hidden" name="Mensaje-id" value='$id'>
+                    <input type="hidden" name="Foro-id" value='$foroId'>
+                    <button type="submit" class="mod-men" name="EliminarPubli">Eliminar publicación</button>
+                </form>
+                <button type="button" class="mod-men" onclick="mostrarEditar('$id_div')">Editar publicacion</button>
+                <div id="edit-$id_div" class="modal_men">
+                    <div class="modal_men-content">
+                        <span class="close_men" onclick="cerrarModal('edit-$id_div')">&times;</span>
+                        <p>Modifica tu publicación</p>
+                        <form method="POST" enctype="multipart/form-data" action="../Controlador/Foros_controlador.php">
+                            <textarea name="contenido">$contenido</textarea>
+                            <input type="hidden" name="archivo_origen" value="$multimedia"> 
+                            <input type="file" name="nuevo_archivo"> 
+                            <input type="hidden" name="id_mensaje" value="$id">
+                            <input type="hidden" name="id_foro" value="$foroId">
+                            <button type="submit" class="mod-men" name="EditarPubli">Guardar cambios</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         EOS;
+        $id_div += 1;
+
     }
     
     if (empty($foro['mensajes'])) {
@@ -123,3 +155,5 @@ if ($foroId == null) {
 require_once __DIR__ . "/plantillas/plantilla.php";
 
 ?>
+
+<script src="../Recursos/js/foro.js"></script>
