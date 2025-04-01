@@ -53,7 +53,8 @@ if (isset($_SESSION['publicacionesfavoritos'])) {
     unset($_SESSION['publicacionesfavoritos']);
 }
 
-
+unset($_SESSION['idspublis']);
+unset($_SESSION['idsrecetas']);
 
 
 $contenidoPrincipal = <<<EOS

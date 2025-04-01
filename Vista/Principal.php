@@ -31,6 +31,9 @@ $tipo_publicacion = "publicacion";
 $error = "";
 $mensaje = "";
 
+$favoritos = isset($_SESSION['idspublis']) && is_array($_SESSION['idspublis']) 
+            ? $_SESSION['idspublis'] 
+            : [];
 
 
 
@@ -57,7 +60,6 @@ $siguiendo = is_array($usuario['siguiendo']) ? $usuario['siguiendo'] : [];
 if (isset($_SESSION['publicaciones'])) {
     unset($_SESSION['publicaciones']);
 }
-
 
 
 $contenidoPrincipal = <<<EOS
@@ -226,9 +228,7 @@ $contenidoPrincipal .= <<<EOS
                     <input type="hidden" name="nick_user" value="$nickuser">
             EOS;
 
-            $favoritos = isset($_SESSION['idspublis']) && is_array($_SESSION['idspublis']) 
-            ? $_SESSION['idspublis'] 
-            : [];
+            
             
             if (in_array($id, $favoritos)) {
                 $contenidoPrincipal .= '<i class="fas fa-star"></i>';
