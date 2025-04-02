@@ -3,6 +3,7 @@ require_once '../Config/config.php';
 require_once '../Modelo/Usuario.php';
 require_once '../Modelo/Receta.php';
 require_once '../Modelo/Publicacion.php';
+require_once '../Modelo/Foro.php';
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -11,6 +12,7 @@ if (session_status() == PHP_SESSION_NONE) {
 $usuarioModelo = new Usuario($db);
 $recetaModelo = new Receta($db);
 $publicacionModelo = new Publicacion($db);
+$foroModelo = new Foro($db);
 $admin = $_SESSION['admin'];
 
 if (isset($_SESSION['publicaciones'])) {
@@ -74,8 +76,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         if($usuarioModelo->confirmar($_POST['password'],$_SESSION['email']) == true){
             $email = $_POST['email'];
+            $usuario = $usuarioModelo->obtenerUsuario($email);
             $publicacionModelo->eliminarpublicacionescerrar($email);
             $recetaModelo->eliminarrecetascerrar($email);
+            $foroModelo->eliminarforoscerrar($usuario['nick']);
             $usuarioModelo->darBajaUsuario($email);
             $_SESSION['mensaje'] = "Usuario eliminado";
         }else{

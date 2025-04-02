@@ -47,6 +47,11 @@ class Foro {
         return $conver;
     }
 
+    public function eliminarforoscerrar($nick){
+        return $this->collection->deleteMany(['creador' => $nick]); 
+    }
+    
+
     public function editarPubli($texto, $id_foro, $id_mensaje, $media) {
         $foro_id = new ObjectId($id_foro);
         $mensaje_id = new ObjectId($id_mensaje);
