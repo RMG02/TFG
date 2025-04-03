@@ -50,6 +50,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
     }
 
+    if(isset($_POST['EliminarNick'])){
+
+        $resultado = $forosModelo->ObtenerForosNick($_POST['nick']);
+        $foros_json = json_encode(iterator_to_array($resultado));
+        $foros = json_decode($foros_json, true);
+        
+        $resultado = $forosModelo->obtenerForosSuscrito($_POST['nick']);
+        $foros_suscrito_json = json_encode(iterator_to_array($resultado));
+        $foros_suscrito = json_decode($foros_suscrito_json, true);
+
+        if(!empty($foros)){
+            foreach ($foros as $foro) {
+                $forosModelo->eliminarPubliNick($foro['_id']['$oid'], $_POST['nick']);
+            }
+        }
+
+        if(!empty($foros_suscrito)){
+            foreach ($foros_suscrito as $foro) {
+                $forosModelo->desuscribirForo($foro['_id']['$oid'], $_POST['nick']);
+            }
+        }
+        
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
+
+    if(isset($_POST['cambioNick'])){
+
+        $resultado = $forosModelo->ObtenerForosNick($_POST['nick_pasado']);
+        $foros_json = json_encode(iterator_to_array($resultado));
+        $foros = json_decode($foros_json, true);
+        
+        $resultado = $forosModelo->obtenerForosSuscrito($_POST['nick_pasado']);
+        $foros_suscrito_json = json_encode(iterator_to_array($resultado));
+        $foros_suscrito = json_decode($foros_suscrito_json, true);
+
+        if(!empty($foros)){
+            foreach ($foros as $foro) {
+                $forosModelo->actualizarNickPubli($_POST['nick_pasado'], $_POST['nuevoNick'], $foro['_id']['$oid']);
+            }
+        }
+
+        if(!empty($foros_suscrito)){
+            foreach ($foros_suscrito as $foro) {
+                $forosModelo->actualizarNickSuscripcion($_POST['nick_pasado'], $_POST['nuevoNick'], $foro['_id']['$oid']);
+            }
+        }
+        
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
+
     if(isset($_POST['CrearMensaje'])){
 
         $archivo = $_FILES['archivo'];

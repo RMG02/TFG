@@ -59,6 +59,25 @@ socket.on("Eliminar-nick", function(data) {
         console.error('Error en la solicitud:', error);
     });
 
+    fetch('../../Controlador/Foros_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'EliminarNick': true,
+            'nick' : data.nick,
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
     fetch('../../Controlador/Publicacion_controlador.php', {
         method: 'POST',
         body: new URLSearchParams({
@@ -127,7 +146,7 @@ socket.on("actualizar-cambioNick", function(data) {
         body: new URLSearchParams({
             'cambioNick': true,
             'nuevoNick' : data.nuevoNick,
-            'nick_pasado' : data.nick_act,
+            'nick_pasado' : data.nick,
             'admin' : data.admin
         })
     })
@@ -148,7 +167,27 @@ socket.on("actualizar-cambioNick", function(data) {
         body: new URLSearchParams({
             'cambioNick': true,
             'nuevoNick' : data.nuevoNick,
-            'nick_pasado' : data.nick_act,
+            'nick_pasado' : data.nick,
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+    fetch('../../Controlador/Foros_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'cambioNick': true,
+            'nuevoNick' : data.nuevoNick,
+            'nick_pasado' : data.nick,
         })
     })
     .then(response => response.json())
@@ -168,7 +207,7 @@ socket.on("actualizar-cambioNick", function(data) {
         body: new URLSearchParams({
             'cambioNick': true,
             'nuevoNick' : data.nuevoNick,
-            'nick_pasado' : data.nick_act,
+            'nick_pasado' : data.nick,
         })
     })
     .then(response => response.json())
@@ -188,7 +227,7 @@ socket.on("actualizar-cambioNick", function(data) {
         body: new URLSearchParams({
             'cambioNick': true,
             'nuevoNick' : data.nuevoNick,
-            'nick_pasado' : data.nick_act,
+            'nick_pasado' : data.nick,
         })
     })
     .then(response => response.json())
@@ -530,7 +569,7 @@ function enviarCambioNick(event, nick_act) {
         var nuevoNick = document.getElementById('nick').value;
         if(nuevoNick !== ""){
             if(nuevoNick !== nick_act){
-                socket.emit("cambioNick", { nick_act: nick_act, nuevoNick: nuevoNick, admin:false});
+                socket.emit("cambioNick", { nick: nick_act, nuevoNick: nuevoNick, admin:false});
             }
         }
         
@@ -548,7 +587,7 @@ function enviarCambioNickAdmin(event, nick_act) {
         var nuevoNick = document.getElementById('nick_nuevo').value;
         if(nuevoNick !== ""){
             if(nuevoNick !== nick_act){
-                socket.emit("cambioNick", { nick_act: nick_act, nuevoNick: nuevoNick, admin:true});
+                socket.emit("cambioNick", { nick: nick_act, nuevoNick: nuevoNick, admin:true});
             }
         }
         

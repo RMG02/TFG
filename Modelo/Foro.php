@@ -51,6 +51,22 @@ class Foro {
         return $this->collection->deleteMany(['creador' => $nick]); 
     }
     
+    public function ObtenerForosNick($nick) {
+        $foros = $this->collection->find(['mensajes.nick' => $nick]);
+        return $foros;
+    }
+
+    public function eliminarPubliNick($id, $nick){
+        $Id = new ObjectId($id);
+        
+        return $this->collection->updateOne(['_id' => $Id], ['$pull' => ['mensajes' => ['nick' => $nick]]]);
+        
+    }
+
+    public function obtenerForosSuscrito($nick) {
+        $foros = $this->collection->find(['suscriptores' => $nick]);
+        return $foros;
+    }
 
     public function editarPubli($texto, $id_foro, $id_mensaje, $media) {
         $foro_id = new ObjectId($id_foro);
@@ -99,6 +115,32 @@ class Foro {
         $id = new ObjectId($foroId);
         $resultado = $this->collection->updateOne(['_id' => $id], ['$push' => ['suscriptores' => $nick]]);
         return $resultado;
+    }
+
+    public function actualizarNickSuscripcion($nick_pasado, $nick_nuevo, $id_foro) { 
+        $id = new ObjectId($id_foro);
+
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$pull' => ['suscriptores' => $nick_pasado]]
+        );
+    
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$push' => ['suscriptores' => $nick_nuevo]]
+        );
+        return true;
+    }
+
+    public function actualizarNickPubli($nick_pasado, $nick_nuevo, $id_foro) { 
+        $id = new ObjectId($id_foro);
+        
+        return $this->collection->updateMany(
+            ['_id' => $id], 
+            ['$set' => ['mensajes.$[mensaje].nick' => $nick_nuevo]], 
+            ['arrayFilters' => [['mensaje.nick' => $nick_pasado]]]
+        );
+    
     }
 
 }

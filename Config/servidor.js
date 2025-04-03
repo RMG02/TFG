@@ -54,7 +54,6 @@ io.on("connection", (socket) => {
             nuevoNick: data.nuevoNick,
             admin:data.admin
         };
-
         io.emit("actualizar-cambioNick", datos);
 
     });
