@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'descripcion' => $_POST['descripcion'],
             'creador' => $_SESSION['nick'],
             'suscriptores' =>[$_SESSION['nick']],
-            'mensajes' => []
+            'mensajes' => [],
+            'notificaciones' => []
         ];
         
         if($_SESSION['forosCreados'] < 5){
@@ -60,6 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $foros_suscrito_json = json_encode(iterator_to_array($resultado));
         $foros_suscrito = json_decode($foros_suscrito_json, true);
 
+        $resultado = $forosModelo->obtenerForosNotis($_POST['nick']);
+        $foros_notis_json = json_encode(iterator_to_array($resultado));
+        $foros_notis = json_decode($foros_notis_json, true);
+
         if(!empty($foros)){
             foreach ($foros as $foro) {
                 $forosModelo->eliminarPubliNick($foro['_id']['$oid'], $_POST['nick']);
@@ -69,6 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if(!empty($foros_suscrito)){
             foreach ($foros_suscrito as $foro) {
                 $forosModelo->desuscribirForo($foro['_id']['$oid'], $_POST['nick']);
+            }
+        }
+        
+        if(!empty($foros_notis)){
+            foreach ($foros_notis as $foro) {
+                $forosModelo->desactivarNotis($foro['_id']['$oid'], $_POST['nick']);
             }
         }
         
@@ -88,7 +99,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $resultado = $forosModelo->obtenerForosCreador($_POST['nick_pasado']);
         $foros_creador_json = json_encode(iterator_to_array($resultado));
-        $foros_creador = json_decode($foros_suscrito_json, true);
+        $foros_creador = json_decode($foros_creador_json, true);
+
+        $resultado = $forosModelo->obtenerForosNotis($_POST['nick_pasado']);
+        $foros_notis_json = json_encode(iterator_to_array($resultado));
+        $foros_notis = json_decode($foros_notis_json, true);
 
         if(!empty($foros)){
             foreach ($foros as $foro) {
@@ -105,6 +120,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if(!empty($foros_creador)){
             foreach ($foros_creador as $foro) {
                 $forosModelo->actualizarNickCreador( $_POST['nuevoNick'], $foro['_id']['$oid']);
+            }
+        }
+
+        if(!empty($foros_notis)){
+            foreach ($foros_notis as $foro) {
+                $forosModelo->actualizarNickNotis($_POST['nick_pasado'], $_POST['nuevoNick'], $foro['_id']['$oid']);
             }
         }
         
@@ -176,6 +197,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         exit;
     }
+
+    if(isset($_POST['DesactivarNotis'])){
+        $resultado = $forosModelo->desactivarNotis($_POST['id'], $_SESSION['nick']);
+        if($resultado == null){
+            $_SESSION['error'] = "Error al desactivar las notificaciones del foro";
+            header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
+        }
+        else{
+            $_SESSION['mensaje'] = "Notificaciones desactivadas correctamente";
+            header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
+        }
+        
+        exit;
+    }
     
 
     if(isset($_POST['Suscribirforo'])){
@@ -186,6 +221,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         else{
             $_SESSION['mensaje'] = "suscripción correcta";
+            header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
+        }
+        
+        exit;
+    }
+
+    if(isset($_POST['ActivarNotis'])){
+        $resultado = $forosModelo->activarNotis($_POST['id'], $_SESSION['nick']);
+        if($resultado == null){
+            $_SESSION['error'] = "Error al activar las notificaciones del foro";
+            header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
+        }
+        else{
+            $_SESSION['mensaje'] = "Notificaciones activadas correctamente";
             header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
         }
         

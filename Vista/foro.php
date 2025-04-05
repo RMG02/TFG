@@ -37,6 +37,7 @@ if ($foroId == null) {
     $descripcionForo = $foro['descripcion'];
     $creadorForo = $foro['creador']; 
     $suscrito = in_array($_SESSION['nick'], $foro['suscriptores']);
+    $notis = in_array($_SESSION['nick'], $foro['notificaciones']);
 
     $contenidoPrincipal = <<<EOS
         <div class="crear-foro">
@@ -73,6 +74,25 @@ if ($foroId == null) {
             </form>
         EOS;
     }
+
+    if($notis){
+        $contenidoPrincipal .= <<<EOS
+            <form method="POST" action="../Controlador/Foros_controlador.php">
+                <input type="hidden" name="id" value="$foroId">
+                <button type="submit" class="btn-suscripcion" name="DesactivarNotis"><i class='fas fa-bell'></i></button>
+            </form>
+            
+        EOS;
+    }
+    else{
+        $contenidoPrincipal .= <<<EOS
+            <form method="POST" action="../Controlador/Foros_controlador.php">
+                <input type="hidden" name="id" value="$foroId">
+                <button type="submit" class="btn-suscripcion" name="ActivarNotis"><i class='far fa-bell'></i></button>
+            </form>
+        EOS;
+    }
+
 
 
     $contenidoPrincipal .= <<<EOS

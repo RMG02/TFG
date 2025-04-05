@@ -73,6 +73,11 @@ class Foro {
         return $foros;
     }
 
+    public function obtenerForosNotis($nick) {
+        $foros = $this->collection->find(['notificaciones' => $nick]);
+        return $foros;
+    }
+
     public function editarPubli($texto, $id_foro, $id_mensaje, $media) {
         $foro_id = new ObjectId($id_foro);
         $mensaje_id = new ObjectId($id_mensaje);
@@ -116,9 +121,21 @@ class Foro {
         return $resultado;
     }
 
+    public function desactivarNotis($foroId, $nick) {
+        $id = new ObjectId($foroId);
+        $resultado = $this->collection->updateOne(['_id' => $id], ['$pull' => ['notificaciones' => $nick]]);
+        return $resultado;
+    }
+
     public function suscribirForo($foroId, $nick) {
         $id = new ObjectId($foroId);
         $resultado = $this->collection->updateOne(['_id' => $id], ['$push' => ['suscriptores' => $nick]]);
+        return $resultado;
+    }
+
+    public function activarNotis($foroId, $nick) {
+        $id = new ObjectId($foroId);
+        $resultado = $this->collection->updateOne(['_id' => $id], ['$push' => ['notificaciones' => $nick]]);
         return $resultado;
     }
 
@@ -133,6 +150,21 @@ class Foro {
         $this->collection->updateOne(
             ['_id' => $id], 
             ['$push' => ['suscriptores' => $nick_nuevo]]
+        );
+        return true;
+    }
+
+    public function actualizarNickNotis($nick_pasado, $nick_nuevo, $id_foro) { 
+        $id = new ObjectId($id_foro);
+
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$pull' => ['notificaciones' => $nick_pasado]]
+        );
+    
+        $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$push' => ['notificaciones' => $nick_nuevo]]
         );
         return true;
     }
