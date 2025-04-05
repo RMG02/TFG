@@ -86,6 +86,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $foros_suscrito_json = json_encode(iterator_to_array($resultado));
         $foros_suscrito = json_decode($foros_suscrito_json, true);
 
+        $resultado = $forosModelo->obtenerForosCreador($_POST['nick_pasado']);
+        $foros_creador_json = json_encode(iterator_to_array($resultado));
+        $foros_creador = json_decode($foros_suscrito_json, true);
+
         if(!empty($foros)){
             foreach ($foros as $foro) {
                 $forosModelo->actualizarNickPubli($_POST['nick_pasado'], $_POST['nuevoNick'], $foro['_id']['$oid']);
@@ -95,6 +99,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if(!empty($foros_suscrito)){
             foreach ($foros_suscrito as $foro) {
                 $forosModelo->actualizarNickSuscripcion($_POST['nick_pasado'], $_POST['nuevoNick'], $foro['_id']['$oid']);
+            }
+        }
+
+        if(!empty($foros_creador)){
+            foreach ($foros_creador as $foro) {
+                $forosModelo->actualizarNickCreador( $_POST['nuevoNick'], $foro['_id']['$oid']);
             }
         }
         

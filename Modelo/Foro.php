@@ -68,6 +68,11 @@ class Foro {
         return $foros;
     }
 
+    public function obtenerForosCreador($nick) {
+        $foros = $this->collection->find(['creador' => $nick]);
+        return $foros;
+    }
+
     public function editarPubli($texto, $id_foro, $id_mensaje, $media) {
         $foro_id = new ObjectId($id_foro);
         $mensaje_id = new ObjectId($id_mensaje);
@@ -130,6 +135,16 @@ class Foro {
             ['$push' => ['suscriptores' => $nick_nuevo]]
         );
         return true;
+    }
+
+    public function actualizarNickCreador($nick_nuevo, $id_foro) { 
+        $id = new ObjectId($id_foro);
+
+        return $this->collection->updateOne(
+            ['_id' => $id], 
+            ['$set' => ['creador' => $nick_nuevo]]
+        );
+    
     }
 
     public function actualizarNickPubli($nick_pasado, $nick_nuevo, $id_foro) { 
