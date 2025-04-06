@@ -322,8 +322,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $id = null;
             $_SESSION['foro'] = null;
         }
-        
-        header('Location: ../Vista/foro.php?foroId=' . $_GET['foroId']); 
+        if(isset($_GET['suscrito'])){
+            header('Location: ../Vista/crear_mensaje_foro.php?id_foro=' . $_GET['foroId'] . '&suscrito=' . $_GET['suscrito']); 
+        }
+        else{
+            header('Location: ../Vista/foro.php?foroId=' . $_GET['foroId']); 
+        }
         exit; 
     }
     

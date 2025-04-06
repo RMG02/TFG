@@ -266,6 +266,8 @@ socket.on("notificacion", function(data) {
             mostrarNotificacion = true;
         } else if (data.tipo === "mensaje" && window.notimensajes) {
             mostrarNotificacion = true;
+        } else if(data.tipo === "foro"){
+            mostrarNotificacion = true;
         }
 
         if (mostrarNotificacion) {
@@ -696,6 +698,15 @@ function enviarMensaje(usuario_actual, usuario_dest, chatId, mensaje, compartir)
 
 }
 
+
+function enviarPublicacionForo(idForo, notificaciones, usuarioEmisor, titulo) {
+    console.log("Función enviarPublicacionForo llamada con los siguientes parámetros:");
+    console.log("idForo:", idForo);
+    console.log("notificaciones:", notificaciones);
+    console.log("usuarioEmisor:", usuarioEmisor);
+    console.log("titulo:", titulo);
+    socket.emit("nueva-publi-foro", {usuarioEmisor: usuarioEmisor, usuarios_noti: notificaciones, foroId: idForo, titulo: titulo});
+}
 
 
 

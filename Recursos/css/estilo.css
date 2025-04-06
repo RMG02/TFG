@@ -1626,3 +1626,7 @@ h3 {
     gap: 10px;
     justify-content: center;
 }
+
+.titulo-foro {
+    color: white;
+}

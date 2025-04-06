@@ -38,6 +38,7 @@ io.on("connection", (socket) => {
 
     });
 
+
     socket.on('EliminarNick', (data) => {
         var datos = { 
             nick: data.nick, 
@@ -270,6 +271,42 @@ io.on("connection", (socket) => {
                
             })
             .catch(error => console.error("Error en la petición:", error));       
+   
+    });
+
+    socket.on("nueva-publi-foro", (data) => {
+        var mensaje = data.usuarioEmisor + " ha hecho una publicación en el foro de: <span class='titulo-foro'>" + data.titulo + "</span>";
+        var enlace = "http://localhost:8000/Vista/foro.php?foroId=" + data.foroId;
+        data.usuarios_noti.forEach(usuario_dest => {
+            if (usuario_dest === data.usuarioEmisor) {
+                return; 
+            }
+            var socketID = usuarios_conectados[usuario_dest];
+    
+            var notificacion = { 
+                usuario_publi: usuario_dest, 
+                usuario_accion: data.usuarioEmisor,
+                mensaje: mensaje,
+                id_publi: null,
+                enlace: enlace,
+                tipo: "foro",
+                fecha: new Date().toISOString(),
+                tipo_publicacion: "publicacion foro"
+            };
+            
+            // Si el usuario está conectado
+            if (socketID) {
+                io.to(socketID).emit("notificacion", notificacion);
+            } else {
+                // Si el usuario no está conectado, puedes contar la notificación
+                contador_notificaciones[usuario_dest]++;
+            }
+
+            // Usar URLSearchParams para formatear los datos
+            var params = new URLSearchParams();
+            params.append('notificacion', JSON.stringify(notificacion));
+            axios.post('http://localhost:8000/Controlador/Notificacion_controlador.php', params)
+        });
    
     });
 

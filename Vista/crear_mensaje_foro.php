@@ -18,14 +18,33 @@ if (isset($_SESSION['error'])) {
     unset($_SESSION['error']);
 }
 
+if (!isset($_SESSION['foro'])) {
+    header('Location: ../Controlador/Foros_controlador.php?ObtenerForoId=true&foroId=' . $id . '&suscrito=' . $_GET['suscrito']);
+    exit;
+}
+
+$foro = $_SESSION['foro'];
+unset($_SESSION['foro']);
+
 if($_GET['suscrito']){
-    $contenidoPrincipal = <<<EOS
+    /*$contenidoPrincipal = <<<EOS
         <form method="POST" class="formulario" action="../Controlador/Foros_controlador.php">
             <textarea name="contenido" placeholder="Escribe tu publicación aquí..." required></textarea>
             <input type="file" name="archivo" style="background-color: white;"> 
             <input type="hidden" name="id_foro" value="$id">
             <input type="hidden" name="suscrito" value="{$_GET['suscrito']}">
             <button type="submit" class="botonInit" name="CrearMensaje">Publicar</button>
+        </form>
+    EOS;*/
+    $notificaciones = json_encode($foro['notificaciones']); 
+
+    $contenidoPrincipal = <<<EOS
+        <form method="POST" class="formulario" enctype="multipart/form-data" action="../Controlador/Foros_controlador.php">
+            <textarea name="contenido" placeholder="Escribe tu publicación aquí..." required></textarea>
+            <input type="file" name="archivo" style="background-color: white;"> 
+            <input type="hidden" name="id_foro" value="$id">
+            <input type="hidden" name="suscrito" value="{$_GET['suscrito']}">
+            <button type="submit" name="CrearMensaje" onclick='enviarPublicacionForo("$id", $notificaciones, "{$_SESSION['nick']}", "{$foro['titulo']}")'>Publicar</button>
         </form>
     EOS;
 }
@@ -47,6 +66,7 @@ require_once __DIR__."/plantillas/plantilla.php";
 ?>
 
 <script src="../Recursos/js/aviso.js"></script>
+<script src="../Recursos/js/socket.js"></script>
 
 
 

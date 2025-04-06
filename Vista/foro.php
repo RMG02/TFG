@@ -79,7 +79,7 @@ if ($foroId == null) {
         $contenidoPrincipal .= <<<EOS
             <form method="POST" action="../Controlador/Foros_controlador.php">
                 <input type="hidden" name="id" value="$foroId">
-                <button type="submit" class="btn-suscripcion" name="DesactivarNotis"><i class='fas fa-bell'></i></button>
+                <button type="submit" class="btn-suscripcion" name="DesactivarNotis" title="Desactivar notificaciones"><i class='fas fa-bell'></i></button>
             </form>
             
         EOS;
@@ -88,7 +88,7 @@ if ($foroId == null) {
         $contenidoPrincipal .= <<<EOS
             <form method="POST" action="../Controlador/Foros_controlador.php">
                 <input type="hidden" name="id" value="$foroId">
-                <button type="submit" class="btn-suscripcion" name="ActivarNotis"><i class='far fa-bell'></i></button>
+                <button type="submit" class="btn-suscripcion" name="ActivarNotis" title="Activar notificaciones"><i class='far fa-bell'></i></button>
             </form>
         EOS;
     }
