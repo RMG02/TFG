@@ -127,15 +127,14 @@ function cerrar_modal_compartir(id){
     modal.style.display = "none";
 }
 
-function filtrarUsuariosCompartir() {
+function filtrarUsuariosCompartir(id) {
     var busqueda = document.getElementById('buscador-compartir').value.toLowerCase();
     var nombres = document.getElementsByTagName('li'); // Obtiene todos los <li>
-    
+    var seccion = document.getElementById('seccion-usuarios-' + id).style.display !== 'none' ? 'usuarios' : 'foros';
+
     for (var i = 0; i < nombres.length; i++) {
-        console.log(nombres.length)
         var boton = nombres[i].getElementsByTagName("button")[0]; // Busca el botón dentro del <li>
         if (boton) {
-            console.log(nick)
             var nick = boton.textContent.toLowerCase(); // Obtiene solo el texto del botón sin espacios
             if (nick.startsWith(busqueda)) {
                 nombres[i].style.display = ""; // Muestra el usuario si coincide
@@ -285,5 +284,19 @@ function agregarTexto(doc, ingredients, preparation, nick, startY,tiempox,dificu
     doc.text(`Creado por: ${nick}`, 10, creadoPorStartY);
 }
 
+function mostrarUsuarios(id) {
+    document.getElementById('seccion-usuarios-' + id).style.display = 'block';
+    document.getElementById('seccion-foros-' + id).style.display = 'none';
+    document.getElementById('btn-usuarios-' + id).classList.add('activo');
+    document.getElementById('btn-foros-' + id).classList.remove('activo');
+    document.getElementById('buscador-compartir').placeholder = "Buscar por nick...";
+}
 
+function mostrarForos(id) {
+    document.getElementById('seccion-usuarios-' + id).style.display = 'none';
+    document.getElementById('seccion-foros-' + id).style.display = 'block';
+    document.getElementById('btn-usuarios-' + id).classList.remove('activo');
+    document.getElementById('btn-foros-' + id).classList.add('activo');
+    document.getElementById('buscador-compartir').placeholder = "Buscar por título...";
+}
 

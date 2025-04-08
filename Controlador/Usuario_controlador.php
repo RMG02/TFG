@@ -45,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'noticomentarios' => true,
             'notimensajes' => true,
             'confirmado' => false,
-            'forosCreados' => 0
+            'forosCreados' => 0,
+            'forosSuscrito' => []
 
         ];
         $resultado = $usuarioModelo->registro($DatosUsuario);
@@ -99,6 +100,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $usuarioActualizadox = $usuarioModelo->obtenerUsuario($_SESSION['email']);
         $_SESSION['usuariopropio'] = json_encode(iterator_to_array($usuarioActualizadox));
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;   
+        
+    }
+
+    if(isset($_POST['foroEliminado'])){
+        $servidor_post = json_decode($_POST['foroEliminado'], true);
+        $usuarioModelo->foroDesuscrito($servidor_post['idForo'], $servidor_post['nick']);
         header('Location: ' . $_SESSION['url_anterior']);
         exit;   
         

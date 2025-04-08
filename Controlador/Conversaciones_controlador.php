@@ -124,14 +124,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         exit; 
     }
     
-    if (isset($_GET['listarConversacionesAbiertas'])) {
-        $nick = $_GET['nick_Usur'];
-        $resultado = $conversacionesModelo->obtenerConversaciones($nick);
-        $_SESSION['conversaciones_abiertas'] = json_encode(iterator_to_array($resultado));
-        header('Location: ' . $_SESSION['url_anterior']);
-        exit;
-        
-    }
 
     if(isset($_GET['ObtenerConversacion'])){
         

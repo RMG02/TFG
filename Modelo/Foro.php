@@ -47,6 +47,12 @@ class Foro {
         return $conver;
     }
 
+    public function obtenerForoNick($nick) {
+        $foros = $this->collection->find(['suscriptores' => $nick]);
+        
+        return $foros;
+    }
+
     public function eliminarforoscerrar($nick){
         return $this->collection->deleteMany(['creador' => $nick]); 
     }

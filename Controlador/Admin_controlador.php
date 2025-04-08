@@ -54,7 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             'noticomentarios' => true,
             'notimensajes' => true,
             'confirmado' => true,
-            'forosCreados' => 0
+            'forosCreados' => 0,
+            'forosSuscrito' => []
 
         ];
 

@@ -1630,3 +1630,21 @@ h3 {
 .titulo-foro {
     color: white;
 }
+
+.tabs-compartir {
+    margin-bottom: 10px;
+}
+
+.tab-button {
+    padding: 8px 16px;
+    background-color: #222;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 8px;
+}
+
+.tab-button.activo {
+    background: linear-gradient(to right, #fceabb, #f8d49b);;
+}

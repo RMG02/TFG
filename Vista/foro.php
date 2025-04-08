@@ -49,10 +49,11 @@ if ($foroId == null) {
     EOS;
 
     if($_SESSION['nick'] === $creadorForo){
+        $suscriptores = json_encode($foro['suscriptores']); 
         $contenidoPrincipal .= <<<EOS
         <form method="POST" action="../Controlador/Foros_controlador.php">
             <input type="hidden" name="id" value="$foroId">
-            <button type="submit" class="boton_lista" name="eliminarForo">Eliminar foro</button>
+            <button type="submit" class="boton_lista" name="eliminarForo" onclick='eliminarForo("$foroId", $suscriptores)'>Eliminar foro</button>
         </form>
         EOS;
     }
@@ -177,3 +178,4 @@ require_once __DIR__ . "/plantillas/plantilla.php";
 ?>
 
 <script src="../Recursos/js/foro.js"></script>
+<script src="../Recursos/js/socket.js"></script>

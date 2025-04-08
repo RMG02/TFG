@@ -10,6 +10,8 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
 
 require_once __DIR__ . "/plantillas/respuestas.php";
 
+
+$host = $_SERVER['HTTP_HOST']; 
 $modalId = 0;
 $modalComId = 0;
 $principal = true;
@@ -27,9 +29,10 @@ if (isset($_SESSION['mensaje'])) {
 
 $publicacion = "";
 
-if(!isset($_SESSION['conversaciones_abiertas'])){
-    header('Location: ../Controlador/Conversaciones_controlador.php?listarConversacionesAbiertas=true&nick_Usur=' . $_SESSION['nick']);
+if(!isset($_SESSION['conversaciones_abiertas']) || !isset($_SESSION['forosSuscrito'])){
+    header('Location: ../Controlador/Foros_controlador.php?ObtenerInfoCompartir=true&nick=' . $_SESSION['nick']);    
 }
+
 
 if($_SESSION['seguidores'] === null || $_SESSION['siguiendo'] === null){
     header('Location: ../Controlador/Usuario_controlador.php?seguidores=true');
@@ -38,6 +41,9 @@ if($_SESSION['seguidores'] === null || $_SESSION['siguiendo'] === null){
 
 $conversaciones = json_decode($_SESSION['conversaciones_abiertas'], true);
 unset($_SESSION['conversaciones_abiertas']);
+
+$foros = json_decode($_SESSION['forosSuscrito'], true);
+unset($_SESSION['forosSuscrito']);
 
 
 if($_SESSION['publidisponible'] == false){
@@ -191,16 +197,25 @@ if($_SESSION['publidisponible'] == false){
                         <div class="modal-compartir-content">
                             <span class="close_compartir" onclick="cerrar_modal_compartir('compartir-$id')">&times;</span>
                             <h2>Compartir publicación con</h2>
+
+                            <div class="tabs-compartir">
+                                <button id="btn-usuarios-$id" class="tab-button activo" onclick="mostrarUsuarios('$id')"><strong>Usuarios</strong></button>
+                                <button id="btn-foros-$id" class="tab-button" onclick="mostrarForos('$id')"><strong>Foros</strong></button>
+                            </div>
+
+                            <input type="text" id="buscador-compartir" onkeyup="filtrarUsuariosCompartir('$id')" placeholder="Buscar por nick...">
+
+                            <div id="seccion-usuarios-$id" class="seccion-compartir">
                             
-    EOS;
+
+    EOS;                    
                             if(empty($_SESSION['siguiendo']) && empty($conversaciones)){
                                 $contenidoPrincipal .= <<<EOS
-                                    <p> No sigues a ningún usuario</p>
+                                    <p style="color: white;"> No sigues a ningún usuario</p>
                                 EOS;
                             }
                             else{
                                 $contenidoPrincipal .= <<<EOS
-                                    <input type="text" id="buscador-compartir" onkeyup="filtrarUsuariosCompartir()" placeholder="Buscar por nick...">
                                     <ul>
                                        
                                 EOS;
@@ -233,7 +248,45 @@ if($_SESSION['publidisponible'] == false){
                                     </ul>
                                 EOS;
                             }
+
+                            $contenidoPrincipal .= <<<EOS
+                                </div>
+                                <div id="seccion-foros-$id" class="seccion-compartir" style="display: none;">
+
+                            EOS;
+
+                            if(empty($foros)){
+                                $contenidoPrincipal .= <<<EOS
+                                    <p style="color: white;"> No estás suscrito a ningún foro</p>
+                                EOS;
+                            }
+                            else{
+                                $contenidoPrincipal .= <<<EOS
+                                    <ul>
+                                       
+                                EOS;
+                                $publi_foro = "Publicación compartida: <a href=\"http://$host/Controlador/Publicacion_controlador.php?publi_id=true&id=$id\">Ver publicación</a>";
+                                $suscrito = true;
+                                foreach ($foros as $foro) {
+                                    $notificaciones = json_encode($foro['notificaciones']); 
+                                    $contenidoPrincipal .= <<<EOS
+                                        <li>
+                                            <form method="POST" action="../Controlador/Foros_controlador.php">
+                                                <input type="hidden" name="contenido" value='$publi_foro'></textarea>
+                                                <input type="hidden" name="id_foro" value="{$foro['_id']['$oid']}">
+                                                <input type="hidden" name="suscrito" value="$suscrito">
+                                                <button type="submit" class="boton_lista" name="CrearMensaje" onclick='enviarPublicacionForo("{$foro['_id']['$oid']}", $notificaciones, "{$_SESSION['nick']}", "{$foro['titulo']}")'>{$foro['titulo']}</button>
+                                            </form>
+                                        </li>
+                                    EOS;
+                                }
+                            
+                                $contenidoPrincipal .= <<<EOS
+                                    </ul>
+                                EOS;
+                            }
     $contenidoPrincipal .= <<<EOS
+                            </div>
                         </div>
                     </div>     
                 </div>

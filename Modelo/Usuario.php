@@ -44,6 +44,8 @@ class Usuario {
         return $usuario;
     }
 
+
+
     public function obtenerUsuarioTokenconfirmacion($token) {
         $usuario = $this->collection->findOne(['confirmacion_token' => $token]);
         if ($usuario['tokenconfirmacion_tiempo'] < time()) {
@@ -68,6 +70,18 @@ class Usuario {
         }else{
             return false;
         }
+        
+    }
+
+    public function foroSuscrito($foroId, $nick) {        
+        
+        return $this->collection->updateOne(['nick' => $nick], ['$push' => ['forosSuscrito' => $foroId]]);       
+        
+    }
+
+    public function foroDesuscrito($foroId, $nick) {
+        
+        return $this->collection->updateOne(['nick' => $nick], ['$pull' => ['forosSuscrito' => $foroId]]);
         
     }
     

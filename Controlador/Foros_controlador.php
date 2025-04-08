@@ -3,6 +3,8 @@
 require_once '../Config/config.php';
 require_once '../Modelo/Foro.php';
 require_once '../Modelo/Usuario.php';
+require_once '../Modelo/Conversaciones.php';
+
 
 
 if (session_status() == PHP_SESSION_NONE) {
@@ -11,6 +13,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $forosModelo = new Foro($db);
 $UsuarioModelo = new Usuario($db);
+$conversacionesModelo = new Conversacion($db);
 $dir_archivos = '../Recursos/multimedia';
 
 
@@ -38,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['forosCreados'] += 1;
                 $UsuarioModelo->sumaForo($_SESSION['nick']);
                 $id = $resultado->getInsertedId()->__toString();
+
                 header('Location: ../Vista/foro.php?foroId=' . $id);
                 exit;  
             }
@@ -192,6 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         else{
             $_SESSION['mensaje'] = "Desuscripción correcta";
+            $UsuarioModelo->foroDesuscrito($_POST['id'],$_SESSION['nick']);
             header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
         }
         
@@ -221,6 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         else{
             $_SESSION['mensaje'] = "suscripción correcta";
+            $UsuarioModelo->foroSuscrito($_POST['id'],$_SESSION['nick']);
             header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
         }
         
@@ -321,6 +327,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         else{
             $id = null;
             $_SESSION['foro'] = null;
+            $resultado = $UsuarioModelo->obtenerUsuarioNick($_SESSION['nick']);
+            $usuario_json = json_encode(iterator_to_array($resultado));
+            $usuario = json_decode($usuario_json, true);
+
+            if (in_array($_GET['foroId'], $usuario['forosSuscrito'])) {
+                $UsuarioModelo->foroDesuscrito($_GET['foroId'],$_SESSION['nick']);
+            }
+
+            header('Location: ../Vista/foro.php'); 
+            exit;
         }
         if(isset($_GET['suscrito'])){
             header('Location: ../Vista/crear_mensaje_foro.php?id_foro=' . $_GET['foroId'] . '&suscrito=' . $_GET['suscrito']); 
@@ -330,7 +346,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
         exit; 
     }
-    
+
+    if (isset($_GET['ObtenerInfoCompartir'])) {
+        $resultadoForo = $forosModelo->obtenerForoNick($_GET['nick']);
+        $_SESSION['forosSuscrito'] = json_encode(iterator_to_array($resultadoForo));
+
+        $resultadoConver = $conversacionesModelo->obtenerConversaciones($_GET['nick']);
+        $_SESSION['conversaciones_abiertas'] = json_encode(iterator_to_array($resultadoConver));
+
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;
+    }
+
 
 }
 ?>

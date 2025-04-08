@@ -78,6 +78,11 @@ if(!empty($notificaciones)){
                 <p><a href="{$notificacion['enlace']}">Ver conversación</a></p>
             EOS;
         }
+        else if($notificacion['tipo_publicacion'] == "publicacion foro"){
+            $contenidoPrincipal .= <<<EOS
+                <p><a href="{$notificacion['enlace']}">Ver foro</a></p>
+            EOS;
+        }
 
         $contenidoPrincipal .= <<<EOS
                 <p><small>$fecha</small></p>
