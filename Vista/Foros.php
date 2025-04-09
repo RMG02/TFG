@@ -11,7 +11,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
 
 
 $tituloPagina = "Lista de Foros";
-
+$verseguidores = $_SESSION['verseguidoresforo'] ?? "false";
 $error = "";
 $mensaje = "";
 $recetaxx = false;
@@ -33,7 +33,6 @@ if (!isset($_SESSION['foros'])) {
 
 $foros = $_SESSION['foros'];
 unset($_SESSION['foros']);
-
 //$filtro = $_GET['filtro'] ?? 'todos';
 
 /*if ($filtro === 'suscritos') {
@@ -68,6 +67,24 @@ EOS;
 if (empty($foros)) {
     $contenidoPrincipal .= "<p>No hay foros disponibles</p>";
 } else {
+    $contenidoPrincipal = <<<EOS
+        <div class="dropdown">
+                    <button class="dropbtn">⋮</button>
+                    <div class="dropdown-content">
+                        <form method="POST" action="../Controlador/Foros_controlador.php">
+                                <input type="hidden" name="verseguidoresforo" value="false">
+                                <input type="hidden" name="seguidoresforo" value="true">
+                                <button type="submit" class="boton_lista" name="foros">Explorar</button>
+                        </form>
+                        <form method="POST" action="../Controlador/Foros_controlador.php">
+                            <input type="hidden" name="verseguidoresforo" value="true">
+                                <input type="hidden" name="seguidoresforo" value="true">
+                                <button type="submit" class="boton_lista" name="foros">Ver foros que sigues</button>
+                        </form>
+                    </div>         
+            </div>
+    EOS;
+        
     foreach ($foros as $foro) {
         $titulo = $foro['titulo'];
         $id = $foro['_id']['$oid'];
@@ -81,13 +98,26 @@ if (empty($foros)) {
                 </a>
             </div>
         EOS;*/
-        $contenidoPrincipal .= <<<EOS
-            <a href="foro.php?foroId=$id" class="foro-link">
-                <div class="foro_div">
-                    <h3>$titulo</h3>
-                </div>
-            </a>
-        EOS;
+        if($verseguidores == "false" || ($verseguidores == "true") && (in_array($_SESSION['nick'], $foro['suscriptores']))){
+            if($verseguidores == "false"){
+                $contenidoPrincipal .= <<<EOS
+                            <h3>Explorar foros</h3>
+                        EOS;
+            }else{
+                $contenidoPrincipal .= <<<EOS
+                            <h3>Foros que sigues</h3>
+                        EOS;
+            }
+            $contenidoPrincipal .= <<<EOS
+                <a href="foro.php?foroId=$id" class="foro-link">
+                    <div class="foro_div">
+                        <h3>$titulo</h3>
+                    </div>
+                </a>
+            EOS;
+        }else{
+            $contenidoPrincipal .= "<p>No hay foros disponibles</p>";
+        }
     }
 }
 

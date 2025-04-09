@@ -300,6 +300,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
     }
 
+    if(isset($_POST["seguidoresforo"])){
+        $_SESSION['verseguidoresforo'] = $_POST["verseguidoresforo"];
+        header('Location: ../Vista/Foros.php');
+    }
 
 
     
