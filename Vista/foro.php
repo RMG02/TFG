@@ -120,11 +120,15 @@ if ($foroId == null) {
 
         if($nick == $_SESSION['nick']){
             $nick = "Tú";
+            $claseMensaje = "publicacion-propia"; 
+        } else {
+            $claseMensaje = "publicacion-externa";
         }
+        
         $contenidoPrincipal .= <<<EOS
         <div class="contenedor-publicacion" onclick="abrirModal('mensaje-$id_div', '{$mensaje['nick']}', '{$_SESSION['nick']}')">
 
-            <div class="tweet" id="publistas">
+            <div class="tweet-$claseMensaje" id="publistas">
                 <div class="tweet-header">
                     <a href="../Vista/unsetPerfilPublico.php?email_user=$email" class="nick-link"><strong>$nick</strong></a> <span class="tweet-time">$hora</span>
                 </div>

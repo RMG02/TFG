@@ -1648,3 +1648,25 @@ h3 {
 .tab-button.activo {
     background: linear-gradient(to right, #fceabb, #f8d49b);;
 }
+
+
+.tweet-publicacion-externa {
+    background: linear-gradient(135deg, #ffe8d6, #f5b895); 
+    border-radius: 10px;
+    padding: 20px;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.tweet-publicacion-propia {
+    background: linear-gradient(135deg, #d9f1fd, #bce5fa); 
+    border-radius: 10px;
+    padding: 20px;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.tweet-publicacion-propia:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); 
+    cursor:pointer;
+}
