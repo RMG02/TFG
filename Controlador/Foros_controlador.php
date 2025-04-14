@@ -313,6 +313,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['ObtenerListaForos'])) {
         $resultado = $forosModelo->obtenerForos();
         $foros = json_decode($resultado, true);
+        usort($foros, function($a, $b) {
+            return strtotime($b["fecha"]) - strtotime($a["fecha"]);
+        });
         $_SESSION['foros'] = $foros;
         
         header('Location: ../Vista/Foros.php'); 

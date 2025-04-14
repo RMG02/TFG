@@ -31,43 +31,55 @@ if (!isset($_SESSION['foros'])) {
     exit;
 }
 
+date_default_timezone_set('Europe/Madrid');
+
 $foros = $_SESSION['foros'];
 unset($_SESSION['foros']);
-//$filtro = $_GET['filtro'] ?? 'todos';
 
-/*if ($filtro === 'suscritos') {
-    $foros = array_filter($foros, function ($foro) use ($usuarioActual) {
-        return in_array($usuarioActual, $foro['suscriptores'] ?? []);
-    });
-}*/
-
-/* Ordenar los foros por número de suscriptores (de mayor a menor)
-usort($foros, function ($a, $b) {
-    return count($b['suscriptores']) - count($a['suscriptores']);
-});*/
-
-/*$contenidoPrincipal = <<<EOS
-    <h1>Foros disponibles</h1>
-    <div class="filtro-foros">
-        <a href="foros.php?filtro=todos" class="btn-filtro">Todos los foros</a>
-        <a href="foros.php?filtro=suscritos" class="btn-filtro">Mis foros suscritos</a>
-    </div>
+if($verseguidores == "false"){
+    $contenidoPrincipal = <<<EOS
     <div class="crear-foro">
-        <a href="crear_foro.php" class="btn-crear">Crear Foro</a>
-    </div>
-EOS;*/
-
-$contenidoPrincipal = <<<EOS
-    <div class="crear-foro">
-        <h1>Foros</h1>
+        <h1>Explorar foros</h1>
         <a href="crear_foro.php" class="btn-crear" title="Crear foro"><i class="fas fa-plus-circle"></i></a>
     </div>
-EOS;
+    EOS;
+}
+else{
+    $contenidoPrincipal = <<<EOS
+    <div class="crear-foro">
+        <h1>Foros que sigues</h1>
+        <a href="crear_foro.php" class="btn-crear" title="Crear foro"><i class="fas fa-plus-circle"></i></a>
+    </div>
+    EOS;
+
+}
 
 if (empty($foros)) {
     $contenidoPrincipal .= "<p>No hay foros disponibles</p>";
 } else {
-    $contenidoPrincipal = <<<EOS
+    $contenidoPrincipal .= <<<EOS
+        <div class="buscador-contenedor">
+            <input type="text" id="buscador" onkeyup="filtrarForos()" placeholder="Buscar por título...">
+            
+            <button id="filtroBtn"><i class="fas fa-filter"></i>Filtros</button>
+
+            <div id="menuFiltro" class="menu-filtro">
+                <p>Ordenar por:</p>
+
+                <button onclick="mostrarOrdenFechas()" id="btnFiltrarTipo"><i class="fas fa-calendar-alt"></i> Fecha</button>
+                <div id="opcionesOrdenFechas" class="opciones-filtro opciones_orden">
+                    <button onclick="ordenarForos('btnOrdenarFechaDesc')" id="btnOrdenarFechaDesc" class="activo">Más recientes</button>
+                    <button onclick="ordenarForos('btnOrdenarFechaAsc')" id="btnOrdenarFechaAsc">Más antiguas</button>
+                </div>
+
+                <button onclick="mostrarOrdenSus()" id="btnFiltrarTipo"><i class="fas fa-users"></i> Suscriptores</button>
+                <div id="opcionesOrdenSus" class="opciones-filtro opciones_orden">
+                    <button onclick="ordenarForos('btnOrdenarSusDesc')" id="btnOrdenarSusDesc">Más suscriptores</button>
+                    <button onclick="ordenarForos('btnOrdenarSusAsc')" id="btnOrdenarSusAsc">Menos suscriptores</button>
+                </div>
+            </div>
+        </div>
+
         <div class="dropdown">
                     <button class="dropbtn">⋮</button>
                     <div class="dropdown-content">
@@ -82,43 +94,53 @@ if (empty($foros)) {
                                 <button type="submit" class="boton_lista" name="foros">Ver foros que sigues</button>
                         </form>
                     </div>         
-            </div>
+        </div>
+        <div id="foros">
     EOS;
         
     foreach ($foros as $foro) {
         $titulo = $foro['titulo'];
         $id = $foro['_id']['$oid'];
-        //$numSuscriptores = count($foro['suscriptores']);
-
-        /*$contenidoPrincipal .= <<<EOS
-            <div class="foro_div">
-                <a href="foro.php?foroId=$id" class="foro-link">
-                    <h3>$titulo</h3>
-                    <p>Suscriptores: $numSuscriptores</p>
-                </a>
-            </div>
-        EOS;*/
-        if($verseguidores == "false" || ($verseguidores == "true") && (in_array($_SESSION['nick'], $foro['suscriptores']))){
-            if($verseguidores == "false"){
-                $contenidoPrincipal .= <<<EOS
-                            <h3>Explorar foros</h3>
-                        EOS;
-            }else{
-                $contenidoPrincipal .= <<<EOS
-                            <h3>Foros que sigues</h3>
-                        EOS;
-            }
+        $suscriptores = $foro['suscriptores'];
+        $fecha = date('d/m/Y H:i:s', strtotime($foro['fecha']));
+        $num_suscriptores = count($suscriptores);
+       
+        if($verseguidores == "false"){
             $contenidoPrincipal .= <<<EOS
-                <a href="foro.php?foroId=$id" class="foro-link">
+            <div class="contenedor-foros">
+                <a href="foro.php?foroId=$id" class="foro-link">  
                     <div class="foro_div">
+                        <span class="tweet-time">$fecha</span>
                         <h3>$titulo</h3>
+                        <div class="comentarios-icon">
+                            <i class="fas fa-users"></i> $num_suscriptores
+                        </div>
                     </div>
                 </a>
+            </div>
             EOS;
-        }else{
-            $contenidoPrincipal .= "<p>No hay foros disponibles</p>";
+        }
+        else {
+            if(in_array($_SESSION['nick'], $foro['suscriptores'])){
+                $contenidoPrincipal .= <<<EOS
+                <div class="contenedor-foros">
+                    <a href="foro.php?foroId=$id" class="foro-link">
+                        <div class="foro_div">
+                        <span class="tweet-time">$fecha</span>
+                        <h3>$titulo</h3>
+                        <div class="comentarios-icon">
+                            <i class="fas fa-users"></i> $num_suscriptores
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                EOS;
+            }
         }
     }
+    $contenidoPrincipal .= <<<EOS
+        </div>
+    EOS;
 }
 
 if ($error != "") {
@@ -136,3 +158,5 @@ if ($mensaje != "") {
 require_once __DIR__ . "/plantillas/plantilla.php";
 
 ?>
+
+<script src="../Recursos/js/filtro_foros.js"></script>

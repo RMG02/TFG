@@ -10,6 +10,7 @@ class Foro {
     }
 
     public function crearForo($DatosForo) {
+        $DatosForo['fecha'] = date(DATE_ISO8601);
         $UsuarioExiste = $this->collection->findOne(['titulo' => $DatosForo['titulo']]);
         if ($UsuarioExiste) {
             return "Título de foro ya registrado";

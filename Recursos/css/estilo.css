@@ -1599,8 +1599,14 @@ h3 {
     width: 40%; 
     max-width: 800px; 
     display: flex; 
+    flex-direction: column;
     justify-content: center;
     align-items: center; 
+}
+
+.foro_div .tweet-time {
+    margin-left: auto; 
+    text-align: right; 
 }
 
 .foro_div:hover {
