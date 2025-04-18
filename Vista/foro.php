@@ -53,7 +53,7 @@ if ($foroId == null) {
         $contenidoPrincipal .= <<<EOS
         <form method="POST" action="../Controlador/Foros_controlador.php">
             <input type="hidden" name="id" value="$foroId">
-            <button type="submit" class="boton_lista" name="eliminarForo" onclick='eliminarForo("$foroId", $suscriptores)'>Eliminar foro</button>
+            <button type="submit" class="btn-foro" name="eliminarForo" title="Eliminar foro" onclick='eliminarForo("$foroId", $suscriptores)'><i class="fas fa-trash"></i></button>
         </form>
         EOS;
     }
@@ -62,7 +62,7 @@ if ($foroId == null) {
         $contenidoPrincipal .= <<<EOS
             <form method="POST" action="../Controlador/Foros_controlador.php">
                 <input type="hidden" name="id" value="$foroId">
-                <button type="submit" class="btn-suscripcion" name="Desuscribirforo">Desuscribirse</button>
+                <button type="submit" class="btn-foro" name="Desuscribirforo" title="Desuscribirse"><i class="fas fa-user-minus"></i></button>
             </form>
             
         EOS;
@@ -71,7 +71,7 @@ if ($foroId == null) {
         $contenidoPrincipal .= <<<EOS
             <form method="POST" action="../Controlador/Foros_controlador.php">
                 <input type="hidden" name="id" value="$foroId">
-                <button type="submit" class="btn-suscripcion" name="Suscribirforo">Suscribirse</button>
+                <button type="submit" class="btn-foro" name="Suscribirforo" title="Suscribirse"><i class="fas fa-user-plus"></i></button>
             </form>
         EOS;
     }
@@ -80,7 +80,7 @@ if ($foroId == null) {
         $contenidoPrincipal .= <<<EOS
             <form method="POST" action="../Controlador/Foros_controlador.php">
                 <input type="hidden" name="id" value="$foroId">
-                <button type="submit" class="btn-suscripcion" name="DesactivarNotis" title="Desactivar notificaciones"><i class='fas fa-bell'></i></button>
+                <button type="submit" class="btn-foro" name="DesactivarNotis" title="Desactivar notificaciones"><i class='fas fa-bell'></i></button>
             </form>
             
         EOS;
@@ -89,12 +89,10 @@ if ($foroId == null) {
         $contenidoPrincipal .= <<<EOS
             <form method="POST" action="../Controlador/Foros_controlador.php">
                 <input type="hidden" name="id" value="$foroId">
-                <button type="submit" class="btn-suscripcion" name="ActivarNotis" title="Activar notificaciones"><i class='far fa-bell'></i></button>
+                <button type="submit" class="btn-foro" name="ActivarNotis" title="Activar notificaciones"><i class='far fa-bell'></i></button>
             </form>
         EOS;
     }
-
-
 
     $contenidoPrincipal .= <<<EOS
         </div>

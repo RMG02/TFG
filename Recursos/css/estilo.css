@@ -1676,3 +1676,32 @@ h3 {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); 
     cursor:pointer;
 }
+
+.foro-acciones {
+    display: flex;
+    gap: 60px; 
+    justify-content: center;
+
+}
+
+.foro-acciones form {
+    margin: 0;
+}
+
+
+.btn-foro {
+    background: none;     
+    border: none;         
+    color: inherit;      
+    cursor: pointer;     
+    padding: 5px 10px;    
+    font-size: 1em;  
+    color: #4b4b4b;  
+}
+
+.btn-foro:hover {
+    background: none;
+    transform: translateY(-15%);
+
+}
+
