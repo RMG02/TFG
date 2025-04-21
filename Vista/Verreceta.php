@@ -282,7 +282,7 @@ if($_SESSION['recedisponible'] == false){
                                         <ul>
                                         
                                     EOS;
-                                    $publi_foro = "Receta compartida: <a href=\"http://$host/Controlador/Receta_controlador.php?publi_id=true&id=$id\">Ver receta</a>";
+                                    $publi_foro = "Receta compartida: <a onclick=\"event.stopPropagation();\" href=\"http://$host/Controlador/Receta_controlador.php?publi_id=true&id=$id\">Ver receta</a>";
                                     $suscrito = true;
                                     foreach ($foros as $foro) {
                                         $notificaciones = json_encode($foro['notificaciones']); 

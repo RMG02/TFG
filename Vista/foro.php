@@ -53,7 +53,7 @@ if ($foroId == null) {
         $contenidoPrincipal .= <<<EOS
         <form method="POST" action="../Controlador/Foros_controlador.php">
             <input type="hidden" name="id" value="$foroId">
-            <input type="hidden" name="foro" value=$foro_json>
+            <input type="hidden" name="foro" value='$foro_json'>
             <button type="submit" class="btn-foro" name="eliminarForo" title="Eliminar foro"><i class="fas fa-trash"></i></button>
         </form>
         EOS;

@@ -994,6 +994,12 @@ footer p {
     transform: scale(1.05);
 }
 
+#chat-cont a:hover {
+    text-decoration: underline;
+    color:#0056b3;
+}
+
+
 
 .chat-container {
     width: 80%;

@@ -265,7 +265,7 @@ if($_SESSION['publidisponible'] == false){
                                     <ul>
                                        
                                 EOS;
-                                $publi_foro = "Publicación compartida: <a href=\"http://$host/Controlador/Publicacion_controlador.php?publi_id=true&id=$id\">Ver publicación</a>";
+                                $publi_foro = "Publicación compartida: <a onclick=\"event.stopPropagation();\" href=\"http://$host/Controlador/Publicacion_controlador.php?publi_id=true&id=$id\">Ver publicación</a>";
                                 $suscrito = true;
                                 foreach ($foros as $foro) {
                                     $notificaciones = json_encode($foro['notificaciones']); 
