@@ -27,15 +27,6 @@ $foro = $_SESSION['foro'];
 unset($_SESSION['foro']);
 
 if($_GET['suscrito']){
-    /*$contenidoPrincipal = <<<EOS
-        <form method="POST" class="formulario" action="../Controlador/Foros_controlador.php">
-            <textarea name="contenido" placeholder="Escribe tu publicación aquí..." required></textarea>
-            <input type="file" name="archivo" style="background-color: white;"> 
-            <input type="hidden" name="id_foro" value="$id">
-            <input type="hidden" name="suscrito" value="{$_GET['suscrito']}">
-            <button type="submit" class="botonInit" name="CrearMensaje">Publicar</button>
-        </form>
-    EOS;*/
     $notificaciones = json_encode($foro['notificaciones']); 
 
     $contenidoPrincipal = <<<EOS

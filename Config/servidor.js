@@ -73,23 +73,6 @@ io.on("connection", (socket) => {
         
     });
 
-    socket.on("eliminar-sus-foro", (data) => {
-        data.suscriptores.forEach(suscriptor => {
-    
-            var datos = { 
-                idForo: data.foroId, 
-                nick: suscriptor
-            };
-
-            // Usar URLSearchParams para formatear los datos
-            var params = new URLSearchParams();
-            params.append('foroEliminado', JSON.stringify(datos));
-            axios.post('http://localhost:8000/Controlador/Usuario_controlador.php', params)
-        });
-   
-        
-    });
-
 
     socket.on("like-dado", (data) => {
         if(data.tipo_publicacion == "publicacion"){

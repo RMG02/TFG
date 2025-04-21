@@ -17,8 +17,6 @@ socket.on("actualizar-contador", (data) => {
 });
 
 
-
-
 socket.on("Eliminar-nick", function(data) {
     fetch('../../Controlador/Usuario_controlador.php', {
         method: 'POST',
@@ -704,10 +702,6 @@ function enviarPublicacionForo(idForo, notificaciones, usuarioEmisor, titulo) {
     socket.emit("nueva-publi-foro", {usuarioEmisor: usuarioEmisor, usuarios_noti: notificaciones, foroId: idForo, titulo: titulo});
 }
 
-function eliminarForo(idForo, suscriptores) {
-    
-    socket.emit("eliminar-sus-foro", {foroId: idForo, suscriptores: suscriptores});
-}
 
 
 

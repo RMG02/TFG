@@ -36,6 +36,11 @@ class Usuario {
         return null;
     }
 
+    public function numForos($nick) {
+        $usuario = $this->collection->findOne(['nick' => $nick]); 
+        return $usuario['forosCreados'];    
+    }
+
     public function obtenerUsuarioToken($token) {
         $usuario = $this->collection->findOne(['recuperacion_token' => $token]);
         if ($usuario['token_tiempo'] < time()) {

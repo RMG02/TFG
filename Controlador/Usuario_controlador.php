@@ -84,7 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['notiseguidores'] = $usuario['notiseguidores'];
                 $_SESSION['noticomentarios'] = $usuario['noticomentarios'];
                 $_SESSION['notimensajes'] = $usuario['notimensajes'];
-                $_SESSION['forosCreados'] = $usuario['forosCreados'];
             }
             
 
@@ -106,8 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if(isset($_POST['foroEliminado'])){
-        $servidor_post = json_decode($_POST['foroEliminado'], true);
-        $usuarioModelo->foroDesuscrito($servidor_post['idForo'], $servidor_post['nick']);
+        $usuarioModelo->foroDesuscrito($_POST['idForo'], $_POST['nick']);
         header('Location: ' . $_SESSION['url_anterior']);
         exit;   
         

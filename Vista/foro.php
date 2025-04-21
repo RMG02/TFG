@@ -48,12 +48,13 @@ if ($foroId == null) {
         <div class="foro-acciones">
     EOS;
 
-    if($_SESSION['nick'] === $creadorForo){
-        $suscriptores = json_encode($foro['suscriptores']); 
+    if($_SESSION['nick'] === $creadorForo || $_SESSION['admin']){
+        $foro_json = json_encode($foro); 
         $contenidoPrincipal .= <<<EOS
         <form method="POST" action="../Controlador/Foros_controlador.php">
             <input type="hidden" name="id" value="$foroId">
-            <button type="submit" class="btn-foro" name="eliminarForo" title="Eliminar foro" onclick='eliminarForo("$foroId", $suscriptores)'><i class="fas fa-trash"></i></button>
+            <input type="hidden" name="foro" value=$foro_json>
+            <button type="submit" class="btn-foro" name="eliminarForo" title="Eliminar foro"><i class="fas fa-trash"></i></button>
         </form>
         EOS;
     }

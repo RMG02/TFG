@@ -29,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'mensajes' => [],
             'notificaciones' => []
         ];
-        
-        if($_SESSION['forosCreados'] < 5){
+        $num_foros = $UsuarioModelo->numForos($_SESSION['nick']);
+        if($num_foros < 5){
             $resultado = $forosModelo->crearForo($DatosForo);
             if($resultado == "Título de foro ya registrado"){
                 $_SESSION['error'] = "Título de foro ya registrado";
@@ -38,10 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit; 
             }
             else{
-                $_SESSION['forosCreados'] += 1;
                 $UsuarioModelo->sumaForo($_SESSION['nick']);
                 $id = $resultado->getInsertedId()->__toString();
-
+                $UsuarioModelo->foroSuscrito($id,$_SESSION['nick']);
                 header('Location: ../Vista/foro.php?foroId=' . $id);
                 exit;  
             }
@@ -249,14 +248,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['eliminarForo'])) {
         $resultado = $forosModelo->eliminarForo($_POST['id']);
+        $foro = json_decode($_POST['foro'], true); 
         if($resultado == null){
             $_SESSION['error'] = "Error al eliminar el foro";
             header('Location: ../Vista/foro.php?foroId=' . $_POST['id']); 
         }
         else{
             $_SESSION['mensaje'] = "Foro eliminado";
-            $_SESSION['forosCreados'] -= 1;
-            $UsuarioModelo->restaForo($_SESSION['nick']);
+
+            $UsuarioModelo->restaForo($foro['creador']);
+            foreach ($foro['suscriptores'] as $suscriptor) {
+                $UsuarioModelo->foroDesuscrito($_POST['id'], $suscriptor);
+            }
             header('Location: ../Vista/Foros.php'); 
         }
         
