@@ -21,6 +21,7 @@ if (!isset($_SESSION['notificaciones_usuario'])) {
 $error = "";
 $mensaje = "";
 $notificaciones = json_decode($_SESSION['notificaciones_usuario'], true);
+
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
     unset($_SESSION['error']);

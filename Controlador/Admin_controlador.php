@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             'nombre' => $_POST['nombre_nuevo'] ?: $_POST['nombre'],
             'password' => $_POST['pass_nuevo'] ?: $_POST['pass'],
             'nick' => $_POST['nick_nuevo'] ?: $_POST['nick'],
-            'email' => $_POST['email_nuevo'] ?: $_POST['email'],
+            'email' => $_POST['email'],
             'admin' => $admin
         ];
         $resultado = $usuarioModelo->editarUsuario($_POST['email'],$DatosUsuario, $_POST['nick']);

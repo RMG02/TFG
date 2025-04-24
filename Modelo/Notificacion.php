@@ -75,6 +75,33 @@ class Notificacion {
         return $this->collection->find(['id_publi' => $id]);
 
     }
+
+    public function obtenerNotificacionesAccion($nick) {
+        return $this->collection->find(['usuario_accion' => $nick]);
+
+    }
+
+    public function actualizarNick($nick_nuevo, $id_noti) { 
+        $id = new ObjectId($id_noti);
+        $notificacion = $this->collection->findOne(['_id' => $id]);
+        
+        $mensaje = $notificacion['mensaje'];
+        $mensaje_actualizado = preg_replace('/^\w+/', $nick_nuevo, $mensaje);
+
+        $resultado = $this->collection->updateOne(
+            ['_id' => $id],
+            [
+                '$set' => [
+                    'usuario_accion' => $nick_nuevo,
+                    'mensaje' => $mensaje_actualizado
+                ]
+            ]
+        );
+
+        return $resultado->getModifiedCount() > 0;
+        
+    }
+
     public function borrarNotificacionComentario($id_publi, $id_comentario, $id_comentario_origen){
         if($id_comentario_origen){
             $filtro = [

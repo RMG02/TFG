@@ -296,7 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'nombre' => $_POST['nombre'] ?: $_SESSION['nombre'],
             'password' => $_POST['password'] ?: $_SESSION['password'],
             'nick' => $_POST['nick'] ?: $_SESSION['nick'],
-            'email' => $_POST['email'] ?: $_SESSION['email'],
+            'email' => $_SESSION['email'],
             'admin' => $_SESSION['admin']
         ];
         $resultado = $usuarioModelo->editarUsuario($_SESSION['email'],$DatosUsuario, $_SESSION['nick']);

@@ -22,9 +22,6 @@ $contenidoPrincipal = <<<EOS
                 <label for="nick"> Nick </label>
                 <input id="nick" type="text" name="nick" placeholder='{$_SESSION['nick']}' /> 
                 
-                <label for="email"> Email </label>
-                <input id="email" type="text" name="email" placeholder='{$_SESSION['email']}' /> 
-                
                 <label for="password"> Contraseña </label>
                 <input id="password" type="password" name="password" placeholder="Contraseña" />
                 

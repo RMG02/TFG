@@ -57,6 +57,26 @@ socket.on("Eliminar-nick", function(data) {
         console.error('Error en la solicitud:', error);
     });
 
+    fetch('../../Controlador/Notificacion_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'EliminarNick': true,
+            'nick' : data.nick,
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+
     fetch('../../Controlador/Foros_controlador.php', {
         method: 'POST',
         body: new URLSearchParams({
@@ -161,6 +181,26 @@ socket.on("actualizar-cambioNick", function(data) {
     });
 
     fetch('../../Controlador/Conversaciones_controlador.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'cambioNick': true,
+            'nuevoNick' : data.nuevoNick,
+            'nick_pasado' : data.nick,
+        })
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+        if (respuesta.status === 'success') {
+            console.log('Actualizado');
+        } else {
+            console.error('Error al actualizar', respuesta.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+
+    fetch('../../Controlador/Notificacion_controlador.php', {
         method: 'POST',
         body: new URLSearchParams({
             'cambioNick': true,

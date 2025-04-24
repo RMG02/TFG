@@ -85,6 +85,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    if(isset($_POST['EliminarNick'])){
+        if (isset($_SESSION['notificaciones_usuario'])) {
+            unset($_SESSION['notificaciones_usuario']);
+        }
+        $resultado = $NotificacionModelo->obtenerNotificacionesAccion($_POST['nick']);
+        $notificaciones_json = json_encode(iterator_to_array($resultado));
+        $notificaciones = json_decode($notificaciones_json, true);
+        
+
+        if(!empty($notificaciones)){
+            foreach ($notificaciones as $notificacion) {
+                $NotificacionModelo->borrarNotificacionUnica($notificacion['_id']['$oid']);
+            }
+        }
+        
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
+
+    if(isset($_POST['cambioNick'])){
+        if (isset($_SESSION['notificaciones_usuario'])) {
+            unset($_SESSION['notificaciones_usuario']);
+        }
+        $resultado = $NotificacionModelo->obtenerNotificacionesAccion($_POST['nick_pasado']);
+        $notificaciones_json = json_encode(iterator_to_array($resultado));
+        $notificaciones = json_decode($notificaciones_json, true);
+
+        if(!empty($notificaciones)){
+            foreach ($notificaciones as $notificacion) {
+                $NotificacionModelo->actualizarNick( $_POST['nuevoNick'], $notificacion['_id']['$oid']);
+            }
+        }
+        
+        header('Location: ' . $_SESSION['url_anterior']);
+        exit;  
+    }
+
     if(isset($_POST['eliminarNotificacionNick'])){
         if($_POST['nick'] == $_SESSION['nick']){
             $resultado = $NotificacionModelo->borrarTodasNotificaciones($_SESSION['notificaciones_usuario']);
