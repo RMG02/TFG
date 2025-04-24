@@ -55,10 +55,42 @@ else{
 }
 
 if (empty($foros)) {
-    $contenidoPrincipal .= "<p>No hay foros disponibles</p>";
+    $contenidoPrincipal .= <<<EOS
+        <p>No hay foros disponibles</p>
+        <div class="dropdown">
+                        <button class="dropbtn">⋮</button>
+                        <div class="dropdown-content">
+                            <form method="POST" action="../Controlador/Foros_controlador.php">
+                                    <input type="hidden" name="verseguidoresforo" value="false">
+                                    <input type="hidden" name="seguidoresforo" value="true">
+                                    <button type="submit" class="boton_lista" name="foros">Explorar</button>
+                            </form>
+                            <form method="POST" action="../Controlador/Foros_controlador.php">
+                                <input type="hidden" name="verseguidoresforo" value="true">
+                                    <input type="hidden" name="seguidoresforo" value="true">
+                                    <button type="submit" class="boton_lista" name="foros">Ver foros que sigues</button>
+                            </form>
+                        </div>         
+        </div>
+    EOS;
 } else {
     $contenidoPrincipal .= <<<EOS
         <div class="buscador-contenedor">
+            <div class="dropdown">
+                    <button class="dropbtn">⋮</button>
+                    <div class="dropdown-content">
+                        <form method="POST" action="../Controlador/Foros_controlador.php">
+                                <input type="hidden" name="verseguidoresforo" value="false">
+                                <input type="hidden" name="seguidoresforo" value="true">
+                                <button type="submit" class="boton_lista" name="foros">Explorar</button>
+                        </form>
+                    <form method="POST" action="../Controlador/Foros_controlador.php">
+                            <input type="hidden" name="verseguidoresforo" value="true">
+                                <input type="hidden" name="seguidoresforo" value="true">
+                                <button type="submit" class="boton_lista" name="foros">Ver foros que sigues</button>
+                        </form>
+                    </div>         
+            </div>
             <input type="text" id="buscador" onkeyup="filtrarForos()" placeholder="Buscar por título...">
             
             <button id="filtroBtn"><i class="fas fa-filter"></i>Filtros</button>
@@ -79,22 +111,7 @@ if (empty($foros)) {
                 </div>
             </div>
         </div>
-
-        <div class="dropdown">
-                    <button class="dropbtn">⋮</button>
-                    <div class="dropdown-content">
-                        <form method="POST" action="../Controlador/Foros_controlador.php">
-                                <input type="hidden" name="verseguidoresforo" value="false">
-                                <input type="hidden" name="seguidoresforo" value="true">
-                                <button type="submit" class="boton_lista" name="foros">Explorar</button>
-                        </form>
-                        <form method="POST" action="../Controlador/Foros_controlador.php">
-                            <input type="hidden" name="verseguidoresforo" value="true">
-                                <input type="hidden" name="seguidoresforo" value="true">
-                                <button type="submit" class="boton_lista" name="foros">Ver foros que sigues</button>
-                        </form>
-                    </div>         
-        </div>
+        
         <div id="foros">
     EOS;
         
@@ -107,17 +124,17 @@ if (empty($foros)) {
        
         if($verseguidores == "false"){
             $contenidoPrincipal .= <<<EOS
-            <div class="contenedor-foros">
-                <a href="foro.php?foroId=$id" class="foro-link">  
-                    <div class="foro_div">
-                        <span class="tweet-time">$fecha</span>
-                        <h3>$titulo</h3>
-                        <div class="comentarios-icon">
-                            <i class="fas fa-users"></i> $num_suscriptores
+                <div class="contenedor-foros">
+                    <a href="foro.php?foroId=$id" class="foro-link">  
+                        <div class="foro_div">
+                            <span class="tweet-time">$fecha</span>
+                            <h3>$titulo</h3>
+                            <div class="comentarios-icon">
+                                <i class="fas fa-users"></i> $num_suscriptores
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
             EOS;
         }
         else {
@@ -126,12 +143,12 @@ if (empty($foros)) {
                 <div class="contenedor-foros">
                     <a href="foro.php?foroId=$id" class="foro-link">
                         <div class="foro_div">
-                        <span class="tweet-time">$fecha</span>
-                        <h3>$titulo</h3>
-                        <div class="comentarios-icon">
-                            <i class="fas fa-users"></i> $num_suscriptores
+                            <span class="tweet-time">$fecha</span>
+                            <h3>$titulo</h3>
+                            <div class="comentarios-icon">
+                                <i class="fas fa-users"></i> $num_suscriptores
+                            </div>
                         </div>
-                    </div>
                     </a>
                 </div>
                 EOS;
