@@ -28,6 +28,59 @@ class Usuario {
         return $this->collection->insertOne($DatosUsuario);
     }
 
+    public function enviarEnlaceConfirmacion($email) {
+        $token = bin2hex(random_bytes(32)); // Genera un token de 64 caracteres hexadecimales
+        $tiempo = time() + 1200; // Expira en 20 minutos
+
+        $this->collection->updateOne(
+            ['email' => $email],
+            ['$set' => ['confirmacion_token' => $token, 'tokenconfirmacion_tiempo' => $tiempo]]
+        );
+
+        $enlace = "http://localhost:8000/Vista/confirmacion.php?tokenconf=$token"; 
+
+        $mail = new PHPMailer(true);
+
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'gastrored2@gmail.com'; 
+            $mail->Password = 'uwmg kdcj gmjc tjqe';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+    
+            $mail->setFrom('no-reply@gastrored2.com', 'GastroRed');
+            $mail->addAddress($email); 
+    
+            $mail->isHTML(true);
+            $mail->CharSet = 'UTF-8';
+            $mail->Subject = 'Confirmación de cuenta - GastroRed';
+            $mail->Body = "
+                <div style='font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4;'>
+                    <div style='max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);'>
+                        <h2 style='color: #333;'>Nueva cuenta</h2>
+                        <p style='color: #555; font-size: 16px;'>Has creado una cuenta en GastroRed. Para confirmarla haz clic en el botón de abajo:</p>
+                        <a href='$enlace' 
+                                style='display: inline-block; padding: 12px 20px; margin-top: 10px; font-size: 16px; 
+                                color: white; background-color: #007bff; text-decoration: none; 
+                                border-radius: 5px; font-weight: bold;'>
+                                Confirmar cuenta
+                        </a>
+                        <p style='margin-top: 20px; font-size: 14px; color: #999;'>Si no has creado ninguna cuenta, ignora este correo.</p>
+                    </div>
+                </div>
+            ";
+    
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            $sos = $mail->ErrorInfo;
+            error_log("Error al enviar correo a: $email. Error: {$mail->ErrorInfo}");
+            return false;
+        }
+    }
+
     public function login($email, $password) {
         $usuario = $this->collection->findOne(['email' => $email]);
         if ($usuario && password_verify($password, $usuario['password'])) {
@@ -145,58 +198,7 @@ class Usuario {
         }
     }
 
-    public function enviarEnlaceConfirmacion($email) {
-        $token = bin2hex(random_bytes(32)); // Genera un token de 64 caracteres hexadecimales
-        $tiempo = time() + 1200; // Expira en 20 minutos
-
-        $this->collection->updateOne(
-            ['email' => $email],
-            ['$set' => ['confirmacion_token' => $token, 'tokenconfirmacion_tiempo' => $tiempo]]
-        );
-
-        $enlace = "http://localhost:8000/Vista/confirmacion.php?tokenconf=$token"; 
-
-        $mail = new PHPMailer(true);
-
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'gastrored2@gmail.com'; 
-            $mail->Password = 'uwmg kdcj gmjc tjqe';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
     
-            $mail->setFrom('no-reply@gastrored2.com', 'GastroRed');
-            $mail->addAddress($email); 
-    
-            $mail->isHTML(true);
-            $mail->CharSet = 'UTF-8';
-            $mail->Subject = 'Confirmación de cuenta - GastroRed';
-            $mail->Body = "
-                <div style='font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4;'>
-                    <div style='max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);'>
-                        <h2 style='color: #333;'>Nueva cuenta</h2>
-                        <p style='color: #555; font-size: 16px;'>Has creado una cuenta en GastroRed. Para confirmarla haz clic en el botón de abajo:</p>
-                        <a href='$enlace' 
-                                style='display: inline-block; padding: 12px 20px; margin-top: 10px; font-size: 16px; 
-                                color: white; background-color: #007bff; text-decoration: none; 
-                                border-radius: 5px; font-weight: bold;'>
-                                Confirmar cuenta
-                        </a>
-                        <p style='margin-top: 20px; font-size: 14px; color: #999;'>Si no has creado ninguna cuenta, ignora este correo.</p>
-                    </div>
-                </div>
-            ";
-    
-            $mail->send();
-            return true;
-        } catch (Exception $e) {
-            $sos = $mail->ErrorInfo;
-            error_log("Error al enviar correo a: $email. Error: {$mail->ErrorInfo}");
-            return false;
-        }
-    }
 
     public function darBajaUsuario($email) {
         return $this->collection->deleteOne(['email' => $email]);
