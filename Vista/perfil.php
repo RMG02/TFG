@@ -22,7 +22,6 @@ if (!isset($_SESSION['publicacionesUsuario'])) {
  
  require_once __DIR__ . "/plantillas/respuestas.php";
  $principal = false;
- //$verreceta = isset($_POST['verreceta']) ? filter_var($_POST['verreceta'], FILTER_VALIDATE_BOOLEAN) : false;
  $error = "";
  $mensaje = "";
  $recetaxx = false;

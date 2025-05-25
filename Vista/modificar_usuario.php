@@ -21,13 +21,11 @@ if (isset($_SESSION['mensaje'])) {
     unset($_SESSION['mensaje']);
 }
 
-// Obtener todos los documentos (usuarios)
 $usuarios = json_decode($_SESSION['listaUsuarios'], true);
 
 $tituloPagina = "Lista de Usuarios";
 $modalId = -1;
 
-// Construcción del contenido principal de forma dinámica
 $contenidoPrincipal = <<<EOS
 <input type="text" id="buscador" onkeyup="filtrarUsuarios()" placeholder="Buscar por nick...">
 <table id="userList">

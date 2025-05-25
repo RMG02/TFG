@@ -367,7 +367,6 @@ class Publicacion {
     }
 
     public function ListaPublicacionfavoritos($lista) {
-        // Convertir el BSONArray en un array de PHP si es necesario
         $lista = iterator_to_array($lista);
     
         // Verificar que $lista no esté vacío

@@ -1407,11 +1407,11 @@ footer p {
 }
 
 hr {
-    border: none; /* Elimina el borde predeterminado */
-    height: 1px; /* Grosor de la línea */
+    border: none; 
+    height: 1px; 
     background: linear-gradient(to right, #333, #000); 
-    opacity: 0.8; /* Ligera transparencia para un efecto moderno */
-    border-radius: 2px; /* Bordes redondeados para suavizar */
+    opacity: 0.8;
+    border-radius: 2px; 
     margin: 15px 0;
 }
 

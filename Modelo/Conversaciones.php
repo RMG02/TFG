@@ -17,7 +17,6 @@ class Conversacion {
             'eliminada' => []
         ];
         $resultado = $this->collection->insertOne($conversacion);
-        //$conversacion = json_encode(iterator_to_array($resultado));
         return $resultado;
 
     }

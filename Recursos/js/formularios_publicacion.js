@@ -46,7 +46,7 @@ function form_publi(){
             previewContainer.appendChild(preview);
         } else {
             alert("El archivo no es válido.");
-            e.target.value = ""; // Reinicia el input
+            e.target.value = ""; 
         }
     });
     

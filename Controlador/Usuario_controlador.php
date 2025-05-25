@@ -365,7 +365,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $type = $_POST["type"];
         $status = $_POST["status"] == "1" ? 1 : 0;
     
-        // Guardar en sesión (opcionalmente, podrías guardarlo en una BD)
         $resultado = $usuarioModelo->preferencias($type,$status,$_SESSION['email']);
         
         $_SESSION[$type] = $status;
@@ -410,7 +409,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location: ../Vista/Verreceta.php');
                 exit;
             }
-            // Redirigir a la URL correspondiente
             header('Location: ' . ($urlfav ? '../Vista/favoritos.php' : '../Vista/Principal.php'));
             exit;
         } else { // Si es una receta
@@ -440,7 +438,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location: ../Vista/Verreceta.php');
                 exit;
             }
-            // Redirigir a la URL correspondiente
             header('Location: ' . ($urlfav ? '../Vista/favoritos.php' : '../Vista/Recetas.php'));
             exit;
         }
@@ -457,10 +454,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
     if (isset($_GET['publicoemail'])) {
         $email = $_GET['email_Usur'] ?? '';
-
-        /*if(isset($_SESSION['nickUserpublico'] )){
-            unset($_SESSION['nickUserpublico'] );
-        } */
 
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) { 
             $_SESSION['usudisponible'] = false;
@@ -491,7 +484,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             }   
             
         }
-        exit; 
     }
     
     if (isset($_GET['seguidores'])) {
@@ -518,7 +510,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $_SESSION['nickUser'] = json_encode(iterator_to_array($resultado));
                 $_SESSION['usudisponible'] = true;
                 if(isset($_GET['verreceta'])){
-                    //header('Location: ../Vista/PerfilPublico.php?nick_user=' . $nick); 
                     $_SESSION['nickUserpublico'] = $nick;
                     header('Location: ../Vista/PerfilPublico.php?verreceta=true'); 
                     exit;
@@ -526,7 +517,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 }
                 else{
                     $_SESSION['nickUserpublico'] = $nick;
-                    //header('Location: ../Vista/PerfilPublico.php?verreceta=true&nick_user=' . $nick); 
                     header('Location: ../Vista/PerfilPublico.php');
                     exit;
                 }
@@ -539,7 +529,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             
         }
         
-        exit; 
     }
 
     if (isset($_GET['arraypublis'])) {

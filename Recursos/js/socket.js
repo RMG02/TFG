@@ -293,7 +293,6 @@ socket.on("notificacion", function(data) {
         window.notiseguidores = preferencias.notiseguidores;
         window.notimensajes = preferencias.notimensajes;
 
-        // Ahora que tenemos las preferencias, evaluamos si mostrar la notificación
         var mostrarNotificacion = false;
 
         if ((data.tipo === "follow" || data.tipo === "unfollow") && window.notiseguidores) {
@@ -471,7 +470,6 @@ socket.on("edit-mensaje", (data) => {
 
 
 socket.on("actualizar_usuario", function(data) {
-    // Hacer una llamada al controlador de notificaciones para hacer unset de la variable de sesión
     fetch('../../Controlador/Usuario_controlador.php', {
         method: 'POST',
         body: new URLSearchParams({
