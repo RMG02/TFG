@@ -203,8 +203,10 @@ document.getElementById('download-btn').addEventListener('click', function () {
 
 // Función para agregar texto al PDF
 function agregarTexto(doc, ingredients, preparation, nick, startY, tiempox, dificultadx) {
+    const pageHeight = doc.internal.pageSize.getHeight();
     const pageWidth = doc.internal.pageSize.getWidth();
     const textWidth = pageWidth - 20;
+    let currentY = startY;
 
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
@@ -212,46 +214,70 @@ function agregarTexto(doc, ingredients, preparation, nick, startY, tiempox, difi
     // Tiempo
     const tiempoIcono = new Image();
     tiempoIcono.src = '../Recursos/imagenes/reloj.png';
-    doc.text("Tiempo:", 10, startY);
-    doc.addImage(tiempoIcono, 'PNG', 35, startY - 4, 5, 5);
-    doc.text(`${tiempox || 'No especificado'} minutos`, 42, startY);
+    doc.text("Tiempo:", 10, currentY);
+    doc.addImage(tiempoIcono, 'PNG', 35, currentY - 4, 5, 5);
+    doc.text(`${tiempox || 'No especificado'} minutos`, 42, currentY);
 
     // Dificultad
     const dificultadIcono = new Image();
     dificultadIcono.src = '../Recursos/imagenes/chef.png';
-    doc.text("Dificultad:", 140, startY);
+    doc.text("Dificultad:", 140, currentY);
     let xPosition = 170;
     for (let i = 0; i < dificultadx; i++) {
-        doc.addImage(dificultadIcono, 'PNG', xPosition, startY - 5, 5, 5);
+        doc.addImage(dificultadIcono, 'PNG', xPosition, currentY - 5, 5, 5);
         xPosition += 6;
     }
 
+    currentY += 20;
+
     // Ingredientes
-    doc.text("Ingredientes:", 10, startY + 20);
+    doc.text("Ingredientes:", 10, currentY);
     doc.setFontSize(14);
     doc.setFont("helvetica", "normal");
+    currentY += 10;
+
     const ingredientsLines = doc.splitTextToSize(ingredients, textWidth);
-    const ingredientsStartY = startY + 30;
-    doc.text(ingredientsLines, 10, ingredientsStartY);
-    const ingredientsTotalHeight = ingredientsLines.length * 7;
+    ingredientsLines.forEach(line => {
+        if (currentY > pageHeight - 20) {
+            doc.addPage();
+            currentY = 20;
+        }
+        doc.text(line, 10, currentY);
+        currentY += 7;
+    });
 
     // Preparación
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    const preparationStartY = ingredientsStartY + ingredientsTotalHeight + 10;
-    doc.text("Preparación:", 10, preparationStartY);
+    if (currentY > pageHeight - 20) {
+        doc.addPage();
+        currentY = 20;
+    }
+    doc.text("Preparación:", 10, currentY);
+    currentY += 10;
+
     doc.setFontSize(14);
     doc.setFont("helvetica", "normal");
     const preparationLines = doc.splitTextToSize(preparation, textWidth);
-    doc.text(preparationLines, 10, preparationStartY + 10);
-    const preparationTotalHeight = preparationLines.length * 7;
+    preparationLines.forEach(line => {
+        if (currentY > pageHeight - 20) {
+            doc.addPage();
+            currentY = 20;
+        }
+        doc.text(line, 10, currentY);
+        currentY += 7;
+    });
 
     // Creado por
     doc.setFontSize(12);
     doc.setFont("helvetica", "italic");
-    const creadoPorStartY = preparationStartY + preparationTotalHeight + 20;
-    doc.text(`Creado por: ${nick}`, 10, creadoPorStartY);
+    if (currentY > pageHeight - 20) {
+        doc.addPage();
+        currentY = 20;
+    }
+    doc.text(`Creado por: ${nick}`, 10, currentY);
 }
+
 
 
 function mostrarUsuarios(id) {

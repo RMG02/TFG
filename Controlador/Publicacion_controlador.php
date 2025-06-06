@@ -478,7 +478,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['id_publi'] = json_encode(iterator_to_array($resultado));
         $_SESSION['publidisponible'] = true; 
        
-        header('Location: ../Vista/Verpublicacion.php');
+        header('Location: ' . $_SESSION['url_anterior']);
         exit;
     }
 
